@@ -1,0 +1,25 @@
+* ADC capacitor array: every 5 um x 5 um MIM unit of the ADC front end, 1920 in all.
+*   top   common top plate of the converter array (comparator input)
+*   dum   top plate of the reference-side capacitor (other comparator input)
+*   b9..b0 bottom plates of the binary-weighted capacitors, bx the unit that completes 1024
+* The layout analog/layout/rv328_adc_caparray.gds is checked against this netlist (make analog-lvs).
+* For simulation with the wiring of that layout, sim.run(..., pex=True) replaces this file by
+* analog/layout/rv328_adc_caparray_pex.spice.
+.subckt rv328_adc_caparray top dum vss bx b0 b1 b2 b3 b4 b5 b6 b7 b8 b9
+* reference side: 384 units, a quarter of what hangs on the top plate
+xcd dum vss cap_mim_2f0fF c_width=5u c_length=5u m=384
+* top plate to ground: the top plate moves by 2/3 of a step of the array
+xcatt top vss cap_mim_2f0fF c_width=5u c_length=5u m=512
+* dummy unit that completes 1024 (always sampled, then to ground)
+xcx top bx cap_mim_2f0fF c_width=5u c_length=5u m=1
+xc0 top b0 cap_mim_2f0fF c_width=5u c_length=5u m=1
+xc1 top b1 cap_mim_2f0fF c_width=5u c_length=5u m=2
+xc2 top b2 cap_mim_2f0fF c_width=5u c_length=5u m=4
+xc3 top b3 cap_mim_2f0fF c_width=5u c_length=5u m=8
+xc4 top b4 cap_mim_2f0fF c_width=5u c_length=5u m=16
+xc5 top b5 cap_mim_2f0fF c_width=5u c_length=5u m=32
+xc6 top b6 cap_mim_2f0fF c_width=5u c_length=5u m=64
+xc7 top b7 cap_mim_2f0fF c_width=5u c_length=5u m=128
+xc8 top b8 cap_mim_2f0fF c_width=5u c_length=5u m=256
+xc9 top b9 cap_mim_2f0fF c_width=5u c_length=5u m=512
+.ends

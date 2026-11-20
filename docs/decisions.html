@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisions - RV328</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><div class="wrap">
+<nav><a class="name" href="index.html">RV328</a><p class="tag">A RISC-V chip in the ATmega328PB footprint</p>
+<h2>The story</h2>
+<a class="l" href="index.html">Overview</a>
+<a class="l" href="build_log.html">Build log</a>
+<a class="l on" href="decisions.html">Decisions</a>
+<h2>Results</h2>
+<a class="l" href="cache_study.html">Cache study</a>
+<a class="l" href="layout_results.html">Layout results</a>
+<a class="l" href="memory_research.html">Memory research</a>
+<h2>Reference</h2>
+<a class="l" href="datasheet.html">Datasheet</a>
+<a class="l" href="verification.html">Verification</a>
+<a class="l" href="tapeout_checklist.html">Tape-out checklist</a>
+<a class="l" href="analog_macros.html">Analog macro spec</a>
+<a class="l" href="bondout.html">Bond-out</a>
+<h2>Tools</h2><a class="l" href="layout_viewer.html">Layout viewer</a>
+</nav>
+<main>
+<h1>Decisions</h1>
+<p>Each decision with what was known at the time, what else was on the table and why it went the way it
+did. The <a href="build_log.html">build log</a> tells the same story in order.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Decision</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>RISC-V processor (Hazard3), not an AVR clone</td>
+<td>settled</td>
+</tr>
+<tr>
+<td>2</td>
+<td>GF180MCU at 5 V through wafer.space</td>
+<td>settled</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Program in a serial memory die in the package, run through a cache</td>
+<td>settled</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Same 32 pin positions as the ATmega328PB</td>
+<td>settled</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Digital part first, analog blocks as one macro added later</td>
+<td>settled</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Speed parity with the ATmega is a requirement</td>
+<td>settled, 20 November</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Cache: 12 KB, three-way, interrupt handlers pinned</td>
+<td>chosen, in layout</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Single-cycle multiplier</td>
+<td>chosen, thin timing margin</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Full-height slot for the product</td>
+<td>chosen</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Half-height digital-only layout kept ready for tape-out</td>
+<td>chosen, 20 November</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Flat placement with guided regions now; finished blocks for the final chip</td>
+<td>chosen, 20 November</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Denser memory</td>
+<td>first report in; nothing decided</td>
+</tr>
+</tbody>
+</table></div>
+<h2>1. RISC-V processor, not an AVR clone</h2>
+<p><strong>Chosen:</strong> Hazard3, an open RV32IMC core with a debug module.
+<strong>Instead of:</strong> re-implementing the AVR instruction set.
+<strong>Why:</strong> an open, verified core with a living toolchain. <strong>Cost:</strong> firmware has to be recompiled; AVR
+binaries and assembly do not carry over. Register names follow the ATmega where the function matches.</p>
+<h2>2. GF180MCU at 5 V through wafer.space</h2>
+<p><strong>Chosen:</strong> GlobalFoundries GF180MCU, 5 V transistors and pads, wafer.space shuttle.
+<strong>Instead of:</strong> Tiny Tapeout on the 1.8 V SKY130 process.
+<strong>Why:</strong> a drop-in for a 5 V part has to run at 5 V, and the shuttle is affordable.
+<strong>Cost:</strong> no flash memory in the open kit (decision 3), five wiring layers, and a sparse memory block
+(decision 12).</p>
+<h2>3. Program in a serial memory die, run through a cache</h2>
+<p><strong>Chosen:</strong> a 25-series serial memory die bonded inside the same package; the chip fetches code from it
+into a cache.
+<strong>Instead of:</strong> on-chip flash (not available) or an external memory on extra pins (breaks the pinout).
+<strong>Why:</strong> keeps 32 pins and the user-programmable program. <strong>Cost:</strong> code not in the cache has to be
+loaded first, about 29 microseconds per 32 bytes at 20 MHz. Everything in decisions 6 to 8 follows from
+this.</p>
+<h2>4. Same pin positions as the ATmega328PB</h2>
+<p><strong>Chosen:</strong> the TQFP/QFN-32 pinout, pin for pin.
+<strong>Cost:</strong> twelve pins are both digital and analog and get two die pads each; fifteen pads (memory,
+test, spares) stay inside the package.</p>
+<h2>5. Digital first, analog as one macro</h2>
+<p><strong>Chosen:</strong> lay out the digital chip with a stub in place of the analog blocks; design, draw and check
+the analog blocks separately and assemble them into one macro.
+<strong>Why:</strong> the two need different tools and checks, and the digital part could be proven early.
+<strong>Cost:</strong> the macro's place on the chip was left open, which is what the half-height trial ran into.</p>
+<h2>6. Speed parity is a requirement</h2>
+<p><strong>Chosen:</strong> the chip has to keep up with an ATmega328P on real firmware, not only match its features.
+<strong>Why:</strong> "This should feel like a drop-in replacement." <strong>Consequence:</strong> measured rather than assumed
+(<a href="cache_study.html">cache study</a>); the 2 KB cache failed the measurement.</p>
+<h2>7. Cache: 12 KB, three-way, handlers pinned</h2>
+<p><strong>Chosen:</strong> three ways of 4 KB, the line unused longest is replaced, lines from the first 2 KB of the
+program are never replaced.
+<strong>Instead of:</strong> a larger simple cache (twice as slow as ideal even at 16 KB, and lost serial bytes), or
+16 KB two-way (6 % from ideal instead of 15 %, but 38 memory blocks instead of 31, too many beside the
+analog macro).
+<strong>Cost:</strong> 27 memory blocks for the cache. Firmware should link its interrupt handlers into the first
+2 KB.</p>
+<h2>8. Single-cycle multiplier</h2>
+<p><strong>Chosen:</strong> the processor's fast multiplier for both halves of the product.
+<strong>Why:</strong> float-heavy code was 1.6 times slower than on the ATmega without it, level with it.
+<strong>Cost:</strong> it is the tightest path in the layout, 0.64 ns of margin at the slowest corner.
+<strong>Fallback:</strong> fast multiplier for the low half only; the float benchmark drops to 0.81 of the ATmega.</p>
+<h2>9. Full-height slot for the product</h2>
+<p><strong>Chosen:</strong> wafer.space's full-height slot, 12.9 mm2 of core.
+<strong>Instead of:</strong> the half-height slot (5.0 mm2), where the analog macro fits only with every margin gone
+and the larger cache does not fit at all.
+<strong>Cost:</strong> about twice the slot price.</p>
+<h2>10. Half-height digital-only layout kept ready</h2>
+<p><strong>Chosen:</strong> the third layout (signed off, 2 KB cache, no analog) stays ready for a tape-out as a
+possible first test chip while the full chip is developed.
+<strong>Why:</strong> it would prove the processor, peripherals and pads in silicon for the lower slot price.
+<strong>Known limits:</strong> its cache is too small for ordinary firmware; external clock and reset only.
+<strong>Open:</strong> whether to actually send it.</p>
+<h2>11. Flat placement with guided regions now, finished blocks later</h2>
+<p><strong>Chosen:</strong> the next full-height floorplan keeps the tool's flat placement, with the logic next to the
+pads and regions that say where each part goes. Separately finished and tiled blocks (cache, processor,
+peripherals, analog) are the aim for the final chip.
+<strong>Why not blocks now:</strong> the tightest paths cross the boundary between processor and cache, and freezing
+that boundary early stops the tool from optimising across it; each block also needs its own pin plan,
+timing budget and hand-off files.
+<strong>Why blocks in the end:</strong> each is closed once and reused, the top level becomes simple, and the chip
+reads as designed.</p>
+<h2>12. Denser memory</h2>
+<p><strong>Question:</strong> the foundry memory block stores 4 kilobits in 0.21 mm2. If memory were several times
+denser, the whole 32 KB program could sit on the chip and cache misses would disappear.
+<strong>Found</strong> (<a href="memory_research.html">memory research</a>, 20 November):</p>
+<ul>
+<li>The foundry block is sparse because of what surrounds the storage cells: the cells are 26 % of it.</li>
+<li>A denser memory is already in the installed design kit and unused: a 3.3 V block of 1024 x 8 bits,
+  19.0 um2 per bit against 51.1, which is 2.7 times denser. The whole 32 KB program and the 2 KB RAM
+  would be 34 blocks and 5.3 mm2, less than the 6.5 mm2 the 31 blocks take today.</li>
+<li>The catch: it needs a 3.3 V supply on a 5 V chip (a regulator, level shifters, a second supply net),
+  and it has no timing data that can be trusted.</li>
+<li>About 70 % of the benchmark firmware is library code. Held in a read-only block made of ordinary logic
+  cells it would be very small (0.3 mm2 by synthesis alone), and the cache would only have to hold the
+  application. The library would be frozen at tape-out.</li>
+<li>Memories from flip-flops or latches are two to three times worse than the foundry block. The
+  half-height slot stays out of reach on memory density alone.</li>
+</ul>
+<p><strong>Recommended by the report, not decided:</strong> keep the foundry block for first silicon; try the read-only
+library as an experiment; plan the 3.3 V memory for a second silicon.</p>
+<h2>Still open</h2>
+<ul>
+<li>Switch the RTL defaults from the first layout's configuration to the full-height one.</li>
+<li>Send the half-height layout as a test chip, or not.</li>
+<li>Which serial memory die, and how it is bonded.</li>
+</ul>
+<footer>Generated from <code>docs/decisions.md</code> by <code>scripts/build_site.py</code>. Nothing here has been measured on silicon.</footer>
+</main></div></body></html>

@@ -1,0 +1,19 @@
+# Area/cell-count estimate for the digital core with Yosys (not the sign-off flow).
+# usage: make synth   (from the project root)
+# Needs build/sc7_tt.lib (scripts/merge_lib.py) and build/sram512x8_tt.lib (the SRAM macro's
+# tt_025C_5v00 liberty file from the PDK).
+read_liberty -lib build/sc7_tt.lib
+read_liberty -lib build/sram512x8_tt.lib
+verilog_defaults -add -Ivendor/hazard3/hdl -DRV328_TECH_GF180
+read_verilog rtl/tech/rv328_tech.v rtl/periph/rv328_adc.v rtl/periph/rv328_gpio.v rtl/periph/rv328_spi.v rtl/periph/rv328_sysctl.v rtl/periph/rv328_timer.v rtl/periph/rv328_twi.v rtl/periph/rv328_usart.v rtl/periph/rv328_wdt.v rtl/rv328_xip.v rtl/rv328_clkrst.v rtl/rv328_core.v
+read_verilog vendor/hazard3/hdl/hazard3_core.v vendor/hazard3/hdl/hazard3_cpu_1port.v vendor/hazard3/hdl/arith/hazard3_alu.v vendor/hazard3/hdl/arith/hazard3_branchcmp.v vendor/hazard3/hdl/arith/hazard3_mul_fast.v vendor/hazard3/hdl/arith/hazard3_muldiv_seq.v vendor/hazard3/hdl/arith/hazard3_onehot_encode.v vendor/hazard3/hdl/arith/hazard3_onehot_priority.v vendor/hazard3/hdl/arith/hazard3_onehot_priority_dynamic.v vendor/hazard3/hdl/arith/hazard3_priority_encode.v vendor/hazard3/hdl/arith/hazard3_shift_barrel.v vendor/hazard3/hdl/hazard3_csr.v vendor/hazard3/hdl/hazard3_decode.v vendor/hazard3/hdl/hazard3_frontend.v vendor/hazard3/hdl/hazard3_instr_decompress.v vendor/hazard3/hdl/hazard3_irq_ctrl.v vendor/hazard3/hdl/hazard3_pmp.v vendor/hazard3/hdl/hazard3_power_ctrl.v vendor/hazard3/hdl/hazard3_regfile_1w2r.v vendor/hazard3/hdl/hazard3_triggers.v vendor/hazard3/hdl/debug/dm/hazard3_dm.v vendor/hazard3/hdl/debug/dtm/hazard3_jtag_dtm.v vendor/hazard3/hdl/debug/dtm/hazard3_jtag_dtm_core.v vendor/hazard3/hdl/debug/cdc/hazard3_apb_async_bridge.v vendor/hazard3/hdl/debug/cdc/hazard3_reset_sync.v vendor/hazard3/hdl/debug/cdc/hazard3_sync_1bit.v
+hierarchy -check -top rv328_core
+synth -top rv328_core
+dfflibmap -liberty build/sc7_tt.lib
+abc -liberty build/sc7_tt.lib
+opt_clean
+tee -o build/synth_stat_hier.txt stat -liberty build/sc7_tt.lib -liberty build/sram512x8_tt.lib
+flatten
+opt_clean
+tee -o build/synth_stat.txt stat -liberty build/sc7_tt.lib -liberty build/sram512x8_tt.lib
+write_verilog -noattr build/rv328_core_syn.v

@@ -1,0 +1,243 @@
+* rv328_adcfe : sample/hold, 10-bit capacitor DAC and comparator for the SAR ADC
+*   ain      selected input (after the input multiplexer)
+*   vrefp    selected reference (AREF pin, AVCC, or the buffered 1.1 V), must be able to supply pulses
+*   sample   1: track ain on the bottom plates of all 1024 unit capacitors, top plate at 0.4 avdd,
+*               comparator storing its offset
+*            falling edge: the top plate is released, 1.4 us later the comparator's offset is
+*               frozen and the bottom plates leave the input (the sampling instant) and go to
+*               the trial code
+*   d9..d0   trial code: bit set = that capacitor to vrefp, clear = to ground
+*   en       0: comparator off (cmp = 0); the switches still follow sample and the code
+*   cmp      1 when the held input >= code / 1024 x vrefp
+*
+*   The top plate also carries a fixed capacitor to ground half the size of the array, so it moves by
+*   two thirds of what the bottom plates do:  top = 0.4 avdd - 2/3 (ain - code/1024 vrefp).
+*   It is compared with the 0.4 avdd held on a dummy capacitor sampled through a scaled copy of the
+*   same switch. The fixed capacitor is what keeps the top plate between the rails: without it a
+*   full-scale input drives the top plate below ground when the hold phase starts.
+*
+*   The reference and ground switches are long-channel devices: at 125 C the leakage of 1024
+*   minimum-length ground switches (about 90 nA in the fast corner) dropped nearly a millivolt across
+*   a 10 kohm signal source while sampling.
+*
+*   Every bottom plate has three switches (input, reference, ground) and no two of them may conduct
+*   together. The controls are interlocked on the loaded gate lines themselves: the sample phase (bs)
+*   and the hold phases (hs, hsg) each wait for the other to be off, and within a bit the reference
+*   switch and the ground switch each wait for the other's gate to have dropped. At the start of the
+*   hold phase the reference switches (hs) close a few ns before the ground switches (hsg), so that
+*   the top plate's first move is upwards.
+.subckt rv328_adcfe avdd vss ain vrefp sample d9 d8 d7 d6 d5 d4 d3 d2 d1 d0 vbp en cmp
+* sequencing on the falling edge of sample:
+*   ts   at once: the top plate and the dummy are released (the bottom plates still follow ain)
+*   az   about 1.4 us later (0.9 to 2.0 over corners): the comparator stops storing its offset (azc, with a slow edge). By then it has also taken up
+*        whatever the two top-plate switches injected, so that cancels as well
+*   a    a few ns after az: the bottom plates leave the input. This is the sampling instant.
+*   hs   reference switches of the trial code;  hsg a few ns later: ground switches
+* (The bottom plates cannot be released before az: with both plates floating the top plate sits
+*  wherever the input switches' charge leaves it, and the comparator would store that as offset.)
+xs0 avdd vss sample ts0 rv328_sinv
+xs2 avdd vss ts0 ts rv328_sinv2
+xs2b avdd vss ts tsb rv328_sinv2
+* 1.2 Mohm into 1 pF. The delay must be several times the time constant with which a 10 kohm source
+* restores the input after the top-plate switch has opened (see xmt): 0.19 us by the capacitances
+* alone, 0.3 us as simulated. At 0.3 us of delay, 0.3 mV of that step was still there in the fast
+* corner at 5.5 V, and at 0.6 us 0.17 mV (0.3 mV in the layout).
+xdr  ts dn vss ppolyf_u_1k_6p0 r_width=1u r_length=60u s=20
+xdc  dn vss cap_mim_2f0fF c_width=22u c_length=22u
+xds  avdd vss dn azb rv328_schmitt
+xs0b avdd vss azb az rv328_sinv2
+* azc is what the comparator's clamps see: az with a slow falling edge (a long, weak pull-down into
+* 0.2 pF). Opened slowly, the clamps leave the same small step on both capacitor nodes instead of
+* an uneven share of their channel charge. The next stage has a low threshold (strong NMOS, weak
+* PMOS), so the bottom plates are not released until azc is below about 1 V and the clamps are off.
+xza avdd vss az azn rv328_sinv
+xzp  azc azn avdd avdd pfet_06v0 w=2u l=0.6u
+xzn  azc azn vss vss nfet_06v0 w=0.5u l=8u
+xzc  azc vss cap_mim_2f0fF c_width=10u c_length=10u
+xzsp d1b azc avdd avdd pfet_06v0 w=0.5u l=4u
+xzsn d1b azc vss vss nfet_06v0 w=8u l=0.7u
+xcd1 d1b vss cap_mim_2f0fF c_width=5u c_length=5u
+xs4  avdd vss d1b a rv328_inv wp=1u wn=0.5u
+xcd2 a vss cap_mim_2f0fF c_width=5u c_length=5u
+xs5 avdd vss a ab rv328_sinv
+* bs = a and not hs and not hsg;  hs = not a and not bs;  hsg = hs, later
+xp1 avdd vss a hsb hsgs bsn rv328_snand3
+xp2 avdd vss bsn bs rv328_sinv16
+xp3 avdd vss bs bsb rv328_sinv16
+xp4 avdd vss ab bsb hsn rv328_snand2
+xp5 avdd vss hsn hs rv328_sinv8
+xp6 avdd vss hs hsb rv328_sinv
+xq1 avdd vss hs q1 rv328_inv wp=1u wn=0.5u
+xcq1 q1 vss cap_mim_2f0fF c_width=7u c_length=7u
+xq2 avdd vss q1 q2 rv328_inv wp=1u wn=0.5u
+xcq2 q2 vss cap_mim_2f0fF c_width=7u c_length=7u
+xq3 avdd vss q2 q3 rv328_sinv2
+xq4 avdd vss q3 hsg rv328_sinv8
+xq5 avdd vss hsg hsgs rv328_sinv
+* top-plate level while sampling: 0.4 of the supply, from a 10 kohm divider that is on only then
+* (0.5 mA at 5 V for the tracking time). Its resistance and the top-plate switch set how fast the
+* array follows the input: at 2.7 V in the slow corner a weaker pair did not settle in 10 us.
+* (0.4 and not 0.5: it leaves the comparator's PMOS inputs enough room at 2.7 V, and the top plate
+* then moves between 0.07 and 0.73 of the supply for a full-scale reference.)
+* Its exact value does not matter (the dummy samples the same voltage), and taking it from the
+* supply keeps the reference free of any load except the capacitors themselves.
+xmv vt tsb avdd avdd pfet_06v0 w=40u l=0.6u
+xrv1 vt vcm vss ppolyf_u r_width=2u r_length=34.3u
+xrv2 vcm vcb vss ppolyf_u r_width=2u r_length=22.8u
+* 5 pF holds this node near 0.4 avdd during the conversion, so that the two top-plate switches
+* stay reverse-biased at their gates and do not leak when hot
+xcvc vcm vss cap_mim_2f0fF c_width=25u c_length=25u m=4
+xmv2 vcb ts vss vss nfet_06v0 w=20u l=0.7u
+* top-plate switches (array and dummy), NMOS only.
+* Array 1024 + 512 units on a 12 um switch, dummy 384 units on a 3 um switch: the same ratio.
+* What the switch injects when it opens also disturbs the bottom plates (0.7 mV at 5.5 V), and the
+* signal source must restore that before az; hence the delay above. It is wide, and the divider low,
+* so that the top plate follows a full-scale step of the input within the 10 us of tracking: with
+* a third of this width and twice the divider resistance, 0.03 % of the previous sample was left at
+* 2.7 V in the slow corner at 125 C (0.4 LSB after a full step).
+xmt top ts vcm vss nfet_06v0 w=12u l=0.7u
+xmd dum ts vcm vss nfet_06v0 w=3u l=0.7u
+* Every 5 um unit of the front end (array, top-plate capacitor, reference side) is in one cell,
+* blocks/adccap.spice, because they are laid out as one array: layout/caparray.py.
+xcap top dum vss bx b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 rv328_adc_caparray
+* switches of the unit that completes 1024 (always sampled, then to ground)
+xtix avdd vss ain bx bs bsb rv328_tg wp=2u wn=1u
+xtgx bx hsg vss vss nfet_06v0 w=0.5u l=1.4u
+* Bottom-plate switches of bit k, for 2^k units. Per unit: input gate 2u/0.55u and 1u/0.7u,
+* reference switch 1u/1.2u and 0.5u/1.4u, ground switch 0.5u/1.4u. From 8 units on they are drawn as
+* fingers 8 um wide (4 um for the two n-channel switches of bit 3) instead of one narrow finger per
+* unit: the same total width in a ninth of the row length.
+
+* bit 0: 1 unit(s)
+xdb0 avdd vss d0 db0 rv328_sinv
+xa0 avdd vss d0 hs gb0 nr0 rv328_snand3
+xi0 avdd vss nr0 sr0 rv328_sinv
+xrb0 avdd vss sr0 rb0 rv328_sinv
+xo0 avdd vss db0 hsg rb0 gn0 rv328_snand3
+xg0 avdd vss gn0 sg0 rv328_sinv
+xgb0 avdd vss sg0 gb0 rv328_sinv
+xtip0 ain bsb b0 avdd pfet_06v0 w=2u l=0.55u m=1
+xtin0 ain bs b0 vss nfet_06v0 w=1u l=0.7u m=1
+xtrp0 vrefp rb0 b0 avdd pfet_06v0 w=1u l=1.2u m=1
+xtrn0 vrefp sr0 b0 vss nfet_06v0 w=0.5u l=1.4u m=1
+xtg0 b0 sg0 vss vss nfet_06v0 w=0.5u l=1.4u m=1
+* bit 1: 2 unit(s)
+xdb1 avdd vss d1 db1 rv328_sinv
+xa1 avdd vss d1 hs gb1 nr1 rv328_snand3
+xi1 avdd vss nr1 sr1 rv328_sinv
+xrb1 avdd vss sr1 rb1 rv328_sinv
+xo1 avdd vss db1 hsg rb1 gn1 rv328_snand3
+xg1 avdd vss gn1 sg1 rv328_sinv
+xgb1 avdd vss sg1 gb1 rv328_sinv
+xtip1 ain bsb b1 avdd pfet_06v0 w=2u l=0.55u m=2
+xtin1 ain bs b1 vss nfet_06v0 w=1u l=0.7u m=2
+xtrp1 vrefp rb1 b1 avdd pfet_06v0 w=1u l=1.2u m=2
+xtrn1 vrefp sr1 b1 vss nfet_06v0 w=0.5u l=1.4u m=2
+xtg1 b1 sg1 vss vss nfet_06v0 w=0.5u l=1.4u m=2
+* bit 2: 4 unit(s)
+xdb2 avdd vss d2 db2 rv328_sinv
+xa2 avdd vss d2 hs gb2 nr2 rv328_snand3
+xi2 avdd vss nr2 sr2 rv328_sinv
+xrb2 avdd vss sr2 rb2 rv328_sinv
+xo2 avdd vss db2 hsg rb2 gn2 rv328_snand3
+xg2 avdd vss gn2 sg2 rv328_sinv
+xgb2 avdd vss sg2 gb2 rv328_sinv
+xtip2 ain bsb b2 avdd pfet_06v0 w=2u l=0.55u m=4
+xtin2 ain bs b2 vss nfet_06v0 w=1u l=0.7u m=4
+xtrp2 vrefp rb2 b2 avdd pfet_06v0 w=1u l=1.2u m=4
+xtrn2 vrefp sr2 b2 vss nfet_06v0 w=0.5u l=1.4u m=4
+xtg2 b2 sg2 vss vss nfet_06v0 w=0.5u l=1.4u m=4
+* bit 3: 8 unit(s)
+xdb3 avdd vss d3 db3 rv328_sinv
+xa3 avdd vss d3 hs gb3 nr3 rv328_snand3
+xi3 avdd vss nr3 sr3 rv328_sinv
+xrb3 avdd vss sr3 rb3 rv328_sinv
+xo3 avdd vss db3 hsg rb3 gn3 rv328_snand3
+xg3 avdd vss gn3 sg3 rv328_sinv
+xgb3 avdd vss sg3 gb3 rv328_sinv
+xtip3 ain bsb b3 avdd pfet_06v0 w=8u l=0.55u m=2
+xtin3 ain bs b3 vss nfet_06v0 w=8u l=0.7u m=1
+xtrp3 vrefp rb3 b3 avdd pfet_06v0 w=8u l=1.2u m=1
+xtrn3 vrefp sr3 b3 vss nfet_06v0 w=4u l=1.4u m=1
+xtg3 b3 sg3 vss vss nfet_06v0 w=4u l=1.4u m=1
+* bit 4: 16 unit(s)
+xdb4 avdd vss d4 db4 rv328_sinv
+xa4 avdd vss d4 hs gb4 nr4 rv328_snand3
+xi4 avdd vss nr4 sr4 rv328_sinv
+xrb4 avdd vss sr4 rb4 rv328_sinv
+xo4 avdd vss db4 hsg rb4 gn4 rv328_snand3
+xg4 avdd vss gn4 sg4 rv328_sinv
+xgb4 avdd vss sg4 gb4 rv328_sinv
+xtip4 ain bsb b4 avdd pfet_06v0 w=8u l=0.55u m=4
+xtin4 ain bs b4 vss nfet_06v0 w=8u l=0.7u m=2
+xtrp4 vrefp rb4 b4 avdd pfet_06v0 w=8u l=1.2u m=2
+xtrn4 vrefp sr4 b4 vss nfet_06v0 w=8u l=1.4u m=1
+xtg4 b4 sg4 vss vss nfet_06v0 w=8u l=1.4u m=1
+* bit 5: 32 unit(s)
+xdb5 avdd vss d5 db5 rv328_sinv
+xa5 avdd vss d5 hs gb5 nr5 rv328_snand3
+xi5 avdd vss nr5 sr5 rv328_sinv2
+xrb5 avdd vss sr5 rb5 rv328_sinv2
+xo5 avdd vss db5 hsg rb5 gn5 rv328_snand3
+xg5 avdd vss gn5 sg5 rv328_sinv2
+xgb5 avdd vss sg5 gb5 rv328_sinv
+xtip5 ain bsb b5 avdd pfet_06v0 w=8u l=0.55u m=8
+xtin5 ain bs b5 vss nfet_06v0 w=8u l=0.7u m=4
+xtrp5 vrefp rb5 b5 avdd pfet_06v0 w=8u l=1.2u m=4
+xtrn5 vrefp sr5 b5 vss nfet_06v0 w=8u l=1.4u m=2
+xtg5 b5 sg5 vss vss nfet_06v0 w=8u l=1.4u m=2
+* bit 6: 64 unit(s)
+xdb6 avdd vss d6 db6 rv328_sinv
+xa6 avdd vss d6 hs gb6 nr6 rv328_snand3
+xi6 avdd vss nr6 sr6 rv328_sinv4
+xrb6 avdd vss sr6 rb6 rv328_sinv4
+xo6 avdd vss db6 hsg rb6 gn6 rv328_snand3
+xg6 avdd vss gn6 sg6 rv328_sinv4
+xgb6 avdd vss sg6 gb6 rv328_sinv
+xtip6 ain bsb b6 avdd pfet_06v0 w=8u l=0.55u m=16
+xtin6 ain bs b6 vss nfet_06v0 w=8u l=0.7u m=8
+xtrp6 vrefp rb6 b6 avdd pfet_06v0 w=8u l=1.2u m=8
+xtrn6 vrefp sr6 b6 vss nfet_06v0 w=8u l=1.4u m=4
+xtg6 b6 sg6 vss vss nfet_06v0 w=8u l=1.4u m=4
+* bit 7: 128 unit(s)
+xdb7 avdd vss d7 db7 rv328_sinv
+xa7 avdd vss d7 hs gb7 nr7 rv328_snand3
+xi7 avdd vss nr7 sr7 rv328_sinv8
+xrb7 avdd vss sr7 rb7 rv328_sinv8
+xo7 avdd vss db7 hsg rb7 gn7 rv328_snand3
+xg7 avdd vss gn7 sg7 rv328_sinv8
+xgb7 avdd vss sg7 gb7 rv328_sinv
+xtip7 ain bsb b7 avdd pfet_06v0 w=8u l=0.55u m=32
+xtin7 ain bs b7 vss nfet_06v0 w=8u l=0.7u m=16
+xtrp7 vrefp rb7 b7 avdd pfet_06v0 w=8u l=1.2u m=16
+xtrn7 vrefp sr7 b7 vss nfet_06v0 w=8u l=1.4u m=8
+xtg7 b7 sg7 vss vss nfet_06v0 w=8u l=1.4u m=8
+* bit 8: 256 unit(s)
+xdb8 avdd vss d8 db8 rv328_sinv
+xa8 avdd vss d8 hs gb8 nr8 rv328_snand3
+xi8 avdd vss nr8 sr8 rv328_sinv16
+xrb8 avdd vss sr8 rb8 rv328_sinv16
+xo8 avdd vss db8 hsg rb8 gn8 rv328_snand3
+xg8 avdd vss gn8 sg8 rv328_sinv16
+xgb8 avdd vss sg8 gb8 rv328_sinv
+xtip8 ain bsb b8 avdd pfet_06v0 w=8u l=0.55u m=64
+xtin8 ain bs b8 vss nfet_06v0 w=8u l=0.7u m=32
+xtrp8 vrefp rb8 b8 avdd pfet_06v0 w=8u l=1.2u m=32
+xtrn8 vrefp sr8 b8 vss nfet_06v0 w=8u l=1.4u m=16
+xtg8 b8 sg8 vss vss nfet_06v0 w=8u l=1.4u m=16
+* bit 9: 512 unit(s)
+xdb9 avdd vss d9 db9 rv328_sinv
+xa9 avdd vss d9 hs gb9 nr9 rv328_snand3
+xi9 avdd vss nr9 sr9 rv328_sinv32
+xrb9 avdd vss sr9 rb9 rv328_sinv32
+xo9 avdd vss db9 hsg rb9 gn9 rv328_snand3
+xg9 avdd vss gn9 sg9 rv328_sinv32
+xgb9 avdd vss sg9 gb9 rv328_sinv
+xtip9 ain bsb b9 avdd pfet_06v0 w=8u l=0.55u m=128
+xtin9 ain bs b9 vss nfet_06v0 w=8u l=0.7u m=64
+xtrp9 vrefp rb9 b9 avdd pfet_06v0 w=8u l=1.2u m=64
+xtrn9 vrefp sr9 b9 vss nfet_06v0 w=8u l=1.4u m=32
+xtg9 b9 sg9 vss vss nfet_06v0 w=8u l=1.4u m=32
+* comparator: 1 when the dummy is above the top plate
+xcmp avdd vss dum top cmp vbp en azc rv328_adccmp
+.ends

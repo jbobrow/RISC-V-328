@@ -1,0 +1,11 @@
+* rv328_tsens : temperature sensor. One unit of the reference's bias current (Vt ln 8 / R1,
+*   proportional to absolute temperature) into a resistor of the same kind as R1, so the
+*   resistor's own drift cancels. The resistor is six strips of the reference's own strip (R1 is one
+*   strip of 13.4 um), so the ratio is 6 with the strips' end resistance included:
+*   vtemp = Vt ln(8) x 6.
+.subckt rv328_tsens avdd vss en vbp vtemp
+xi   avdd vss en enb rv328_inv
+xm1  n1 vbp avdd avdd pfet_06v0 w=16u l=8u
+xms  vtemp enb n1 avdd pfet_06v0 w=4u l=0.6u
+xr   vtemp vss vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u s=6
+.ends

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 146" role="img"><title>Where the project stands</title><desc>Three stages: a signed-off half-height digital-only layout kept ready; the full-height full chip, routed and meeting 20 MHz; the final chip built from finished blocks.</desc>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.th{font-size:14px;font-weight:500;fill:#0b0b0b}.ts{font-size:12px;fill:#52514e}
+.box{fill:#fcfcfb;stroke:#c3c2b7;stroke-width:.5}
+.gray rect{fill:#F1EFE8;stroke:#5F5E5A;stroke-width:.5}.gray .th{fill:#444441}.gray .ts{fill:#5F5E5A}
+.purple rect{fill:#EEEDFE;stroke:#534AB7;stroke-width:.5}.purple .th{fill:#3C3489}.purple .ts{fill:#534AB7}
+.teal rect{fill:#E1F5EE;stroke:#0F6E56;stroke-width:.5}.teal .th{fill:#085041}.teal .ts{fill:#0F6E56}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+@media (prefers-color-scheme: dark){
+.th{fill:#f0efec}.ts{fill:#c3c2b7}.box{fill:#151515;stroke:#383835}
+.gray rect{fill:#444441;stroke:#B4B2A9}.gray .th{fill:#F1EFE8}.gray .ts{fill:#D3D1C7}
+.purple rect{fill:#3C3489;stroke:#AFA9EC}.purple .th{fill:#EEEDFE}.purple .ts{fill:#CECBF6}
+.teal rect{fill:#085041;stroke:#5DCAA5}.teal .th{fill:#E1F5EE}.teal .ts{fill:#9FE1CB}
+.arr{stroke:#9c9a92}}
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="gray"><rect x="30" y="30" width="186" height="76" rx="8"/><text class="th" x="123" y="58" text-anchor="middle" dominant-baseline="central">Half-height, digital only</text><text class="ts" x="123" y="78" text-anchor="middle" dominant-baseline="central">signed off, kept ready</text></g>
+<g class="purple"><rect x="247" y="30" width="186" height="76" rx="8"/><text class="th" x="340" y="58" text-anchor="middle" dominant-baseline="central">Full-height, full chip</text><text class="ts" x="340" y="78" text-anchor="middle" dominant-baseline="central">routed, 20 MHz met</text></g>
+<g class="teal"><rect x="464" y="30" width="186" height="76" rx="8"/><text class="th" x="557" y="58" text-anchor="middle" dominant-baseline="central">Final chip</text><text class="ts" x="557" y="78" text-anchor="middle" dominant-baseline="central">finished blocks, the goal</text></g>
+<line class="arr" x1="218" y1="68" x2="243" y2="68" marker-end="url(#arrow)"/>
+<line class="arr" x1="435" y1="68" x2="460" y2="68" marker-end="url(#arrow)"/>
+<text class="ts" x="123" y="124" text-anchor="middle" dominant-baseline="central">2 KB cache, 5.0 mm2 core</text>
+<text class="ts" x="340" y="124" text-anchor="middle" dominant-baseline="central">12 KB cache, analog macro, 12.9 mm2</text>
+<text class="ts" x="557" y="124" text-anchor="middle" dominant-baseline="central">denser memory, if it proves out</text>
+</svg>

@@ -1,0 +1,61 @@
+* rv328_analog : the analog block of the RV328, assembled from the blocks in this directory.
+* Ports are those of rtl/analog/rv328_analog_model.v (buses written out, most significant first).
+* Every block named here has a layout (analog/layout). analog/layout/macro.py draws the gates and switches
+* of this file as two cells (lines xg22, xg23 and the four switches as rv328_acsw, the others as
+* rv328_glue), places all cells and wires them; LVS compares that layout with this file.
+.subckt rv328_analog avdd vss xtal1 xtal2 aref adc7 adc6 adc5 adc4 adc3 adc2 adc1 adc0 ain0 ain1
++ clk_rc clk_xa clk_lf por_n bod_o
++ rc_en rc_trim7 rc_trim6 rc_trim5 rc_trim4 rc_trim3 rc_trim2 rc_trim1 rc_trim0
++ xo_en xo_mode1 xo_mode0 bod_en bod_level2 bod_level1 bod_level0
++ adc_en adc_mux3 adc_mux2 adc_mux1 adc_mux0 adc_refs1 adc_refs0 adc_sample
++ adc_dac9 adc_dac8 adc_dac7 adc_dac6 adc_dac5 adc_dac4 adc_dac3 adc_dac2 adc_dac1 adc_dac0 adc_cmp
++ ac_en ac_bg ac_mux_en ac_out
+* --- always on: power-on reset and the 128 kHz oscillator
+xpor avdd vss por_n rv328_por
+xlf  avdd vss clk_lf rv328_lfosc
+* --- reference and bias: on when anything that needs them is on
+*     (brown-out detector, ADC, comparator, crystal oscillator in a MHz setting)
+xg1 avdd vss xo_mode1 xo_mode0 m3n rv328_snand2
+xg2 avdd vss xo_en m3n xhfn rv328_snand2
+xg3 avdd vss xhfn xhf rv328_sinv
+xg4 avdd vss bod_en adc_en bga rv328_snor2
+xg5 avdd vss ac_en xhf bgb rv328_snor2
+xg6 avdd vss bga bgb bg_en rv328_snand2
+xbgr avdd vss bg_en vref vbp ok rv328_bgr
+* --- brown-out detector. bod_level 0: lowest level, 1: 2.7 V, 2 and above: 4.3 V
+xg7 avdd vss bod_level2 bod_level1 lv1n rv328_snor2
+xg8 avdd vss lv1n lv1 rv328_sinv
+xbod avdd vss bod_en lv1 bod_level0 vref vbp ok bod_o rv328_bod
+* --- oscillators
+xrc avdd vss rc_en rc_trim7 rc_trim6 rc_trim5 rc_trim4 rc_trim3 rc_trim2 rc_trim1 rc_trim0 clk_rc rv328_rcosc
+xxo avdd vss xo_en xo_mode1 xo_mode0 xtal1 xtal2 vbp clk_xa rv328_xosc
+* --- input multiplexer, shared by the ADC and (with ac_mux_en) the comparator
+xg9  avdd vss ac_en ac_mux_en acmn rv328_snand2
+xg10 avdd vss adc_en adcn rv328_sinv
+xg11 avdd vss adcn acmn mux_en rv328_snand2
+xts  avdd vss adc_en vbp vtemp rv328_tsens
+xmux avdd vss adc7 adc6 adc5 adc4 adc3 adc2 adc1 adc0 vtemp vref adc_mux3 adc_mux2 adc_mux1 adc_mux0 mux_en amx rv328_amux
+* --- reference selection. 0: AREF pin  1: AVCC  3: internal 1.1 V driven onto AREF
+xg12 avdd vss adc_refs1 r1n rv328_sinv
+xg13 avdd vss adc_en adc_refs1 adc_refs0 rbn rv328_snand3
+xg14 avdd vss rbn en_buf rv328_sinv
+xg15 avdd vss adc_en r1n adc_refs0 ran rv328_snand3
+xg16 avdd vss ran en_avcc rv328_sinv
+xrb  avdd vss en_buf en_avcc vref vbp aref rv328_refbuf
+* --- ADC front end. Its comparator is switched with adc_en.
+xg17 avdd vss adc_sample adc_en smpn rv328_snand2
+xg18 avdd vss smpn smp rv328_sinv
+xfe  avdd vss amx aref smp adc_dac9 adc_dac8 adc_dac7 adc_dac6 adc_dac5 adc_dac4 adc_dac3 adc_dac2 adc_dac1 adc_dac0 vbp adc_en cmpa rv328_adcfe
+xg19 avdd vss cmpa adc_en cmpan rv328_snand2
+xg20 avdd vss cmpan adc_cmp rv328_sinv
+* --- analog comparator: positive input AIN0 or the 1.1 V reference, negative input AIN1 or the multiplexer
+xg22 avdd vss ac_bg bgn rv328_sinv
+xtp0 avdd vss ain0 acp bgn ac_bg rv328_tg wp=20u wn=10u
+xtp1 avdd vss vref acp ac_bg bgn rv328_tg wp=4u wn=2u
+xg23 avdd vss ac_mux_en amn rv328_sinv
+xtn0 avdd vss ain1 acm amn ac_mux_en rv328_tg wp=20u wn=10u
+xtn1 avdd vss amx  acm ac_mux_en amn rv328_tg wp=20u wn=10u
+xac  avdd vss acp acm aco vbp ac_en rv328_cmp mt=2
+xg24 avdd vss aco ac_en acon rv328_snand2
+xg25 avdd vss acon ac_out rv328_sinv
+.ends

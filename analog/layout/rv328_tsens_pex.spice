@@ -1,0 +1,46 @@
+* rv328_tsens with the wiring capacitance of its layout. Written by analog/layout/pex_block.py from rv328_tsens_named.gds;
+* same cell name and pins as the schematic. 29 wiring capacitors, no wiring resistance;
+* 4 transistor fingers; groups of 9 or more identical parallel ones are one line with m=.
+* NGSPICE file created from rv328_tsens.ext - technology: gf180mcuD
+
+.subckt rv328_tsens avdd vss en vbp vtemp
+X0 n1 vbp avdd avdd pfet_06v0 ad=8p pd=33u as=8p ps=33u w=16u l=8u
+X1 enb en vss vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X2 res1k_l13p4_n6_w1_0/a_n128_300# res1k_l13p4_n6_w1_0/a_2680_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u
+X3 res1k_l13p4_n6_w1_0/a_n128_300# res1k_l13p4_n6_w1_0/a_2680_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u
+X4 res1k_l13p4_n6_w1_0/a_n128_900# res1k_l13p4_n6_w1_0/a_2680_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u
+X5 res1k_l13p4_n6_w1_0/a_n128_900# res1k_l13p4_n6_w1_0/a_2680_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u
+X6 vss res1k_l13p4_n6_w1_0/a_2680_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u
+X7 vtemp res1k_l13p4_n6_w1_0/a_2680_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=13.4u
+X8 enb en avdd avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.55u
+X9 vtemp enb n1 avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.6u
+C0 res1k_l13p4_n6_w1_0/a_2680_600# res1k_l13p4_n6_w1_0/a_2680_0# 0.04819f
+C1 enb en 0.38903f
+C2 enb vbp 0.18274f
+C3 avdd en 1.23757f
+C4 res1k_l13p4_n6_w1_0/a_2680_600# res1k_l13p4_n6_w1_0/a_2680_1200# 0.04819f
+C5 vtemp res1k_l13p4_n6_w1_0/a_n128_900# 0.07018f
+C6 vtemp en 0
+C7 avdd vbp 4.03512f
+C8 enb avdd 3.11626f
+C9 res1k_l13p4_n6_w1_0/a_n128_300# vtemp 0.11887f
+C10 vtemp enb 0.43591f
+C11 vtemp avdd 0.63819f
+C12 n1 vbp 1.45843f
+C13 n1 enb 0.72197f
+C14 n1 avdd 2.45227f
+C15 n1 vtemp 1.12862f
+C16 vbp en 0.00107f
+C17 res1k_l13p4_n6_w1_0/a_n128_300# res1k_l13p4_n6_w1_0/a_n128_900# 0.04819f
+C18 n1 vss 1.72791f
+C19 vtemp vss 2.86438f
+C20 res1k_l13p4_n6_w1_0/a_2680_0# vss 0.59357f ; **FLOATING
+C21 res1k_l13p4_n6_w1_0/a_n128_300# vss 0.52483f ; **FLOATING
+C22 res1k_l13p4_n6_w1_0/a_2680_600# vss 0.5573f ; **FLOATING
+C23 res1k_l13p4_n6_w1_0/a_n128_900# vss 0.5748f ; **FLOATING
+C24 res1k_l13p4_n6_w1_0/a_2680_1200# vss 0.59357f ; **FLOATING
+C25 enb vss 1.9048f
+C26 en vss 1.82731f
+C27 vbp vss 1.32109f
+C28 avdd vss 36.51926f
+.ends

@@ -1,0 +1,87 @@
+# macros.yaml with a blank block of the analog macro's size, variant 'corner' (scripts/gen_analog_blank.py). Do not edit.
+MACROS:
+  gf180mcu_ws_ip__qrcode_id:
+    gds: ['dir::ip/gf180mcu_ws_ip__qrcode_id/gds/gf180mcu_ws_ip__qrcode_id.gds']
+    lef: ['dir::ip/gf180mcu_ws_ip__qrcode_id/lef/gf180mcu_ws_ip__qrcode_id.lef']
+    vh: ['dir::ip/gf180mcu_ws_ip__qrcode_id/vh/gf180mcu_ws_ip__qrcode_id.v']
+    lib:
+      '*': ['dir::ip/gf180mcu_ws_ip__qrcode_id/lib/gf180mcu_ws_ip__qrcode_id.lib']
+    instances:
+      qrcode_id:
+        location: [26, 26]
+        orientation: N
+  gf180mcu_ws_ip__shuttle_id:
+    gds: ['dir::ip/gf180mcu_ws_ip__shuttle_id/gds/gf180mcu_ws_ip__shuttle_id.gds']
+    lef: ['dir::ip/gf180mcu_ws_ip__shuttle_id/lef/gf180mcu_ws_ip__shuttle_id.lef']
+    vh: ['dir::ip/gf180mcu_ws_ip__shuttle_id/vh/gf180mcu_ws_ip__shuttle_id.v']
+    lib:
+      '*': ['dir::ip/gf180mcu_ws_ip__shuttle_id/lib/gf180mcu_ws_ip__shuttle_id.lib']
+    instances:
+      shuttle_id:
+        location: [26, 175.6]
+        orientation: E
+  gf180mcu_ws_ip__project_id:
+    gds: ['dir::ip/gf180mcu_ws_ip__project_id/gds/gf180mcu_ws_ip__project_id.gds']
+    lef: ['dir::ip/gf180mcu_ws_ip__project_id/lef/gf180mcu_ws_ip__project_id.lef']
+    vh: ['dir::ip/gf180mcu_ws_ip__project_id/vh/gf180mcu_ws_ip__project_id.v']
+    lib:
+      '*': ['dir::ip/gf180mcu_ws_ip__project_id/lib/gf180mcu_ws_ip__project_id.lib']
+    instances:
+      project_id:
+        location: [175.6, 26]
+        orientation: N
+  gf180mcu_ws_ip__marker:
+    gds: ['dir::ip/gf180mcu_ws_ip__marker/gds/gf180mcu_ws_ip__marker.gds']
+    lef: ['dir::ip/gf180mcu_ws_ip__marker/lef/gf180mcu_ws_ip__marker.lef']
+    vh: ['dir::ip/gf180mcu_ws_ip__marker/vh/gf180mcu_ws_ip__marker.v']
+    lib:
+      '*': ['dir::ip/gf180mcu_ws_ip__marker/lib/gf180mcu_ws_ip__marker.lib']
+    instances:
+      marker:
+        location: ['expr::($DIE_AREA[2] - (245 + 36))', 'expr::($DIE_AREA[3] - (245 + 36))']
+        orientation: N
+  gf180mcu_fd_ip_sram__sram512x8m8wm1:
+    gds: ['pdk_dir::libs.ref/gf180mcu_fd_ip_sram/gds/gf180mcu_fd_ip_sram__sram512x8m8wm1.gds']
+    lef: ['pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lef/gf180mcu_fd_ip_sram__sram512x8m8wm1.lef']
+    vh: ['pdk_dir::libs.ref/gf180mcu_fd_ip_sram/verilog/gf180mcu_fd_ip_sram__sram512x8m8wm1__blackbox_pp.v']
+    lib:
+      '*_tt_025C_5v00': ['pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__tt_025C_5v00.lib']
+      '*_ff_n40C_5v50': ['pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ff_n40C_5v50.lib']
+      '*_ss_125C_4v50': ['pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ss_125C_4v50.lib']
+    instances:
+      u_core.u_ram.u_ram0:
+        location: [452.0, 442.0]
+        orientation: FS
+      u_core.u_ram.u_ram1:
+        location: [894.0, 442.0]
+        orientation: FS
+      u_core.u_ram.u_ram2:
+        location: [1336.0, 442.0]
+        orientation: FS
+      u_core.u_ram.u_ram3:
+        location: [1778.0, 442.0]
+        orientation: FS
+      u_core.u_xip.u_cache.u_ram0:
+        location: [452.0, 1046.88]
+        orientation: N
+      u_core.u_xip.u_cache.u_ram1:
+        location: [894.0, 1046.88]
+        orientation: N
+      u_core.u_xip.u_cache.u_ram2:
+        location: [1336.0, 1046.88]
+        orientation: N
+      u_core.u_xip.u_cache.u_ram3:
+        location: [1778.0, 1046.88]
+        orientation: N
+  rv328_analog_blank:
+    gds: ['dir::ip/rv328_analog_blank/gds/rv328_analog_blank.gds']
+    lef: ['dir::ip/rv328_analog_blank/lef/rv328_analog_blank.lef']
+    vh: ['dir::ip/rv328_analog_blank/vh/rv328_analog_blank.v']
+    lib:
+      '*': ['dir::ip/rv328_analog_blank/lib/rv328_analog_blank.lib']
+    instances:
+      u_analog_blank:
+        location: [2539.0, 442.0]
+        orientation: N
+PDN_MACRO_CONNECTIONS: [u_core.u_ram.u_ram0 VDD VSS VDD VSS, u_core.u_ram.u_ram1 VDD VSS VDD VSS, u_core.u_ram.u_ram2 VDD VSS VDD VSS, u_core.u_ram.u_ram3 VDD VSS VDD VSS, u_core.u_xip.u_cache.u_ram0 VDD
+    VSS VDD VSS, u_core.u_xip.u_cache.u_ram1 VDD VSS VDD VSS, u_core.u_xip.u_cache.u_ram2 VDD VSS VDD VSS, u_core.u_xip.u_cache.u_ram3 VDD VSS VDD VSS]

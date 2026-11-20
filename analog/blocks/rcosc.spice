@@ -1,0 +1,90 @@
+* rv328_rcosc : 8 MHz RC oscillator
+*   A capacitor is charged and discharged through one resistor between 1/3 and 2/3 of the supply
+*   (two comparators and a latch), so the period is 2 ln(2) R C plus the comparator delays and
+*   depends on neither the supply nor a reference. R is unsalicided p-poly (about -90 ppm/K), C is MIM.
+*   t7..t0   trim, 0x80 = centre; each step removes one of 200 unit capacitors (about +0.5 %)
+*   en       1 = run. clk starts and stops only between pulses: en is taken through two flip-flops
+*            on the falling edge of the oscillator, and the core keeps running until they have cleared.
+.subckt rv328_rcosc avdd vss en t7 t6 t5 t4 t3 t2 t1 t0 clk
+.param lrt=14.4u lrb=15u
+* ---- run control: run = en or s1 or s2
+xg1 avdd vss en s1 n_a rv328_nor2
+xg2 avdd vss s2 s2b rv328_inv
+xg3 avdd vss n_a s2b run rv328_nand2
+xg4 avdd vss run runb rv328_inv wp=4u wn=2u
+* ---- thresholds: 1/3 and 2/3 of the supply (1.2 Mohm string, off with the core)
+xmth dtop runb avdd avdd pfet_06v0 w=10u l=0.6u
+xrd1 dtop vh vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u s=32
+xrd2 vh  vl  vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u s=32
+xrd3 vl  vss vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u s=32
+* ---- comparator bias: (avdd - Vgs) / Rb, so the comparators speed up with the supply as their swing grows
+xmbe bt runb avdd avdd pfet_06v0 w=20u l=0.6u
+xrb  bt vbn vss ppolyf_u_1k_6p0 r_width=2u r_length=lrb s=8
+xmb1 vbn vbn vss vss nfet_06v0 w=10u l=1u
+xmb2 vbpl vbn vss vss nfet_06v0 w=10u l=1u
+xmb3 vbpl vbpl avdd avdd pfet_06v0 w=20u l=1u
+* ---- low comparator (PMOS inputs): lo1 is low while vc < vl
+xlt tl vbpl avdd avdd pfet_06v0 w=20u l=1u
+xl1 ln1 vc tl avdd pfet_06v0 w=10u l=0.6u
+xl2 lo1 vl tl avdd pfet_06v0 w=10u l=0.6u
+xl3 ln1 ln1 vss vss nfet_06v0 w=2u l=1u
+xl4 lo1 ln1 vss vss nfet_06v0 w=2u l=1u
+* second stage: lo1 only swings between ground and about vl + 1 V, so it drives an NMOS;
+* los is high while vc < vl
+xls1 los lo1 vss vss nfet_06v0 w=4u l=0.7u
+xls2 los vbpl avdd avdd pfet_06v0 w=10u l=1u
+xsb  avdd vss run los setb rv328_nand2
+* ---- high comparator (NMOS inputs): ho1 is high while vc > vh
+xht th vbn vss vss nfet_06v0 w=10u l=1u
+xh1 hn1 vc th vss nfet_06v0 w=5u l=0.7u
+xh2 ho1 vh th vss nfet_06v0 w=5u l=0.7u
+xh3 hn1 hn1 avdd avdd pfet_06v0 w=4u l=1u
+xh4 ho1 hn1 avdd avdd pfet_06v0 w=4u l=1u
+* second stage: ho1 only swings between about vh - 1 V and the supply, so it drives a PMOS;
+* rstb is low while vc > vh
+xhs1 rstb ho1 avdd avdd pfet_06v0 w=8u l=0.6u
+xhs2 rstb vbn vss vss nfet_06v0 w=5u l=1u
+* (both gates that take these signals are also gated with run, so a floating node cannot draw
+* current through them while the core is off)
+* ---- latch: setb low sets q, rstb low or run low clears it
+xq1 avdd vss setb qb q rv328_nand2
+xq2 avdd vss rstb q run qb rv328_nand3
+* ---- driver and timing resistor
+xd1 avdd vss q d1 rv328_inv wp=24u wn=12u
+xd2 avdd vss d1 drv rv328_inv wp=80u wn=40u mul=3
+xrt drv vc vss ppolyf_u r_width=2u r_length=lrt s=2
+* ---- capacitor: 73 fixed units plus the trim bank (a unit is switched in while its bit is 0).
+* The switch of a bit is 2 um wide per unit, written as it is drawn: fingers of up to 16 um.
+xcf vc vss cap_mim_2f0fF c_width=5u c_length=5u m=73
+xit0 avdd vss t0 tb0 rv328_inv
+xct0 vc cb0 cap_mim_2f0fF c_width=5u c_length=5u m=1
+xst0 cb0 tb0 vss vss nfet_06v0 w=2u l=0.7u m=1
+xit1 avdd vss t1 tb1 rv328_inv
+xct1 vc cb1 cap_mim_2f0fF c_width=5u c_length=5u m=2
+xst1 cb1 tb1 vss vss nfet_06v0 w=4u l=0.7u m=1
+xit2 avdd vss t2 tb2 rv328_inv
+xct2 vc cb2 cap_mim_2f0fF c_width=5u c_length=5u m=4
+xst2 cb2 tb2 vss vss nfet_06v0 w=8u l=0.7u m=1
+xit3 avdd vss t3 tb3 rv328_inv
+xct3 vc cb3 cap_mim_2f0fF c_width=5u c_length=5u m=8
+xst3 cb3 tb3 vss vss nfet_06v0 w=16u l=0.7u m=1
+xit4 avdd vss t4 tb4 rv328_inv
+xct4 vc cb4 cap_mim_2f0fF c_width=5u c_length=5u m=16
+xst4 cb4 tb4 vss vss nfet_06v0 w=16u l=0.7u m=2
+xit5 avdd vss t5 tb5 rv328_inv
+xct5 vc cb5 cap_mim_2f0fF c_width=5u c_length=5u m=32
+xst5 cb5 tb5 vss vss nfet_06v0 w=16u l=0.7u m=4
+xit6 avdd vss t6 tb6 rv328_inv
+xct6 vc cb6 cap_mim_2f0fF c_width=5u c_length=5u m=64
+xst6 cb6 tb6 vss vss nfet_06v0 w=16u l=0.7u m=8
+xit7 avdd vss t7 tb7 rv328_inv
+xct7 vc cb7 cap_mim_2f0fF c_width=5u c_length=5u m=128
+xst7 cb7 tb7 vss vss nfet_06v0 w=16u l=0.7u m=16
+* ---- output gate
+xo1 avdd vss q ob rv328_inv
+xo2 avdd vss ob osc rv328_inv wp=4u wn=2u
+xf1 avdd vss en ob s1 rv328_dff
+xf2 avdd vss s1 ob s2 rv328_dff
+xo3 avdd vss osc s2 clkb rv328_nand2
+xo4 avdd vss clkb clk rv328_inv wp=8u wn=4u
+.ends

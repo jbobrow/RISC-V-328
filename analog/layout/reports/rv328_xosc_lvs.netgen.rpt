@@ -1,0 +1,115 @@
+
+Circuit 1 cell ppolyf_u_1k_6p0 and Circuit 2 cell ppolyf_u_1k_6p0 are black boxes.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: ppolyf_u_1k_6p0                 |Circuit 2: ppolyf_u_1k_6p0                 
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes ppolyf_u_1k_6p0 and ppolyf_u_1k_6p0 are equivalent.
+
+Circuit 1 cell nfet_06v0 and Circuit 2 cell nfet_06v0 are black boxes.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: nfet_06v0                       |Circuit 2: nfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes nfet_06v0 and nfet_06v0 are equivalent.
+
+Circuit 1 cell pfet_06v0 and Circuit 2 cell pfet_06v0 are black boxes.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: pfet_06v0                       |Circuit 2: pfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes pfet_06v0 and pfet_06v0 are equivalent.
+Flattening unmatched subcell rv328_xosc_p0 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell res1k_l50p1_n10_w1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell nfet_w1_l0p7_nf1 in circuit rv328_xosc (0)(3 instances)
+Flattening unmatched subcell res1k_l151p5_n66_w1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l0p55_nf1 in circuit rv328_xosc (0)(3 instances)
+Flattening unmatched subcell nfet_w12p5_l0p7_nf32 in circuit rv328_xosc (0)(2 instances)
+Flattening unmatched subcell rv328_xosc_p1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l1_nf50 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w1_l0p6_nf1 in circuit rv328_xosc (0)(2 instances)
+Flattening unmatched subcell pfet_w16_l8_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell nfet_w2_l0p7_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l1_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l1_nf6 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell nfet_w4_l4_nf5 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l0p55_nf24 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l1_nf2 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w12_l20_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l0p55_nf3 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell nfet_w4_l4_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w4_l20_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell res1k_l64p5_n62_w1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w4_l0p6_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l0p55_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell nfet_w4_l0p7_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w1p5_l20_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l0p6_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l1_nf15 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w10_l0p55_nf8 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell rv328_xosc_p2 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l0p55_nf1 in circuit rv328_xosc (0)(18 instances)
+Flattening unmatched subcell nfet_w3_l0p7_nf1 in circuit rv328_xosc (0)(9 instances)
+Flattening unmatched subcell nfet_w12p5_l0p7_nf4 in circuit rv328_xosc (0)(2 instances)
+Flattening unmatched subcell nfet_w2_l0p7_nf1 in circuit rv328_xosc (0)(3 instances)
+Flattening unmatched subcell nfet_w1_l0p7_nf1 in circuit rv328_xosc (0)(10 instances)
+Flattening unmatched subcell pfet_w4_l1_nf1 in circuit rv328_xosc (0)(2 instances)
+Flattening unmatched subcell nfet_w2_l1_nf1 in circuit rv328_xosc (0)(2 instances)
+Flattening unmatched subcell pfet_w4_l0p55_nf1 in circuit rv328_xosc (0)(3 instances)
+Flattening unmatched subcell nfet_w1_l1_nf1 in circuit rv328_xosc (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l1_nf1 in circuit rv328_xosc (0)(1 instance)
+
+Class rv328_xosc (0):  Merged 173 parallel devices.
+Class rv328_xosc (0):  Merged 135 series devices.
+Subcircuit summary:
+Circuit 1: rv328_xosc                      |Circuit 2: rv328_xosc                      
+-------------------------------------------|-------------------------------------------
+ppolyf_u_1k_6p0 (138->3)                   |ppolyf_u_1k_6p0 (3)                        
+nfet_06v0 (108->36)                        |nfet_06v0 (54->36)                         
+pfet_06v0 (145->44)                        |pfet_06v0 (121->44)                        
+Number of devices: 83                      |Number of devices: 83                      
+Number of nets: 49                         |Number of nets: 49                         
+---------------------------------------------------------------------------------------
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: rv328_xosc                      |Circuit 2: rv328_xosc                      
+-------------------------------------------|-------------------------------------------
+clk                                        |clk                                        
+m1                                         |m1                                         
+m0                                         |m0                                         
+en                                         |en                                         
+vbp                                        |vbp                                        
+vss                                        |vss                                        
+avdd                                       |avdd                                       
+xo                                         |xo                                         
+xi                                         |xi                                         
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes rv328_xosc and rv328_xosc are equivalent.
+
+Final result: Circuits match uniquely.
+.

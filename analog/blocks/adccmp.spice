@@ -1,0 +1,66 @@
+* rv328_adccmp : the ADC's comparator, with its offset cancelled.
+*   A preamplifier (gain about 6) is coupled through two 1 pF capacitors to a second amplifier.
+*   az = 1: both inputs must be at the same voltage. One capacitor's far side is clamped to a bias
+*           level and the other is tied to the second amplifier's own output, which puts that
+*           amplifier at its switching point. The capacitors take up both offsets.
+*   az = 0: compare. out = 1 when inp > inn.
+*   The bias level vb is the gate voltage at which the output stage (xm4) switches, made by a copy
+*   of that transistor, so the second amplifier is held where it will decide. That matters: left
+*   at a rail during az, its swing back to the switching point couples through its input
+*   transistor onto the small capacitor node and comes back as 0.4 mV (sigma) of offset.
+.subckt rv328_adccmp avdd vss inp inn out vbp en az
+xie  avdd vss en enb rv328_inv
+xtb  avdd vss vbp vbi en enb rv328_tg wp=2u wn=1u
+xpb  vbi en avdd avdd pfet_06v0 w=1u l=0.6u
+* preamplifier: 16 uA tail, 60 kohm loads. b - a follows inp - inn. The loads are small on purpose:
+* each output can move by at most 0.5 V, so however far apart the inputs are during a conversion,
+* the capacitor nodes x and y (resting near 0.8 V) stay above ground and keep their charge.
+xmt  tail vbi avdd avdd pfet_06v0 w=16u l=8u m=4
+xm1  a inp tail avdd pfet_06v0 w=40u l=2u m=2
+xm2  b inn tail avdd pfet_06v0 w=40u l=2u m=2
+xr1  a vss vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+xr2  b vss vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+* coupling capacitors
+xca  a x cap_mim_2f0fF c_width=22u c_length=22u
+xcb  b y cap_mim_2f0fF c_width=22u c_length=22u
+* second amplifier: o1 falls when y rises above x
+xmt2 tail2 vbi avdd avdd pfet_06v0 w=32u l=8u
+xm3a n1 x tail2 avdd pfet_06v0 w=40u l=2u
+xm3b o1 y tail2 avdd pfet_06v0 w=40u l=2u
+xmn1 n1 n1 vss vss nfet_06v0 w=8u l=4u
+xmn2 o1 n1 vss vss nfet_06v0 w=8u l=4u
+* output stage and the copy that makes vb
+xm4  o2 o1 vss vss nfet_06v0 w=4u l=1u
+xmp4 o2 vbi avdd avdd pfet_06v0 w=32u l=8u
+xmbn vb vb vss vss nfet_06v0 w=4u l=1u
+xmbp vb vbi avdd avdd pfet_06v0 w=32u l=8u
+xcv  vb vss cap_mim_2f0fF c_width=22u c_length=22u
+* the same capacitance on o1 as on vb while the clamps open: the two clamps then see alike nodes on
+* their far sides, and the step their gates couple in is the same on x and on y. Once they are open
+* the capacitor is taken off o1 again (azd falls two slow inverter delays after az), because a
+* decision that reverses the one before has to slew o1 by a volt on a fraction of a microampere:
+* with the capacitor left on, that took 5 to 7 us of the 5 us bit time.
+xso  o1 azd oc vss nfet_06v0 w=4u l=0.7u
+xco  oc vss cap_mim_2f0fF c_width=22u c_length=22u
+xd1p d1 az avdd avdd pfet_06v0 w=0.5u l=8u
+xd1n d1 az vss vss nfet_06v0 w=2u l=0.7u
+xd1c d1 vss cap_mim_2f0fF c_width=10u c_length=10u
+xd2p azd d1 avdd avdd pfet_06v0 w=2u l=0.55u
+xd2n azd d1 vss vss nfet_06v0 w=0.5u l=8u
+xd2c azd vss cap_mim_2f0fF c_width=10u c_length=10u
+* clamps. The one on y is two transistors in series with their middle held at vb while it is
+* open: its far end is the amplifier output, which sits at ground for half of all decisions, and
+* a single off transistor from y to ground leaks enough at 125 C to move y by tens of mV
+* during a conversion.
+xiz  avdd vss az azn rv328_inv wp=1u wn=0.5u
+xsa  x az xm vss nfet_06v0 w=0.5u l=0.7u
+xsa2 xm az vb vss nfet_06v0 w=0.5u l=0.7u
+xsa3 xm azn vb vss nfet_06v0 w=0.5u l=0.7u
+xsb  y az ym vss nfet_06v0 w=0.5u l=0.7u
+xsc  ym az o1 vss nfet_06v0 w=0.5u l=0.7u
+xsd  ym azn vb vss nfet_06v0 w=0.5u l=0.7u
+* off: hold the output-stage node
+xmo  o2 enb vss vss nfet_06v0 w=1u l=0.7u
+xi1 avdd vss o2 o3 rv328_inv wp=2u wn=1u
+xi2 avdd vss o3 out rv328_inv wp=4u wn=2u
+.ends

@@ -1,0 +1,22 @@
+* rv328_cmp : continuous-time comparator, PMOS input pair
+*   out = 1 when inp > inn.  Input range: 0 V to about avdd - 1.5 V.
+*   vbp: bias mirror gate from rv328_bgr (one unit = pfet w=16u l=8u, about 4 uA).
+*   en:  0 = off: the bias is cut, the node between the two stages is held low and out is 0.
+*        (Without the hold that node floats when there is no bias and drifts to where the
+*        inverter after it conducts.)
+*   mt = tail current in units (the second stage gets the same).
+.subckt rv328_cmp avdd vss inp inn out vbp en mt=2
+xie  avdd vss en enb rv328_inv
+xtb  avdd vss vbp vbi en enb rv328_tg wp=2u wn=1u
+xpb  vbi en avdd avdd pfet_06v0 w=1u l=0.6u
+xmt  tail vbi avdd avdd pfet_06v0 w='16u*mt' l=8u
+xm1  n1  inn tail avdd pfet_06v0 w=40u l=2u
+xm2  o1  inp tail avdd pfet_06v0 w=40u l=2u
+xmn1 n1  n1  vss vss nfet_06v0 w='4u*mt' l=4u
+xmn2 o1  n1  vss vss nfet_06v0 w='4u*mt' l=4u
+xm3  o2  o1  vss vss nfet_06v0 w='2u*mt' l=1u
+xmp3 o2  vbi avdd avdd pfet_06v0 w='16u*mt' l=8u
+xmo  o2  enb vss vss nfet_06v0 w=1u l=0.7u
+xi1 avdd vss o2 o3 rv328_inv wp=2u wn=1u
+xi2 avdd vss o3 out rv328_inv wp=4u wn=2u
+.ends

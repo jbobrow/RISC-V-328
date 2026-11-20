@@ -1,0 +1,301 @@
+* rv328_adccmp with the wiring capacitance of its layout. Written by analog/layout/pex_block.py from rv328_adccmp_named.gds;
+* same cell name and pins as the schematic. 225 wiring capacitors, no wiring resistance;
+* 61 transistor fingers; groups of 9 or more identical parallel ones are one line with m=.
+* NGSPICE file created from rv328_adccmp.ext - technology: gf180mcuD
+
+.subckt rv328_adccmp avdd vss inp inn out vbp en az
+X0 vbi en avdd avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.6u
+X1 out o3 vss vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.7u
+X2 d1 az vss vss nfet_06v0 ad=1p pd=5u as=16p ps=75u w=2u l=0.7u
+X3 o2 enb vss vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X4 o3 o2 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X5 enb en vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X6 a inp tail avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=2u
+X7 a inp tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X8 a inp tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X9 tail inp a avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X10 tail inp a avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=2u
+X11 tail inp a avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X12 a inp tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X13 tail inp a avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X14 x az xm vss nfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=0.7u
+X15 vbp en vbi vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X16 b inn tail avdd pfet_06v0 ad=22.4p pd=84.48u as=71.52p ps=0.27696m w=10u l=2u
+X17 b inn tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X18 b inn tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X19 tail inn b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X20 tail inn b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X21 tail inn b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X22 b inn tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X23 tail inn b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X24 xm az vb vss nfet_06v0 ad=0.75p pd=6u as=2.75p ps=15u w=0.5u l=0.7u
+X25 xm azn vb vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X26 y az ym vss nfet_06v0 ad=0.25p pd=2u as=0.75p ps=6u w=0.5u l=0.7u
+X27 ym az o1 vss nfet_06v0 ad=0 pd=0 as=6.25p ps=28u w=0.5u l=0.7u
+X28 ym azn vb vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X29 n1 x tail2 avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=2u
+X30 n1 x tail2 avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X31 tail2 x n1 avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X32 tail2 x n1 avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=2u
+X33 tail vbi avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=8u
+X34 avdd vbi tail avdd pfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=8u
+X35 tail vbi avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=8u
+X36 avdd vbi tail avdd pfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=8u
+X37 n1 n1 vss vss nfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=4u
+X38 azn az vss vss nfet_06v0 ad=0.25p pd=2u as=0 ps=0 w=0.5u l=0.7u
+X39 d1 vss cap_mim_2f0_m4m5_noshield c_width=10u c_length=10u
+X40 o1 y tail2 avdd pfet_06v0 ad=11.2p pd=42.24u as=40.16p ps=0.15936m w=10u l=2u
+X41 o1 y tail2 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X42 tail2 y o1 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X43 tail2 y o1 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X44 out o3 avdd avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.55u
+X45 azd vss cap_mim_2f0_m4m5_noshield c_width=10u c_length=10u
+X46 o1 n1 vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X47 vbp enb vbi avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.55u
+X48 tail2 vbi avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=8u
+X49 avdd vbi tail2 avdd pfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=8u
+X50 enb en avdd avdd pfet_06v0 ad=1p pd=5u as=79.21p ps=0.32912m w=2u l=0.55u
+X51 azn az avdd avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.55u
+X52 vb vbi avdd avdd pfet_06v0 ad=8.96p pd=33.12u as=0 ps=0 w=16u l=8u
+X53 avdd vbi vb avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=16u l=8u
+X54 o2 vbi avdd avdd pfet_06v0 ad=8.96p pd=33.12u as=0 ps=0 w=16u l=8u
+X55 avdd vbi o2 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=16u l=8u
+X56 o3 o2 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X57 azd d1 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X58 d1 az avdd avdd pfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=8u
+X59 vb vb vss vss nfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=1u
+X60 vb vss cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X61 o2 o1 vss vss nfet_06v0 ad=2.5p pd=12u as=0 ps=0 w=4u l=1u
+X62 a x cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X63 azd d1 vss vss nfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=8u
+X64 b y cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X65 a vss vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X66 oc vss cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X67 b vss vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X68 o1 azd oc vss nfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.7u
+C0 vbp tail 0.19092f
+C1 x ym 0.8348f
+C2 vb tail 0.00174f
+C3 avdd az 3.77145f
+C4 avdd out 1.34502f
+C5 o1 az 0.56057f
+C6 oc vbi 0.06079f
+C7 o1 y 2.13474f
+C8 avdd y 2.86686f
+C9 a tail 2.12111f
+C10 tail vbi 6.76725f
+C11 oc azd 2.20105f
+C12 x az 0.06931f
+C13 x y 2.64636f
+C14 b azn 0.04912f
+C15 avdd n1 0.58908f
+C16 o1 n1 4.86659f
+C17 tail2 azn 0
+C18 xm azn 0.06879f
+C19 oc az 0.11107f
+C20 oc out 0.03397f
+C21 b xm 0
+C22 b tail2 0.15144f
+C23 o1 inp 0
+C24 avdd inp 4.68337f
+C25 n1 x 2.00752f
+C26 avdd o1 0.77794f
+C27 vbp enb 1.13172f
+C28 vbp en 0.2829f
+C29 vbp o2 0.83122f
+C30 vbp d1 0.38385f
+C31 o3 vbp 0.10668f
+C32 vb en 11.75739f
+C33 vb o2 0.00174f
+C34 avdd x 2.67789f
+C35 o1 x 0.38539f
+C36 enb vbi 0.96829f
+C37 a en 0.21395f
+C38 o2 vbi 3.34819f
+C39 en vbi 1.08765f
+C40 d1 vbi 0.22066f
+C41 o3 vbi 0.12959f
+C42 inp tail 4.14705f
+C43 avdd oc 0.10524f
+C44 oc o1 0.93184f
+C45 ym en 0.12883f
+C46 azd enb 0.3786f
+C47 avdd tail 6.24519f
+C48 o1 tail 0.00137f
+C49 o2 azd 0.21158f
+C50 azd en 1.51977f
+C51 azd d1 3.9243f
+C52 vbp azn 0.04913f
+C53 o3 azd 0.31043f
+C54 enb out 0.04032f
+C55 az enb 0.13839f
+C56 b inn 3.6518f
+C57 vb azn 1.10548f
+C58 b vbp 0.1401f
+C59 o2 az 0.14058f
+C60 az en 0.88167f
+C61 en out 0.04563f
+C62 en y 0.04337f
+C63 o2 out 0.09121f
+C64 az d1 1.70196f
+C65 o3 az 1.00255f
+C66 a azn 0.05012f
+C67 o3 out 1.10741f
+C68 tail2 vbp 0.19156f
+C69 vbi azn 0.06076f
+C70 b vb 0.06263f
+C71 vb xm 1.3879f
+C72 vb tail2 0.06711f
+C73 b a 11.39428f
+C74 ym azn 0.2028f
+C75 xm a 0
+C76 tail2 a 0.13149f
+C77 b vbi 6.81766f
+C78 n1 en 0.15033f
+C79 tail2 vbi 2.62062f
+C80 azd azn 0.0925f
+C81 b ym 0
+C82 xm ym 0
+C83 out azn 1.0844f
+C84 az azn 17.24368f
+C85 y azn 0.06512f
+C86 o1 enb 0
+C87 avdd enb 1.88446f
+C88 o1 en 1.33196f
+C89 o1 o2 0.44025f
+C90 avdd o2 3.21523f
+C91 avdd en 2.32245f
+C92 avdd d1 2.08682f
+C93 avdd o3 2.32835f
+C94 b az 0.04912f
+C95 b y 2.13532f
+C96 tail2 az 0
+C97 xm az 0.57435f
+C98 xm y 0.0078f
+C99 tail2 y 4.50202f
+C100 n1 azn 0.15122f
+C101 x en 0.1365f
+C102 vbp inn 0.12221f
+C103 b n1 0.12701f
+C104 oc enb 3.26429f
+C105 n1 tail2 2.81449f
+C106 oc en 0.16857f
+C107 oc o2 0.09275f
+C108 oc d1 0.20519f
+C109 oc o3 0.08998f
+C110 vb vbp 0.0689f
+C111 a inn 0
+C112 o1 azn 0.18389f
+C113 avdd azn 0.8623f
+C114 b inp 0.2424f
+C115 vbp a 0.12671f
+C116 inn vbi 0.03874f
+C117 vbp vbi 10.40324f
+C118 vb a 0.06166f
+C119 b o1 2.56016f
+C120 b avdd 1.17195f
+C121 vb vbi 2.83261f
+C122 o1 tail2 1.35518f
+C123 avdd tail2 4.95247f
+C124 x azn 0
+C125 a vbi 0.99661f
+C126 vbp azd 0.09883f
+C127 vb ym 1.05065f
+C128 b x 0.36379f
+C129 a ym 0
+C130 oc azn 0.07525f
+C131 tail2 x 3.00147f
+C132 xm x 0.93449f
+C133 ym vbi 0
+C134 vbp az 0.0935f
+C135 vbp out 0.04242f
+C136 vbp y 0.12954f
+C137 azd vbi 0.12201f
+C138 vb az 0.68879f
+C139 vb y 0.36006f
+C140 az a 0.05012f
+C141 b tail 4.37952f
+C142 a y 0.33407f
+C143 az vbi 0.11676f
+C144 vbi out 0.05395f
+C145 y vbi 0.11947f
+C146 n1 vbp 0.06964f
+C147 en enb 0.65346f
+C148 o2 enb 2.60221f
+C149 enb d1 0.85138f
+C150 o3 enb 0.54985f
+C151 o2 en 0.49758f
+C152 az ym 0.59136f
+C153 en d1 0.21781f
+C154 ym y 0.54037f
+C155 o3 en 0.19535f
+C156 vb n1 0.514f
+C157 o3 o2 1.63033f
+C158 inp inn 0.00241f
+C159 n1 a 0.05317f
+C160 vbp inp 0.09489f
+C161 az azd 0.38863f
+C162 azd out 0.33692f
+C163 n1 vbi 0.06464f
+C164 o1 inn 0
+C165 avdd inn 4.68495f
+C166 o1 vbp 0.06929f
+C167 avdd vbp 2.06825f
+C168 n1 ym 0
+C169 inp a 3.6518f
+C170 az out 1.33159f
+C171 az y 0.11088f
+C172 o1 vb 1.14498f
+C173 avdd vb 1.48253f
+C174 inp vbi 0.07404f
+C175 o1 a 8.77792f
+C176 avdd a 1.09742f
+C177 enb azn 0.09274f
+C178 vbp x 0.12999f
+C179 avdd vbi 32.70388f
+C180 o1 vbi 0.27196f
+C181 o2 azn 0.42509f
+C182 en azn 16.83906f
+C183 d1 azn 0.01025f
+C184 o3 azn 0.23804f
+C185 n1 az 0.15462f
+C186 n1 y 0.6773f
+C187 vb x 0.34955f
+C188 o1 ym 0.6413f
+C189 oc vbp 3.19646f
+C190 b en 0.06059f
+C191 b o2 0.17002f
+C192 x a 2.46403f
+C193 tail2 en 0
+C194 xm en 0.39416f
+C195 o1 azd 0.13887f
+C196 avdd azd 3.92226f
+C197 x vbi 0.1215f
+C198 inn tail 4.31882f
+C199 o1 vss 5.40265f
+C200 oc vss 10.26981f
+C201 b vss 9.40438f
+C202 a vss 10.2634f
+C203 azd vss 7.71296f
+C204 vb vss 16.22625f
+C205 avdd vss 0.38474p
+C206 n1 vss 8.62997f
+C207 tail2 vss 4.33135f
+C208 d1 vss 11.2839f
+C209 azn vss 3.62514f
+C210 ym vss 2.18058f
+C211 y vss 5.14995f
+C212 xm vss 2.09078f
+C213 tail vss 5.25984f
+C214 inn vss 1.09122f
+C215 vbp vss 1.28615f
+C216 vbi vss 6.29328f
+C217 en vss 5.05554f
+C218 x vss 5.08826f
+C219 inp vss 1.11267f
+C220 enb vss 3.10639f
+C221 o2 vss 5.06193f
+C222 az vss 26.15706f
+C223 out vss 1.56034f
+C224 o3 vss 3.3038f
+.ends

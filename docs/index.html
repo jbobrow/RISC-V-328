@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RV328 - RV328</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><div class="wrap">
+<nav><a class="name" href="index.html">RV328</a><p class="tag">A RISC-V chip in the ATmega328PB footprint</p>
+<h2>The story</h2>
+<a class="l on" href="index.html">Overview</a>
+<a class="l" href="build_log.html">Build log</a>
+<a class="l" href="decisions.html">Decisions</a>
+<h2>Results</h2>
+<a class="l" href="cache_study.html">Cache study</a>
+<a class="l" href="layout_results.html">Layout results</a>
+<a class="l" href="memory_research.html">Memory research</a>
+<h2>Reference</h2>
+<a class="l" href="datasheet.html">Datasheet</a>
+<a class="l" href="verification.html">Verification</a>
+<a class="l" href="tapeout_checklist.html">Tape-out checklist</a>
+<a class="l" href="analog_macros.html">Analog macro spec</a>
+<a class="l" href="bondout.html">Bond-out</a>
+<h2>Tools</h2><a class="l" href="layout_viewer.html">Layout viewer</a>
+</nav>
+<main>
+<h1>RV328</h1>
+<p>A RISC-V microcontroller in the footprint of the ATmega328PB: the same 32 pins, the same peripherals,
+5 V, 20 MHz, on the open GF180MCU process. This site is the record of how it is being built: the
+results, the decisions and the dead ends.</p>
+<p>Nothing here has been measured on silicon. Every figure comes from simulation or from the layout tools.</p>
+<p><img alt="The half-height layout as routed: the pad ring around the core, the memory blocks on the left and the logic on the right" src="images/rv328_die.jpg" /></p>
+<p>The source, the test programs and these pages are on <a href="https://github.com/jbobrow/RISC-V-328">GitHub</a>.</p>
+<p><img alt="Where the project stands" src="diagrams/roadmap.svg" /></p>
+<h2>Where it stands</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Half-height layout</th>
+<th>Full-height layout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it is</td>
+<td>digital part only, 2 KB cache</td>
+<td>12 KB cache, fast multiplier, room for the analog macro</td>
+</tr>
+<tr>
+<td>Layout</td>
+<td>signed off: rule checks, layout-versus-schematic, antenna, density</td>
+<td>routed without violations; sign-off checks not run yet</td>
+</tr>
+<tr>
+<td>20 MHz</td>
+<td>met at all nine corners, 5.9 ns to spare</td>
+<td>met at all nine corners, 0.64 ns to spare</td>
+</tr>
+<tr>
+<td>Against an ATmega328P</td>
+<td>too slow on ordinary firmware</td>
+<td>level on float code, 2 to 4 times faster on the rest</td>
+</tr>
+<tr>
+<td>Role</td>
+<td>kept ready as a possible test chip</td>
+<td>the product</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Start here</h2>
+<ul>
+<li><a href="build_log.html">Build log</a>: what was done at each stage and what it showed.</li>
+<li><a href="decisions.html">Decisions</a>: what was chosen, instead of what, and why.</li>
+<li><a href="cache_study.html">Cache study</a>: the measurements against an ATmega328P that changed the plan.</li>
+<li><a href="layout_results.html">Layout results</a>: every layout run, with its numbers.</li>
+<li><a href="memory_research.html">Memory research</a>: can the memory be made denser (first report).</li>
+</ul>
+<h2>Reference</h2>
+<ul>
+<li><a href="datasheet.html">Datasheet</a>, <a href="verification.html">verification</a>, <a href="tapeout_checklist.html">tape-out checklist</a></li>
+<li><a href="analog_macros.html">Analog macro specification</a>, <a href="bondout.html">bond-out</a></li>
+<li><a href="layout_viewer.html">Layout viewer</a> for the half-height layout</li>
+</ul>
+<p><img alt="The chip and its package" src="diagrams/system.svg" /></p>
+<footer>Generated from <code>docs/index.md</code> by <code>scripts/build_site.py</code>. Nothing here has been measured on silicon.</footer>
+</main></div></body></html>

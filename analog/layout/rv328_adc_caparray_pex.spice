@@ -1,0 +1,112 @@
+* ADC capacitor array with the wiring capacitance of its layout (nominal). Written by analog/layout/pex.py
+* from rv328_adc_caparray.gds; same cell and pins as blocks/adccap.spice. Substrate counted as vss.
+.subckt rv328_adc_caparray top dum vss bx b0 b1 b2 b3 b4 b5 b6 b7 b8 b9
+* reference side: 384 units, a quarter of what hangs on the top plate
+xcd dum vss cap_mim_2f0fF c_width=5u c_length=5u m=384
+* top plate to ground: the top plate moves by 2/3 of a step of the array
+xcatt top vss cap_mim_2f0fF c_width=5u c_length=5u m=512
+* dummy unit that completes 1024 (always sampled, then to ground)
+xcx top bx cap_mim_2f0fF c_width=5u c_length=5u m=1
+xc0 top b0 cap_mim_2f0fF c_width=5u c_length=5u m=1
+xc1 top b1 cap_mim_2f0fF c_width=5u c_length=5u m=2
+xc2 top b2 cap_mim_2f0fF c_width=5u c_length=5u m=4
+xc3 top b3 cap_mim_2f0fF c_width=5u c_length=5u m=8
+xc4 top b4 cap_mim_2f0fF c_width=5u c_length=5u m=16
+xc5 top b5 cap_mim_2f0fF c_width=5u c_length=5u m=32
+xc6 top b6 cap_mim_2f0fF c_width=5u c_length=5u m=64
+xc7 top b7 cap_mim_2f0fF c_width=5u c_length=5u m=128
+xc8 top b8 cap_mim_2f0fF c_width=5u c_length=5u m=256
+xc9 top b9 cap_mim_2f0fF c_width=5u c_length=5u m=512
+* wiring
+cw_b0_b1 b0 b1 50.1211f
+cw_b0_b2 b0 b2 1.1147f
+cw_b0_b3 b0 b3 1.8117f
+cw_b0_b4 b0 b4 3.2071f
+cw_b0_b5 b0 b5 7.2798f
+cw_b0_b6 b0 b6 0.0845f
+cw_b0_b7 b0 b7 0.0845f
+cw_b0_b8 b0 b8 0.0845f
+cw_b0_b9 b0 b9 0.4018f
+cw_b0_bx b0 bx 19.8453f
+cw_b0_dum b0 dum 0.0863f
+cw_b0_top b0 top 0.9474f
+cw_b0_vss b0 vss 24.8613f
+cw_b1_b2 b1 b2 80.7054f
+cw_b1_b3 b1 b3 3.1924f
+cw_b1_b4 b1 b4 5.6534f
+cw_b1_b5 b1 b5 12.3290f
+cw_b1_b6 b1 b6 0.1143f
+cw_b1_b7 b1 b7 0.1118f
+cw_b1_b8 b1 b8 0.1118f
+cw_b1_b9 b1 b9 0.7300f
+cw_b1_bx b1 bx 30.3965f
+cw_b1_dum b1 dum 0.1655f
+cw_b1_top b1 top 1.5688f
+cw_b1_vss b1 vss 19.1752f
+cw_b2_b3 b2 b3 82.2764f
+cw_b2_b4 b2 b4 6.2705f
+cw_b2_b5 b2 b5 15.7624f
+cw_b2_b6 b2 b6 0.1158f
+cw_b2_b7 b2 b7 0.1167f
+cw_b2_b8 b2 b8 0.1118f
+cw_b2_b9 b2 b9 1.3483f
+cw_b2_bx b2 bx 1.0634f
+cw_b2_dum b2 dum 0.1070f
+cw_b2_top b2 top 2.8471f
+cw_b2_vss b2 vss 19.7967f
+cw_b3_b4 b3 b4 85.6943f
+cw_b3_b5 b3 b5 21.5642f
+cw_b3_b6 b3 b6 0.1192f
+cw_b3_b7 b3 b7 0.1197f
+cw_b3_b8 b3 b8 0.1217f
+cw_b3_b9 b3 b9 2.5847f
+cw_b3_bx b3 bx 1.7270f
+cw_b3_dum b3 dum 0.1070f
+cw_b3_top b3 top 5.2868f
+cw_b3_vss b3 vss 22.1163f
+cw_b4_b5 b4 b5 111.0900f
+cw_b4_b6 b4 b6 0.1298f
+cw_b4_b7 b4 b7 0.1266f
+cw_b4_b8 b4 b8 0.1277f
+cw_b4_b9 b4 b9 5.0775f
+cw_b4_bx b4 bx 3.0551f
+cw_b4_dum b4 dum 0.1070f
+cw_b4_top b4 top 10.1662f
+cw_b4_vss b4 vss 26.7653f
+cw_b5_b6 b5 b6 20.0484f
+cw_b5_b7 b5 b7 0.3228f
+cw_b5_b8 b5 b8 0.3163f
+cw_b5_b9 b5 b9 10.2386f
+cw_b5_bx b5 bx 6.8533f
+cw_b5_dum b5 dum 0.2725f
+cw_b5_top b5 top 20.2740f
+cw_b5_vss b5 vss 102.8460f
+cw_b6_b7 b6 b7 20.7596f
+cw_b6_b8 b6 b8 0.9925f
+cw_b6_b9 b6 b9 41.7052f
+cw_b6_bx b6 bx 0.0903f
+cw_b6_dum b6 dum 0.9316f
+cw_b6_top b6 top 42.0384f
+cw_b6_vss b6 vss 191.2366f
+cw_b7_b8 b7 b8 21.8351f
+cw_b7_b9 b7 b9 83.4362f
+cw_b7_bx b7 bx 0.0903f
+cw_b7_dum b7 dum 1.9191f
+cw_b7_top b7 top 84.0768f
+cw_b7_vss b7 vss 374.2700f
+cw_b8_b9 b8 b9 186.8900f
+cw_b8_bx b8 bx 0.0903f
+cw_b8_dum b8 dum 4.0302f
+cw_b8_top b8 top 168.1536f
+cw_b8_vss b8 vss 739.6000f
+cw_b9_bx b9 bx 0.9422f
+cw_b9_dum b9 dum 7.8918f
+cw_b9_top b9 top 337.2372f
+cw_b9_vss b9 vss 1509.9500f
+cw_bx_dum bx dum 0.0863f
+cw_bx_top bx top 0.9474f
+cw_bx_vss bx vss 35.6579f
+cw_dum_top dum top 23.8909f
+cw_dum_vss dum vss 336.2395f
+cw_top_vss top vss 641.1172f
+.ends

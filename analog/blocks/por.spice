@@ -1,0 +1,23 @@
+* rv328_por : power-on reset. Needs no reference: the supply, divided, is compared with an
+* NMOS threshold. por_n goes high about 0.2 ms after the supply has passed about 1.65 V and
+* low at once when it falls below about 1.6 V (1.35 to 1.9 V over process and temperature).
+.subckt rv328_por avdd vss por_n
+* divider 3.3M / 4.2M / 0.5M (about 0.6 uA at 5 V); the bottom section is shorted until the supply is good.
+* All resistors are written as they are drawn: s equal strips in series (the divider's three share one strip).
+xrt avdd nd vss ppolyf_u_1k_6p0 r_width=1u r_length=100u s=33
+xrb nd  ne  vss ppolyf_u_1k_6p0 r_width=1u r_length=100u s=42
+xrh ne  vss vss ppolyf_u_1k_6p0 r_width=1u r_length=100u s=5
+xmh ne  det vss vss nfet_06v0 w=2u l=1u
+* detector: a long NMOS (so that it switches in strong inversion, where its gate voltage moves
+* little with temperature) with a 10 Mohm load; det is low when the supply is good
+xm1 det nd vss vss nfet_06v0 w=1u l=40u
+xrl avdd det vss ppolyf_u_1k_6p0 r_width=1u r_length=150u s=66
+xi1 avdd vss det good rv328_inv
+* delay: 10 Mohm into a 30 pF capacitor, discharged at once when the supply drops
+xi2 avdd vss good goodb rv328_inv
+xrd good dly vss ppolyf_u_1k_6p0 r_width=1u r_length=150u s=66
+xcd dly vss cap_mim_2f0fF c_width=87u c_length=87u m=2
+xmd dly goodb vss vss nfet_06v0 w=10u l=0.7u
+xs1 avdd vss dly porb rv328_schmitt
+xi3 avdd vss porb por_n rv328_inv wp=4u wn=2u
+.ends

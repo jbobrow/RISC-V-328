@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RV328 verification report - RV328</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><div class="wrap">
+<nav><a class="name" href="index.html">RV328</a><p class="tag">A RISC-V chip in the ATmega328PB footprint</p>
+<h2>The story</h2>
+<a class="l" href="index.html">Overview</a>
+<a class="l" href="build_log.html">Build log</a>
+<a class="l" href="decisions.html">Decisions</a>
+<h2>Results</h2>
+<a class="l" href="cache_study.html">Cache study</a>
+<a class="l" href="layout_results.html">Layout results</a>
+<a class="l" href="memory_research.html">Memory research</a>
+<h2>Reference</h2>
+<a class="l" href="datasheet.html">Datasheet</a>
+<a class="l on" href="verification.html">Verification</a>
+<a class="l" href="tapeout_checklist.html">Tape-out checklist</a>
+<a class="l" href="analog_macros.html">Analog macro spec</a>
+<a class="l" href="bondout.html">Bond-out</a>
+<h2>Tools</h2><a class="l" href="layout_viewer.html">Layout viewer</a>
+</nav>
+<main>
+<h1>RV328 verification report</h1>
+<p>All results below are RTL simulation (Icarus Verilog 13). Static timing and physical checks from the
+layout runs are in docs/layout_results.md, together with a gate-level simulation of the routed netlist
+(three tests, cell delays, 20 MHz).</p>
+<h2>Method</h2>
+<p>The testbench (<code>tb/tb.v</code>) instantiates the complete chip - <code>chip_top</code> with the foundry I/O pad models, the
+digital core and the behavioural analog model - plus a model of the in-package serial memory. Each test is a
+C program (<code>sw/tests/</code>) compiled with clang for RV32IMC, loaded into the memory model and executed by the
+CPU from reset. The firmware checks results itself and reports a verdict through a register the testbench
+watches. External loop-back wiring between pins is selected per test.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Test</th>
+<th>What it exercises</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>basic</td>
+<td>boot from the serial memory, .data/.bss start-up, SRAM byte/half/word access, multiply/divide, GPIO output/input/toggle/pull-up through the pads, pin-change and external interrupts, reset flags</td>
+</tr>
+<tr>
+<td>timers</td>
+<td>CTC with compare interrupt, 10-bit fast PWM duty measured by input capture, phase-correct PWM duty, external clock input, compare-toggle output, 8-bit overflow</td>
+</tr>
+<tr>
+<td>uart</td>
+<td>USART0 to USART1 and back: 8N1, 7E2 with U2X, 9O1, receive interrupt, parity-error and overrun flags</td>
+</tr>
+<tr>
+<td>spi</td>
+<td>SPI0 master with SPI1 slave in all four clock modes and both bit orders, two bytes per frame, slave interrupt, write collision</td>
+</tr>
+<tr>
+<td>twi</td>
+<td>TWI0 master with TWI1 interrupt-driven slave: NACK on unknown address, multi-byte write, repeated start, multi-byte read with final NACK, slave status sequence</td>
+</tr>
+<tr>
+<td>analog</td>
+<td>ADC codes for several inputs and references, left adjust, internal channels, free-running and timer-triggered conversions with interrupt; comparator output, edge interrupt, bandgap input, ACO pin</td>
+</tr>
+<tr>
+<td>nvm</td>
+<td>reads through the cache, EEPROM-area byte writes and rewrite, word programming with done interrupt, key protection, cache flush, serial-clock divider</td>
+</tr>
+<tr>
+<td>power</td>
+<td>idle sleep with timer wake-up, power-down with watchdog wake-up (system clock verified stopped), standby with pin-change wake-up, software reset, watchdog reset, RESET pin, reset-cause register after each</td>
+</tr>
+<tr>
+<td>clock</td>
+<td>RC, prescaler, external clock, crystal oscillator, RC trim and 128 kHz system clock, each measured against the watchdog oscillator; refusal to select a stopped source; PRR</td>
+</tr>
+<tr>
+<td>isp</td>
+<td>testbench reads and programs the memory through PB2-PB5 while RESET is low, reads the JTAG IDCODE, then the firmware checks the programmed word</td>
+</tr>
+</tbody>
+</table></div>
+<p>Three further configurations re-run a subset: the SRAMs replaced by the foundry macro model, and the
+digital-first build (analog stub, external clock, reset from an undefined power-up state).</p>
+<h2>Results</h2>
+<p>Re-run after the RTL changes made during layout (clock-mux restructuring, clock root buffer, renamed
+flash nets, CPU clock gate moved beside the system clock gate). Simulation times are identical to
+the earlier runs, cycle for cycle.</p>
+<pre><code>== RTL tests (behavioural RAM, PDK pad models, analog model)
+[analog] PASS t=6387689000
+[basic] PASS t=5242064000
+[clock] PASS t=231394957000
+[isp] PASS t=1752314000
+[nvm] PASS t=12300564000
+[power] PASS t=41070094000
+[spi] PASS t=4101689000
+[timers] PASS t=5049439000
+[twi] PASS t=7457064000
+[uart] PASS t=10569939000
+== Subset against the foundry SRAM macro model
+[basic, foundry SRAM] PASS t=5242064000
+[nvm, foundry SRAM] PASS t=12300564000
+[timers, foundry SRAM] PASS t=5049439000
+== Digital-first build (analog stub, external 8 MHz clock, reset pulse on PC6)
+[basic, digital-first] PASS t=5242039000
+[timers, digital-first] PASS t=5049414000
+[spi, digital-first] PASS t=4101664000
+== Chip elaboration (pads + core + analog stub)
+errors: 0
+</code></pre>
+<h3>Gate-level simulation of the routed netlist</h3>
+<p>The netlist from the third layout, with the cell delays extracted from that layout (typical corner),
+a 20 MHz clock, the foundry SRAM and pad models and a reset pulse on PC6 (<code>make gl-sdf</code>, <code>make gl-basic</code>).
+The first column is the RTL of the same build at the same clock.</p>
+<pre><code>[basic,  RTL digital-first, 20 MHz] PASS t=2109426000    [basic,  routed netlist] PASS t=2109431000
+[timers, RTL digital-first, 20 MHz] PASS t=2032376000    [timers, routed netlist] PASS t=2032381000
+[spi,    RTL digital-first, 20 MHz] PASS t=1653276000    [spi,    routed netlist] PASS t=1653281000
+</code></pre>
+<p>Each test ends in the same clock cycle as the RTL. Wire delays and setup/hold checks are not part of
+this simulation; <code>scripts/gl_prep.py</code> lists what it covers and why.</p>
+<h2>Bugs found by these tests and fixed</h2>
+<ul>
+<li>SPI master changed MOSI half a clock early after the last bit, corrupting the slave's bit 0.</li>
+<li>TWI slave counted the SCL falling edge that follows START as a data bit.</li>
+<li>USART 9-bit frames with parity overflowed the receive shift register.</li>
+<li>Reset-cause flags could be read back before a clear had taken effect.</li>
+<li>Disabling the RC oscillator while the clock multiplexer still used it stopped the chip for good.</li>
+<li>Clearing the watchdog interrupt flag restarted the watchdog period.</li>
+<li>Digital-first build: the chip could drive its own reset pin from an undefined power-up state.</li>
+</ul>
+<h2>Cache configurations and benchmark programs</h2>
+<p>The program cache is configurable (<code>rtl/rv328_xip.v</code>: size of a way, one to three ways, pinned first
+2 KB) and the processor has an optional single-cycle multiplier. The ten tests above pass in the
+first layout's configuration (2 KB direct-mapped, the default) and in the full-height layout's
+(<code>make test SIMDEFS="-DRV328_CACHE_KB=4 -DRV328_CACHE_WAYS=3 -DRV328_CACHE_PIN=2 -DRV328_MUL_FAST=1"</code>).</p>
+<p>Five benchmark programs and CoreMark run on a second bench, <code>tb/bench_top.v</code>, which wraps the digital
+core for Verilator so that millions of clocks take seconds (docs/cache_study.md). It replaces the pads,
+the analog macro and the serial memory by simple digital stand-ins. Cross-checks:</p>
+<ul>
+<li>the blink benchmark takes the same 300,827 clocks between its marks on this bench and on the
+  chip-level testbench, in the full-height configuration, with the same result value;</li>
+<li>the line loads counted in the RTL equal those of an independent model of the cache run on the recorded
+  fetch trace (159 for the logger and 760 for the full firmware on the 12 KB three-way pinned cache);</li>
+<li>each benchmark built without peripherals ends with the same result values on the RV328 and on an
+  ATmega328P in simavr.</li>
+</ul>
+<h2>What these results do not show</h2>
+<ul>
+<li>Timing: see docs/layout_results.md. The third layout meets 20 MHz in static timing, and the routed
+  netlist passes basic, timers and spi at 20 MHz with typical cell delays. The full-height layout's
+  routed netlist passes basic the same way. Wire delays, the other
+  corners and the other seven tests have not been simulated at gate level.</li>
+<li>The analog model is ideal; the tests prove the digital sequencing, not analog performance.
+  The transistor-level analog circuits are simulated separately in ngspice (<code>analog/README.md</code>); they
+  have not been simulated together with the digital core, and the behavioural model has not been
+  updated to match their deviations (brown-out level, the ADC's sampling instant).</li>
+<li>Coverage was not measured. Known untested areas are listed in docs/tapeout_checklist.md.</li>
+<li>The CPU is exercised only by the test programs; Hazard3's own verification is relied on for ISA compliance.</li>
+<li>Debug beyond the JTAG IDCODE read is untested.</li>
+</ul>
+<footer>Generated from <code>docs/verification.md</code> by <code>scripts/build_site.py</code>. Nothing here has been measured on silicon.</footer>
+</main></div></body></html>

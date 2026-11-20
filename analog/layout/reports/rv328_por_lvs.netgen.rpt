@@ -1,0 +1,99 @@
+
+Circuit 1 cell cap_mim_2f0_m4m5_noshield and Circuit 2 cell cap_mim_2f0fF are black boxes.
+Warning: Equate pins:  cell cap_mim_2f0_m4m5_noshield is a placeholder, treated as a black box.
+Warning: Equate pins:  cell cap_mim_2f0fF is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: cap_mim_2f0_m4m5_noshield       |Circuit 2: cap_mim_2f0fF                   
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes cap_mim_2f0_m4m5_noshield and cap_mim_2f0fF are equivalent.
+
+Circuit 1 cell ppolyf_u_1k_6p0 and Circuit 2 cell ppolyf_u_1k_6p0 are black boxes.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: ppolyf_u_1k_6p0                 |Circuit 2: ppolyf_u_1k_6p0                 
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes ppolyf_u_1k_6p0 and ppolyf_u_1k_6p0 are equivalent.
+
+Circuit 1 cell nfet_06v0 and Circuit 2 cell nfet_06v0 are black boxes.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: nfet_06v0                       |Circuit 2: nfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes nfet_06v0 and nfet_06v0 are equivalent.
+
+Circuit 1 cell pfet_06v0 and Circuit 2 cell pfet_06v0 are black boxes.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: pfet_06v0                       |Circuit 2: pfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes pfet_06v0 and pfet_06v0 are equivalent.
+Flattening unmatched subcell mim_w87_l87 in circuit rv328_por (0)(2 instances)
+Flattening unmatched subcell res1k_l100_n33_w1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell nfet_w10_l0p7_nf1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell nfet_w2_l0p7_nf1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell nfet_w1_l0p7_nf1 in circuit rv328_por (0)(2 instances)
+Flattening unmatched subcell pfet_w4_l1_nf1 in circuit rv328_por (0)(2 instances)
+Flattening unmatched subcell res1k_l100_n42_w1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell nfet_w2_l1_nf1 in circuit rv328_por (0)(3 instances)
+Flattening unmatched subcell nfet_w1_l40_nf1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell pfet_w4_l0p55_nf1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l0p55_nf1 in circuit rv328_por (0)(2 instances)
+Flattening unmatched subcell nfet_w1_l1_nf1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell res1k_l100_n5_w1 in circuit rv328_por (0)(1 instance)
+Flattening unmatched subcell res1k_l150_n66_w1 in circuit rv328_por (0)(2 instances)
+Flattening unmatched subcell pfet_w2_l1_nf1 in circuit rv328_por (0)(1 instance)
+
+Class rv328_por (0):  Merged 1 parallel devices.
+Class rv328_por (0):  Merged 207 series devices.
+Subcircuit summary:
+Circuit 1: rv328_por                       |Circuit 2: rv328_por                       
+-------------------------------------------|-------------------------------------------
+cap_mim_2f0_m4m5_noshield (2->1)           |cap_mim_2f0fF (2->1)                       
+ppolyf_u_1k_6p0 (212->5)                   |ppolyf_u_1k_6p0 (5)                        
+nfet_06v0 (9)                              |nfet_06v0 (9)                              
+pfet_06v0 (6)                              |pfet_06v0 (6)                              
+Number of devices: 21                      |Number of devices: 21                      
+Number of nets: 12                         |Number of nets: 12                         
+---------------------------------------------------------------------------------------
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: rv328_por                       |Circuit 2: rv328_por                       
+-------------------------------------------|-------------------------------------------
+por_n                                      |por_n                                      
+avdd                                       |avdd                                       
+vss                                        |vss                                        
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes rv328_por and rv328_por are equivalent.
+
+Final result: Circuits match uniquely.
+.

@@ -1,0 +1,80 @@
+
+Circuit 1 cell pfet_06v0 and Circuit 2 cell pfet_06v0 are black boxes.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: pfet_06v0                       |Circuit 2: pfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes pfet_06v0 and pfet_06v0 are equivalent.
+
+Circuit 1 cell nfet_06v0 and Circuit 2 cell nfet_06v0 are black boxes.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: nfet_06v0                       |Circuit 2: nfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes nfet_06v0 and nfet_06v0 are equivalent.
+
+Circuit 1 cell cap_mim_2f0_m4m5_noshield and Circuit 2 cell cap_mim_2f0fF are black boxes.
+Warning: Equate pins:  cell cap_mim_2f0_m4m5_noshield is a placeholder, treated as a black box.
+Warning: Equate pins:  cell cap_mim_2f0fF is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: cap_mim_2f0_m4m5_noshield       |Circuit 2: cap_mim_2f0fF                   
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes cap_mim_2f0_m4m5_noshield and cap_mim_2f0fF are equivalent.
+Flattening unmatched subcell pfet_w1_l0p6_nf1 in circuit rv328_refbuf (0)(1 instance)
+Flattening unmatched subcell pfet_w16_l8_nf25 in circuit rv328_refbuf (0)(1 instance)
+Flattening unmatched subcell nfet_w1_l0p7_nf1 in circuit rv328_refbuf (0)(3 instances)
+Flattening unmatched subcell pfet_w10_l2_nf32 in circuit rv328_refbuf (0)(2 instances)
+Flattening unmatched subcell pfet_w2_l0p55_nf1 in circuit rv328_refbuf (0)(3 instances)
+Flattening unmatched subcell mim_w50_l50 in circuit rv328_refbuf (0)(2 instances)
+Flattening unmatched subcell nfet_w8_l4_nf6 in circuit rv328_refbuf (0)(2 instances)
+Flattening unmatched subcell pfet_w12p5_l0p55_nf16 in circuit rv328_refbuf (0)(1 instance)
+
+Class rv328_refbuf (0):  Merged 112 parallel devices.
+Subcircuit summary:
+Circuit 1: rv328_refbuf                    |Circuit 2: rv328_refbuf                    
+-------------------------------------------|-------------------------------------------
+pfet_06v0 (109->8)                         |pfet_06v0 (49->8)                          
+nfet_06v0 (15->5)                          |nfet_06v0 (15->5)                          
+cap_mim_2f0_m4m5_noshield (2->1)           |cap_mim_2f0fF (2->1)                       
+Number of devices: 14                      |Number of devices: 14                      
+Number of nets: 12                         |Number of nets: 12                         
+---------------------------------------------------------------------------------------
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: rv328_refbuf                    |Circuit 2: rv328_refbuf                    
+-------------------------------------------|-------------------------------------------
+vref                                       |vref                                       
+aref                                       |aref                                       
+vss                                        |vss                                        
+vbp                                        |vbp                                        
+en_avcc                                    |en_avcc                                    
+avdd                                       |avdd                                       
+en_buf                                     |en_buf                                     
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes rv328_refbuf and rv328_refbuf are equivalent.
+
+Final result: Circuits match uniquely.
+.

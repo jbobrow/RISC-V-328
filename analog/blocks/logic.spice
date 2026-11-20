@@ -1,0 +1,90 @@
+* Small logic cells for the analog macro (5 V devices, drawn at analog-friendly sizes)
+.subckt rv328_inv avdd vss a y wp=2u wn=1u mul=1
+xmp y a avdd avdd pfet_06v0 w=wp l=0.55u m=mul
+xmn y a vss  vss  nfet_06v0 w=wn l=0.7u m=mul
+.ends
+.subckt rv328_nand2 avdd vss a b y
+xmp1 y a avdd avdd pfet_06v0 w=2u l=0.55u
+xmp2 y b avdd avdd pfet_06v0 w=2u l=0.55u
+xmn1 y a n1 vss nfet_06v0 w=2u l=0.7u
+xmn2 n1 b vss vss nfet_06v0 w=2u l=0.7u
+.ends
+.subckt rv328_nor2 avdd vss a b y
+xmp1 n1 a avdd avdd pfet_06v0 w=4u l=0.55u
+xmp2 y b n1 avdd pfet_06v0 w=4u l=0.55u
+xmn1 y a vss vss nfet_06v0 w=1u l=0.7u
+xmn2 y b vss vss nfet_06v0 w=1u l=0.7u
+.ends
+* transmission gate: on when c=1 (cb is its complement)
+.subckt rv328_tg avdd vss a b c cb wp=4u wn=2u mul=1
+xmp a cb b avdd pfet_06v0 w=wp l=0.55u m=mul
+xmn a c  b vss  nfet_06v0 w=wn l=0.7u m=mul
+.ends
+* Schmitt trigger, inverting
+.subckt rv328_schmitt avdd vss a y
+xmp1 n1 a avdd avdd pfet_06v0 w=4u l=1u
+xmp2 y  a n1  avdd pfet_06v0 w=4u l=1u
+xmp3 n1 y vss avdd pfet_06v0 w=2u l=1u
+xmn1 n2 a vss vss nfet_06v0 w=2u l=1u
+xmn2 y  a n2  vss nfet_06v0 w=2u l=1u
+xmn3 n2 y avdd vss nfet_06v0 w=1u l=1u
+.ends
+* D flip-flop, rising edge, no reset (transmission-gate master and slave)
+.subckt rv328_dff avdd vss d clk q
+xc1 avdd vss clk cb rv328_inv
+xc2 avdd vss cb  ci rv328_inv
+xt1 avdd vss d  m  cb ci rv328_tg wp=2u wn=1u
+xm1 avdd vss m  mb rv328_inv
+xm2 avdd vss mb mf rv328_inv wp=1u wn=0.5u
+xt2 avdd vss mf m  ci cb rv328_tg wp=1u wn=0.5u
+xt3 avdd vss mb s  ci cb rv328_tg wp=2u wn=1u
+xs1 avdd vss s  q  rv328_inv
+xs2 avdd vss q  sf rv328_inv wp=1u wn=0.5u
+xt4 avdd vss sf s  cb ci rv328_tg wp=1u wn=0.5u
+.ends
+.subckt rv328_nand3 avdd vss a b c y
+xmp1 y a avdd avdd pfet_06v0 w=2u l=0.55u
+xmp2 y b avdd avdd pfet_06v0 w=2u l=0.55u
+xmp3 y c avdd avdd pfet_06v0 w=2u l=0.55u
+xmn1 y a n1 vss nfet_06v0 w=3u l=0.7u
+xmn2 n1 b n2 vss nfet_06v0 w=3u l=0.7u
+xmn3 n2 c vss vss nfet_06v0 w=3u l=0.7u
+.ends
+* weak inverter for slow nodes in the low-power blocks (long channels keep the shoot-through current small)
+.subckt rv328_invw avdd vss a y
+xmp y a avdd avdd pfet_06v0 w=1u l=4u
+xmn y a vss  vss  nfet_06v0 w=1u l=8u
+.ends
+
+* Plain logic as foundry standard cells (gf180mcu_fd_sc_mcu9t5v0, the 9-track 5 V library) on the analog
+* supply: an eighth of the area of the same gate drawn from single transistors. The number is the drive
+* strength: rv328_sinv4 is the library's inv_4. Wells are tied to the cell's own supply and ground.
+* Delay elements, switches, the Schmitt trigger and everything sized for a purpose stay transistors (above).
+.subckt rv328_sinv avdd vss a y
+x1 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_1
+.ends
+.subckt rv328_sinv2 avdd vss a y
+x1 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_2
+.ends
+.subckt rv328_sinv4 avdd vss a y
+x1 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_4
+.ends
+.subckt rv328_sinv8 avdd vss a y
+x1 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_8
+.ends
+.subckt rv328_sinv16 avdd vss a y
+x1 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_16
+.ends
+.subckt rv328_sinv32 avdd vss a y
+x1 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_16
+x2 a y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__inv_16
+.ends
+.subckt rv328_snand2 avdd vss a b y
+x1 a b y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__nand2_1
+.ends
+.subckt rv328_snand3 avdd vss a b c y
+x1 a b c y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__nand3_1
+.ends
+.subckt rv328_snor2 avdd vss a b y
+x1 a b y avdd avdd vss vss gf180mcu_fd_sc_mcu9t5v0__nor2_1
+.ends

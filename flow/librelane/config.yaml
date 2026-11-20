@@ -1,0 +1,210 @@
+# RV328 LibreLane configuration for the wafer.space GF180MCU shuttle.
+# Derived from wafer-space/gf180mcu-project-template (Apache-2.0); use it with
+# that template's Nix shell, PDK version and ip/ directory - see flow/README.md.
+#
+#   librelane slot_1x0p5.yaml macros.yaml config.yaml --pdk gf180mcuD --pdk-root <pdk> \
+#             --manual-pdk --scl gf180mcu_fd_sc_mcu9t5v0 --pad gf180mcu_fd_io
+meta:
+  version: 3
+  flow: Chip
+  substituting_steps:
+    # Render the layout after seal-ring insertion
+    KLayout.Render: null
+    +KLayout.SealRing: KLayout.Render
+
+DESIGN_NAME: chip_top
+VERILOG_FILES:
+- dir::../../rtl/tech/rv328_tech.v
+- dir::../../rtl/periph/rv328_adc.v
+- dir::../../rtl/periph/rv328_gpio.v
+- dir::../../rtl/periph/rv328_spi.v
+- dir::../../rtl/periph/rv328_sysctl.v
+- dir::../../rtl/periph/rv328_timer.v
+- dir::../../rtl/periph/rv328_twi.v
+- dir::../../rtl/periph/rv328_usart.v
+- dir::../../rtl/periph/rv328_wdt.v
+- dir::../../rtl/rv328_xip.v
+- dir::../../rtl/rv328_clkrst.v
+- dir::../../rtl/rv328_core.v
+- dir::../../rtl/rv328_chip_top.v
+# digital-first tapeout: synthesizable stand-in for the analog macro.
+# For the full chip, drop this file and add the analog macro to macros.yaml.
+- dir::../../rtl/analog/rv328_analog_stub.v
+- dir::../../vendor/hazard3/hdl/hazard3_core.v
+- dir::../../vendor/hazard3/hdl/hazard3_cpu_1port.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_alu.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_branchcmp.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_mul_fast.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_muldiv_seq.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_onehot_encode.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_onehot_priority.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_onehot_priority_dynamic.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_priority_encode.v
+- dir::../../vendor/hazard3/hdl/arith/hazard3_shift_barrel.v
+- dir::../../vendor/hazard3/hdl/hazard3_csr.v
+- dir::../../vendor/hazard3/hdl/hazard3_decode.v
+- dir::../../vendor/hazard3/hdl/hazard3_frontend.v
+- dir::../../vendor/hazard3/hdl/hazard3_instr_decompress.v
+- dir::../../vendor/hazard3/hdl/hazard3_irq_ctrl.v
+- dir::../../vendor/hazard3/hdl/hazard3_pmp.v
+- dir::../../vendor/hazard3/hdl/hazard3_power_ctrl.v
+- dir::../../vendor/hazard3/hdl/hazard3_regfile_1w2r.v
+- dir::../../vendor/hazard3/hdl/hazard3_triggers.v
+- dir::../../vendor/hazard3/hdl/debug/dm/hazard3_dm.v
+- dir::../../vendor/hazard3/hdl/debug/dtm/hazard3_jtag_dtm.v
+- dir::../../vendor/hazard3/hdl/debug/dtm/hazard3_jtag_dtm_core.v
+- dir::../../vendor/hazard3/hdl/debug/cdc/hazard3_apb_async_bridge.v
+- dir::../../vendor/hazard3/hdl/debug/cdc/hazard3_reset_sync.v
+- dir::../../vendor/hazard3/hdl/debug/cdc/hazard3_sync_1bit.v
+VERILOG_INCLUDE_DIRS:
+- dir::../../vendor/hazard3/hdl
+
+# slot_1x0p5.yaml sets VERILOG_DEFINES (technology cells, analog stub, wafer.space ID cells)
+
+PRIMARY_GDSII_STREAMOUT_TOOL: klayout
+
+# Timing constraints
+PNR_SDC_FILE: dir::chip_top.sdc
+SIGNOFF_SDC_FILE: dir::chip_top.sdc
+FALLBACK_SDC: dir::chip_top.sdc
+
+VDD_NETS:
+- VDD
+GND_NETS:
+- VSS
+
+IGNORE_DISCONNECTED_MODULES:
+- gf180mcu_fd_io__bi_24t
+- gf180mcu_fd_io__in_c
+- gf180mcu_fd_io__asig_5p0
+- gf180mcu_ws_ip__qrcode_id
+- gf180mcu_ws_ip__shuttle_id
+- gf180mcu_ws_ip__project_id
+- gf180mcu_ws_ip__marker
+
+# Main clock: in the digital-first build the system clock enters on PB6/XTAL1.
+# Target 50 ns (20 MHz), the sign-off frequency.
+#   run3 (9-track cells, delay synthesis, 55 ns target): met 50 ns at every corner.
+#   run2 (7-track cells, area synthesis, 80 ns target): 10.9 MHz at the slow corner.
+#   The repair steps only work as hard as the target asks, so the target matters.
+CLOCK_PORT: PB[6]
+CLOCK_NET: pad_pb6/Y
+CLOCK_PERIOD: 50
+
+# Speed-oriented synthesis. Default hierarchy mode (flatten): 'deferred_flatten'
+# drops the port-less pad and ID cells.
+SYNTH_STRATEGY: DELAY 4
+SYNTH_ABC_BUFFERING: true
+SYNTH_SIZING: true
+
+# Keep delay cells out of buffering: without this the repair steps pick dlyb_1
+# (a 1.7 ns delay cell) as their fan-out buffer and triple the logic delay.
+# These names are for the 9-track library (--scl gf180mcu_fd_sc_mcu9t5v0, and
+# RV328_SC9T in VERILOG_DEFINES); for the 7-track library change 9t to 7t.
+EXTRA_EXCLUDED_CELLS:
+- gf180mcu_fd_sc_mcu9t5v0__dlya_1
+- gf180mcu_fd_sc_mcu9t5v0__dlya_2
+- gf180mcu_fd_sc_mcu9t5v0__dlya_4
+- gf180mcu_fd_sc_mcu9t5v0__dlyb_1
+- gf180mcu_fd_sc_mcu9t5v0__dlyb_2
+- gf180mcu_fd_sc_mcu9t5v0__dlyb_4
+- gf180mcu_fd_sc_mcu9t5v0__dlyc_1
+- gf180mcu_fd_sc_mcu9t5v0__dlyc_2
+- gf180mcu_fd_sc_mcu9t5v0__dlyc_4
+- gf180mcu_fd_sc_mcu9t5v0__dlyd_1
+- gf180mcu_fd_sc_mcu9t5v0__dlyd_2
+- gf180mcu_fd_sc_mcu9t5v0__dlyd_4
+
+# Timing repair again after global routing, where wire estimates are close to the
+# final ones: run2 met its target after clock-tree synthesis and lost 7 to 12 ns
+# at the slow corner once routed.
+RUN_POST_GRT_DESIGN_REPAIR: true
+RUN_POST_GRT_RESIZER_TIMING: true
+# Slew and capacitance are repaired at the typical corner; the slow corner is about 1.6
+# times slower, so the margins must be this large for the limits to hold there too
+# (run3, with the defaults 20/10, left about 690 pins over the slew limit at the slow corner).
+DESIGN_REPAIR_MAX_SLEW_PCT: 40
+DESIGN_REPAIR_MAX_CAP_PCT: 30
+GRT_DESIGN_REPAIR_MAX_SLEW_PCT: 35
+GRT_DESIGN_REPAIR_MAX_CAP_PCT: 25
+PL_RESIZER_SETUP_SLACK_MARGIN: 2.0
+GRT_RESIZER_SETUP_SLACK_MARGIN: 1.0
+PL_RESIZER_HOLD_SLACK_MARGIN: 0.4
+GRT_RESIZER_HOLD_SLACK_MARGIN: 0.5
+PL_TARGET_DENSITY_PCT: 40
+GRT_ALLOW_CONGESTION: true
+# generous legalisation range: repeaters inserted next to the SRAM block must be able to move out
+PL_MAX_DISPLACEMENT_X: 1200
+PL_MAX_DISPLACEMENT_Y: 600
+DRT_ANTENNA_REPAIR_ITERS: 10
+DRT_ANTENNA_REPAIR_MARGIN: 10
+
+# PDN (values from the wafer.space template)
+PDN_CFG: dir::pdn/pdn_cfg.tcl
+PDN_ENABLE_PINS: False
+PDN_VWIDTH: 5
+PDN_HWIDTH: 5
+PDN_VSPACING: 1
+PDN_HSPACING: 1
+PDN_VPITCH: 75
+PDN_HPITCH: 75
+PDN_CORE_RING: True
+PDN_CORE_RING_VWIDTH: 25
+PDN_CORE_RING_HWIDTH: 25
+PDN_CORE_RING_CONNECT_TO_PADS: True
+PDN_CORE_VERTICAL_LAYER: Metal4
+PDN_CORE_HORIZONTAL_LAYER: Metal3
+PDN_CORE_RING_CONNECT_TO_PAD_LAYERS: [Metal2]
+
+ERROR_ON_MAGIC_DRC: False
+
+# Prevent false-positive DRC errors in I/O cells and foundry SRAMs (from the template)
+MAGIC_GDS_FLATGLOB:
+- "*_CDNS_*"
+- "*$$*"
+- "M1_N*"
+- "M1_P*"
+- "M2_M1*"
+- "M3_M2*"
+- "nmos_5p0*"
+- "nmos_1p2*"
+- "pmos_5p0*"
+- "pmos_1p2*"
+- "via1_*"
+- "ypass_gate*"
+- "G_ring_*"
+- "dcap_103*"
+- "din_*"
+- "mux821_*"
+- "rdummy_*"
+- "pmoscap_*"
+- "xdec_*"
+- "ypredec*"
+- "xpredec*"
+- "prexdec_*"
+- "xdec8_*"
+- "xdec16_*"
+- "xdec32_*"
+- "sa_*"
+
+KLAYOUT_FILLER_OPTIONS:
+  Metal2_ignore_active: true
+MAGIC_EXT_UNIQUE: notopports
+
+KLAYOUT_RENDER_RESOLUTION: 2048
+KLAYOUT_RENDER_OVERSAMPLING: 3
+KLAYOUT_PROPERTIES: dir::gf180mcu_render.lyp
+
+KLAYOUT_DRC_THREADS: 1
+KLAYOUT_DRC_OPTIONS:
+  decks: "all,-antenna,-density,-cup"
+  variant: ref::$PDK
+  workers: max
+KLAYOUT_DENSITY_OPTIONS:
+  decks: "density"
+  variant: ref::$PDK
+  workers: max
+KLAYOUT_ANTENNA_OPTIONS:
+  decks: "antenna"
+  variant: ref::$PDK
+  workers: max

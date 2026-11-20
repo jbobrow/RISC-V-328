@@ -1,0 +1,89 @@
+* rv328_refbuf with the wiring capacitance of its layout. Written by analog/layout/pex_block.py from rv328_refbuf_named.gds;
+* same cell name and pins as the schematic. 50 wiring capacitors, no wiring resistance;
+* 124 transistor fingers; groups of 9 or more identical parallel ones are one line with m=.
+* NGSPICE file created from rv328_refbuf.ext - technology: gf180mcuD
+
+.subckt rv328_refbuf avdd vss en_buf en_avcc vref vbp aref
+X0 vbg en_buf avdd avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.6u
+X1 tail vbg avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=8u
+X2 tail vbg avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=8u m=23
+X6 tail vbg avdd avdd pfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=8u
+X26 vbp en_buf vbg vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X27 eab en_avcc vss vss nfet_06v0 ad=0.5p pd=3u as=34.92p ps=0.14248m w=1u l=0.7u
+X28 enb en_buf vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X29 aref aref tail avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=2u
+X30 aref aref tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u m=30
+X43 tail aref aref avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=2u
+X61 n1 vref tail avdd pfet_06v0 ad=89.59999p pd=0.33792m as=0.30352n ps=1.14804m w=10u l=2u
+X62 n1 vref tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u m=31
+X93 eab en_avcc avdd avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.55u
+X94 aref vss cap_mim_2f0_m4m5_noshield c_width=50u c_length=50u
+X95 vbp enb vbg avdd pfet_06v0 ad=1p pd=5u as=1.5p ps=8u w=2u l=0.55u
+X96 aref vss cap_mim_2f0_m4m5_noshield c_width=50u c_length=50u
+X97 enb en_buf avdd avdd pfet_06v0 ad=1p pd=5u as=0.17952n ps=0.67828m w=2u l=0.55u
+X98 aref n1 vss vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=4u
+X99 vss n1 aref vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=4u
+X100 aref n1 vss vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=4u
+X101 vss n1 aref vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=4u
+X102 aref n1 vss vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=4u
+X103 vss n1 aref vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=4u
+X104 n1 n1 vss vss nfet_06v0 ad=13.44p pd=51.36u as=0 ps=0 w=8u l=4u
+X105 vss n1 n1 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X106 n1 n1 vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X107 vss n1 n1 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X108 n1 n1 vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X109 vss n1 n1 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X110 aref eab avdd avdd pfet_06v0 ad=3.5p pd=13.06u as=6.25p ps=26u w=12.5u l=0.55u
+X111 avdd eab aref avdd pfet_06v0 ad=3.5p pd=13.06u as=3.5p ps=13.06u w=12.5u l=0.55u m=14
+X116 avdd eab aref avdd pfet_06v0 ad=6.25p pd=26u as=3.5p ps=13.06u w=12.5u l=0.55u
+C0 en_buf vbp 0.607f
+C1 enb vbg 0.84062f
+C2 tail aref 21.09674f
+C3 enb aref 0.56543f
+C4 tail en_buf 0.03421f
+C5 tail n1 13.48755f
+C6 avdd vref 16.17974f
+C7 enb vbp 0.19179f
+C8 enb en_buf 0.86584f
+C9 aref vref 0.01002f
+C10 vbg avdd 65.01672f
+C11 enb tail 0.00267f
+C12 aref avdd 55.55331f
+C13 n1 vref 13.8931f
+C14 aref vbg 3.02352f
+C15 avdd eab 9.48994f
+C16 vbg eab 0
+C17 avdd en_avcc 1.44811f
+C18 vbp avdd 0.6934f
+C19 avdd n1 3.28161f
+C20 en_buf avdd 2.83123f
+C21 aref eab 6.0138f
+C22 vbg en_avcc 0.1431f
+C23 vbg vbp 1.69148f
+C24 vbg n1 0.10607f
+C25 tail vref 13.63344f
+C26 en_buf vbg 1.45867f
+C27 aref en_avcc 0.19859f
+C28 aref vbp 0.13587f
+C29 aref n1 3.31583f
+C30 aref en_buf 0.49375f
+C31 eab en_avcc 0.63017f
+C32 vbp eab 0
+C33 en_buf eab 0
+C34 tail avdd 16.68215f
+C35 enb avdd 2.15906f
+C36 vbp en_avcc 0.0286f
+C37 tail vbg 39.92395f
+C38 en_buf en_avcc 0.00332f
+C39 n1 vss 30.02545f
+C40 aref vss 71.48087f
+C41 vref vss 3.26909f
+C42 enb vss 2.02471f
+C43 en_buf vss 3.68998f
+C44 eab vss 2.71771f
+C45 en_avcc vss 1.87791f
+C46 vbp vss 1.18316f
+C47 tail vss 25.30046f
+C48 avdd vss 0.82494p
+C49 vbg vss 10.37133f
+.ends

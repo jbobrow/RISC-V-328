@@ -1,0 +1,64 @@
+# RV328 .gitignore
+#
+# Most imagery stays local (Dropbox). The repository keeps only the pictures that the
+# README, the docs site and the analog READMEs actually show, plus small web-sized copies
+# of the layout renders in docs/images/.
+
+# OS / editor
+.DS_Store
+__pycache__/
+*.pyc
+
+# Build products and flow runs (several GB; rebuild with make / the flow)
+build/
+flow/librelane/runs/
+runs/
+*.vcd
+*.fst
+analog/results/wave/
+analog/results/*.log
+
+# Distribution archive
+rv328.zip
+
+# High-resolution layout renders (59 MB; `make render` rebuilds them)
+layout/renders/
+layout/chip_top.png
+
+# Large layout outputs of the third layout (about 30 MB). Kept out of git history;
+# see layout/README.md for where to get them.
+layout/chip_top.gds.gz
+layout/chip_top.routed.def.gz
+layout/chip_top.nl.v.gz
+layout/chip_top.tt.sdf.gz
+layout/sta_slow_corner_setup.rpt.gz
+layout/sta_fast_corner_hold.rpt.gz
+
+# Analog layout renders: only the ones the analog READMEs show are tracked
+analog/layout/renders/*
+!analog/layout/renders/adccmp_map.png
+!analog/layout/renders/adcfe_full.png
+!analog/layout/renders/adcfe_lower.png
+!analog/layout/renders/adcfe_map.png
+!analog/layout/renders/adcfe_transitions.png
+!analog/layout/renders/amux_map.png
+!analog/layout/renders/analog_cells.png
+!analog/layout/renders/analog_macro_foot.png
+!analog/layout/renders/analog_macro_full.png
+!analog/layout/renders/analog_macro_map.png
+!analog/layout/renders/bgr_detail.png
+!analog/layout/renders/bgr_full.png
+!analog/layout/renders/bgr_map.png
+!analog/layout/renders/bod_map.png
+!analog/layout/renders/caparray_corner.png
+!analog/layout/renders/caparray_linearity.png
+!analog/layout/renders/caparray_map.png
+!analog/layout/renders/caparray_section.png
+!analog/layout/renders/glue_full.png
+!analog/layout/renders/lfosc_map.png
+!analog/layout/renders/por_map.png
+!analog/layout/renders/rcosc_full.png
+!analog/layout/renders/rcosc_map.png
+!analog/layout/renders/refbuf_map.png
+!analog/layout/renders/xosc_full.png
+!analog/layout/renders/xosc_map.png

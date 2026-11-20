@@ -1,0 +1,50 @@
+
+Circuit 1 cell cap_mim_2f0_m4m5_noshield and Circuit 2 cell cap_mim_2f0fF are black boxes.
+Warning: Equate pins:  cell cap_mim_2f0_m4m5_noshield is a placeholder, treated as a black box.
+Warning: Equate pins:  cell cap_mim_2f0fF is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: cap_mim_2f0_m4m5_noshield       |Circuit 2: cap_mim_2f0fF                   
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes cap_mim_2f0_m4m5_noshield and cap_mim_2f0fF are equivalent.
+Flattening unmatched subcell rv328_mim_unit in circuit rv328_adc_caparray (0)(1920 instances)
+
+Class rv328_adc_caparray (0):  Merged 1907 parallel devices.
+Subcircuit summary:
+Circuit 1: rv328_adc_caparray              |Circuit 2: rv328_adc_caparray              
+-------------------------------------------|-------------------------------------------
+cap_mim_2f0_m4m5_noshield (1920->13)       |cap_mim_2f0fF (1920->13)                   
+Number of devices: 13                      |Number of devices: 13                      
+Number of nets: 14                         |Number of nets: 14                         
+---------------------------------------------------------------------------------------
+Resolving symmetries by property value.
+Resolving symmetries by pin name.
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: rv328_adc_caparray              |Circuit 2: rv328_adc_caparray              
+-------------------------------------------|-------------------------------------------
+top                                        |top                                        
+vss                                        |vss                                        
+dum                                        |dum                                        
+bx                                         |bx                                         
+b0                                         |b0                                         
+b1                                         |b1                                         
+b2                                         |b2                                         
+b3                                         |b3                                         
+b4                                         |b4                                         
+b5                                         |b5                                         
+b6                                         |b6                                         
+b7                                         |b7                                         
+b8                                         |b8                                         
+b9                                         |b9                                         
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes rv328_adc_caparray and rv328_adc_caparray are equivalent.
+
+Final result: Circuits match uniquely.
+.

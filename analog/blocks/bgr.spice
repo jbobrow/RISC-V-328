@@ -1,0 +1,54 @@
+* rv328_bgr : bias generator and 1.1 V reference (bandgap, works from about 2.2 V)
+*   avdd vss   supply
+*   en         1 = on
+*   vref       1.1 V reference (high impedance: buffer before loading)
+*   vbp        gate voltage of the PMOS bias mirror: a pfet_06v0 w=16u l=8u with its source on
+*              avdd and its gate on vbp carries one unit current (about 4 uA, rising with temperature)
+*   ok         1 when the bias current is flowing (used by the brown-out and reset logic)
+* The only other state of this loop is zero current, which the start-up circuit detects directly.
+.subckt rv328_bgr avdd vss en vref vbp ok
+* Resistors are written the way they are drawn: equal strips in series (s = number of strips). The
+* foundry model has about 180 ohm of end resistance per strip, so ten strips are not one long one.
+.param lr1=13.4u lru=35u
+* mirror
+xmp1 a   vbp avdd avdd pfet_06v0 w=16u l=8u
+xmp2 b   vbp avdd avdd pfet_06v0 w=16u l=8u
+xmp3 vbg vbp avdd avdd pfet_06v0 w=16u l=8u
+* core: Q1 (1x) at a, Q2 (8x) behind R1 at b: unit current = Vt ln(8) / R1
+xq1 vss vss a  pnp_10p00x10p00
+xq2 vss vss b2 pnp_10p00x10p00 par=8 m=8
+xr1  b  b2  vss ppolyf_u_1k_6p0 r_width=1u r_length=lr1
+* output: vbg = Vbe + I R2 (about 1.2 V), divided to 1.1 V
+xq3 vss vss e3 pnp_10p00x10p00
+xr2  vbg e3  vss ppolyf_u_1k_6p0 r_width=1u r_length=lr1 s=10
+xra  vbg vref vss ppolyf_u_1k_6p0 r_width=1u r_length=lru s=2
+xrb  vref vss vss ppolyf_u_1k_6p0 r_width=1u r_length=lru s=67
+xcr  vref vss cap_mim_2f0fF c_width=30u c_length=30u
+* error amplifier: PMOS pair (inputs sit near 0.65 V), second stage NMOS into the diode-connected
+* master of the bias mirror. More current when v(a) > v(b).
+xmt  tail vbp avdd avdd pfet_06v0 w=8u l=8u
+xma  n1  a   tail avdd pfet_06v0 w=40u l=4u
+xmb  o1  b   tail avdd pfet_06v0 w=40u l=4u
+xmn1 n1  n1  vss vss nfet_06v0 w=8u l=8u
+xmn2 o1  n1  vss vss nfet_06v0 w=8u l=8u
+xm6  vbp o1  vss vss nfet_06v0 w=32u l=8u
+xmpd vbp vbp avdd avdd pfet_06v0 w=16u l=8u
+xcc  o1  vss cap_mim_2f0fF c_width=36u c_length=36u
+* start-up: st is pulled up by a copy of the bias current against 2 Mohm. While no current
+* flows st is low and xms pulls the mirror gate down.
+xmsp st  vbp avdd avdd pfet_06v0 w=8u l=8u
+xrs  st  vss vss ppolyf_u_1k_6p0 r_width=1u r_length=lru s=60
+xmi1 stb st  avdd avdd pfet_06v0 w=1u l=2u
+xmi2 stb st  vss  vss  nfet_06v0 w=1u l=2u
+xms  vbp stb sx  vss   nfet_06v0 w=2u l=1u
+xmse sx  en  vss vss   nfet_06v0 w=2u l=1u
+* enable: off = mirror gate tied to the supply, and the error amplifier's output held low. Without
+* the second switch that node floats when the block is off and can turn xm6 on against xmoff,
+* which drew up to 0.4 mA in the "off" state.
+xmoff vbp en avdd avdd pfet_06v0 w=2u l=0.6u
+xien  avdd vss en enb rv328_inv
+xmoff2 o1 enb vss vss nfet_06v0 w=1u l=0.7u
+* ok flag
+xmo1 ok stb avdd avdd pfet_06v0 w=1u l=1u
+xmo2 ok stb vss  vss  nfet_06v0 w=1u l=1u
+.ends

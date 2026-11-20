@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RV328 Layout Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* One visual world on purpose: a dark layout-editor canvas with a yellow-room amber accent.
+   Layout idea: fixed top bar, three columns (layers/blocks | canvas | inspector). */
+:root {
+  color-scheme: dark;
+  --bg: #0c0f14;
+  --panel: #131820;
+  --panel-2: #1a212b;
+  --line: #27303c;
+  --text: #dbe2ec;
+  --dim: #8a96a8;
+  --accent: #ffb224;
+  --good: #57d08c;
+  --warn: #ffb224;
+  --bad: #ff6b6b;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); font: 13px/1.45 var(--font); display: flex; flex-direction: column; overflow: hidden; }
+button, input, select { font: inherit; color: inherit; }
+header { display: flex; align-items: center; gap: 14px; padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: .01em; white-space: nowrap; }
+h1 span { color: var(--accent); }
+.tabs { display: flex; gap: 2px; background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 2px; }
+.tabs button { background: none; border: 0; padding: 5px 13px; border-radius: 5px; cursor: pointer; color: var(--dim); font-weight: 500; }
+.tabs button[aria-selected="true"] { background: var(--panel-2); color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.tabs button:focus-visible, .btn:focus-visible, input:focus-visible, .row:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+#search { flex: 1 1 180px; min-width: 140px; max-width: 320px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 9px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.chip { font: 11.5px var(--mono); padding: 3px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--dim); white-space: nowrap; }
+.chip b { color: var(--text); font-weight: 500; }
+.chip.good b { color: var(--good); } .chip.bad b { color: var(--bad); } .chip.warn b { color: var(--warn); }
+main { flex: 1; display: grid; grid-template-columns: 250px minmax(0, 1fr) 290px; min-height: 0; }
+aside { background: var(--panel); overflow-y: auto; padding: 10px 12px 16px; min-height: 0; }
+aside.left { border-right: 1px solid var(--line); }
+aside.right { border-left: 1px solid var(--line); }
+h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--dim); margin: 14px 0 6px; font-weight: 600; }
+h2:first-child { margin-top: 2px; }
+.row { display: flex; align-items: center; gap: 8px; padding: 3px 6px; border-radius: 5px; cursor: pointer; user-select: none; }
+.row:hover { background: var(--panel-2); }
+.row.off { opacity: .42; }
+.row.sel { background: var(--panel-2); box-shadow: inset 2px 0 0 var(--accent); }
+.sw { width: 12px; height: 12px; border-radius: 3px; flex: none; border: 1px solid #0006; }
+.row .n { margin-left: auto; font: 11px var(--mono); color: var(--dim); }
+.bar { height: 3px; background: var(--line); border-radius: 2px; margin: 0 6px 4px 26px; }
+.bar i { display: block; height: 100%; border-radius: 2px; }
+.pin { display: grid; grid-template-columns: 26px 44px 1fr; gap: 6px; padding: 2px 6px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+.pin:hover { background: var(--panel-2); }
+.pin .k { font: 11px var(--mono); color: var(--dim); text-align: right; }
+.pin .f { color: var(--dim); overflow-wrap: anywhere; }
+#stage { position: relative; min-width: 0; min-height: 0; background: var(--bg); }
+#cv, #gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#cv { cursor: crosshair; touch-action: none; }
+#tip { position: absolute; pointer-events: none; background: #000c; border: 1px solid var(--line); padding: 3px 7px; border-radius: 5px; font: 11.5px var(--mono); display: none; max-width: 340px; overflow-wrap: anywhere; z-index: 3; }
+#hud { position: absolute; left: 10px; bottom: 8px; font: 11px var(--mono); color: var(--dim); background: #0c0f14cc; padding: 2px 6px; border-radius: 4px; }
+#scale { position: absolute; right: 12px; bottom: 10px; font: 11px var(--mono); color: var(--dim); text-align: center; }
+#scale i { display: block; height: 5px; border: 1px solid var(--dim); border-top: 0; margin-bottom: 2px; }
+.tools { position: absolute; right: 10px; top: 10px; display: flex; gap: 6px; z-index: 2; }
+.btn { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 4px 9px; cursor: pointer; }
+.btn:hover { border-color: var(--dim); }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12px; margin: 6px 0; }
+.kv dt { color: var(--dim); } .kv dd { margin: 0; font-family: var(--mono); font-size: 11.5px; overflow-wrap: anywhere; }
+p { margin: 6px 0; color: #b9c2cf; }
+.muted { color: var(--dim); }
+.netlist a, .hit { display: block; font: 11.5px var(--mono); color: var(--text); text-decoration: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; overflow-wrap: anywhere; }
+.netlist a:hover, .hit:hover { background: var(--panel-2); color: var(--accent); }
+#proc { display: none; position: absolute; left: 12px; right: 12px; bottom: 12px; background: #131820e8; border: 1px solid var(--line); border-radius: 9px; padding: 10px 14px; z-index: 2; }
+#proc .top { display: flex; align-items: center; gap: 12px; }
+#proc input[type=range] { flex: 1; accent-color: var(--accent); }
+#stepname { font-weight: 600; } #steptext { margin: 4px 0 0; max-width: 90ch; }
+label.sl { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dim); margin: 6px 0; }
+label.sl input { flex: 1; accent-color: var(--accent); }
+#load { position: absolute; inset: 0; display: grid; place-items: center; color: var(--dim); background: var(--bg); z-index: 5; }
+table.stack { width: 100%; border-collapse: collapse; font: 11.5px var(--mono); }
+table.stack td { padding: 2px 4px; border-bottom: 1px solid var(--line); }
+table.stack td:last-child, table.stack td:nth-child(3) { text-align: right; color: var(--dim); font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; grid-template-rows: minmax(300px, 55%) auto auto; overflow-y: auto; }
+  aside.left { order: 2; border: 0; border-top: 1px solid var(--line); } aside.right { order: 3; border: 0; border-top: 1px solid var(--line); }
+  #stage { order: 1; min-height: 300px; } body { overflow: auto; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1><span>RV328</span> layout explorer</h1>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-layout" aria-selected="true">Geometry</button>
+    <button role="tab" id="tab-function" aria-selected="false">Function</button>
+    <button role="tab" id="tab-process" aria-selected="false">Process</button>
+  </div>
+  <input id="search" type="search" placeholder="Find a cell, net, pad or pin…" autocomplete="off" aria-label="Search">
+  <div class="chips" id="chips"></div>
+</header>
+<main>
+  <aside class="left" id="left"></aside>
+  <div id="stage">
+    <canvas id="cv"></canvas>
+    <div id="gl" style="display:none"></div>
+    <div class="tools"><button class="btn" id="fit">Fit</button><button class="btn" id="clear">Clear selection</button></div>
+    <div id="tip"></div>
+    <div id="hud"></div>
+    <div id="scale"><i></i><span></span></div>
+    <div id="proc">
+      <div class="top">
+        <button class="btn" id="play">Play</button>
+        <input type="range" id="step" min="0" max="1" value="1" step="1" aria-label="Fabrication step">
+        <span id="stepname"></span>
+      </div>
+      <p id="steptext"></p>
+    </div>
+    <div id="load">Unpacking layout…</div>
+  </div>
+  <aside class="right" id="right"></aside>
+</main>
+
+<script id="data" type="application/json">/*DATA*/</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("data").textContent);
+const $ = (id) => document.getElementById(id);
+const el = (tag, attrs = {}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const k in attrs) { if (k === "class") e.className = attrs[k]; else if (k === "html") e.innerHTML = attrs[k]; else if (k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]); }
+  for (const k of kids) e.append(k);
+  return e;
+};
+const Q = D.meta.q, UM = (v) => v / Q;
+const fmt = (n) => n.toLocaleString("en-US");
+
+// ---------- palettes ----------
+const LAYER_STYLE = {
+  Metal1: "#3d9bff", Metal2: "#ff5d73", Metal3: "#3fd58a", Metal4: "#f7c948", Metal5: "#c78bff",
+  Via1: "#b8d8ff", Via2: "#ffc2cb", Via3: "#bff3d6", Via4: "#fff0b8",
+};
+const BLOCK_COLORS = ["#ff8a3d", "#9aa5b8", "#3fd58a", "#f7c948", "#8bd3ff", "#ff5d73", "#b48bff", "#c78bff", "#9d7bff", "#d6a3ff", "#e9c4ff",
+  "#2fd3c7", "#7be3da", "#5aa9ff", "#9cc8ff", "#ff9ed2", "#ffc4e4", "#d8e35a", "#ff6b6b", "#6f7f96", "#ffe08a", "#586579"];
+
+// ---------- state ----------
+const S = {
+  tab: "layout", colorBy: "block",
+  show: { pads: true, macros: true, cells: true, phys: false, pdn: false, Metal1: true, Metal2: true, Metal3: true, Metal4: true, Metal5: true, vias: true },
+  block: -1, sel: null, net: -1, netShapes: null, clock: false, path: false,
+  view: { s: 0.02, ox: 0, oy: 0 }, W: 100, H: 100,
+};
+let cells, phys, ring, nets, wires = [], vias = [], pdn = [], cellNets, critical = null;
+
+async function inflate(b64, Type) {
+  const bin = atob(b64), u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  const buf = await new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer();
+  return new Type(buf);
+}
+
+// uniform grid index over rectangles stored as [x1,y1,x2,y2]*n
+const CELL = 512;
+function buildIndex(rect, n) {
+  const gw = Math.ceil(D.meta.die[0] / CELL) + 1, gh = Math.ceil(D.meta.die[1] / CELL) + 1;
+  const cnt = new Uint32Array(gw * gh + 1);
+  for (let i = 0; i < n; i++) {
+    const x1 = rect[4 * i] / CELL | 0, y1 = rect[4 * i + 1] / CELL | 0, x2 = rect[4 * i + 2] / CELL | 0, y2 = rect[4 * i + 3] / CELL | 0;
+    for (let y = y1; y <= y2; y++) for (let x = x1; x <= x2; x++) cnt[y * gw + x + 1]++;
+  }
+  for (let i = 1; i < cnt.length; i++) cnt[i] += cnt[i - 1];
+  const items = new Uint32Array(cnt[cnt.length - 1]), pos = cnt.slice(0, -1);
+  for (let i = 0; i < n; i++) {
+    const x1 = rect[4 * i] / CELL | 0, y1 = rect[4 * i + 1] / CELL | 0, x2 = rect[4 * i + 2] / CELL | 0, y2 = rect[4 * i + 3] / CELL | 0;
+    for (let y = y1; y <= y2; y++) for (let x = x1; x <= x2; x++) items[pos[y * gw + x]++] = i;
+  }
+  return { gw, gh, ptr: cnt, items, stamp: new Uint32Array(n), tick: 0 };
+}
+function visit(ix, x1, y1, x2, y2, fn) {
+  const tick = ++ix.tick, a = Math.max(0, x1 / CELL | 0), b = Math.max(0, y1 / CELL | 0);
+  const c = Math.min(ix.gw - 1, x2 / CELL | 0), d = Math.min(ix.gh - 1, y2 / CELL | 0);
+  for (let y = b; y <= d; y++) for (let x = a; x <= c; x++) {
+    const g = y * ix.gw + x;
+    for (let k = ix.ptr[g]; k < ix.ptr[g + 1]; k++) { const i = ix.items[k]; if (ix.stamp[i] !== tick) { ix.stamp[i] = tick; fn(i); } }
+  }
+}
+
+async function load() {
+  const c = D.cells;
+  cells = { n: c.n, rect: await inflate(c.rect, Uint16Array), master: await inflate(c.master, Uint16Array), group: await inflate(c.group, Int8Array), names: c.names };
+  cells.ix = buildIndex(cells.rect, cells.n);
+  phys = { n: D.phys.n, rect: await inflate(D.phys.rect, Uint16Array) };
+  phys.ix = buildIndex(phys.rect, phys.n);
+  if (D.ring) ring = { n: D.ring.n, rect: await inflate(D.ring.rect, Uint16Array) };
+  nets = { names: D.nets.names, use: await inflate(D.nets.use, Uint8Array), ptr: await inflate(D.nets.ptr, Uint32Array), mem: await inflate(D.nets.mem, Uint32Array) };
+  for (const w of D.wires) { const o = { layer: w.layer, n: w.n, rect: await inflate(w.rect, Uint16Array), net: await inflate(w.net, Uint16Array) }; o.ix = buildIndex(o.rect, o.n); wires.push(o); }
+  for (const v of D.vias) vias.push({ layer: v.layer, n: v.n, xy: await inflate(v.xy, Uint16Array), net: await inflate(v.net, Uint16Array) });
+  for (const w of D.pdn) { const o = { layer: w.layer, n: w.n, rect: await inflate(w.rect, Uint16Array) }; o.ix = buildIndex(o.rect, o.n); pdn.push(o); }
+  // cell -> nets
+  const deg = new Uint32Array(cells.n + 1);
+  for (let i = 0; i < nets.mem.length; i++) deg[nets.mem[i] + 1]++;
+  for (let i = 1; i <= cells.n; i++) deg[i] += deg[i - 1];
+  const fill = deg.slice(0, -1), list = new Uint32Array(nets.mem.length);
+  for (let n = 0; n < nets.names.length; n++) for (let k = nets.ptr[n]; k < nets.ptr[n + 1]; k++) list[fill[nets.mem[k]]++] = n;
+  cellNets = { ptr: deg, list };
+  // wires that belong to clock nets, per layer
+  for (const w of wires) { const idx = []; for (let i = 0; i < w.n; i++) if (nets.use[w.net[i]] === 1) idx.push(i); w.clock = idx; }
+  // slowest path from the timing report: instance names -> cell indices
+  if (D.summary && D.summary.critical) {
+    const byName = new Map(); cells.names.forEach((n, i) => byName.set(n, i));
+    const padBy = new Map(D.pads.map((p) => [p.name, p])), macBy = new Map(D.macros.map((m) => [m.name, m]));
+    critical = D.summary.critical.names.map((n) => byName.has(n) ? Array.from(cells.rect.subarray(4 * byName.get(n), 4 * byName.get(n) + 4)) : (padBy.get(n) || macBy.get(n) || {}).r).filter(Boolean);
+  }
+  $("load").style.display = "none";
+  chips(); panels(); resize(); fit(); route();
+}
+
+// ---------- header chips ----------
+function chips() {
+  const m = D.summary || {}, box = $("chips");
+  const add = (label, value, cls = "") => box.append(el("span", { class: "chip " + cls, html: `${label} <b>${value}</b>` }));
+  add("die", `${UM(D.meta.die[0]).toFixed(0)} × ${UM(D.meta.die[1]).toFixed(0)} µm`);
+  add("cells", fmt(cells.n));
+  add("nets", fmt(nets.names.length));
+  for (const c of m.chips || []) add(c.label, c.value, c.cls || "");
+}
+
+// ---------- canvas ----------
+const cv = $("cv"), ctx = cv.getContext("2d");
+let snap = null, snapView = null, pending = 0;
+function resize() {
+  const r = $("stage").getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+  S.W = Math.max(50, r.width); S.H = Math.max(50, r.height); S.dpr = dpr;
+  cv.width = S.W * dpr; cv.height = S.H * dpr;
+  if (three.ready) three.resize();
+  draw();
+}
+function fit(box) {
+  const b = box || [0, 0, D.meta.die[0], D.meta.die[1]], pad = box ? 0.35 : 0.04;
+  const w = b[2] - b[0], h = b[3] - b[1];
+  const s = Math.min(S.W / (w * (1 + 2 * pad) + 1), S.H / (h * (1 + 2 * pad) + 1));
+  S.view.s = Math.min(s, 6);
+  S.view.ox = (b[0] + b[2]) / 2 - S.W / 2 / S.view.s; S.view.oy = (b[1] + b[3]) / 2 - S.H / 2 / S.view.s;
+  draw();
+}
+const X = (x) => (x - S.view.ox) * S.view.s, Y = (y) => S.H - (y - S.view.oy) * S.view.s;
+const WX = (px) => px / S.view.s + S.view.ox, WY = (py) => (S.H - py) / S.view.s + S.view.oy;
+
+function draw(fast) {
+  if (S.tab === "process") return;
+  if (fast && snap) {   // cheap preview while the pointer moves: reuse the last full frame
+    const k = S.view.s / snapView.s;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = "#0c0f14"; ctx.fillRect(0, 0, cv.width, cv.height);
+    const dx = (snapView.ox - S.view.ox) * S.view.s * S.dpr, dy = (S.H - (snapView.oy - S.view.oy) * S.view.s - S.H * k) * S.dpr;
+    ctx.imageSmoothingEnabled = k < 1; ctx.drawImage(snap, dx, dy, snap.width * k, snap.height * k);
+    clearTimeout(pending); pending = setTimeout(() => draw(false), 90);
+    hud(); return;
+  }
+  clearTimeout(pending);
+  const s = S.view.s, x1 = WX(0), x2 = WX(S.W), y1 = WY(S.H), y2 = WY(0);
+  ctx.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
+  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+  ctx.fillStyle = "#0c0f14"; ctx.fillRect(0, 0, S.W, S.H);
+  // die and core
+  ctx.fillStyle = "#10151c"; ctx.fillRect(X(0), Y(D.meta.die[1]), D.meta.die[0] * s, D.meta.die[1] * s);
+  ctx.strokeStyle = "#3a4656"; ctx.lineWidth = 1; ctx.strokeRect(X(0), Y(D.meta.die[1]), D.meta.die[0] * s, D.meta.die[1] * s);
+  const fn = S.tab === "function", dimAll = S.net >= 0 || S.clock || S.path;
+  const rectPath = (r, i, min) => { const w = Math.max(min, (r[4 * i + 2] - r[4 * i]) * s), h = Math.max(min, (r[4 * i + 3] - r[4 * i + 1]) * s); ctx.rect(X(r[4 * i]), Y(r[4 * i + 3]), w, h); };
+
+  if (S.show.phys && s > 0.05) { ctx.beginPath(); visit(phys.ix, x1, y1, x2, y2, (i) => rectPath(phys.rect, i, 0.5)); ctx.fillStyle = "#1b222c"; ctx.fill(); }
+  // pads and macros
+  if (S.show.pads && ring) { ctx.beginPath(); for (let i = 0; i < ring.n; i++) rectPath(ring.rect, i, 0.5); ctx.fillStyle = "#171c24"; ctx.fill(); }
+  if (S.show.pads) for (const p of D.pads) {
+    const r = p.r, dim = fn && S.block >= 0;
+    ctx.fillStyle = p.kind === "power" ? "#3a2a2a" : p.kind === "analog" ? "#2b3550" : p.kind === "test" ? "#2a3a33" : "#333a46";
+    ctx.globalAlpha = dim ? 0.35 : 1; ctx.fillRect(X(r[0]), Y(r[3]), (r[2] - r[0]) * s, (r[3] - r[1]) * s);
+    ctx.strokeStyle = "#566375"; ctx.strokeRect(X(r[0]), Y(r[3]), (r[2] - r[0]) * s, (r[3] - r[1]) * s); ctx.globalAlpha = 1;
+    if (Math.max(r[2] - r[0], r[3] - r[1]) * s > 44 && Math.min(r[2] - r[0], r[3] - r[1]) * s > 11) label(p.label || p.name, r, p.pin ? "pin " + p.pin : "");
+  }
+  if (S.show.macros) for (const m of D.macros) {
+    const r = m.r, bi = m.block ? D.blocks.findIndex((b) => b.id === m.block) : -1;
+    ctx.globalAlpha = fn && S.block >= 0 && S.block !== bi ? 0.25 : 1;
+    ctx.fillStyle = bi >= 0 && (fn || S.colorBy === "block") ? shade(BLOCK_COLORS[bi], 0.28) : "#232c38";
+    ctx.fillRect(X(r[0]), Y(r[3]), (r[2] - r[0]) * s, (r[3] - r[1]) * s);
+    ctx.strokeStyle = bi >= 0 ? BLOCK_COLORS[bi] : "#566375"; ctx.strokeRect(X(r[0]), Y(r[3]), (r[2] - r[0]) * s, (r[3] - r[1]) * s); ctx.globalAlpha = 1;
+    if ((r[2] - r[0]) * s > 60) label((r[2] - r[0]) * s > 150 ? m.label : m.label.replace(/ \(.*/, ""), r, m.master);
+  }
+  // logic cells, batched per colour
+  if (S.show.cells) {
+    const groups = new Map();
+    visit(cells.ix, x1, y1, x2, y2, (i) => {
+      let key;
+      if (fn || S.colorBy === "block") key = cells.group[i];
+      else { const t = TYPE_OF[cells.master[i]]; key = 100 + t; }
+      let a = groups.get(key); if (!a) groups.set(key, a = []); a.push(i);
+    });
+    for (const [key, arr] of groups) {
+      ctx.beginPath(); for (const i of arr) rectPath(cells.rect, i, 0.6);
+      const col = key >= 100 ? TYPE_COLORS[key - 100] : BLOCK_COLORS[key];
+      const lit = !(fn && S.block >= 0 && key !== S.block);
+      ctx.globalAlpha = dimAll ? 0.18 : lit ? (fn ? 0.95 : 0.62) : 0.08; ctx.fillStyle = col; ctx.fill();
+      if (s > 0.9 && lit) { ctx.globalAlpha = 0.9; ctx.strokeStyle = "#0c0f14"; ctx.lineWidth = 0.6; ctx.stroke(); }
+    }
+    ctx.globalAlpha = 1;
+  }
+  // routing: additive so that crossings glow like in a mask viewer
+  ctx.globalCompositeOperation = "lighter";
+  const wireAlpha = dimAll ? 0.12 : fn ? 0.16 : 0.78, tiny = 0.55 / s;
+  if (S.show.pdn) for (const w of pdn) { if (!S.show[w.layer]) continue; ctx.beginPath(); visit(w.ix, x1, y1, x2, y2, (i) => rectPath(w.rect, i, 0.5)); ctx.globalAlpha = 0.22; ctx.fillStyle = LAYER_STYLE[w.layer]; ctx.fill(); }
+  for (const w of wires) {
+    if (!S.show[w.layer]) continue;
+    ctx.beginPath();
+    visit(w.ix, x1, y1, x2, y2, (i) => { const r = w.rect; if (r[4 * i + 2] - r[4 * i] < tiny && r[4 * i + 3] - r[4 * i + 1] < tiny) return; rectPath(r, i, 0.7); });
+    // zoomed out, a wire is far thinner than the one pixel it is drawn with: fade it so the
+    // picture reads as routing density instead of saturating to white
+    const fade = Math.max(0.05, Math.min(1, (w.layer === "Metal5" ? 8 : 2.8) * s / 0.7));
+    ctx.globalAlpha = wireAlpha * fade; ctx.fillStyle = LAYER_STYLE[w.layer]; ctx.fill();
+  }
+  if (S.show.vias && s > 0.35) for (const v of vias) {
+    const lo = "Metal" + v.layer.slice(3); if (!S.show[lo]) continue;
+    const h = Math.max(1.2, 1.3 * s); ctx.beginPath();
+    for (let i = 0; i < v.n; i++) { const x = v.xy[2 * i], y = v.xy[2 * i + 1]; if (x < x1 || x > x2 || y < y1 || y > y2) continue; ctx.rect(X(x) - h, Y(y) - h, 2 * h, 2 * h); }
+    ctx.globalAlpha = dimAll ? 0.1 : 0.7; ctx.fillStyle = LAYER_STYLE[v.layer]; ctx.fill();
+  }
+  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+  // clock distribution overlay
+  if (S.clock) for (const w of wires) {
+    ctx.beginPath(); for (const i of w.clock) rectPath(w.rect, i, 1.3);
+    ctx.fillStyle = "#ffb224"; ctx.globalAlpha = 0.95; ctx.fill(); ctx.globalAlpha = 1;
+  }
+  // slowest timing path: cells in order, joined by straight lines
+  if (S.path && critical && critical.length) {
+    ctx.beginPath();
+    critical.forEach((r, k) => { const x = X((r[0] + r[2]) / 2), y = Y((r[1] + r[3]) / 2); if (k) ctx.lineTo(x, y); else ctx.moveTo(x, y); });
+    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3.5; ctx.lineJoin = "round"; ctx.stroke(); ctx.strokeStyle = "#ff3d81"; ctx.lineWidth = 1.8; ctx.stroke();
+    critical.forEach((r, k) => { const x = X((r[0] + r[2]) / 2), y = Y((r[1] + r[3]) / 2), e = k === 0 || k === critical.length - 1;
+      ctx.beginPath(); ctx.arc(x, y, e ? 5 : 2.6, 0, 7); ctx.fillStyle = e ? "#ffffff" : "#ff3d81"; ctx.fill(); });
+  }
+  // highlighted net
+  if (S.net >= 0 && S.netShapes) {
+    for (const sh of S.netShapes) {
+      ctx.beginPath(); for (const i of sh.idx) rectPath(sh.w.rect, i, 1.6);
+      ctx.fillStyle = "#ffffff"; ctx.shadowColor = LAYER_STYLE[sh.w.layer]; ctx.shadowBlur = 6; ctx.fill(); ctx.shadowBlur = 0;
+      ctx.beginPath(); for (const i of sh.idx) rectPath(sh.w.rect, i, 1.0); ctx.fillStyle = LAYER_STYLE[sh.w.layer]; ctx.globalAlpha = 0.85; ctx.fill(); ctx.globalAlpha = 1;
+    }
+    ctx.beginPath(); for (let k = nets.ptr[S.net]; k < nets.ptr[S.net + 1]; k++) rectPath(cells.rect, nets.mem[k], 3);
+    ctx.strokeStyle = "#ffb224"; ctx.lineWidth = 1.5; ctx.stroke();
+  }
+  // selection outline
+  if (S.sel) { const r = S.sel.r; ctx.strokeStyle = "#ffb224"; ctx.lineWidth = 2; ctx.strokeRect(X(r[0]) - 2, Y(r[3]) - 2, (r[2] - r[0]) * s + 4, (r[3] - r[1]) * s + 4); }
+  snap = snap || document.createElement("canvas"); snap.width = cv.width; snap.height = cv.height; snap.getContext("2d").drawImage(cv, 0, 0); snapView = { ...S.view };
+  hud();
+}
+function label(t, r, sub) {
+  const s = S.view.s, w = (r[2] - r[0]) * s, h = (r[3] - r[1]) * s, cx = X(r[0]) + w / 2, cy = Y(r[3]) + h / 2;
+  const rot = h > w * 1.3, span = rot ? h : w;
+  ctx.save(); ctx.translate(cx, cy); if (rot) ctx.rotate(-Math.PI / 2);
+  const size = Math.max(9, Math.min(15, span / 9));
+  ctx.font = `500 ${size}px "IBM Plex Sans", sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#e6ecf5";
+  ctx.fillText(t, 0, sub && span > 70 ? -size * 0.55 : 0, span - 6);
+  if (sub && span > 70) { ctx.font = `${size * 0.8}px "IBM Plex Mono", monospace`; ctx.fillStyle = "#93a0b3"; ctx.fillText(sub, 0, size * 0.65, span - 6); }
+  ctx.restore();
+}
+function shade(hex, k) { const n = parseInt(hex.slice(1), 16); const f = (v) => Math.round(v * k + 12 * (1 - k)); return `rgb(${f(n >> 16)},${f(n >> 8 & 255)},${f(n & 255)})`; }
+function hud() {
+  const um = 1 / (S.view.s * Q);   // microns per pixel
+  let bar = 1; for (const c of [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]) if (c / um <= 140) bar = c;
+  $("scale").firstElementChild.style.width = (bar / um) + "px"; $("scale").lastElementChild.textContent = bar >= 1000 ? bar / 1000 + " mm" : bar + " µm";
+}
+
+// cell families for the "cell type" colouring
+const TYPE_COLORS = ["#5aa9ff", "#ff8a3d", "#3fd58a", "#f7c948", "#c78bff", "#9aa5b8"];
+const TYPE_NAMES = ["Flip-flops and latches", "Buffers and inverters", "Multiplexers", "Adders / XOR", "Clock cells", "Other gates"];
+const TYPE_OF = D.masters.map((m) => /^(dff|sdff|lat)/.test(m) ? 0 : /^(clk|icg)/.test(m) ? 4 : /^(buf|inv|dly|tie|antenna)/.test(m) ? 1 : /^mux/.test(m) ? 2 : /^(add|xor|xnor)/.test(m) ? 3 : 5);
+
+// ---------- interaction ----------
+let drag = null;
+cv.addEventListener("pointerdown", (e) => { cv.setPointerCapture(e.pointerId); drag = { x: e.offsetX, y: e.offsetY, moved: false }; });
+cv.addEventListener("pointermove", (e) => {
+  if (drag) {
+    const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 2) drag.moved = true;
+    S.view.ox -= dx / S.view.s; S.view.oy += dy / S.view.s; drag.x = e.offsetX; drag.y = e.offsetY; draw(true); $("tip").style.display = "none"; return;
+  }
+  const h = pick(e.offsetX, e.offsetY), tip = $("tip");
+  $("hud").textContent = `x ${UM(WX(e.offsetX)).toFixed(1)}  y ${UM(WY(e.offsetY)).toFixed(1)} µm`;
+  if (!h) { tip.style.display = "none"; return; }
+  tip.textContent = h.tip; tip.style.display = "block";
+  tip.style.left = Math.min(S.W - 200, e.offsetX + 14) + "px"; tip.style.top = (e.offsetY + 14) + "px";
+});
+cv.addEventListener("pointerup", (e) => { if (drag && !drag.moved) select(pick(e.offsetX, e.offsetY)); drag = null; });
+cv.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const k = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0016)), wx = WX(e.offsetX), wy = WY(e.offsetY);
+  S.view.s = Math.max(0.004, Math.min(40, S.view.s * k));
+  S.view.ox = wx - e.offsetX / S.view.s; S.view.oy = wy - (S.H - e.offsetY) / S.view.s; draw(true);
+}, { passive: false });
+window.addEventListener("resize", resize);
+$("fit").onclick = () => fit();
+$("clear").onclick = () => { S.sel = null; S.net = -1; S.netShapes = null; S.block = -1; S.clock = false; S.path = false; panels(); draw(); };
+
+function pick(px, py) {
+  const x = WX(px), y = WY(py), inside = (r) => x >= r[0] && x <= r[2] && y >= r[1] && y <= r[3];
+  if (S.show.pads) for (const p of D.pads) if (inside(p.r)) return { kind: "pad", o: p, r: p.r, tip: `${p.label || p.name}${p.pin ? " · package pin " + p.pin : ""}` };
+  if (S.show.macros) for (const m of D.macros) if (inside(m.r)) return { kind: "macro", o: m, r: m.r, tip: `${m.label} · ${m.master}` };
+  let hit = null;
+  if (S.show.cells) visit(cells.ix, x, y, x, y, (i) => { const r = cells.rect.subarray(4 * i, 4 * i + 4); if (inside(r)) hit = { kind: "cell", i, r: Array.from(r), tip: `${D.masters[cells.master[i]]} · ${D.blocks[cells.group[i]].name}` }; });
+  return hit;
+}
+function select(h) { S.sel = h; if (!h) { S.net = -1; S.netShapes = null; } inspector(); draw(); }
+function showNet(n, zoom) {
+  S.net = n; S.netShapes = [];
+  let box = [1e9, 1e9, 0, 0];
+  for (const w of wires) {
+    const idx = []; for (let i = 0; i < w.n; i++) if (w.net[i] === n) { idx.push(i); box = [Math.min(box[0], w.rect[4 * i]), Math.min(box[1], w.rect[4 * i + 1]), Math.max(box[2], w.rect[4 * i + 2]), Math.max(box[3], w.rect[4 * i + 3])]; }
+    if (idx.length) S.netShapes.push({ w, idx });
+  }
+  S.netBox = box[2] ? box : null;
+  if (zoom && S.netBox) fit(S.netBox); else draw();
+  inspector();
+}
+function netLength(n) { let L = 0; for (const sh of S.netShapes || []) for (const i of sh.idx) L += Math.max(sh.w.rect[4 * i + 2] - sh.w.rect[4 * i], sh.w.rect[4 * i + 3] - sh.w.rect[4 * i + 1]); return UM(L); }
+
+// ---------- side panels ----------
+function row(color, text, n, cls, onclick) {
+  return el("div", { class: "row " + (cls || ""), tabindex: 0, onclick, onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onclick(); } } },
+    el("span", { class: "sw", style: `background:${color}` }), el("span", {}, text), el("span", { class: "n" }, n == null ? "" : String(n)));
+}
+function panels() {
+  const L = $("left"); L.textContent = "";
+  if (S.tab === "layout") {
+    L.append(el("h2", {}, "Layers"));
+    const tog = (key, color, text, n) => L.append(row(color, text, n, S.show[key] ? "" : "off", () => { S.show[key] = !S.show[key]; panels(); draw(); }));
+    for (const w of [...wires].reverse()) tog(w.layer, LAYER_STYLE[w.layer], w.layer + (w.layer === "Metal5" ? " (top, thick)" : ""), fmt(w.n));
+    tog("vias", "#dfe6f0", "Vias", fmt(vias.reduce((a, v) => a + v.n, 0)));
+    tog("pdn", "#6b5a2a", "Power grid", fmt(pdn.reduce((a, v) => a + v.n, 0)));
+    tog("cells", "#7f8da3", "Logic cells", fmt(cells.n));
+    tog("phys", "#1b222c", "Fill, taps, end caps", fmt(phys.n));
+    tog("macros", "#232c38", "SRAM and ID macros", D.macros.length);
+    tog("pads", "#333a46", "Pads", D.pads.length);
+    L.append(el("h2", {}, "Colour cells by"));
+    for (const [k, t] of [["block", "Functional block"], ["type", "Cell type"]]) L.append(row(k === S.colorBy ? "#ffb224" : "#27303c", t, "", k === S.colorBy ? "sel" : "", () => { S.colorBy = k; panels(); draw(); }));
+    if (S.colorBy === "type") { L.append(el("h2", {}, "Cell types")); TYPE_NAMES.forEach((t, i) => L.append(row(TYPE_COLORS[i], t, fmt(countType(i)), "", () => {}))); }
+    L.append(el("h2", {}, "How to read this"), el("p", { class: "muted" }, "Scroll to zoom, drag to pan, click a cell, pad or macro. Routing colours add up where layers cross, as in a mask viewer. Odd metals run mostly horizontally, even metals vertically."));
+  } else if (S.tab === "function") {
+    L.append(el("h2", {}, "Blocks by cell area"));
+    const tot = D.blocks.reduce((a, b) => a + b.area, 0), order = D.blocks.map((b, i) => i).filter((i) => D.blocks[i].cells).sort((a, b) => D.blocks[b].area - D.blocks[a].area);
+    const max = D.blocks[order[0]].area;
+    for (const i of order) {
+      const b = D.blocks[i];
+      L.append(row(BLOCK_COLORS[i], b.name, (100 * b.area / tot).toFixed(1) + "%", S.block === i ? "sel" : "", () => { S.block = S.block === i ? -1 : i; S.sel = null; S.net = -1; S.netShapes = null; panels(); inspector(); draw(); }),
+        el("div", { class: "bar" }, el("i", { style: `width:${100 * b.area / max}%;background:${BLOCK_COLORS[i]}` })));
+    }
+    L.append(el("h2", {}, "Overlays"));
+    L.append(row("#ffb224", "Clock distribution", fmt(wires.reduce((a, w) => a + w.clock.length, 0)), S.clock ? "sel" : "", () => { S.clock = !S.clock; panels(); draw(); }));
+    if (critical) L.append(row("#ff3d81", "Slowest timing path", critical.length + " stages", S.path ? "sel" : "", () => { S.path = !S.path; panels(); if (S.path) { const b = critical.reduce((a, r) => [Math.min(a[0], r[0]), Math.min(a[1], r[1]), Math.max(a[2], r[2]), Math.max(a[3], r[3])], [1e9, 1e9, 0, 0]); fit(b); } else draw(); }));
+    L.append(el("h2", {}, "Package pins"));
+    for (const p of D.pins || []) L.append(el("div", { class: "pin", tabindex: 0, onclick: () => gotoPin(p), onkeydown: (e) => { if (e.key === "Enter") gotoPin(p); } },
+      el("span", { class: "k" }, String(p.pin)), el("span", {}, p.name), el("span", { class: "f" }, p.fn || "")));
+  } else {
+    L.append(el("h2", {}, "Layer stack (GF180MCU, from the PDK)"));
+    const t = el("table", { class: "stack" });
+    for (const l of [...three.layers].reverse()) {
+      const tr = el("tr", { style: "cursor:pointer" + (l.on ? "" : ";opacity:.4") }, el("td", {}, el("span", { class: "sw", style: `display:inline-block;background:${l.color}` })), el("td", {}, l.label), el("td", {}, l.t.toFixed(2)), el("td", {}, l.z.toFixed(2)));
+      tr.onclick = () => { l.on = !l.on; three.update(); panels(); }; t.append(tr);
+    }
+    L.append(t, el("p", { class: "muted" }, "Columns: thickness and height above the silicon surface, in µm. Click a layer to hide it."));
+    L.append(el("h2", {}, "View"));
+    const sl = (text, id, min, max, step, val, fn) => { const i = el("input", { type: "range", id, min, max, step, value: val }); i.oninput = () => fn(+i.value); return el("label", { class: "sl", for: id }, text, i); };
+    L.append(sl("Explode", "sl-ex", 0, 3, 0.05, three.explode, (v) => { three.explode = v; three.update(); }));
+    L.append(sl("Height ×", "sl-z", 1, 4, 0.1, three.zk, (v) => { three.zk = v; three.update(); }));
+    L.append(el("p", { class: "muted" }, "Drag to orbit, scroll to zoom, right-drag to pan. The insulating oxide between layers is left out so the wiring is visible."));
+  }
+  inspector();
+}
+function countType(t) { let n = 0; for (let i = 0; i < cells.n; i++) if (TYPE_OF[cells.master[i]] === t) n++; return n; }
+function gotoPin(p) {
+  const pads = D.pads.filter((d) => d.pin === p.pin && d.kind !== "power");
+  if (!pads.length) return;
+  const main = pads.find((d) => d.kind === "gpio") || pads[0];
+  S.sel = { kind: "pad", o: main, r: main.r }; S.block = -1;
+  if (main.nets && main.nets.length) showNet(main.nets[0], false);
+  const b = pads.reduce((a, d) => [Math.min(a[0], d.r[0]), Math.min(a[1], d.r[1]), Math.max(a[2], d.r[2]), Math.max(a[3], d.r[3])], [1e9, 1e9, 0, 0]);
+  fit(S.netBox ? [Math.min(b[0], S.netBox[0]), Math.min(b[1], S.netBox[1]), Math.max(b[2], S.netBox[2]), Math.max(b[3], S.netBox[3])] : b);
+  panels();
+}
+function netLinks(list) {
+  const box = el("div", { class: "netlist" });
+  for (const n of list) box.append(el("a", { onclick: () => showNet(n, true) }, (nets.use[n] === 1 ? "⏲ " : "") + nets.names[n]));
+  return box;
+}
+function kv(pairs) { const d = el("dl", { class: "kv" }); for (const [k, v] of pairs) d.append(el("dt", {}, k), el("dd", {}, String(v))); return d; }
+function inspector() {
+  const R = $("right"); R.textContent = "";
+  if (S.tab === "process") {
+    R.append(el("h2", {}, "What you are looking at"), el("p", {}, D.crop ? D.crop.caption : ""),
+      el("p", { class: "muted" }, "Step through the slider to rebuild this corner of the chip in the order the fab does: transistors first, then one wiring layer at a time. Colours match the Geometry tab."));
+    if (D.crop) R.append(kv([["window", `${D.crop.w.toFixed(1)} × ${D.crop.h.toFixed(1)} µm`], ["shapes", fmt(D.crop.layers.reduce((a, l) => a + l.rects.length, 0))], ["source", D.crop.source]]));
+    return;
+  }
+  const h = S.sel;
+  if (S.net >= 0) {
+    const n = S.net, cnt = nets.ptr[n + 1] - nets.ptr[n];
+    R.append(el("h2", {}, nets.use[n] === 1 ? "Clock net" : "Net"), kv([["name", nets.names[n]], ["cells", cnt], ["routed length", netLength(n).toFixed(0) + " µm"], ["layers", (S.netShapes || []).map((s) => s.w.layer.replace("Metal", "M")).join(" ")]]),
+      el("button", { class: "btn", onclick: () => S.netBox && fit(S.netBox) }, "Zoom to net"), document.createTextNode(" "), el("button", { class: "btn", onclick: () => { S.net = -1; S.netShapes = null; inspector(); draw(); } }, "Hide net"));
+  }
+  if (h && h.kind === "cell") {
+    const i = h.i, b = D.blocks[cells.group[i]], r = h.r, list = Array.from(cellNets.list.subarray(cellNets.ptr[i], cellNets.ptr[i + 1]));
+    R.append(el("h2", {}, "Cell"), kv([["instance", cells.names[i]], ["type", D.masters[cells.master[i]]], ["block", b.name], ["size", `${UM(r[2] - r[0]).toFixed(2)} × ${UM(r[3] - r[1]).toFixed(2)} µm`], ["at", `${UM(r[0]).toFixed(1)}, ${UM(r[1]).toFixed(1)}`]]),
+      el("h2", {}, "Connected nets"), netLinks(list));
+  } else if (h && h.kind === "pad") {
+    const p = h.o;
+    R.append(el("h2", {}, "Pad"), kv([["pad", p.name], ["cell", p.master], ["bonds to", p.bond || "-"], ["package pin", p.pin || "none"], ["functions", p.fn || "-"]]));
+    if (p.note) R.append(el("p", {}, p.note));
+    if (p.nets && p.nets.length) R.append(el("h2", {}, "Nets on this pad"), netLinks(p.nets));
+  } else if (h && h.kind === "macro") {
+    const m = h.o;
+    R.append(el("h2", {}, "Macro"), kv([["what", m.label], ["instance", m.name], ["cell", m.master], ["size", `${UM(m.r[2] - m.r[0]).toFixed(0)} × ${UM(m.r[3] - m.r[1]).toFixed(0)} µm`]]));
+  }
+  if (S.tab === "function" && S.path && D.summary.critical) {
+    const c = D.summary.critical;
+    R.append(el("h2", {}, "Slowest timing path"), el("p", {}, c.text), kv([["slack", c.slack], ["corner", c.corner], ["from", c.start], ["to", c.end], ["stages", critical.length]]));
+  }
+  if (S.tab === "function" && S.clock) R.append(el("h2", {}, "Clock distribution"), el("p", {}, "Every wire of the nets the router treated as clocks. The external clock enters at PB6, passes the clock switch and the two clock gates, and fans out through a tree of buffers so that all flip-flops see the edge at nearly the same time."));
+  if (S.tab === "function" && S.block >= 0) {
+    const b = D.blocks[S.block];
+    R.append(el("h2", {}, "Block"), el("p", {}, el("strong", {}, b.name)), el("p", {}, b.desc), kv([["cells", fmt(b.cells)], ["cell area", (b.area / 1e6).toFixed(3) + " mm²"]]));
+  }
+  if (!R.childElementCount) {
+    const m = D.summary || {};
+    R.append(el("h2", {}, "This layout"), el("p", {}, m.headline || ""));
+    if (m.facts) R.append(kv(m.facts));
+    if (m.caveat) R.append(el("p", { class: "muted" }, m.caveat));
+    R.append(el("p", { class: "muted" }, S.tab === "function" ? "Pick a block to light it up, or a package pin to follow it from the pad into the logic." : "Click anything on the canvas to inspect it. Cells list their nets; click a net to trace its wires."));
+  }
+}
+
+// ---------- search ----------
+$("search").addEventListener("input", (e) => {
+  const qy = e.target.value.trim().toLowerCase(), R = $("right");
+  if (qy.length < 2) { inspector(); return; }
+  if (S.tab === "process") setTab("layout");
+  R.textContent = ""; R.append(el("h2", {}, "Search results"));
+  let n = 0; const add = (text, fn) => { if (n++ < 60) R.append(el("div", { class: "hit", onclick: fn }, text)); };
+  for (const p of D.pads) if ((p.name + " " + (p.label || "") + " " + (p.fn || "")).toLowerCase().includes(qy)) add("pad  " + (p.label || p.name), () => { select({ kind: "pad", o: p, r: p.r }); fit(p.r); });
+  for (let i = 0; i < nets.names.length && n < 60; i++) if (nets.names[i].toLowerCase().includes(qy)) add("net  " + nets.names[i], () => showNet(i, true));
+  for (let i = 0; i < cells.n && n < 60; i++) if (cells.names[i].toLowerCase().includes(qy)) add("cell " + cells.names[i], () => { const r = Array.from(cells.rect.subarray(4 * i, 4 * i + 4)); select({ kind: "cell", i, r }); fit(r); });
+  if (!n) R.append(el("p", { class: "muted" }, "Nothing matches. Net names keep their RTL hierarchy, for example u_core.u_usart0."));
+});
+
+// ---------- tabs ----------
+const TABS = { layout: "tab-layout", function: "tab-function", process: "tab-process" };
+function setTab(t) {
+  S.tab = t;
+  for (const k in TABS) $(TABS[k]).setAttribute("aria-selected", k === t);
+  const p = t === "process";
+  cv.style.display = p ? "none" : "block"; $("gl").style.display = p ? "block" : "none"; $("proc").style.display = p ? "block" : "none";
+  $("hud").style.display = $("scale").style.display = $("fit").style.display = $("clear").style.display = p ? "none" : "";
+  if (p) three.start();
+  panels(); if (!p) draw();
+  try { history.replaceState(null, "", "#" + (t === "layout" ? "geometry" : t)); } catch (e) {}
+}
+function route() { const h = location.hash.slice(1); setTab(h === "function" ? "function" : h === "process" ? "process" : "layout"); }
+for (const k in TABS) $(TABS[k]).onclick = () => setTab(k);
+window.addEventListener("hashchange", route);
+
+// ---------- process view (three.js) ----------
+const three = {
+  ready: false, layers: [], explode: 0.6, zk: 2, step: 0, timer: 0,
+  start() {
+    if (!D.crop || typeof THREE === "undefined") { $("steptext").textContent = "The 3D view needs three.js, which could not be loaded."; return; }
+    if (!this.ready) this.init();
+    this.resize(); this.render();
+  },
+  init() {
+    const c = D.crop, box = $("gl");
+    this.scene = new THREE.Scene(); this.scene.background = new THREE.Color(0x0c0f14);
+    this.cam = new THREE.PerspectiveCamera(32, 1, 0.1, 2000);
+    this.gl = new THREE.WebGLRenderer({ antialias: true }); this.gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); box.append(this.gl.domElement);
+    this.ctl = new THREE.OrbitControls(this.cam, this.gl.domElement); this.ctl.addEventListener("change", () => this.render());
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.62));
+    const d1 = new THREE.DirectionalLight(0xffffff, 0.75); d1.position.set(-0.6, 1.4, 0.9); this.scene.add(d1);
+    const d2 = new THREE.DirectionalLight(0xfff0d0, 0.25); d2.position.set(0.8, 0.6, -0.7); this.scene.add(d2);
+    const unit = new THREE.BoxGeometry(1, 1, 1), m4 = new THREE.Matrix4();
+    // silicon
+    const sub = new THREE.Mesh(unit, new THREE.MeshLambertMaterial({ color: 0x2b3038 })); sub.userData.sub = true; this.sub = sub; this.scene.add(sub);
+    this.layers = c.layers.map((l, k) => {
+      const mat = new THREE.MeshLambertMaterial({ color: l.color, transparent: l.alpha < 1, opacity: l.alpha });
+      const mesh = new THREE.InstancedMesh(unit, mat, l.rects.length);
+      this.scene.add(mesh);
+      return { ...l, mesh, on: true, k };
+    });
+    this.m4 = m4;
+    const st = $("step"); st.max = c.steps.length - 1; st.value = st.max; this.step = +st.max;
+    st.oninput = () => { this.step = +st.value; this.stop(); this.update(); };
+    $("play").onclick = () => { if (this.timer) return this.stop(); if (this.step >= c.steps.length - 1) this.step = 0; else this.step++; st.value = this.step; this.update(); $("play").textContent = "Pause";
+      this.timer = setInterval(() => { if (this.step >= c.steps.length - 1) return this.stop(); this.step++; st.value = this.step; this.update(); }, 1500); };
+    const r = Math.max(c.w, c.h);
+    this.cam.position.set(c.w * 0.5 - r * 1.35, r * 1.5, c.h * 0.5 + r * 1.9); this.ctl.target.set(c.w / 2, 7, c.h / 2);
+    this.ctl.update(); this.ready = true; this.update();
+  },
+  stop() { clearInterval(this.timer); this.timer = 0; $("play").textContent = "Play"; },
+  update() {
+    if (!this.ready) return;
+    const c = D.crop, zk = this.zk, st = c.steps[this.step];
+    this.sub.scale.set(c.w, 3, c.h); this.sub.position.set(c.w / 2, -1.5, c.h / 2);
+    for (const l of this.layers) {
+      const lift = l.order * this.explode, m = l.mesh; m.visible = l.on && l.step <= this.step;
+      if (!m.visible) continue;
+      const y0 = l.z * zk + lift, t = Math.max(0.02, l.t * zk);
+      l.rects.forEach((r, i) => { const w = r[2] - r[0], h = r[3] - r[1]; this.m4.makeScale(w, t, h); this.m4.setPosition(r[0] + w / 2, y0 + t / 2, c.h - (r[1] + h / 2)); m.setMatrixAt(i, this.m4); });
+      m.instanceMatrix.needsUpdate = true;
+    }
+    $("stepname").textContent = `${this.step + 1} / ${c.steps.length}  ${st.name}`; $("steptext").textContent = st.text;
+    this.render();
+  },
+  resize() { if (!this.ready) return; const r = $("stage").getBoundingClientRect(); this.gl.setSize(r.width, r.height); this.cam.aspect = r.width / r.height; this.cam.updateProjectionMatrix(); this.render(); },
+  render() { if (this.ready) this.gl.render(this.scene, this.cam); },
+};
+
+load().catch((e) => { $("load").textContent = "Could not unpack the layout data: " + e.message + ". This page needs a current browser (DecompressionStream)."; });
+</script>
+</body>
+</html>

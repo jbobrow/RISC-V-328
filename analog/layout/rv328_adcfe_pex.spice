@@ -1,0 +1,4627 @@
+* rv328_adcfe with the wiring capacitance of its layout. Written by analog/layout/pex_block.py from rv328_adcfe.gds;
+* same cell name and pins as the schematic. 3963 wiring capacitors, no wiring resistance;
+* 1453 transistor fingers; groups of 9 or more identical parallel ones are one line with m=.
+* NGSPICE file created from rv328_adcfe.ext - technology: gf180mcuD
+
+.subckt rv328_adcfe avdd vss ain vrefp sample d9 d8 d7 d6 d5 d4 d3 d2 d1 d0 vbp en cmp
+X0 b9 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u m=126
+X5 ain bsb b9 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X45 b9 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X128 ain bs b9 vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.7u
+X129 ain bs b9 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u m=62
+X132 b9 bs ain vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.7u
+X192 ain bs b8 vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.7u
+X193 ain bs b8 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u m=30
+X214 b8 bs ain vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.7u
+X224 b9 sg9 vss vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.4u
+X225 vss sg9 b9 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u m=30
+X254 vss sg9 b9 vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.4u
+X256 vrefp sr9 b9 vss nfet_06v0 ad=0.14597n pd=0.56508m as=0.29376n ps=1.12944m w=8u l=1.4u
+X257 b9 sr9 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u m=31
+X288 ain bsb b8 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X289 b8 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u m=62
+X337 b8 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X352 vrefp rb9 b9 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.2u
+X353 b9 rb9 vrefp avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u m=62
+X374 b9 rb9 vrefp avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.2u
+X416 xcmp_vbi en avdd avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.6u
+X417 cmp xcmp_o3 vss vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.7u
+X418 xcmp_d1 azc vss vss nfet_06v0 ad=1p pd=5u as=0.32768n ps=1.55312m w=2u l=0.7u
+X419 xcmp_o2 xcmp_enb vss vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X420 xcmp_o3 xcmp_o2 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X421 xcmp_enb en vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X422 xcmp_a dum xcmp_tail avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=2u
+X423 xcmp_a dum xcmp_tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X424 xcmp_a dum xcmp_tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X425 xcmp_tail dum xcmp_a avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X426 xcmp_tail dum xcmp_a avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=2u
+X427 xcmp_tail dum xcmp_a avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X428 xcmp_a dum xcmp_tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X429 xcmp_tail dum xcmp_a avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X430 xcmp_x azc xcmp_xm vss nfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=0.7u
+X431 vbp en xcmp_vbi vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X432 xcmp_b top xcmp_tail avdd pfet_06v0 ad=22.4p pd=84.48u as=71.52p ps=0.27696m w=10u l=2u
+X433 xcmp_b top xcmp_tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X434 xcmp_b top xcmp_tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X435 xcmp_tail top xcmp_b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X436 xcmp_tail top xcmp_b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X437 xcmp_tail top xcmp_b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X438 xcmp_b top xcmp_tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X439 xcmp_tail top xcmp_b avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X440 xcmp_xm azc xcmp_vb vss nfet_06v0 ad=0.75p pd=6u as=2.75p ps=15u w=0.5u l=0.7u
+X441 xcmp_xm xcmp_azn xcmp_vb vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X442 xcmp_y azc xcmp_ym vss nfet_06v0 ad=0.25p pd=2u as=0.75p ps=6u w=0.5u l=0.7u
+X443 xcmp_ym azc xcmp_o1 vss nfet_06v0 ad=0 pd=0 as=6.25p ps=28u w=0.5u l=0.7u
+X444 xcmp_ym xcmp_azn xcmp_vb vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X445 xcmp_n1 xcmp_x xcmp_tail2 avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=2u
+X446 xcmp_n1 xcmp_x xcmp_tail2 avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X447 xcmp_tail2 xcmp_x xcmp_n1 avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X448 xcmp_tail2 xcmp_x xcmp_n1 avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=2u
+X449 xcmp_tail xcmp_vbi avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=8u
+X450 avdd xcmp_vbi xcmp_tail avdd pfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=8u
+X451 xcmp_tail xcmp_vbi avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=8u
+X452 avdd xcmp_vbi xcmp_tail avdd pfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=8u
+X453 xcmp_n1 xcmp_n1 vss vss nfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=4u
+X454 xcmp_azn azc vss vss nfet_06v0 ad=0.25p pd=2u as=0 ps=0 w=0.5u l=0.7u
+X455 xcmp_d1 vss cap_mim_2f0_m4m5_noshield c_width=10u c_length=10u
+X456 xcmp_o1 xcmp_y xcmp_tail2 avdd pfet_06v0 ad=11.2p pd=42.24u as=40.16p ps=0.15936m w=10u l=2u
+X457 xcmp_o1 xcmp_y xcmp_tail2 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X458 xcmp_tail2 xcmp_y xcmp_o1 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X459 xcmp_tail2 xcmp_y xcmp_o1 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X460 cmp xcmp_o3 avdd avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.55u
+X461 xcmp_azd vss cap_mim_2f0_m4m5_noshield c_width=10u c_length=10u
+X462 xcmp_o1 xcmp_n1 vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=4u
+X463 vbp xcmp_enb xcmp_vbi avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.55u
+X464 xcmp_tail2 xcmp_vbi avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=8u
+X465 avdd xcmp_vbi xcmp_tail2 avdd pfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=8u
+X466 xcmp_enb en avdd avdd pfet_06v0 ad=1p pd=5u as=0.31468n ps=1.47431m w=2u l=0.55u
+X467 xcmp_azn azc avdd avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.55u
+X468 xcmp_vb xcmp_vbi avdd avdd pfet_06v0 ad=8.96p pd=33.12u as=0 ps=0 w=16u l=8u
+X469 avdd xcmp_vbi xcmp_vb avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=16u l=8u
+X470 xcmp_o2 xcmp_vbi avdd avdd pfet_06v0 ad=8.96p pd=33.12u as=0 ps=0 w=16u l=8u
+X471 avdd xcmp_vbi xcmp_o2 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=16u l=8u
+X472 xcmp_o3 xcmp_o2 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X473 xcmp_azd xcmp_d1 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X474 xcmp_d1 azc avdd avdd pfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=8u
+X475 xcmp_vb xcmp_vb vss vss nfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=1u
+X476 xcmp_vb vss cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X477 xcmp_o2 xcmp_o1 vss vss nfet_06v0 ad=2.5p pd=12u as=0 ps=0 w=4u l=1u
+X478 xcmp_a xcmp_x cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X479 xcmp_azd xcmp_d1 vss vss nfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=8u
+X480 xcmp_b xcmp_y cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X481 xcmp_a vss vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X482 xcmp_oc vss cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X483 xcmp_b vss vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X484 xcmp_o1 xcmp_azd xcmp_oc vss nfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.7u
+X485 q2 vss cap_mim_2f0_m4m5_noshield c_width=7u c_length=7u
+X486 azb dn xds_n1 avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=1u
+X487 q2 q1 vss vss nfet_06v0 ad=0.25p pd=2u as=0 ps=0 w=0.5u l=0.7u
+X488 q1 vss cap_mim_2f0_m4m5_noshield c_width=7u c_length=7u
+X489 xds_n1 dn avdd avdd pfet_06v0 ad=5p pd=23u as=0 ps=0 w=4u l=1u
+X490 q1 hs vss vss nfet_06v0 ad=0.25p pd=2u as=0 ps=0 w=0.5u l=0.7u
+X491 a d1b vss vss nfet_06v0 ad=0.25p pd=2u as=0 ps=0 w=0.5u l=0.7u
+X492 azb dn xds_n2 vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=1u
+X493 xds_n2 dn vss vss nfet_06v0 ad=2.5p pd=13u as=0 ps=0 w=2u l=1u
+X494 azc vss cap_mim_2f0_m4m5_noshield c_width=10u c_length=10u
+X495 q2 q1 avdd avdd pfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.55u
+X496 d1b azc vss vss nfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=0.7u
+X497 q1 hs avdd avdd pfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.55u
+X498 a d1b avdd avdd pfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.55u
+X499 xds_n2 azb avdd vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=1u
+X500 d1b azc avdd avdd pfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=4u
+X501 dn vss cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X502 azc azn vss vss nfet_06v0 ad=0.25p pd=2u as=0 ps=0 w=0.5u l=8u
+X503 xds_n1 azb vss avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=1u
+X504 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_5100# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X505 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2100# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X506 dn rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X507 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2100# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X508 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2700# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X509 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2700# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X510 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X511 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3300# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X512 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3300# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X513 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X514 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X515 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3900# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X516 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3900# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X517 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_4500# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X518 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X519 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_4500# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X520 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X521 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X522 ts rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X523 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_5100# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=60u
+X524 a vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X525 azc azn avdd avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.6u
+X526 d1b vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X527 vrefp rb8 b8 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.2u
+X528 b8 rb8 vrefp avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.2u
+X529 vrefp rb8 b8 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u m=30
+X559 ain bs b4 vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.7u
+X560 b4 bs ain vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.7u
+X561 ain bsb b6 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X562 b6 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u m=14
+X567 b6 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X577 bx hsg vss vss nfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=1.4u
+X578 b0 sg0 vss vss nfet_06v0 ad=1p pd=7u as=0 ps=0 w=0.5u l=1.4u
+X579 vrefp sr0 b0 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=1.4u
+X580 vrefp rb7 b7 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.2u
+X581 vrefp rb7 b7 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u m=14
+X588 b7 rb7 vrefp avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.2u
+X596 ain bs b0 vss nfet_06v0 ad=0.28892n pd=1.11092m as=0 ps=0 w=1u l=0.7u
+X597 ain bs bx vss nfet_06v0 ad=0 pd=0 as=0.75p ps=5u w=1u l=0.7u
+X598 vrefp rb3 b3 avdd pfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=1.2u
+X599 vrefp rb2 b2 avdd pfet_06v0 ad=0.28p pd=1.56u as=0.5p ps=3u w=1u l=1.2u
+X600 vrefp rb2 b2 avdd pfet_06v0 ad=0.28p pd=1.56u as=0.28p ps=1.56u w=1u l=1.2u
+X601 b2 rb2 vrefp avdd pfet_06v0 ad=0.5p pd=3u as=0.28p ps=1.56u w=1u l=1.2u
+X602 b2 rb2 vrefp avdd pfet_06v0 ad=0.28p pd=1.56u as=0.28p ps=1.56u w=1u l=1.2u
+X603 vrefp rb1 b1 avdd pfet_06v0 ad=0.28p pd=1.56u as=0.5p ps=3u w=1u l=1.2u
+X604 b1 rb1 vrefp avdd pfet_06v0 ad=0.5p pd=3u as=0.28p ps=1.56u w=1u l=1.2u
+X605 b4 sg4 vss vss nfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=1.4u
+X606 vrefp sr4 b4 vss nfet_06v0 ad=0 pd=0 as=16p ps=68u w=8u l=1.4u
+X607 b2 sg2 vss vss nfet_06v0 ad=0.14p pd=1.06u as=0.25p ps=2u w=0.5u l=1.4u
+X608 vss sg2 b2 vss nfet_06v0 ad=0.25p pd=2u as=0.14p ps=1.06u w=0.5u l=1.4u
+X609 vss sg2 b2 vss nfet_06v0 ad=0.14p pd=1.06u as=0.14p ps=1.06u w=0.5u l=1.4u
+X610 b2 sg2 vss vss nfet_06v0 ad=0.14p pd=1.06u as=0.14p ps=1.06u w=0.5u l=1.4u
+X611 vrefp rb6 b6 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.2u
+X612 vrefp rb6 b6 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X613 b6 rb6 vrefp avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X614 b6 rb6 vrefp avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X615 b6 rb6 vrefp avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.2u
+X616 vrefp rb6 b6 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X617 b6 rb6 vrefp avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X618 vrefp rb6 b6 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X619 ain bsb bx avdd pfet_06v0 ad=0.57432n pd=2.1996m as=1p ps=5u w=2u l=0.55u
+X620 vrefp sr2 b2 vss nfet_06v0 ad=0 pd=0 as=2.9p ps=19.48u w=0.5u l=1.4u
+X621 b2 sr2 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=1.4u
+X622 b2 sr2 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=1.4u
+X623 vrefp sr2 b2 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=1.4u
+X624 ain bs b3 vss nfet_06v0 ad=0 pd=0 as=8p ps=35u w=8u l=0.7u
+X625 ain bsb b0 avdd pfet_06v0 ad=0 pd=0 as=1.5p ps=8u w=2u l=0.55u
+X626 ain bs b2 vss nfet_06v0 ad=0.28p pd=1.56u as=0.5p ps=3u w=1u l=0.7u
+X627 b2 bs ain vss nfet_06v0 ad=0.5p pd=3u as=0.28p ps=1.56u w=1u l=0.7u
+X628 b2 bs ain vss nfet_06v0 ad=0.28p pd=1.56u as=0.28p ps=1.56u w=1u l=0.7u
+X629 ain bs b2 vss nfet_06v0 ad=0.28p pd=1.56u as=0.28p ps=1.56u w=1u l=0.7u
+X630 b1 sg1 vss vss nfet_06v0 ad=0.14p pd=1.06u as=0.25p ps=2u w=0.5u l=1.4u
+X631 vss sg1 b1 vss nfet_06v0 ad=0.25p pd=2u as=0.14p ps=1.06u w=0.5u l=1.4u
+X632 ain bsb b5 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X633 b5 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X634 ain bsb b5 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X635 ain bsb b5 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X636 b5 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X637 b5 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X638 ain bsb b5 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X639 b5 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X640 ain bs b7 vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.7u
+X641 ain bs b7 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u m=14
+X654 b7 bs ain vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.7u
+X656 b7 sg7 vss vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.4u
+X657 vss sg7 b7 vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.4u
+X658 vss sg7 b7 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X659 vss sg7 b7 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X660 b7 sg7 vss vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X661 b7 sg7 vss vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X662 vss sg7 b7 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X663 b7 sg7 vss vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X664 vrefp sr7 b7 vss nfet_06v0 ad=0 pd=0 as=78.71999p ps=0.30768m w=8u l=1.4u
+X665 b7 sr7 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X666 b7 sr7 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X667 b7 sr7 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X668 vrefp sr7 b7 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X669 vrefp sr7 b7 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X670 b7 sr7 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X671 vrefp sr7 b7 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X672 vrefp sr1 b1 vss nfet_06v0 ad=0 pd=0 as=1.78p ps=12.12u w=0.5u l=1.4u
+X673 b1 sr1 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=1.4u
+X674 ain bs b1 vss nfet_06v0 ad=0.28p pd=1.56u as=0.5p ps=3u w=1u l=0.7u
+X675 b1 bs ain vss nfet_06v0 ad=0.5p pd=3u as=0.28p ps=1.56u w=1u l=0.7u
+X676 vrefp rb5 b5 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.2u
+X677 vrefp rb5 b5 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X678 b5 rb5 vrefp avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.2u
+X679 b5 rb5 vrefp avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.2u
+X680 vrefp rb4 b4 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.2u
+X681 b4 rb4 vrefp avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.2u
+X682 ain bs b6 vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.7u
+X683 b6 bs ain vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X684 b6 bs ain vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.7u
+X685 b6 bs ain vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X686 b6 bs ain vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X687 ain bs b6 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X688 ain bs b6 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X689 ain bs b6 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X690 ain bsb b4 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X691 b4 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X692 ain bsb b4 avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X693 b4 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u
+X694 b6 sg6 vss vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.4u
+X695 vss sg6 b6 vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.4u
+X696 vss sg6 b6 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X697 b6 sg6 vss vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u
+X698 b3 sg3 vss vss nfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=1.4u
+X699 b8 sg8 vss vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.4u
+X700 vss sg8 b8 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=1.4u m=14
+X708 vss sg8 b8 vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.4u
+X715 vrefp sr3 b3 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=4u l=1.4u
+X716 vrefp sr6 b6 vss nfet_06v0 ad=0 pd=0 as=42.88p ps=0.17072m w=8u l=1.4u
+X717 b6 sr6 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X718 b6 sr6 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X719 vrefp sr6 b6 vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X720 vrefp sr8 b8 vss nfet_06v0 ad=0 pd=0 as=0.1504n ps=0.5816m w=8u l=1.4u
+X721 b8 sr8 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u m=15
+X736 ain bsb b3 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X737 b3 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X738 b5 sg5 vss vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=1.4u
+X739 vss sg5 b5 vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=1.4u
+X740 ain bsb b2 avdd pfet_06v0 ad=0.56p pd=2.56u as=1p ps=5u w=2u l=0.55u
+X741 b2 bsb ain avdd pfet_06v0 ad=1p pd=5u as=0.56p ps=2.56u w=2u l=0.55u
+X742 ain bsb b2 avdd pfet_06v0 ad=0.56p pd=2.56u as=0.56p ps=2.56u w=2u l=0.55u
+X743 b2 bsb ain avdd pfet_06v0 ad=0.56p pd=2.56u as=0.56p ps=2.56u w=2u l=0.55u
+X744 vrefp sr5 b5 vss nfet_06v0 ad=0 pd=0 as=24.96p ps=0.10224m w=8u l=1.4u
+X745 b5 sr5 vrefp vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=1.4u
+X746 ain bs b5 vss nfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.7u
+X747 b5 bs ain vss nfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.7u
+X748 b5 bs ain vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X749 ain bs b5 vss nfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.7u
+X750 vrefp rb0 b0 avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=1.2u
+X751 ain bsb b7 avdd pfet_06v0 ad=2.24p pd=8.56u as=4p ps=17u w=8u l=0.55u
+X752 b7 bsb ain avdd pfet_06v0 ad=2.24p pd=8.56u as=2.24p ps=8.56u w=8u l=0.55u m=30
+X777 b7 bsb ain avdd pfet_06v0 ad=4p pd=17u as=2.24p ps=8.56u w=8u l=0.55u
+X783 ain bsb b1 avdd pfet_06v0 ad=0.56p pd=2.56u as=1p ps=5u w=2u l=0.55u
+X784 b1 bsb ain avdd pfet_06v0 ad=1p pd=5u as=0.56p ps=2.56u w=2u l=0.55u
+X785 avdd nr5 sr5 avdd pfet_05v0 ad=1.14375p pd=4.91u as=0.59475p ps=2.48u w=1.83u l=0.5u
+X786 sr5 nr5 vss vss nfet_05v0 ad=0.363p pd=1.87u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X787 vss nr5 sr5 vss nfet_05v0 ad=0.5808p pd=3.52u as=0.363p ps=1.87u w=1.32u l=0.6u
+X788 sr5 nr5 avdd avdd pfet_05v0 ad=0.59475p pd=2.48u as=0.8052p ps=4.54u w=1.83u l=0.5u
+X789 avdd hsg gn5 avdd pfet_05v0 ad=0.3796p pd=1.98u as=0.3796p ps=1.98u w=1.46u l=0.5u
+X790 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# rb5 vss vss nfet_05v0 ad=0.2112p pd=1.64u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X791 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# vss nfet_05v0 ad=0.2772p pd=1.74u as=0.2112p ps=1.64u w=1.32u l=0.6u
+X792 gn5 db5 avdd avdd pfet_05v0 ad=0.6424p pd=3.8u as=0.3796p ps=1.98u w=1.46u l=0.5u
+X793 gn5 db5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0.2772p ps=1.74u w=1.32u l=0.6u
+X794 gn5 rb5 avdd avdd pfet_05v0 ad=0.3796p pd=1.98u as=0.6424p ps=3.8u w=1.46u l=0.5u
+X795 avdd hsg gn2 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X796 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# rb2 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X797 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X798 gn2 db2 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X799 gn2 db2 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X800 gn2 rb2 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X801 avdd ts tsb avdd pfet_05v0 ad=0 pd=0 as=1.1895p ps=4.96u w=1.83u l=0.5u
+X802 tsb ts vss vss nfet_05v0 ad=0.726p pd=3.74u as=0 ps=0 w=1.32u l=0.6u
+X803 vss ts tsb vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X804 tsb ts avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X805 avdd gn5 sg5 avdd pfet_05v0 ad=0 pd=0 as=1.1895p ps=4.96u w=1.83u l=0.5u
+X806 sg5 gn5 vss vss nfet_05v0 ad=0.726p pd=3.74u as=0 ps=0 w=1.32u l=0.6u
+X807 vss gn5 sg5 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X808 sg5 gn5 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X809 avdd hs nr2 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X810 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# gb2 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X811 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X812 nr2 d2 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X813 nr2 d2 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X814 nr2 gb2 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X815 avdd sr5 rb5 avdd pfet_05v0 ad=0 pd=0 as=1.1895p ps=4.96u w=1.83u l=0.5u
+X816 rb5 sr5 vss vss nfet_05v0 ad=0.726p pd=3.74u as=0 ps=0 w=1.32u l=0.6u
+X817 vss sr5 rb5 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X818 rb5 sr5 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X819 avdd hsg gn1 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X820 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# rb1 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X821 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X822 gn1 db1 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X823 gn1 db1 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X824 gn1 rb1 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X825 avdd hsg gn6 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X826 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# rb6 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X827 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X828 gn6 db6 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X829 gn6 db6 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X830 gn6 rb6 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X831 avdd hs nr1 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X832 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# gb1 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X833 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X834 nr1 d1 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X835 nr1 d1 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X836 nr1 gb1 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X837 avdd hsg gn0 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X838 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# rb0 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X839 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X840 gn0 db0 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X841 gn0 db0 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X842 gn0 rb0 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X843 avdd hs nr0 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X844 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# gb0 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X845 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X846 nr0 d0 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X847 nr0 d0 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X848 nr0 gb0 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X849 hsn bsb avdd avdd pfet_05v0 ad=0.4277p pd=2.165u as=0.7238p ps=4.17u w=1.645u l=0.5u
+X850 avdd ab hsn avdd pfet_05v0 ad=0.7238p pd=4.17u as=0.4277p ps=2.165u w=1.645u l=0.5u
+X851 hsn ab rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0.2112p ps=1.64u w=1.32u l=0.6u
+X852 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# bsb vss vss nfet_05v0 ad=0.2112p pd=1.64u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X853 avdd hsb bsn avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X854 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# hsgs vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X855 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# hsb rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X856 bsn a avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X857 bsn a rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X858 bsn hsgs avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X859 avdd hs nr5 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X860 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# gb5 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X861 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X862 nr5 d5 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X863 nr5 d5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X864 nr5 gb5 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X865 avdd hsg gn4 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X866 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# rb4 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X867 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X868 gn4 db4 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X869 gn4 db4 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X870 gn4 rb4 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X871 avdd hs nr4 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X872 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# gb4 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X873 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X874 nr4 d4 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X875 nr4 d4 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X876 nr4 gb4 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X877 avdd hsg gn3 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X878 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# rb3 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X879 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X880 gn3 db3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X881 gn3 db3 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X882 gn3 rb3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X883 avdd hs nr3 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X884 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# gb3 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X885 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X886 nr3 d3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X887 nr3 d3 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X888 nr3 gb3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X889 avdd hs nr8 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X890 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# gb8 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X891 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X892 nr8 d8 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X893 nr8 d8 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X894 nr8 gb8 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X895 avdd hsg gn7 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X896 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# rb7 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X897 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X898 gn7 db7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X899 gn7 db7 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X900 gn7 rb7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X901 gb9 sg9 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0.8052p ps=4.54u w=1.83u l=0.5u
+X902 gb9 sg9 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X903 db9 d9 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X904 db9 d9 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X905 gb8 sg8 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X906 gb8 sg8 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X907 db1 d1 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X908 db1 d1 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X909 sg3 gn3 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X910 sg3 gn3 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X911 hsb hs avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X912 hsb hs vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X913 hsgs hsg avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X914 hsgs hsg vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X915 sg0 gn0 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X916 sg0 gn0 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X917 azn az avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X918 azn az vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X919 rb1 sr1 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X920 rb1 sr1 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X921 rb8 sr8 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u m=14
+X922 avdd sr8 rb8 avdd pfet_05v0 ad=0.8052p pd=4.54u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X923 vss sr8 rb8 vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u m=14
+X936 rb8 sr8 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X939 vss sr8 rb8 vss nfet_05v0 ad=0.5808p pd=3.52u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X949 rb8 sr8 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.8052p ps=4.54u w=1.83u l=0.5u
+X953 rb3 sr3 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X954 rb3 sr3 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X955 sg7 gn7 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X956 vss gn7 sg7 vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X957 avdd gn7 sg7 avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X958 vss gn7 sg7 vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X959 sg7 gn7 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X960 avdd gn7 sg7 avdd pfet_05v0 ad=0.8052p pd=4.54u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X961 sg7 gn7 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X962 avdd gn7 sg7 avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X963 sg7 gn7 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X964 sg7 gn7 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X965 avdd gn7 sg7 avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X966 sg7 gn7 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X967 sg7 gn7 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X968 sg7 gn7 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.8052p ps=4.54u w=1.83u l=0.5u
+X969 vss gn7 sg7 vss nfet_05v0 ad=0.5808p pd=3.52u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X970 vss gn7 sg7 vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X971 ts0 sample avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X972 ts0 sample vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X973 db3 d3 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X974 db3 d3 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X975 sg4 gn4 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X976 sg4 gn4 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X977 rb7 sr7 avdd avdd pfet_05v0 ad=4.5384p pd=19.6u as=0 ps=0 w=1.83u l=0.5u
+X978 vss sr7 rb7 vss nfet_05v0 ad=0 pd=0 as=2.7456p ps=14.72u w=1.32u l=0.6u
+X979 avdd sr7 rb7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X980 vss sr7 rb7 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X981 rb7 sr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X982 avdd sr7 rb7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X983 rb7 sr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X984 avdd sr7 rb7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X985 rb7 sr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X986 rb7 sr7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X987 avdd sr7 rb7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X988 rb7 sr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X989 rb7 sr7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X990 rb7 sr7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X991 vss sr7 rb7 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X992 vss sr7 rb7 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X993 sr3 nr3 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X994 sr3 nr3 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X995 db6 d6 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X996 db6 d6 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X997 sg2 gn2 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X998 sg2 gn2 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X999 rb4 sr4 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1000 rb4 sr4 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1001 sg9 gn9 avdd avdd pfet_05v0 ad=18.1536p pd=78.4u as=0 ps=0 w=1.83u l=0.5u
+X1002 avdd gn9 sg9 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=31
+X1003 vss gn9 sg9 vss nfet_05v0 ad=0 pd=0 as=10.9824p ps=58.88u w=1.32u l=0.6u
+X1005 vss gn9 sg9 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=31
+X1033 rb0 sr0 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1034 rb0 sr0 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1035 hsg q3 avdd avdd pfet_05v0 ad=4.5384p pd=19.6u as=0 ps=0 w=1.83u l=0.5u
+X1036 vss q3 hsg vss nfet_05v0 ad=0 pd=0 as=2.7456p ps=14.72u w=1.32u l=0.6u
+X1037 avdd q3 hsg avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1038 vss q3 hsg vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1039 hsg q3 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1040 avdd q3 hsg avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1041 hsg q3 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1042 avdd q3 hsg avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1043 hsg q3 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1044 hsg q3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1045 avdd q3 hsg avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1046 hsg q3 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1047 hsg q3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1048 hsg q3 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1049 vss q3 hsg vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1050 vss q3 hsg vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1051 gb4 sg4 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1052 gb4 sg4 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1053 sr0 nr0 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1054 sr0 nr0 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1055 sr4 nr4 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1056 sr4 nr4 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1057 hs hsn avdd avdd pfet_05v0 ad=4.5384p pd=19.6u as=0 ps=0 w=1.83u l=0.5u
+X1058 vss hsn hs vss nfet_05v0 ad=0 pd=0 as=2.7456p ps=14.72u w=1.32u l=0.6u
+X1059 avdd hsn hs avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1060 vss hsn hs vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1061 hs hsn vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1062 avdd hsn hs avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1063 hs hsn vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1064 avdd hsn hs avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1065 hs hsn vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1066 hs hsn avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1067 avdd hsn hs avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1068 hs hsn vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1069 hs hsn avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1070 hs hsn avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1071 vss hsn hs vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1072 vss hsn hs vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1073 rb9 sr9 avdd avdd pfet_05v0 ad=18.1536p pd=78.4u as=0 ps=0 w=1.83u l=0.5u
+X1074 avdd sr9 rb9 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=31
+X1075 vss sr9 rb9 vss nfet_05v0 ad=0 pd=0 as=10.9824p ps=58.88u w=1.32u l=0.6u
+X1077 vss sr9 rb9 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=31
+X1105 gb3 sg3 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1106 gb3 sg3 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1107 sr1 nr1 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1108 sr1 nr1 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1109 rb2 sr2 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1110 rb2 sr2 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1111 sr7 nr7 avdd avdd pfet_05v0 ad=4.5384p pd=19.6u as=0 ps=0 w=1.83u l=0.5u
+X1112 vss nr7 sr7 vss nfet_05v0 ad=0 pd=0 as=2.7456p ps=14.72u w=1.32u l=0.6u
+X1113 avdd nr7 sr7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1114 vss nr7 sr7 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1115 sr7 nr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1116 avdd nr7 sr7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1117 sr7 nr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1118 avdd nr7 sr7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1119 sr7 nr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1120 sr7 nr7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1121 avdd nr7 sr7 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1122 sr7 nr7 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1123 sr7 nr7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1124 sr7 nr7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1125 vss nr7 sr7 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1126 vss nr7 sr7 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1127 sr8 nr8 avdd avdd pfet_05v0 ad=9.0768p pd=39.2u as=0 ps=0 w=1.83u l=0.5u
+X1128 avdd nr8 sr8 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=15
+X1129 vss nr8 sr8 vss nfet_05v0 ad=0 pd=0 as=5.4912p ps=29.44u w=1.32u l=0.6u
+X1131 vss nr8 sr8 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=15
+X1159 db8 d8 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1160 db8 d8 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1161 sr2 nr2 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1162 sr2 nr2 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1163 db4 d4 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1164 db4 d4 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1165 sr9 nr9 avdd avdd pfet_05v0 ad=18.1536p pd=78.4u as=0 ps=0 w=1.83u l=0.5u
+X1166 avdd nr9 sr9 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=31
+X1167 vss nr9 sr9 vss nfet_05v0 ad=0 pd=0 as=10.9824p ps=58.88u w=1.32u l=0.6u
+X1169 vss nr9 sr9 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=31
+X1197 gb7 sg7 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1198 gb7 sg7 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1199 gb2 sg2 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1200 gb2 sg2 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1201 db2 d2 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1202 db2 d2 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1203 bs bsn avdd avdd pfet_05v0 ad=9.0768p pd=39.2u as=0 ps=0 w=1.83u l=0.5u
+X1204 avdd bsn bs avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=15
+X1205 vss bsn bs vss nfet_05v0 ad=0 pd=0 as=5.4912p ps=29.44u w=1.32u l=0.6u
+X1207 vss bsn bs vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=15
+X1235 rb6 sr6 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X1236 vss sr6 rb6 vss nfet_05v0 ad=0.5808p pd=3.52u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X1237 vss sr6 rb6 vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X1238 rb6 sr6 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.3432p ps=1.84u w=1.32u l=0.6u
+X1239 avdd sr6 rb6 avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X1240 rb6 sr6 vss vss nfet_05v0 ad=0.3432p pd=1.84u as=0.5808p ps=3.52u w=1.32u l=0.6u
+X1241 avdd sr6 rb6 avdd pfet_05v0 ad=0.8052p pd=4.54u as=0.5673p ps=2.45u w=1.83u l=0.5u
+X1242 rb6 sr6 avdd avdd pfet_05v0 ad=0.5673p pd=2.45u as=0.8052p ps=4.54u w=1.83u l=0.5u
+X1243 db7 d7 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1244 db7 d7 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1245 gb1 sg1 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1246 gb1 sg1 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1247 gb5 sg5 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1248 gb5 sg5 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1249 bsb bs avdd avdd pfet_05v0 ad=9.0768p pd=39.2u as=0 ps=0 w=1.83u l=0.5u
+X1250 avdd bs bsb avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=15
+X1251 vss bs bsb vss nfet_05v0 ad=0 pd=0 as=5.4912p ps=29.44u w=1.32u l=0.6u
+X1253 vss bs bsb vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=15
+X1281 sr6 nr6 avdd avdd pfet_05v0 ad=2.2692p pd=9.8u as=0 ps=0 w=1.83u l=0.5u
+X1282 vss nr6 sr6 vss nfet_05v0 ad=0 pd=0 as=1.3728p ps=7.36u w=1.32u l=0.6u
+X1283 vss nr6 sr6 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1284 sr6 nr6 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1285 avdd nr6 sr6 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1286 sr6 nr6 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1287 avdd nr6 sr6 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1288 sr6 nr6 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1289 gb6 sg6 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1290 gb6 sg6 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1291 gb0 sg0 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1292 gb0 sg0 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1293 sg1 gn1 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1294 sg1 gn1 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1295 avdd hsg gn8 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X1296 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# rb8 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X1297 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X1298 gn8 db8 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1299 gn8 db8 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1300 gn8 rb8 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1333 sg6 gn6 avdd avdd pfet_05v0 ad=2.2692p pd=9.8u as=0 ps=0 w=1.83u l=0.5u
+X1334 vss gn6 sg6 vss nfet_05v0 ad=0 pd=0 as=1.3728p ps=7.36u w=1.32u l=0.6u
+X1335 vss gn6 sg6 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1336 sg6 gn6 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1337 avdd gn6 sg6 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1338 sg6 gn6 vss vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1339 avdd gn6 sg6 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1340 sg6 gn6 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1341 db0 d0 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1342 db0 d0 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1343 ab a avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1344 ab a vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1345 avdd hsg gn9 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X1346 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# rb9 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X1347 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_455_69# hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X1348 gn9 db9 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1349 gn9 db9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1350 gn9 rb9 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1383 avdd q2 q3 avdd pfet_05v0 ad=0 pd=0 as=1.1895p ps=4.96u w=1.83u l=0.5u
+X1384 q3 q2 vss vss nfet_05v0 ad=0.726p pd=3.74u as=0 ps=0 w=1.32u l=0.6u
+X1385 vss q2 q3 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1386 q3 q2 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1387 db5 d5 avdd avdd pfet_05v0 ad=0.8052p pd=4.54u as=0 ps=0 w=1.83u l=0.5u
+X1388 db5 d5 vss vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1389 avdd hs nr7 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X1390 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# gb7 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X1391 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X1392 nr7 d7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1393 nr7 d7 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1394 nr7 gb7 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1427 avdd azb az avdd pfet_05v0 ad=0 pd=0 as=1.1895p ps=4.96u w=1.83u l=0.5u
+X1428 az azb vss vss nfet_05v0 ad=0.726p pd=3.74u as=0 ps=0 w=1.32u l=0.6u
+X1429 vss azb az vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1430 az azb avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1431 avdd hs nr9 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X1432 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# gb9 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X1433 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X1434 nr9 d9 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1435 nr9 d9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1436 nr9 gb9 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1437 sg8 gn8 avdd avdd pfet_05v0 ad=9.0768p pd=39.2u as=0 ps=0 w=1.83u l=0.5u
+X1438 avdd gn8 sg8 avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u m=15
+X1439 vss gn8 sg8 vss nfet_05v0 ad=0 pd=0 as=5.4912p ps=29.44u w=1.32u l=0.6u
+X1441 vss gn8 sg8 vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u m=15
+X1469 avdd ts0 ts avdd pfet_05v0 ad=0 pd=0 as=1.1895p ps=4.96u w=1.83u l=0.5u
+X1470 ts ts0 vss vss nfet_05v0 ad=0.726p pd=3.74u as=0 ps=0 w=1.32u l=0.6u
+X1471 vss ts0 ts vss nfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.32u l=0.6u
+X1472 ts ts0 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.83u l=0.5u
+X1473 avdd hs nr6 avdd pfet_05v0 ad=0 pd=0 as=1.4016p ps=7.76u w=1.46u l=0.5u
+X1474 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# gb6 vss vss nfet_05v0 ad=0.4224p pd=3.28u as=0 ps=0 w=1.32u l=0.6u
+X1475 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# vss nfet_05v0 ad=0.5544p pd=3.48u as=0 ps=0 w=1.32u l=0.6u
+X1476 nr6 d6 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1477 nr6 d6 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# vss nfet_05v0 ad=0.5808p pd=3.52u as=0 ps=0 w=1.32u l=0.6u
+X1478 nr6 gb6 avdd avdd pfet_05v0 ad=0 pd=0 as=0 ps=0 w=1.46u l=0.5u
+X1479 dum ts vcm vss nfet_06v0 ad=1.5p pd=7u as=1.5p ps=7u w=3u l=0.7u
+X1480 vcm vss cap_mim_2f0_m4m5_noshield c_width=25u c_length=25u
+X1481 vcm vss cap_mim_2f0_m4m5_noshield c_width=25u c_length=25u
+X1482 vcm vss cap_mim_2f0_m4m5_noshield c_width=25u c_length=25u
+X1483 vcm vss cap_mim_2f0_m4m5_noshield c_width=25u c_length=25u
+X1484 vt tsb avdd avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=0.6u
+X1485 vt tsb avdd avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=0.6u
+X1486 avdd tsb vt avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=0.6u
+X1487 avdd tsb vt avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=0.6u
+X1488 vcb ts vss vss nfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=0.7u
+X1489 vss ts vcb vss nfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=0.7u
+X1490 vt vcm vss ppolyf_u r_width=2u r_length=34.3u
+X1491 top ts vcm vss nfet_06v0 ad=6p pd=25u as=6p ps=25u w=12u l=0.7u
+X1492 vcm vcb vss ppolyf_u r_width=2u r_length=22.8u
+C0 b4 rb4 2.31569f
+C1 ain nr0 0
+C2 bsb rb1 0.19105f
+C3 rb5 d8 0.02054f
+C4 d7 nr6 0.02034f
+C5 azb d2 0.02664f
+C6 b5 sr1 0.07806f
+C7 sr7 db0 0
+C8 nr3 sg6 0.01437f
+C9 rb7 d0 0.03672f
+C10 b3 sr1 0.08046f
+C11 rb5 gb4 0
+C12 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# hsg 0.00297f
+C13 hsg sg5 0.23165f
+C14 sr4 sr6 0.03895f
+C15 nr4 rb6 0.01437f
+C16 hsb sr9 0.07753f
+C17 sr2 avdd 1.20261f
+C18 sg3 sr9 0.06621f
+C19 sg3 sample 0.01821f
+C20 azc xcmp_a 0.05012f
+C21 gb5 d5 0.02377f
+C22 sg5 db5 0.06471f
+C23 db1 sr9 0.03202f
+C24 azc xcmp_d1 1.82313f
+C25 hsg gn9 1.40326f
+C26 gb8 sr9 0.03778f
+C27 hsgs hsg 2.8954f
+C28 rb9 d6 0.02681f
+C29 b8 sr3 0.06515f
+C30 db9 sr9 0.10866f
+C31 bsb nr3 0.0014f
+C32 gn5 sg5 1.79197f
+C33 sr5 db3 0.0229f
+C34 xcmp_x xcmp_n1 2.00752f
+C35 sr0 ts 0.02072f
+C36 hsn sg5 0.02022f
+C37 avdd vcm 0.09446f
+C38 a hsb 0.09611f
+C39 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# gb3 0
+C40 xcmp_d1 xcmp_azd 3.91405f
+C41 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# hsg 0
+C42 a sg3 0.04924f
+C43 b4 rb5 0.03331f
+C44 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# hsg 0
+C45 rb5 nr6 0
+C46 sr5 gb6 0
+C47 d8 sr6 0.02585f
+C48 b7 avdd 5.29351f
+C49 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# hsgs 0.00292f
+C50 sr4 az 0.02589f
+C51 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# hsg 0.00297f
+C52 vrefp avdd 59.04876f
+C53 xcmp_vbi top 0.99419f
+C54 sg2 rb2 0.11395f
+C55 rb3 db3 0.06684f
+C56 db3 db4 0
+C57 sr3 sr8 0.07491f
+C58 sg4 sr2 0.10364f
+C59 rb1 rb7 0.08902f
+C60 rb4 sr1 0.11038f
+C61 rb0 rb9 0.07092f
+C62 hsn hsgs 0.4303f
+C63 sr1 d7 0.03944f
+C64 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# db5 0.00394f
+C65 gb0 nr0 0.32755f
+C66 rb9 q3 0.05352f
+C67 d4 d6 0.02375f
+C68 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# gn5 0.01168f
+C69 gb2 sg2 2.25714f
+C70 b2 hsg 0.13497f
+C71 sr8 ts0 0.01437f
+C72 hsb d0 0.02754f
+C73 hs db0 0.04455f
+C74 avdd rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# 0
+C75 tsb sg9 0
+C76 sg3 d0 0.03672f
+C77 d1 db0 0
+C78 db1 d0 0
+C79 b7 sg4 0.13562f
+C80 rb2 sg1 0.10138f
+C81 vrefp sg4 0.45382f
+C82 d8 az 0.02582f
+C83 hsg nr2 0.02521f
+C84 d3 sg2 0.25164f
+C85 db3 gn2 0
+C86 nr0 sr8 0.02292f
+C87 rb4 sr9 0.06269f
+C88 sr7 sr3 0.035f
+C89 sr3 db2 0.0229f
+C90 gn0 sr4 0.01988f
+C91 gn7 sg9 0.0327f
+C92 rb7 nr3 0.01437f
+C93 rb9 nr1 0.02055f
+C94 rb0 d4 0.0201f
+C95 sample rb4 0
+C96 bs sg9 0.12664f
+C97 sr9 d7 0.03031f
+C98 sr5 ab 0.03727f
+C99 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# d4 0.00394f
+C100 d4 q3 0.05063f
+C101 sr2 d5 0.03176f
+C102 bs bx 1.25638f
+C103 azb tsb 0.03808f
+C104 sr6 nr6 1.78613f
+C105 rb6 d6 0.02704f
+C106 gb2 sg1 0.02445f
+C107 cmp xcmp_d1 3.36076f
+C108 rb5 sr1 0.07024f
+C109 ain sg9 0.11741f
+C110 b6 bx 0.20833f
+C111 d2 ts 0.02057f
+C112 sr7 ts0 0.01437f
+C113 azc xcmp_ym 0.59136f
+C114 bs azb 0.04283f
+C115 sr3 rb8 0.11974f
+C116 rb3 ab 0.03727f
+C117 a rb4 0.04924f
+C118 a d7 0.04927f
+C119 ain bx 2.69999f
+C120 azc vbp 0.14255f
+C121 d3 sg1 0.02043f
+C122 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# gb3 0
+C123 sr0 d2 0.03482f
+C124 gn0 d8 0.01988f
+C125 nr1 d4 0.01437f
+C126 gn4 nr4 0.0081f
+C127 sr7 nr0 0.0229f
+C128 rb0 rb6 0.09789f
+C129 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# hsg 0.00297f
+C130 xcmp_vbi xcmp_y 0.10238f
+C131 hsb rb1 0.02458f
+C132 azb ain 0
+C133 xcmp_enb xcmp_o3 0.54985f
+C134 nr5 gb5 0.15859f
+C135 sg3 rb1 0.0939f
+C136 rb8 ts0 0.01899f
+C137 db1 rb1 0.06787f
+C138 rb6 q3 0.04545f
+C139 vbp xcmp_azd 0.09883f
+C140 xcmp_o2 xcmp_oc 0.09275f
+C141 rb5 sr9 0.06121f
+C142 rb5 sample 0
+C143 b5 rb1 0.07231f
+C144 sg9 gn6 0.02962f
+C145 rb4 d0 0.03672f
+C146 nr0 rb8 0.01739f
+C147 b3 rb1 0.0748f
+C148 d0 d7 0.03996f
+C149 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# hsg 0
+C150 sr1 sr6 0.0344f
+C151 nr1 rb6 0.01437f
+C152 rb2 bsn 0.01988f
+C153 hs sr3 0.1842f
+C154 db3 avdd 0.44761f
+C155 gn3 sr3 0.00478f
+C156 sg3 nr3 0.02247f
+C157 a rb5 0.04924f
+C158 q2 ab 0.04992f
+C159 d1 sr3 0.0189f
+C160 sg8 sr3 0.07692f
+C161 sg0 d6 0.02043f
+C162 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# d4 0.00139f
+C163 b8 sg9 0.08602f
+C164 d9 sr3 0.03176f
+C165 b2 sg5 0.04802f
+C166 avdd gb6 0.78767f
+C167 sr5 db6 0
+C168 hs ts0 0.01899f
+C169 ts dum 0.11776f
+C170 bx b8 3.85489f
+C171 xcmp_vbi xcmp_n1 0.05609f
+C172 d1 ts0 0.01905f
+C173 b9 rb0 0.04628f
+C174 d3 bsn 0.02003f
+C175 sr9 sr6 0.07994f
+C176 sample sr6 0.01739f
+C177 nr2 sg5 0.01437f
+C178 sg8 ts0 0.01437f
+C179 cmp vbp 0.54754f
+C180 sr1 az 0.02586f
+C181 d9 ts0 0.01899f
+C182 sg0 rb0 0.2893f
+C183 hsg rb2 2.88831f
+C184 hs nr0 2.74628f
+C185 sg2 sr2 0.14244f
+C186 sg9 sr8 0.36676f
+C187 sg7 sr3 0.1038f
+C188 db3 sg4 0.0229f
+C189 sr4 rb9 0.054f
+C190 rb1 rb4 0.05254f
+C191 rb1 d7 0.01926f
+C192 rb5 d0 0.03672f
+C193 d8 nr7 0.02141f
+C194 vbp b5 0
+C195 en xcmp_y 0.04337f
+C196 d1 nr0 0.01741f
+C197 vbp b3 0
+C198 bx sr8 0.04067f
+C199 sg8 nr0 0.01739f
+C200 sg0 q3 0.05352f
+C201 gn4 d6 0.02022f
+C202 tsb ts 20.32588f
+C203 d9 nr0 0.01739f
+C204 xcmp_b dum 0.2919f
+C205 gb2 hsg 0.02728f
+C206 sr5 nr4 0.01899f
+C207 azb sr8 0.02642f
+C208 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# db1 0.00394f
+C209 sg7 ts0 0.01437f
+C210 bs ts 0.02057f
+C211 sr9 gn8 0.04187f
+C212 a sr6 0.04924f
+C213 gb4 gb3 0.51787f
+C214 hsn rb2 0.02022f
+C215 ab avdd 0.44301f
+C216 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# hsg 0
+C217 tsb sr0 0
+C218 b7 sg2 0.13562f
+C219 sr2 sg1 0.10887f
+C220 vrefp sg2 0.44224f
+C221 sample az 0
+C222 sr9 az 0.09382f
+C223 sg0 nr1 0.00147f
+C224 d3 hsg 0.05765f
+C225 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# hsg 0.00297f
+C226 nr4 db4 0.15654f
+C227 gn0 sr1 0.02392f
+C228 rb3 nr4 0
+C229 sr4 d4 0.02729f
+C230 sr7 sg9 0.35426f
+C231 sg9 db2 0.02908f
+C232 sg7 nr0 0.01739f
+C233 rb9 d8 0.06888f
+C234 nr3 rb4 0.01437f
+C235 bs sr0 0.25028f
+C236 nr3 d7 0.01437f
+C237 ain ts 0
+C238 b6 sr0 0.16332f
+C239 db3 d5 0.02685f
+C240 rb5 rb1 0.09185f
+C241 ain sr0 0.43104f
+C242 sr6 d0 0.04146f
+C243 azb sr7 0.02642f
+C244 sg9 rb8 0.06642f
+C245 sr3 sg6 0.1037f
+C246 sg4 ab 0.03727f
+C247 hsn d3 0.02022f
+C248 a az 0.14919f
+C249 b7 sg1 0.13562f
+C250 dn rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# 0.0381f
+C251 vrefp sg1 0.47895f
+C252 en xcmp_n1 0.15033f
+C253 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3900# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3300# 0.04819f
+C254 hsg gb5 0.02369f
+C255 gn7 nr8 0.07016f
+C256 gn0 sr9 0.02957f
+C257 azn sr3 0.05702f
+C258 sr4 rb6 0.07012f
+C259 d8 d4 0.02173f
+C260 xcmp_azn xcmp_a 0.05012f
+C261 gb4 d4 0.02128f
+C262 azb rb8 0.02642f
+C263 sg6 ts0 0.01437f
+C264 gb5 db5 0.76658f
+C265 xcmp_azn xcmp_d1 0.01025f
+C266 rb9 nr6 0.03402f
+C267 bsb sr3 0.15169f
+C268 rb5 nr3 0.01437f
+C269 xds_n2 dn 1.62771f
+C270 gn5 gb5 0.19094f
+C271 d0 az 0.02582f
+C272 azn ts0 0.01923f
+C273 nr0 sg6 0.01739f
+C274 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# gb5 0
+C275 ab d5 0.03727f
+C276 sr5 d6 0.02883f
+C277 rb1 sr6 0.05654f
+C278 sr2 bsn 0.01988f
+C279 rb2 sg5 0.09658f
+C280 d8 rb6 0.02074f
+C281 bs d2 0.02038f
+C282 avdd top 4.68514f
+C283 gb1 d2 0.00711f
+C284 hs sg9 0.25103f
+C285 bsb ts0 0.02305f
+C286 db6 avdd 0.46111f
+C287 gn3 sg9 0.02798f
+C288 d1 sg9 0.02294f
+C289 sg8 sg9 25.74879f
+C290 rb3 d6 0.01835f
+C291 db4 d6 0.02685f
+C292 b8 sr0 0.07116f
+C293 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# gb1 0.00292f
+C294 bsb nr0 0.00139f
+C295 ain d2 0
+C296 sr5 rb0 0.0612f
+C297 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# nr3 0.01168f
+C298 gn0 d0 0.00136f
+C299 bx sg8 0.04895f
+C300 azb hs 0.02985f
+C301 sr8 ts 0.02352f
+C302 azb d1 0.02671f
+C303 sr5 q3 0.04545f
+C304 db1 db0 0
+C305 b9 sr4 0.04178f
+C306 azb sg8 0.02642f
+C307 nr3 sr6 0.01899f
+C308 d3 sg5 0.01739f
+C309 vt avdd 2.91975f
+C310 rb1 az 0.02582f
+C311 azb d9 0.02645f
+C312 db3 sg2 1.1206f
+C313 hsg sr2 0.20673f
+C314 sg0 sr4 0.1182f
+C315 sg7 sg9 0.07619f
+C316 sr0 sr8 0.08035f
+C317 rb7 sr3 0.07012f
+C318 rb9 sr1 0.04937f
+C319 rb3 rb0 0.1013f
+C320 nr4 avdd 0.82573f
+C321 sr9 nr7 0.03511f
+C322 rb3 q3 0.04545f
+C323 b4 rb6 0.03331f
+C324 b0 rb0 0.57252f
+C325 rb6 nr6 0.07841f
+C326 gn2 d6 0.02022f
+C327 b2 rb2 2.11355f
+C328 sr5 nr1 0.01899f
+C329 vrefp nr9 0.0014f
+C330 azb sg7 0.02642f
+C331 xcmp_ym xcmp_azn 0.2028f
+C332 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_5100# dn 0.08688f
+C333 sr7 ts 0.02215f
+C334 rb7 ts0 0.01899f
+C335 b1 rb0 0.11693f
+C336 xcmp_tail2 top 0.13149f
+C337 hsn sr2 0.02022f
+C338 a rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# 0.00667f
+C339 vbp xcmp_azn 0.04913f
+C340 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2100# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# 0.04819f
+C341 b7 hsg 0.13617f
+C342 sg5 gb5 3.29006f
+C343 vrefp hsg 0.49341f
+C344 gn0 rb1 0.02055f
+C345 q2 d6 0.02258f
+C346 sg0 d8 0.02043f
+C347 sr1 d4 0.03944f
+C348 rb9 sr9 17.26007f
+C349 nr8 sr8 6.71142f
+C350 rb2 nr2 0.02301f
+C351 gn4 sr4 0.00478f
+C352 sg4 nr4 0.02296f
+C353 sr7 sr0 0.03988f
+C354 rb3 nr1 0.01437f
+C355 rb7 nr0 0.01739f
+C356 sample rb9 3.32062f
+C357 xcmp_y avdd 2.86686f
+C358 sg9 gb7 0.0313f
+C359 azc xcmp_o3 0.99401f
+C360 gn1 d6 0.01899f
+C361 rb8 ts 0.02057f
+C362 gb2 nr2 0.23062f
+C363 xds_n2 a 0.12523f
+C364 sg9 sg6 0.07783f
+C365 sg2 ab 0.03727f
+C366 sr0 rb8 0.11958f
+C367 q2 rb0 5.74751f
+C368 xcmp_o3 xcmp_azd 0.2578f
+C369 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# nr3 0.00232f
+C370 a rb9 0.05327f
+C371 bs tsb 0
+C372 q2 q3 0.90729f
+C373 d3 nr2 0.02377f
+C374 d4 sr9 0.0274f
+C375 sr8 d2 0.01739f
+C376 azn sg9 0.05702f
+C377 sr1 rb6 0.07024f
+C378 gn4 d8 0.02022f
+C379 xcmp_b xcmp_o1 2.56016f
+C380 hsb sr3 0.02461f
+C381 gb4 gn4 0.1027f
+C382 sg3 sr3 0.08651f
+C383 azb sg6 0.02642f
+C384 db1 sr3 0.02201f
+C385 nr4 d5 0.02406f
+C386 b9 b4 0.0434f
+C387 bs b6 4.97343f
+C388 b4 sg0 0.14559f
+C389 bsb sg9 4.55615f
+C390 avdd d6 0.60375f
+C391 bs ain 28.44765f
+C392 sg1 ab 0.03727f
+C393 azn azb 4.53431f
+C394 b5 sr3 0.07806f
+C395 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4800# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_5400# 0.04819f
+C396 nr8 rb8 0.06774f
+C397 rb9 d0 0.04479f
+C398 b3 sr3 0.94313f
+C399 hsb ts0 0
+C400 hs ts 0.05725f
+C401 a d4 0.0493f
+C402 xcmp_n1 avdd 0.58908f
+C403 xcmp_y xcmp_tail2 4.50202f
+C404 bsb bx 25.53096f
+C405 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# gn2 0.00232f
+C406 sg3 ts0 0.01437f
+C407 b6 ain 12.14568f
+C408 d1 ts 0.02057f
+C409 xcmp_x xcmp_a 2.46403f
+C410 nr1 gn1 0.01479f
+C411 gn7 db7 1.27104f
+C412 d2 db2 1.17872f
+C413 sr9 rb6 0.0637f
+C414 sr7 d2 0.01739f
+C415 sg8 ts 0.02067f
+C416 sr2 sg5 0.0705f
+C417 sample rb6 0
+C418 hs sr0 0.50119f
+C419 bsb azb 0.03097f
+C420 d9 ts 0.02057f
+C421 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# db2 0.00394f
+C422 rb0 avdd 2.57654f
+C423 sg3 nr0 0.01739f
+C424 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# hs 0
+C425 db1 nr0 0
+C426 d1 sr0 0.04376f
+C427 cmp xcmp_o3 1.2574f
+C428 xcmp_tail top 4.39626f
+C429 sg8 sr0 7.38803f
+C430 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# avdd 0
+C431 hsgs sr2 0
+C432 q3 avdd 1.93841f
+C433 sg4 d6 0.02043f
+C434 d9 sr0 0.0348f
+C435 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# d1 0.00394f
+C436 xcmp_y xcmp_vb 0.36006f
+C437 sr5 sr4 38.3499f
+C438 d4 d0 0.04038f
+C439 d2 rb8 0.01739f
+C440 sg7 ts 0.02066f
+C441 a rb6 0.04924f
+C442 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# gb0 0.00292f
+C443 b7 sg5 0.13562f
+C444 vrefp sg5 0.25382f
+C445 b9 sr1 0.04178f
+C446 db3 hsg 0.13697f
+C447 hs nr8 2.1471f
+C448 sg0 sr1 0.12827f
+C449 rb3 sr4 0.11437f
+C450 rb7 sg9 0.06217f
+C451 sg4 rb0 0.0597f
+C452 sg7 sr0 3.26288f
+C453 sr3 rb4 0.11025f
+C454 rb1 rb9 0.06404f
+C455 sr4 db4 0.0411f
+C456 nr1 avdd 0.71473f
+C457 sr3 d7 0.03176f
+C458 bx rb7 0.04579f
+C459 sg8 nr8 0.02855f
+C460 sg4 q3 0.04545f
+C461 gb1 gb0 0.00144f
+C462 b0 sr4 0.0414f
+C463 d1b q2 0.56311f
+C464 hsg gb6 0.05846f
+C465 d9 nr8 0.02043f
+C466 bs b8 12.22673f
+C467 xcmp_tail2 xcmp_n1 2.81449f
+C468 gb3 nr3 0.23062f
+C469 gb2 rb2 0.02941f
+C470 b2 sr2 1.69655f
+C471 sr5 d8 0.01899f
+C472 db7 gn6 0
+C473 bsn ab 0.78692f
+C474 sr6 db0 0
+C475 rb6 d0 0.03672f
+C476 azb rb7 0.02642f
+C477 rb4 ts0 0.01899f
+C478 en b4 0
+C479 b1 sr4 0.04131f
+C480 d7 ts0 0.01899f
+C481 db5 gb6 0
+C482 sg9 db8 0.02944f
+C483 d5 d6 12.66949f
+C484 b6 b8 0.17701f
+C485 sr5 gb4 0
+C486 xcmp_xm xcmp_b 0
+C487 tsb sr8 0.00158f
+C488 azc azb 3.35975f
+C489 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# avdd 0.00109f
+C490 b9 sr9 9.57675f
+C491 ain b8 69.76163f
+C492 gn5 gb6 0.00108f
+C493 rb1 d4 0.01909f
+C494 hs d2 1.40842f
+C495 sg7 nr8 0.00631f
+C496 gn7 sr8 0.03568f
+C497 d3 rb2 0.02771f
+C498 gn2 sr4 0.01988f
+C499 sg0 sr9 0.072f
+C500 sg4 nr1 0.01437f
+C501 sg0 sample 3.45447f
+C502 rb3 d8 0.01849f
+C503 nr3 rb9 0.02247f
+C504 rb4 nr0 0.01739f
+C505 nr2 sr2 2.78036f
+C506 d8 db4 0.02685f
+C507 bs sr8 0.10478f
+C508 nr0 d7 0.01739f
+C509 gb4 db4 0.99016f
+C510 gb4 rb3 0
+C511 d1 d2 7.47929f
+C512 xcmp_n1 xcmp_vb 0.514f
+C513 sg6 ts 0.02064f
+C514 sg8 d2 0.01739f
+C515 b6 sr8 0.04127f
+C516 xcmp_x xcmp_ym 0.8348f
+C517 rb0 d5 0.02017f
+C518 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# hs 0.00297f
+C519 b2 b7 0.10817f
+C520 d9 d2 0.0211f
+C521 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# hs 0
+C522 b2 vrefp 1.34324f
+C523 dn rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# 0.0381f
+C524 gb2 d3 0.00711f
+C525 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# avdd 0.00109f
+C526 rb5 sr3 0.07012f
+C527 ain sr8 0.0897f
+C528 xcmp_x vbp 0.11291f
+C529 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# d1 0.00139f
+C530 xcmp_o1 dum 0.04945f
+C531 q3 d5 0.05063f
+C532 azn ts 0.05711f
+C533 q2 sr4 0.03437f
+C534 sr0 sg6 1.37641f
+C535 hsg ab 0.03727f
+C536 tsb sr7 0
+C537 a sg0 0.05327f
+C538 d1b avdd 4.28431f
+C539 sr4 gn1 0.01988f
+C540 b4 sr5 0
+C541 gn7 sr7 0.00704f
+C542 gn4 sr9 0.02989f
+C543 sg7 d2 0.01739f
+C544 azn sr0 0.05702f
+C545 rb1 rb6 0.08889f
+C546 nr3 d4 0.02393f
+C547 gn2 d8 0.02022f
+C548 bs sr7 0.06411f
+C549 nr8 gb7 0
+C550 hsb sg9 0.02458f
+C551 bsb ts 0.02071f
+C552 gb1 db2 0.19202f
+C553 rb5 ts0 0.01899f
+C554 sg3 sg9 0.07273f
+C555 db1 sg9 0.02604f
+C556 nr1 d5 0.01437f
+C557 hsn ab 3.55881f
+C558 gb8 sg9 0.02758f
+C559 b4 rb3 0.14287f
+C560 bx sg3 0.04316f
+C561 db9 sg9 0.08186f
+C562 ain sr7 0.1778f
+C563 bsb sr0 0.22011f
+C564 rb5 nr0 0.01739f
+C565 ain db2 0
+C566 b5 sg9 0
+C567 sr9 gb9 0.10297f
+C568 q2 d8 0.02292f
+C569 gn0 db0 2.7901f
+C570 sg0 d0 0.04494f
+C571 sr8 gn6 0.02043f
+C572 gn7 rb8 0.03514f
+C573 bs rb8 0.14544f
+C574 azb sg3 0.02642f
+C575 b0 b4 0.11491f
+C576 b5 bx 0.14387f
+C577 d8 gn1 0.01899f
+C578 bx b3 0.15261f
+C579 sr7 db7 0.16675f
+C580 sr3 sr6 0.03621f
+C581 db3 sg5 0.0229f
+C582 nr3 rb6 0.01437f
+C583 b4 b1 0.11006f
+C584 xcmp_vbi xcmp_a 0.97952f
+C585 sr4 avdd 1.1731f
+C586 ain rb8 0.04696f
+C587 xcmp_vbi xcmp_d1 0.22066f
+C588 gb0 sr8 0
+C589 sg5 gb6 0.0246f
+C590 sg2 d6 0.02043f
+C591 b8 sr8 7.55969f
+C592 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# hs 0.00297f
+C593 sr6 ts0 0.01437f
+C594 sr5 sr1 0.035f
+C595 sr7 gn6 0.02998f
+C596 d2 sg6 0.01739f
+C597 nr5 d6 0.02043f
+C598 rb7 ts 0.02057f
+C599 tsb hs 0.04604f
+C600 azc ts 0.17691f
+C601 b9 rb1 0.04026f
+C602 nr0 sr6 0.0229f
+C603 azn d2 0.0634f
+C604 sr3 az 0.02588f
+C605 sg4 sr4 0.14073f
+C606 rb2 sr2 1.85388f
+C607 db6 hsg 0.10272f
+C608 hs gn7 0.02562f
+C609 rb4 sg9 0.06769f
+C610 sg0 rb1 0.36389f
+C611 sg2 rb0 0.05979f
+C612 rb3 sr1 0.07024f
+C613 rb7 sr0 0.06995f
+C614 bs hs 0.01972f
+C615 d8 avdd 0.71484f
+C616 tsb sg8 0
+C617 sg9 d7 0.02875f
+C618 xcmp_o3 xcmp_azn 0.23804f
+C619 gb1 hs 1.26899f
+C620 bs d1 0.02103f
+C621 gb0 sr7 0
+C622 rb8 gn6 0.01974f
+C623 gb4 avdd 0.54044f
+C624 sg1 d6 0.02043f
+C625 bx rb4 0.01185f
+C626 sg8 gn7 0.0233f
+C627 bs sg8 0.11743f
+C628 gb1 d1 0.03281f
+C629 sg2 q3 0.04545f
+C630 b0 sr1 0.04423f
+C631 dn q2 0.19918f
+C632 b8 sr7 0.08079f
+C633 d9 gn7 0.02559f
+C634 bs d9 0.01957f
+C635 bsb d2 0.02525f
+C636 a rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# 0
+C637 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# rb8 0.00292f
+C638 ain hs 0
+C639 sr5 sr9 0.07158f
+C640 sr5 sample 0.01739f
+C641 gn5 db6 0
+C642 az ts0 0
+C643 sg5 ab 0.03727f
+C644 azb rb4 0.02642f
+C645 b6 sg8 0.04895f
+C646 ain gn3 0
+C647 b1 sr1 1.10055f
+C648 azb d7 0.02646f
+C649 ain d1 0
+C650 azc xcmp_b 0.04912f
+C651 tsb sg7 0
+C652 ain sg8 0.0939f
+C653 b7 rb2 0.13583f
+C654 rb0 sg1 0.05981f
+C655 vrefp rb2 0.83704f
+C656 gn7 sg7 5.08077f
+C657 hsg nr4 0.02643f
+C658 d3 sr2 0.05056f
+C659 hsgs ab 0.05886f
+C660 sr7 sr8 29.1296f
+C661 db4 sr9 0.03291f
+C662 rb3 sr9 0.06269f
+C663 sr8 db2 0.0229f
+C664 gn0 sr3 0.01988f
+C665 sg2 nr1 0.01437f
+C666 rb3 sample 0
+C667 sg4 d8 0.02043f
+C668 bs sg7 0.06652f
+C669 b8 rb8 9.65788f
+C670 sr7 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# 0
+C671 en xcmp_a 0.21395f
+C672 gb4 sg4 1.86209f
+C673 sg1 q3 0.04545f
+C674 a sr5 0.04924f
+C675 en xcmp_d1 0.21391f
+C676 b6 sg7 0
+C677 sr4 d5 0.05113f
+C678 b0 sr9 0
+C679 gb5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# 0
+C680 xcmp_vbi xcmp_ym 0
+C681 ain sg7 0.07999f
+C682 b4 avdd 5.20279f
+C683 avdd nr6 1.33182f
+C684 rb5 sg9 0.06377f
+C685 hs gn6 0.02606f
+C686 q2 sr1 0.03437f
+C687 sr8 rb8 9.73353f
+C688 nr8 db8 0.06863f
+C689 hsb ts 0
+C690 xcmp_vbi vbp 6.71718f
+C691 a rb3 0.04924f
+C692 bx rb5 0.0504f
+C693 sg3 ts 0.02057f
+C694 dn avdd 3.88466f
+C695 sr1 gn1 0.02364f
+C696 nr1 sg1 0.02059f
+C697 sg8 gn6 0.02043f
+C698 sg7 db7 0.10536f
+C699 gn0 nr0 0.02802f
+C700 gn2 sr9 0.02989f
+C701 sr7 db2 0.0229f
+C702 rb7 d2 0.01739f
+C703 gn7 gb7 0.30109f
+C704 d9 gn6 0.0258f
+C705 hsb sr0 0.02458f
+C706 azb rb5 0.02642f
+C707 sr5 d0 0.04146f
+C708 sg3 sr0 0.30647f
+C709 db1 sr0 0
+C710 gb0 hs 1.3598f
+C711 d8 d5 0.01595f
+C712 bsn d6 0.01988f
+C713 b4 sg4 0.6712f
+C714 gb4 d5 0.00711f
+C715 gb0 d1 0
+C716 b5 sr0 0.0975f
+C717 sg7 gn6 0.02043f
+C718 sr7 rb8 0.11473f
+C719 rb3 d0 0.03672f
+C720 q2 sample 0.03442f
+C721 q2 sr9 0.03437f
+C722 bs sg6 0.10773f
+C723 db2 rb8 0.02594f
+C724 b3 sr0 0.10217f
+C725 b8 sg8 4.96415f
+C726 azn tsb 0.06478f
+C727 xcmp_enb xcmp_o1 0
+C728 sr9 gn1 0.02989f
+C729 b6 sg6 1.53446f
+C730 db6 sg5 0.02202f
+C731 sg9 sr6 0.24468f
+C732 rb0 bsn 0.01988f
+C733 bs azn 1.87712f
+C734 db7 gb7 1.71149f
+C735 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# hs 0
+C736 hs sr8 0.24766f
+C737 sr1 avdd 1.67013f
+C738 ain sg6 0.12369f
+C739 gn3 sr8 0.01988f
+C740 hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# 0
+C741 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# rb5 0.00292f
+C742 d1 sr8 0.0189f
+C743 sg8 sr8 0.11958f
+C744 gb8 nr8 0.36228f
+C745 a q2 0.09629f
+C746 hsg d6 0.09028f
+C747 b8 sg7 0.06515f
+C748 d9 sr8 0.03842f
+C749 bsb bs 60.05335f
+C750 azb sr6 0.02642f
+C751 gb5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# 0
+C752 sr5 rb1 0.05654f
+C753 en xcmp_ym 0.12883f
+C754 db7 sg6 0
+C755 gn6 gb7 0.00471f
+C756 rb4 ts 0.02057f
+C757 sg9 gn8 0.0305f
+C758 d7 ts 0.02057f
+C759 db5 d6 0.05459f
+C760 bsb b6 3.46345f
+C761 en vbp 0.28052f
+C762 nr4 sg5 0.01437f
+C763 gn5 d6 0.0356f
+C764 bsb ain 45.1418f
+C765 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# db6 0.00139f
+C766 sg9 az 0.02585f
+C767 hsb d2 0.01895f
+C768 rb0 hsg 30.80377f
+C769 sg7 sr8 0.1192f
+C770 hs sr7 0.21344f
+C771 db3 rb2 0
+C772 hs db2 0.68301f
+C773 sg2 sr4 0.09903f
+C774 sg4 sr1 0.10383f
+C775 sr3 rb9 0.05302f
+C776 rb1 rb3 0.09307f
+C777 rb4 sr0 0.12045f
+C778 hsn d6 0.02022f
+C779 sr0 d7 0.0348f
+C780 sample avdd 0.31719f
+C781 sr9 avdd 14.34269f
+C782 gn3 sr7 0.01988f
+C783 sg3 d2 0.01739f
+C784 db1 d2 0.02511f
+C785 d1 db2 0
+C786 d1 sr7 0.0189f
+C787 q2 d0 0.031f
+C788 gn6 sg6 1.72185f
+C789 hsg q3 4.58541f
+C790 sg8 sr7 0.0676f
+C791 sg8 db2 0.0229f
+C792 d9 db2 0.02685f
+C793 d9 sr7 0.02559f
+C794 gb2 db3 0.19202f
+C795 sr5 nr3 0.01899f
+C796 azb az 0.71944f
+C797 dn xds_n1 1.74461f
+C798 b1 rb1 1.97317f
+C799 rb9 ts0 0.01899f
+C800 hs rb8 0.23951f
+C801 hsn rb0 0.02022f
+C802 gn3 rb8 0.01437f
+C803 a avdd 1.88656f
+C804 d1 rb8 0.0189f
+C805 b7 sr2 0.13562f
+C806 sr4 sg1 0.09901f
+C807 vrefp sr2 0.89322f
+C808 sg8 rb8 0.11665f
+C809 sg2 d8 0.02043f
+C810 sg7 sr7 0.07368f
+C811 gn7 rb7 0.05103f
+C812 d3 db3 1.22044f
+C813 rb3 nr3 0.02375f
+C814 hsg nr1 0.02887f
+C815 hsn q3 0.27369f
+C816 sr3 d4 0.05087f
+C817 azc tsb 0.06299f
+C818 sg4 sr9 0.06621f
+C819 sg7 db2 0.0229f
+C820 gn0 sg9 0.02392f
+C821 sample sg4 0.01792f
+C822 nr0 rb9 0.02143f
+C823 bs rb7 0.11229f
+C824 b8 sg6 0.06515f
+C825 d9 rb8 0.03253f
+C826 sr8 gb7 0.02211f
+C827 rb5 ts 0.02057f
+C828 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# hs 0.00297f
+C829 nr5 d8 0.02043f
+C830 sr1 d5 0.03944f
+C831 b6 rb7 0.05974f
+C832 hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# 0.00297f
+C833 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# db8 0.00394f
+C834 nr5 gb4 0.00771f
+C835 ain rb7 0.11846f
+C836 rb5 sr0 0.0699f
+C837 d4 ts0 0.01899f
+C838 gn7 db8 0
+C839 sg0 db0 0.78958f
+C840 sr8 sg6 0.09956f
+C841 sg7 rb8 0.11803f
+C842 q2 rb1 0.05402f
+C843 rb2 ab 0.03727f
+C844 d0 avdd 3.47353f
+C845 a sg4 0.04924f
+C846 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# hsg 0.00297f
+C847 b7 vrefp 7.13995f
+C848 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# dn 0.0381f
+C849 d8 sg1 0.02043f
+C850 bsb b8 10.12263f
+C851 rb1 gn1 0.47031f
+C852 b0 vbp 0
+C853 nr0 d4 0.01739f
+C854 rb7 db7 0.0331f
+C855 nr3 gn2 0.0113f
+C856 azn sr8 0.05702f
+C857 sr3 rb6 0.07012f
+C858 rb4 d2 0.01739f
+C859 sr7 gb7 0.05876f
+C860 d2 d7 0.0214f
+C861 xcmp_a avdd 1.09742f
+C862 xcmp_d1 avdd 2.08779f
+C863 gn3 hs 0.02108f
+C864 vbp b1 0
+C865 d1 hs 1.31371f
+C866 sr9 d5 0.02989f
+C867 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# avdd 0
+C868 sg5 d6 0.42782f
+C869 gb5 gb6 0.33078f
+C870 sg8 hs 0.23129f
+C871 b4 sg2 0.11349f
+C872 d9 hs 20.86754f
+C873 sg8 gn3 0.01988f
+C874 bsb sr8 0.10756f
+C875 sg8 d1 0.0189f
+C876 d9 gn3 0.02022f
+C877 sr6 ts 0.0215f
+C878 rb6 ts0 0.01899f
+C879 d3 ab 0.03728f
+C880 db7 db8 0
+C881 sr7 sg6 0.0681f
+C882 db2 sg6 0.0229f
+C883 sg4 d0 0.03672f
+C884 rb7 gn6 0.02914f
+C885 d9 d1 0.02163f
+C886 rb8 gb7 0.02211f
+C887 d9 sg8 0.04756f
+C888 tsb hsb 0
+C889 azn sr7 0.05702f
+C890 sr4 bsn 0.01988f
+C891 rb0 sg5 0.10353f
+C892 sr0 sr6 0.04008f
+C893 nr0 rb6 0.01739f
+C894 a d5 0.04929f
+C895 hs sg7 0.21168f
+C896 bs hsb 0.01956f
+C897 rb1 avdd 2.85368f
+C898 sg9 nr7 0.03541f
+C899 gn3 sg7 0.01988f
+C900 bs sg3 0.23216f
+C901 rb8 sg6 0.10875f
+C902 d1 sg7 0.0189f
+C903 sg5 q3 0.04545f
+C904 b4 sg1 0.11349f
+C905 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# gb7 0.00292f
+C906 gb1 db1 0.78721f
+C907 sg8 sg7 31.5649f
+C908 b8 rb7 0.07989f
+C909 b6 sg3 0.13651f
+C910 d9 sg7 0.02628f
+C911 bsb db2 0
+C912 bsb sr7 0.11826f
+C913 rb5 d2 0.01739f
+C914 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# db8 0.00139f
+C915 ain hsb 0
+C916 bs b5 3.58303f
+C917 a xds_n1 0.12722f
+C918 azn rb8 0.05702f
+C919 az ts 0.47481f
+C920 bs b3 2.83586f
+C921 ain sg3 0.30635f
+C922 hsgs q3 0.28286f
+C923 xcmp_azn xcmp_b 0.04912f
+C924 xcmp_tail2 xcmp_a 0.13149f
+C925 ain db1 0
+C926 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3900# dn 0.03811f
+C927 b6 b5 46.26427f
+C928 b9 sr3 0.04178f
+C929 b6 b3 0.10914f
+C930 d0 d5 0.04016f
+C931 d8 bsn 0.01988f
+C932 nr1 sg5 0.01437f
+C933 ain db9 0
+C934 sr0 az 0.02585f
+C935 sg9 rb9 8.91617f
+C936 hsg sr4 0.24185f
+C937 db3 sr2 0
+C938 rb7 sr8 0.1089f
+C939 sg0 sr3 0.06463f
+C940 rb1 sg4 0.05074f
+C941 sg2 sr1 0.11511f
+C942 b5 ain 6.67627f
+C943 nr3 avdd 0.82573f
+C944 hs gb7 0.75787f
+C945 bsb rb8 0.0693f
+C946 ain b3 3.861f
+C947 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# gn3 0.01168f
+C948 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# gn1 0.01168f
+C949 sr4 db5 0
+C950 azb xds_n2 0.544f
+C951 nr2 d6 0.01437f
+C952 sg8 gb7 0.02211f
+C953 d9 gb7 0.02039f
+C954 xcmp_vb xcmp_a 0.06166f
+C955 b2 rb0 0.13497f
+C956 azb rb9 0.02642f
+C957 sg0 ts0 0.01437f
+C958 sr8 db8 0.02999f
+C959 nr8 gn8 0.00192f
+C960 hs sg6 0.21425f
+C961 vbp avdd 2.56665f
+C962 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# db6 0.00394f
+C963 hsn sr4 0.02025f
+C964 gn3 sg6 0.01988f
+C965 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# a 0.0048f
+C966 d1 sg6 0.0189f
+C967 sr1 sg1 0.14218f
+C968 d2 sr6 0.01739f
+C969 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# avdd 0.00109f
+C970 sg8 sg6 0.11143f
+C971 xcmp_o3 xcmp_vbi 0.12959f
+C972 sr7 rb7 3.27732f
+C973 gn0 sr0 0.02036f
+C974 sg0 nr0 0.02148f
+C975 hsg d8 0.13222f
+C976 azn hs 4.71488f
+C977 sg2 sr9 0.06621f
+C978 sg9 d4 0.02549f
+C979 sg4 nr3 0.01437f
+C980 sample sg2 0.01879f
+C981 rb7 db2 0.02594f
+C982 bs rb4 0.13093f
+C983 sg7 gb7 1.29662f
+C984 d9 sg6 0.02562f
+C985 bs d7 0.01963f
+C986 d1b q1 2.85492f
+C987 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# d2 0.00394f
+C988 azn d1 0.06441f
+C989 gb4 hsg 0.02728f
+C990 nr5 sr9 0.02439f
+C991 b6 rb4 0.13651f
+C992 rb1 d5 0.01914f
+C993 azn sg8 0.05702f
+C994 d8 db5 0.04468f
+C995 azn d9 0.05702f
+C996 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# avdd 0
+C997 xcmp_enb azc 0.19023f
+C998 bsb hs 0.02577f
+C999 gb4 db5 0.19202f
+C1000 gb0 db1 0.19202f
+C1001 ain rb4 0.59959f
+C1002 gn5 d8 0.01437f
+C1003 b8 sg3 0.06515f
+C1004 azb d4 0.0265f
+C1005 bsb gn3 0.0014f
+C1006 sr2 ab 0.03727f
+C1007 sg7 sg6 35.10659f
+C1008 rb7 rb8 26.77031f
+C1009 bsb d1 0.02662f
+C1010 hsn d8 0.02022f
+C1011 a sg2 0.04924f
+C1012 bsb sg8 0.11584f
+C1013 azc xcmp_o1 0.56057f
+C1014 bsb d9 0.02238f
+C1015 sr9 sg1 0.06621f
+C1016 sample sg1 0.0201f
+C1017 d2 az 0.02582f
+C1018 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# gb6 0.00292f
+C1019 b5 b8 0.17522f
+C1020 sg9 rb6 0.06296f
+C1021 azn sg7 0.05702f
+C1022 db7 d7 1.28497f
+C1023 b8 b3 0.18028f
+C1024 xcmp_enb xcmp_azd 0.34262f
+C1025 hsb sr8 0.02468f
+C1026 sg3 sr8 0.09686f
+C1027 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# d8 0.00394f
+C1028 bx rb6 0.04649f
+C1029 xcmp_tail xcmp_a 2.12111f
+C1030 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# gn3 0.00232f
+C1031 rb8 db8 0.03645f
+C1032 db1 sr8 0.02201f
+C1033 nr3 d5 0.01437f
+C1034 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_4500# dn 0.03818f
+C1035 xcmp_azd xcmp_o1 0.13887f
+C1036 gb8 sr8 0.02902f
+C1037 vbp xcmp_tail2 0.16593f
+C1038 b4 hsg 0.12178f
+C1039 hsg nr6 0.03432f
+C1040 bsb sg7 0.11432f
+C1041 bs rb5 0.19056f
+C1042 azb rb6 0.02642f
+C1043 vcb ts 0.62308f
+C1044 b5 sr8 0.04127f
+C1045 sg2 d0 0.03672f
+C1046 a sg1 0.04924f
+C1047 b3 sr8 0.04255f
+C1048 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1800# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1200# 0.04819f
+C1049 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# ts 0.00118f
+C1050 gn6 d7 0.03741f
+C1051 sg6 gb7 0
+C1052 db5 nr6 0
+C1053 b6 rb5 0.15597f
+C1054 xcmp_ym xcmp_vb 1.05065f
+C1055 gn0 d2 0.0199f
+C1056 sr4 sg5 0.07033f
+C1057 sr1 bsn 0.01988f
+C1058 ain rb5 0.33567f
+C1059 gn5 nr6 0.00823f
+C1060 hs rb7 0.2119f
+C1061 hsb sr7 0.02466f
+C1062 xcmp_o3 en 0.19535f
+C1063 sg3 sr7 0.05627f
+C1064 sg3 db2 0.0229f
+C1065 gn3 rb7 0.01437f
+C1066 vbp xcmp_vb 0.0689f
+C1067 db1 db2 0
+C1068 db1 sr7 0.02201f
+C1069 d1 rb7 0.0189f
+C1070 azc hs 1.02842f
+C1071 sg8 rb7 0.1079f
+C1072 xds_n2 ts 0.12045f
+C1073 hsgs sr4 0
+C1074 rb2 d6 0.01842f
+C1075 b8 rb4 0.0741f
+C1076 d9 rb7 0.02647f
+C1077 sg1 d0 0.03672f
+C1078 sr5 sr3 0.03895f
+C1079 azn sg6 0.05702f
+C1080 xcmp_enb cmp 0.84635f
+C1081 rb9 ts 0.0246f
+C1082 hs db8 0.05615f
+C1083 tsb sr6 0
+C1084 hsb rb8 0.02458f
+C1085 sg3 rb8 0.10385f
+C1086 db1 rb8 0.02505f
+C1087 b9 sg9 10.08706f
+C1088 sr9 bsn 0.02798f
+C1089 d8 sg5 0.01956f
+C1090 bs sr6 0.1086f
+C1091 gb8 rb8 0.03129f
+C1092 sg8 db8 0.1094f
+C1093 rb1 sg2 0.0519f
+C1094 rb3 sr3 1.85257f
+C1095 sg7 rb7 0.06303f
+C1096 sr3 db4 0
+C1097 hsg sr1 0.19221f
+C1098 rb4 sr8 0.09335f
+C1099 sg0 sg9 0.07439f
+C1100 rb0 rb2 0.06437f
+C1101 sr0 rb9 0.04475f
+C1102 d9 db8 0.02989f
+C1103 db9 rb8 0
+C1104 sr8 d7 0.01955f
+C1105 bsb sg6 0.10816f
+C1106 sr5 ts0 0.01437f
+C1107 b9 bx 21.954f
+C1108 a rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# 0.00394f
+C1109 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# d7 0.00394f
+C1110 b6 sr6 1.77844f
+C1111 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# gb1 0
+C1112 bx sg0 0.04574f
+C1113 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# d8 0.00139f
+C1114 rb2 q3 0.04545f
+C1115 d3 d6 0.02237f
+C1116 xcmp_x xcmp_b 0.36379f
+C1117 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# gn8 0.01168f
+C1118 bsb azn 0.07569f
+C1119 ain sr6 0.22271f
+C1120 azc xcmp_xm 0.57435f
+C1121 b2 sr4 0.04124f
+C1122 sr5 nr0 0.0229f
+C1123 top vcm 1.40742f
+C1124 azb sg0 0.02642f
+C1125 d4 ts 0.02057f
+C1126 sr9 nr9 15.98111f
+C1127 rb3 ts0 0.01899f
+C1128 a bsn 5.72838f
+C1129 sg7 db8 0
+C1130 db0 avdd 0.47457f
+C1131 hsn sr1 0.02022f
+C1132 tsb az 0.66178f
+C1133 b8 rb5 0.07397f
+C1134 rb1 sg1 0.13415f
+C1135 vbp xcmp_tail 0.17424f
+C1136 bs az 0.02634f
+C1137 sr0 d4 0.0348f
+C1138 nr3 sg2 0.00212f
+C1139 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# rb0 0.00292f
+C1140 hsg sr9 0.36345f
+C1141 sr3 gn2 0.02725f
+C1142 sr7 rb4 0.05268f
+C1143 sr4 nr2 0.01899f
+C1144 gn4 sg9 0.02847f
+C1145 rb9 nr8 0.02855f
+C1146 rb4 db2 0.02594f
+C1147 nr1 rb2 0.01437f
+C1148 d3 rb0 0.02003f
+C1149 rb3 nr0 0.01739f
+C1150 sample hsg 0
+C1151 db2 d7 0.02685f
+C1152 sr7 d7 0.05788f
+C1153 rb7 gb7 0.06059f
+C1154 dn q1 2.14469f
+C1155 hs hsb 1.89796f
+C1156 sg3 hs 0.17131f
+C1157 d1 hsb 0.01895f
+C1158 d3 q3 0.0507f
+C1159 gn3 sg3 2.83307f
+C1160 db1 hs 0.05727f
+C1161 sr9 db5 0.06112f
+C1162 b4 sg5 0.09265f
+C1163 sg5 nr6 0.0172f
+C1164 gb5 d6 3.47574f
+C1165 gb8 hs 0.56228f
+C1166 d1 sg3 0.0189f
+C1167 sg8 hsb 0.02458f
+C1168 ain az 0
+C1169 d9 hsb 0.01895f
+C1170 d1 db1 1.06616f
+C1171 db9 hs 0.03642f
+C1172 rb5 sr8 0.09187f
+C1173 sg8 sg3 0.10588f
+C1174 bsn d0 0.02057f
+C1175 sr6 gn6 0.02659f
+C1176 vt vcm 2.39116f
+C1177 gn5 sr9 0.02657f
+C1178 sg9 gb9 2.6785f
+C1179 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# gb3 0
+C1180 sg8 db1 0.02201f
+C1181 rb6 ts 0.02057f
+C1182 d9 sg3 0.02043f
+C1183 q2 sr3 0.03437f
+C1184 rb7 sg6 0.06852f
+C1185 rb4 rb8 0.05407f
+C1186 d9 db1 0.02505f
+C1187 sg8 gb8 4.89878f
+C1188 db8 gb7 0.02266f
+C1189 hsn sr9 0.02839f
+C1190 rb8 d7 0.01963f
+C1191 a hsg 0.04924f
+C1192 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# rb2 0.00292f
+C1193 db9 sg8 0.99063f
+C1194 d9 gb8 0.42507f
+C1195 d9 db9 1.43942f
+C1196 sr3 gn1 0.01988f
+C1197 b5 sg8 0.04895f
+C1198 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# db1 0.00139f
+C1199 b3 sg8 0.05025f
+C1200 d3 nr1 0.01438f
+C1201 d8 nr2 0.01437f
+C1202 rb9 d2 0.02476f
+C1203 sr0 rb6 0.0699f
+C1204 azn rb7 0.05702f
+C1205 gb1 gn0 0
+C1206 hsb sg7 0.02458f
+C1207 sg3 sg7 0.05759f
+C1208 azc azn 5.23936f
+C1209 q2 ts0 0.01899f
+C1210 db1 sg7 0.02201f
+C1211 a rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# 0.00139f
+C1212 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# d7 0.00139f
+C1213 b8 sr6 0.07736f
+C1214 gb8 sg7 0
+C1215 bsb rb7 0.15665f
+C1216 rb5 sr7 0.0512f
+C1217 rb5 db2 0.02594f
+C1218 ain gn0 0
+C1219 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# gn8 0.00232f
+C1220 hsg d0 0.08391f
+C1221 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# d6 0.00394f
+C1222 b2 b4 0.11289f
+C1223 vcb dum 0
+C1224 d4 d2 0.02375f
+C1225 sr8 sr6 0.10388f
+C1226 sr1 sg5 0.07078f
+C1227 rb1 bsn 0.01988f
+C1228 hs rb4 0.19258f
+C1229 sr3 avdd 1.30816f
+C1230 hs d7 0.16287f
+C1231 rb5 rb8 0.05722f
+C1232 gn3 rb4 0.02296f
+C1233 gn3 d7 0.02022f
+C1234 d1 rb4 0.0189f
+C1235 hsn d0 0.02881f
+C1236 d1 d7 0.02181f
+C1237 sg8 rb4 0.10163f
+C1238 sr2 d6 0.03176f
+C1239 gb8 gb7 0
+C1240 sg8 d7 0.01955f
+C1241 d9 rb4 0.01849f
+C1242 d9 d7 0.02251f
+C1243 sr5 sg9 0.3153f
+C1244 sg0 ts 0.0246f
+C1245 avdd ts0 0.74541f
+C1246 sr8 gn8 0.00847f
+C1247 hsb sg6 0.02458f
+C1248 sg3 sg6 0.05858f
+C1249 db1 sg6 0.02201f
+C1250 b9 sr0 0.0478f
+C1251 xcmp_x dum 0.08968f
+C1252 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# hsn 0.0162f
+C1253 sr7 sr6 34.1591f
+C1254 sr9 sg5 0.06483f
+C1255 db2 sr6 0.0229f
+C1256 sample sg5 0.01776f
+C1257 d2 rb6 0.01739f
+C1258 xcmp_o3 avdd 2.32835f
+C1259 sr8 az 0.02603f
+C1260 xcmp_o2 vbp 0.83122f
+C1261 rb1 hsg 2.96442f
+C1262 azn hsb 0.02182f
+C1263 sg0 sr0 0.23445f
+C1264 sr4 rb2 0.09541f
+C1265 rb0 sr2 0.10746f
+C1266 sg7 rb4 0.05276f
+C1267 sg9 db4 0.031f
+C1268 rb3 sg9 0.06078f
+C1269 sg4 sr3 0.11444f
+C1270 a q1 0.04822f
+C1271 nr0 avdd 0.81162f
+C1272 gn7 nr7 0
+C1273 sg7 d7 0.02895f
+C1274 azb sr5 0.02642f
+C1275 azn sg3 0.05702f
+C1276 b5 sg6 0
+C1277 gb0 gn0 0.10283f
+C1278 bx rb3 0.05374f
+C1279 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4200# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4800# 0.04819f
+C1280 sr9 gn9 0.01348f
+C1281 sr2 q3 0.04545f
+C1282 hsgs sample 0
+C1283 hsgs sr9 0.19144f
+C1284 db6 gb6 1.14926f
+C1285 xcmp_enb xcmp_azn 0.09274f
+C1286 b2 sr1 0.13789f
+C1287 rb5 hs 0.21489f
+C1288 bsb hsb 0.02269f
+C1289 sr6 rb8 0.11255f
+C1290 xcmp_vbi xcmp_b 6.80673f
+C1291 azb rb3 0.02642f
+C1292 bsb sg3 0.33671f
+C1293 sg4 ts0 0.01437f
+C1294 rb5 gn3 0.01437f
+C1295 b0 bx 1.75758f
+C1296 a sg5 0.04924f
+C1297 hsn rb1 0.02022f
+C1298 bsb db1 0
+C1299 rb5 d1 0.0189f
+C1300 xcmp_azn xcmp_o1 0.18389f
+C1301 rb5 sg8 0.10386f
+C1302 b7 rb0 0.136f
+C1303 bx b1 0.1772f
+C1304 bsb db9 0
+C1305 rb5 d9 0.0206f
+C1306 vrefp rb0 0.75935f
+C1307 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# d6 0.00139f
+C1308 sr7 az 0.02597f
+C1309 db3 nr4 0
+C1310 nr3 hsg 0.02594f
+C1311 d3 sr4 0.01739f
+C1312 nr1 sr2 0.01899f
+C1313 gn0 sr8 0.01988f
+C1314 gn2 sg9 0.02725f
+C1315 sg4 nr0 0.01739f
+C1316 gn7 rb9 0.03499f
+C1317 rb2 d8 0.01858f
+C1318 bs rb9 0.15368f
+C1319 azc xcmp_azd 0.44622f
+C1320 bsb b5 2.20159f
+C1321 db7 nr7 0.07851f
+C1322 a hsgs 0.02297f
+C1323 bsb b3 1.23466f
+C1324 gb7 d7 1.74278f
+C1325 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# sr5 0
+C1326 b6 rb9 0.00174f
+C1327 rb8 gn8 0.21553f
+C1328 sr3 d5 0.03176f
+C1329 rb5 sg7 0.05492f
+C1330 ain rb9 0.07213f
+C1331 sg5 d0 0.03672f
+C1332 rb8 az 0.02582f
+C1333 q2 sg9 0.03437f
+C1334 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# hs 0
+C1335 rb4 sg6 0.05277f
+C1336 sg6 d7 0.05373f
+C1337 gn6 nr7 0.0029f
+C1338 d5 ts0 0.01899f
+C1339 sg9 gn1 0.02606f
+C1340 hsgs d0 0.00454f
+C1341 gn0 sr7 0.01988f
+C1342 sg0 d2 0.02043f
+C1343 hs sr6 0.21369f
+C1344 nr2 sr9 0.029f
+C1345 azn rb4 0.05702f
+C1346 d3 d8 0.0214f
+C1347 bs d4 0.01987f
+C1348 azn d7 0.05702f
+C1349 hsb rb7 0.02458f
+C1350 gn3 sr6 0.01988f
+C1351 sg3 rb7 0.05426f
+C1352 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# hs 0
+C1353 d1 sr6 0.0189f
+C1354 azb q2 0.02797f
+C1355 db1 rb7 0.02505f
+C1356 nr0 d5 0.01739f
+C1357 sg8 sr6 0.06616f
+C1358 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# ts 0
+C1359 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# hsg 0
+C1360 d9 sr6 0.02585f
+C1361 b4 rb2 0.12157f
+C1362 bsb rb4 0.1624f
+C1363 ain d4 0
+C1364 bsb d7 0.02247f
+C1365 b5 rb7 0.03331f
+C1366 cmp azc 1.42538f
+C1367 rb9 gn6 0.02894f
+C1368 gn0 rb8 0.01437f
+C1369 b3 rb7 0.03442f
+C1370 en xcmp_b 0.06059f
+C1371 hs gn8 0.01437f
+C1372 sg7 sr6 0.10275f
+C1373 rb1 sg5 0.09451f
+C1374 d8 gb5 0.01437f
+C1375 bs rb6 0.15219f
+C1376 hs az 0.02582f
+C1377 sg8 gn8 7.09664f
+C1378 gb8 db8 1.98589f
+C1379 sg9 avdd 5.94013f
+C1380 d9 gn8 0.02601f
+C1381 db9 db8 0
+C1382 sr8 nr7 0.02445f
+C1383 rb5 sg6 0.05494f
+C1384 gb4 gb5 0.45665f
+C1385 cmp xcmp_azd 0.55949f
+C1386 sr5 ts 0.02117f
+C1387 d1 az 0.02582f
+C1388 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# nr7 0.01168f
+C1389 b6 rb6 3.03451f
+C1390 sg8 az 0.02582f
+C1391 bx avdd 0.63381f
+C1392 d9 az 0.02582f
+C1393 db3 d6 0.02685f
+C1394 b8 rb9 0.04928f
+C1395 azn rb5 0.05702f
+C1396 ain rb6 0.15988f
+C1397 xcmp_xm xcmp_azn 0.06879f
+C1398 sr5 sr0 0.04042f
+C1399 rb3 ts 0.02057f
+C1400 azb avdd 2.59262f
+C1401 gb6 d6 1.67442f
+C1402 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# hs 0.00297f
+C1403 rb6 db7 0
+C1404 nr3 sg5 0.01437f
+C1405 bsb rb5 0.1536f
+C1406 b0 ts 0
+C1407 sg7 az 0.02582f
+C1408 hs gn0 0.02055f
+C1409 sr3 sg2 0.0638f
+C1410 sg4 sg9 0.0801f
+C1411 rb7 rb4 0.09258f
+C1412 rb3 sr0 0.0699f
+C1413 sr4 sr2 0.08071f
+C1414 rb9 sr8 0.03504f
+C1415 sr1 rb2 0.11038f
+C1416 sr7 nr7 3.69172f
+C1417 rb7 d7 0.15106f
+C1418 xcmp_vbi dum 8.69764f
+C1419 d1 gn0 0.04681f
+C1420 sg3 hsb 0.02458f
+C1421 b1 ts 0
+C1422 sg8 gn0 0.01988f
+C1423 b0 sr0 0.9722f
+C1424 gb5 nr6 0.00742f
+C1425 d9 gn0 0.01988f
+C1426 db1 sg3 0.02201f
+C1427 gb3 db2 0.00252f
+C1428 b2 rb1 0.47406f
+C1429 sr6 sg6 0.07328f
+C1430 rb6 gn6 0.13292f
+C1431 azb sg4 0.02642f
+C1432 sg2 ts0 0.01437f
+C1433 b1 sr0 0.12061f
+C1434 b5 sg3 0.07214f
+C1435 rb8 nr7 0.02621f
+C1436 b3 sg3 1.25616f
+C1437 db9 gb8 0.28682f
+C1438 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# avdd 0
+C1439 vt top 0
+C1440 b7 sr4 0.13562f
+C1441 b9 bs 31.60231f
+C1442 sr3 sg1 0.0563f
+C1443 azn sr6 0.05702f
+C1444 vrefp sr4 1.36242f
+C1445 gn0 sg7 0.01988f
+C1446 ab d6 0.03727f
+C1447 d3 sr1 0.03944f
+C1448 d8 sr2 0.03176f
+C1449 bs sg0 0.31195f
+C1450 rb1 nr2 0
+C1451 sr8 d4 0.01739f
+C1452 rb2 sr9 0.06269f
+C1453 sg2 nr0 0.01739f
+C1454 sr7 rb9 0.0621f
+C1455 rb9 db2 0.03331f
+C1456 sample rb2 0
+C1457 gb1 sg0 0.00485f
+C1458 b9 b6 0.14803f
+C1459 b5 b3 0.1668f
+C1460 q2 ts 6.74433f
+C1461 b6 sg0 0.16449f
+C1462 sg9 d5 0.02296f
+C1463 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# nr7 0.00232f
+C1464 b8 rb6 0.07397f
+C1465 b9 ain 92.985f
+C1466 bsb sr6 0.11773f
+C1467 xcmp_x xcmp_o1 0.38539f
+C1468 sr5 d2 0.01739f
+C1469 sg1 ts0 0.01437f
+C1470 rb5 rb7 0.0965f
+C1471 ain sg0 0.53041f
+C1472 sg6 az 0.02582f
+C1473 q2 sr0 0.03437f
+C1474 hsg db0 0.10342f
+C1475 rb9 rb8 23.9236f
+C1476 rb0 ab 0.03727f
+C1477 a rb2 0.04924f
+C1478 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# nr6 0.01168f
+C1479 azb d5 0.02648f
+C1480 xcmp_y top 0.08945f
+C1481 nr0 sg1 0.01739f
+C1482 azn az 3.68891f
+C1483 ab q3 0
+C1484 d4 db2 0.02685f
+C1485 sr8 rb6 0.09436f
+C1486 sr7 d4 0.01739f
+C1487 d3 sr9 0.0274f
+C1488 rb3 d2 0.01747f
+C1489 hsb rb4 0.02458f
+C1490 b2 vbp 0
+C1491 hsb d7 0.01895f
+C1492 hs nr7 1.37121f
+C1493 sg3 rb4 0.1026f
+C1494 sg3 d7 0.02043f
+C1495 db1 rb4 0.02505f
+C1496 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# gb9 0
+C1497 db1 d7 0.02505f
+C1498 b4 sr2 0.11349f
+C1499 bsb az 0.02602f
+C1500 sg8 nr7 0.02621f
+C1501 azb xds_n1 0.74484f
+C1502 ain gn4 0
+C1503 d9 nr7 0.02141f
+C1504 gb3 hs 1.07572f
+C1505 b5 rb4 0.08254f
+C1506 gn0 sg6 0.01988f
+C1507 d4 rb8 0.01739f
+C1508 rb2 d0 0.03672f
+C1509 gb3 gn3 0.1027f
+C1510 a d3 0.04933f
+C1511 avdd ts 2.43846f
+C1512 xds_n2 hs 0.12101f
+C1513 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# nr2 0.00232f
+C1514 gn2 d2 0
+C1515 sr7 rb6 0.06288f
+C1516 sr9 gb5 0.02844f
+C1517 sr3 bsn 0.01988f
+C1518 rb7 sr6 0.05977f
+C1519 db2 rb6 0.02594f
+C1520 hs rb9 0.26431f
+C1521 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# gn2 0.01168f
+C1522 ain gb9 0
+C1523 sr0 avdd 1.18311f
+C1524 sg7 nr7 0.03561f
+C1525 xcmp_d1 xcmp_oc 0.19547f
+C1526 gn3 rb9 0.02247f
+C1527 d1 rb9 0.02508f
+C1528 gb0 sg0 2.652f
+C1529 b7 b4 0.10992f
+C1530 xcmp_o3 xcmp_o2 1.63033f
+C1531 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# avdd 0
+C1532 b9 b8 48.49244f
+C1533 b4 vrefp 1.92879f
+C1534 sg8 rb9 0.41575f
+C1535 db6 d6 1.4825f
+C1536 b8 sg0 0.07942f
+C1537 d9 rb9 0
+C1538 bsb gn0 0.00139f
+C1539 azc xcmp_azn 17.24368f
+C1540 rb5 hsb 0.02458f
+C1541 xcmp_b avdd 1.17195f
+C1542 xcmp_n1 top 0.04953f
+C1543 q2 d2 0.02244f
+C1544 d3 d0 0.04081f
+C1545 rb6 rb8 0.05836f
+C1546 rb5 sg3 0.05402f
+C1547 sg4 ts 0.02057f
+C1548 dn rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3300# 0.0381f
+C1549 hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# 0
+C1550 rb5 db1 0.02505f
+C1551 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1200# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_600# 0.04819f
+C1552 d2 gn1 0.04622f
+C1553 b9 sr8 0.05128f
+C1554 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3600# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3000# 0.04819f
+C1555 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# nr6 0.00232f
+C1556 rb7 az 0.02582f
+C1557 hs d4 1.60122f
+C1558 sr3 hsg 0.18026f
+C1559 db3 sr4 0.0229f
+C1560 sg0 sr8 0.11137f
+C1561 sg7 rb9 0.40117f
+C1562 sg2 sg9 0.07186f
+C1563 sg4 sr0 0.48811f
+C1564 rb1 rb2 35.91235f
+C1565 xcmp_azn xcmp_azd 0.0925f
+C1566 sr1 sr2 38.78857f
+C1567 b5 rb5 1.95237f
+C1568 nr8 avdd 3.63389f
+C1569 rb4 d7 0.01835f
+C1570 b3 rb5 0.03362f
+C1571 d9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# 0.00394f
+C1572 gn3 d4 0.04779f
+C1573 gb7 nr7 1.71124f
+C1574 xcmp_x xcmp_xm 0.93449f
+C1575 d1 d4 0.02297f
+C1576 nr5 sg9 0.02296f
+C1577 tsb sr5 0
+C1578 sg8 d4 0.01739f
+C1579 db8 gn8 5.31303f
+C1580 nr4 d6 0.01437f
+C1581 d9 d4 0.0214f
+C1582 gb2 rb1 0
+C1583 bs sr5 0.14199f
+C1584 azb sg2 0.02642f
+C1585 hsg ts0 0.01899f
+C1586 hsn sr3 0.02022f
+C1587 sg6 nr7 0.00109f
+C1588 b6 sr5 0.15868f
+C1589 b7 sr1 0.13562f
+C1590 b9 sr7 0.0565f
+C1591 d5 ts 0.02057f
+C1592 sg9 sg1 0.07059f
+C1593 vrefp sr1 1.11558f
+C1594 rb1 d3 0.01907f
+C1595 hsg nr0 0.03977f
+C1596 hsgs db0 0
+C1597 hs rb6 0.20619f
+C1598 nr3 rb2 0
+C1599 hsb sr6 0.02464f
+C1600 gn4 sr8 0.01988f
+C1601 sg0 sr7 0.06454f
+C1602 sample sr2 0.01745f
+C1603 sg7 d4 0.01739f
+C1604 gn0 rb7 0.01437f
+C1605 db3 d8 0.02685f
+C1606 bs rb3 0.22559f
+C1607 sr2 sr9 0.04226f
+C1608 ain sr5 0.24034f
+C1609 d2 avdd 0.69787f
+C1610 rb9 gb7 0.0315f
+C1611 sg3 sr6 0.05628f
+C1612 gn3 rb6 0.01437f
+C1613 b0 tsb 0
+C1614 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3600# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4200# 0.04819f
+C1615 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# avdd 0
+C1616 gb4 db3 0.00252f
+C1617 db1 sr6 0.02201f
+C1618 d1 rb6 0.0189f
+C1619 xcmp_tail2 xcmp_b 0.15144f
+C1620 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# nr4 0.01168f
+C1621 b6 rb3 0.13651f
+C1622 sg8 rb6 0.10273f
+C1623 sr0 d5 0.0348f
+C1624 xcmp_enb xcmp_vbi 0.96829f
+C1625 bs b0 2.57513f
+C1626 d8 gb6 0.02039f
+C1627 b1 tsb 0
+C1628 d9 rb6 0.02076f
+C1629 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# avdd 0.00109f
+C1630 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# avdd 0
+C1631 gb2 nr3 0.00761f
+C1632 azb sg1 0.02642f
+C1633 ain rb3 0.29341f
+C1634 xds_n1 ts 0.13081f
+C1635 rb5 rb4 35.2403f
+C1636 b9 rb8 0.07189f
+C1637 ain db4 0
+C1638 rb5 d7 0.02051f
+C1639 cmp xcmp_azn 1.0844f
+C1640 b0 b6 0.11294f
+C1641 xcmp_y xcmp_n1 0.6773f
+C1642 sg0 rb8 3.67358f
+C1643 bs b1 1.18808f
+C1644 sr4 ab 0.03727f
+C1645 rb9 sg6 0.27621f
+C1646 vbp xcmp_oc 3.19646f
+C1647 xcmp_vbi xcmp_o1 0.26341f
+C1648 azn xds_n2 0.12154f
+C1649 a sr2 0.04924f
+C1650 b0 ain 30.80119f
+C1651 hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# 0.00297f
+C1652 b6 b1 0.1074f
+C1653 vrefp sr9 23.92832f
+C1654 d3 nr3 5.33048f
+C1655 gn4 sr7 0.01988f
+C1656 sg7 rb6 0.05379f
+C1657 sg4 d2 0.01739f
+C1658 azn rb9 0.06105f
+C1659 gb8 gn8 0.29988f
+C1660 xcmp_vb xcmp_b 0.06263f
+C1661 hsb az 0
+C1662 db9 gn8 0.00379f
+C1663 ain b1 1.30938f
+C1664 sg3 az 0.02582f
+C1665 d9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# 0.00139f
+C1666 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# gb2 0.00292f
+C1667 q2 tsb 0.04604f
+C1668 ain gn2 0
+C1669 bsb rb9 6.92018f
+C1670 gn4 rb8 0.01437f
+C1671 d8 ab 0.03727f
+C1672 sr2 d0 0.04146f
+C1673 d4 sg6 0.01739f
+C1674 bs q2 0.01952f
+C1675 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# ts 0.05537f
+C1676 gb6 nr6 1.32634f
+C1677 gb2 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# 0
+C1678 b8 sr5 0.07492f
+C1679 azn d4 0.06209f
+C1680 rb4 sr6 0.05268f
+C1681 sr3 sg5 0.07041f
+C1682 sg9 bsn 0.01988f
+C1683 gb1 gn1 0.10277f
+C1684 rb6 gb7 0
+C1685 sr6 d7 0.03573f
+C1686 hs sg0 0.10501f
+C1687 avdd dum 4.68337f
+C1688 rb7 nr7 0.14379f
+C1689 ain q2 0
+C1690 sg3 gn0 0.01988f
+C1691 b9 sg8 0.04724f
+C1692 d1 sg0 0.22744f
+C1693 db1 gn0 0
+C1694 d2 d5 0.02237f
+C1695 sg8 sg0 0.11994f
+C1696 ain gn1 0
+C1697 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# nr4 0.00232f
+C1698 hsgs sr3 0
+C1699 rb0 d6 0.02026f
+C1700 b8 rb3 0.07418f
+C1701 d9 sg0 0.02043f
+C1702 bsb d4 0.02424f
+C1703 xcmp_enb en 0.65108f
+C1704 azb bsn 0.00913f
+C1705 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# avdd 0.00109f
+C1706 sr5 sr8 0.09455f
+C1707 sg5 ts0 0.01437f
+C1708 rb6 sg6 0.08319f
+C1709 sg9 nr9 0.08239f
+C1710 sg2 ts 0.02057f
+C1711 q3 d6 0.05063f
+C1712 b0 b8 0.19327f
+C1713 xcmp_tail xcmp_b 4.37952f
+C1714 en xcmp_o1 1.33196f
+C1715 tsb avdd 13.76619f
+C1716 b9 sg7 0.05561f
+C1717 nr0 sg5 0.01739f
+C1718 azn rb6 0.05702f
+C1719 azc xds_n2 0.33486f
+C1720 hsgs ts0 0
+C1721 rb4 az 0.02582f
+C1722 hs gn4 0.02108f
+C1723 sg9 hsg 0.25337f
+C1724 rb3 sr8 0.09335f
+C1725 sr8 db4 0.0229f
+C1726 rb1 sr2 0.12038f
+C1727 sg0 sg7 0.065f
+C1728 sg2 sr0 0.4164f
+C1729 rb7 rb9 0.07274f
+C1730 b8 b1 0.18384f
+C1731 d7 az 0.02582f
+C1732 gn7 avdd 2.16178f
+C1733 bs avdd 6.37448f
+C1734 azc xcmp_x 0.06931f
+C1735 gb1 avdd 0.62464f
+C1736 bx hsg 24.77167f
+C1737 sg9 db5 0.05863f
+C1738 sg8 gn4 0.01988f
+C1739 rb0 q3 0.05352f
+C1740 b0 sr8 0.04577f
+C1741 hsgs nr0 0
+C1742 nr1 d6 0.01437f
+C1743 b6 avdd 4.30598f
+C1744 d9 gn4 0.02022f
+C1745 bsb rb6 0.15308f
+C1746 rb5 sr6 0.06014f
+C1747 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# db0 0.00394f
+C1748 b2 sr3 0
+C1749 sr5 sr7 0.05662f
+C1750 sr5 db2 0.0229f
+C1751 sg1 ts 0.02057f
+C1752 gn5 sg9 0.0255f
+C1753 azb hsg 0.02642f
+C1754 ain avdd 27.34008f
+C1755 hs gb9 0.75932f
+C1756 b1 sr8 0.04493f
+C1757 rb9 db8 0.03912f
+C1758 hsn sg9 0.02022f
+C1759 xcmp_tail2 dum 0.13149f
+C1760 b7 rb1 0.13589f
+C1761 sg8 gb9 0.00967f
+C1762 sr0 sg1 0.35619f
+C1763 b9 gb7 0
+C1764 vrefp rb1 0.68665f
+C1765 nr4 sr4 2.88104f
+C1766 d9 gb9 0.05944f
+C1767 rb0 nr1 0
+C1768 sr7 db4 0.0229f
+C1769 rb3 sr7 0.05268f
+C1770 gn2 sr8 0.01988f
+C1771 db3 sr9 0.03291f
+C1772 sr3 nr2 0.01899f
+C1773 sg7 gn4 0.01988f
+C1774 rb7 d4 0.01739f
+C1775 rb3 db2 0.02594f
+C1776 gn0 rb4 0.01437f
+C1777 bs sg4 0.13299f
+C1778 gn0 d7 0.01988f
+C1779 db7 avdd 0.50476f
+C1780 sr5 rb8 0.10191f
+C1781 b6 sg4 0.13651f
+C1782 sr9 gb6 0.03212f
+C1783 rb5 az 0.02582f
+C1784 b9 sg6 0.05282f
+C1785 ain sg4 0.22175f
+C1786 q2 sr8 0.03437f
+C1787 sg0 sg6 0.06516f
+C1788 sr1 ab 0.03727f
+C1789 rb3 rb8 0.05358f
+C1790 db4 rb8 0.02594f
+C1791 gb3 sg3 2.05962f
+C1792 gn6 avdd 1.31062f
+C1793 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# hsg 0.00297f
+C1794 sr8 gn1 0.01988f
+C1795 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# avdd 0
+C1796 gn2 db2 2.39165f
+C1797 sg2 d2 0.0248f
+C1798 sr7 gn2 0.01988f
+C1799 azn sg0 0.06105f
+C1800 rb7 rb6 31.62654f
+C1801 nr4 d8 0.01437f
+C1802 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# db5 0.00139f
+C1803 hsb rb9 0.02861f
+C1804 gb4 nr4 0.23062f
+C1805 sg3 rb9 0.35713f
+C1806 db1 rb9 0.03123f
+C1807 bs d5 0.01976f
+C1808 gn5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# 0.00232f
+C1809 gb0 avdd 0.73334f
+C1810 bsb b9 19.5429f
+C1811 gb8 rb9 0.03912f
+C1812 db6 nr6 0.43591f
+C1813 db9 rb9 0.08065f
+C1814 rb5 gn0 0.01437f
+C1815 en xcmp_xm 0.39416f
+C1816 bsb sg0 0.38346f
+C1817 b8 avdd 7.09971f
+C1818 sr5 hs 0.21543f
+C1819 b5 rb9 0
+C1820 bsn ts 0.00118f
+C1821 q2 sr7 0.03437f
+C1822 sample ab 0
+C1823 sr9 ab 0.61806f
+C1824 gn4 sg6 0.01988f
+C1825 gn2 rb8 0.01437f
+C1826 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# db0 0.00139f
+C1827 sr5 gn3 0.01988f
+C1828 sr5 d1 0.0189f
+C1829 ain d5 0
+C1830 d2 sg1 0.2396f
+C1831 db2 gn1 0
+C1832 sr5 sg8 0.05879f
+C1833 sr7 gn1 0.01988f
+C1834 xcmp_o2 xcmp_b 0.17002f
+C1835 sr6 az 0.02593f
+C1836 azb q1 0.00279f
+C1837 sg9 sg5 0.07273f
+C1838 sr0 bsn 0.01988f
+C1839 sr5 d9 0.01899f
+C1840 hsb d4 0.01895f
+C1841 hs rb3 0.1693f
+C1842 hs db4 0.77775f
+C1843 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# avdd 0
+C1844 sr8 avdd 6.50184f
+C1845 db9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# 0
+C1846 gn3 rb3 0.05683f
+C1847 sg3 d4 0.26364f
+C1848 gn3 db4 0
+C1849 d7 nr7 1.42484f
+C1850 bx sg5 0.04382f
+C1851 db1 d4 0.02505f
+C1852 d1 rb3 0.0189f
+C1853 q2 rb8 0.03965f
+C1854 xcmp_tail dum 4.17706f
+C1855 sg9 gn9 15.51056f
+C1856 sg8 rb3 0.10163f
+C1857 sg8 db4 0.0229f
+C1858 a ab 0.76535f
+C1859 sr4 d6 0.03176f
+C1860 b8 sg4 0.06515f
+C1861 d9 rb3 0.01858f
+C1862 d9 db4 0.02685f
+C1863 bsb gn4 0.00139f
+C1864 gn1 rb8 0.01437f
+C1865 azb sg5 0.02642f
+C1866 sr5 sg7 0.08589f
+C1867 hsg ts 0.02057f
+C1868 b0 sg8 0.05351f
+C1869 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# nr0 0
+C1870 b9 rb7 0.04026f
+C1871 gn0 sr6 0.01988f
+C1872 b1 sg8 0.05266f
+C1873 hs gn2 0.02108f
+C1874 hsg sr0 0.11499f
+C1875 sg4 sr8 0.09694f
+C1876 sr3 rb2 0.06005f
+C1877 rb0 sr4 0.10393f
+C1878 rb3 sg7 0.05268f
+C1879 sg7 db4 0.0229f
+C1880 sg0 rb7 3.75139f
+C1881 rb4 rb9 0.06897f
+C1882 hsb rb6 0.02458f
+C1883 bsb gb9 0
+C1884 sr7 avdd 3.35745f
+C1885 rb9 d7 0.02895f
+C1886 db2 avdd 0.44748f
+C1887 sg3 rb6 0.05412f
+C1888 db1 rb6 0.02505f
+C1889 d0 ab 0.04588f
+C1890 sr4 q3 0.04545f
+C1891 sg8 gn2 0.01988f
+C1892 xcmp_enb avdd 1.88457f
+C1893 azc xcmp_vbi 0.15758f
+C1894 d8 d6 0.02057f
+C1895 d9 gn2 0.02022f
+C1896 b5 rb6 0.05327f
+C1897 b3 rb6 0.0339f
+C1898 rb2 ts0 0.01899f
+C1899 q2 hs 12.31823f
+C1900 xcmp_o1 avdd 0.77794f
+C1901 hsn sr0 0.02022f
+C1902 rb8 avdd 14.50816f
+C1903 b2 bx 0.21436f
+C1904 q2 d1 0.02242f
+C1905 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# ab 0
+C1906 d2 bsn 0.02042f
+C1907 xcmp_vbi xcmp_azd 0.12201f
+C1908 hs gn1 0.01993f
+C1909 q2 sg8 0.03437f
+C1910 xcmp_o3 xcmp_oc 0.08998f
+C1911 rb4 d4 0.02993f
+C1912 hsg nr8 0.02991f
+C1913 db3 nr3 0.14981f
+C1914 d3 sr3 0.02656f
+C1915 sg4 sr7 0.05628f
+C1916 sr4 nr1 0.01899f
+C1917 sg7 gn2 0.01988f
+C1918 sg9 nr2 0.02055f
+C1919 sg4 db2 0.0229f
+C1920 gn4 rb7 0.01437f
+C1921 rb0 d8 0.02062f
+C1922 nr0 rb2 0.01739f
+C1923 bs sg2 0.16405f
+C1924 q2 d9 0.02335f
+C1925 d4 d7 0.02237f
+C1926 d1 gn1 0
+C1927 sr5 sg6 0.09554f
+C1928 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# avdd 0.00109f
+C1929 sg8 gn1 0.01988f
+C1930 db9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# 0
+C1931 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# d5 0.00394f
+C1932 b6 sg2 0.13651f
+C1933 d8 q3 0.05063f
+C1934 d9 gn1 0.01899f
+C1935 sr8 d5 0.01988f
+C1936 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# avdd 0
+C1937 rb5 rb9 0.07187f
+C1938 ain sg2 0.30791f
+C1939 azn sr5 0.05702f
+C1940 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# gn1 0.00232f
+C1941 d3 ts0 0.01901f
+C1942 q2 sg7 0.03437f
+C1943 sg4 rb8 0.10371f
+C1944 rb3 sg6 0.05276f
+C1945 db4 sg6 0.0229f
+C1946 rb1 ab 0.03727f
+C1947 ain nr5 0
+C1948 d6 nr6 1.38284f
+C1949 sg7 gn1 0.01988f
+C1950 bs sg1 0.16521f
+C1951 d3 nr0 0.0174f
+C1952 nr1 d8 0.01437f
+C1953 hsg d2 0.05615f
+C1954 nr4 sr9 0.029f
+C1955 rb4 rb6 0.09406f
+C1956 azn rb3 0.05702f
+C1957 q1 ts 0.08939f
+C1958 bsb sr5 0.11073f
+C1959 gb1 sg1 2.45467f
+C1960 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# nr0 0.00119f
+C1961 rb6 d7 0.03064f
+C1962 b9 sg3 0.04122f
+C1963 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# hsg 0
+C1964 hsb sg0 0.02861f
+C1965 hs avdd 5.68186f
+C1966 b6 sg1 0.13651f
+C1967 sg3 sg0 0.1208f
+C1968 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# nr8 0.01168f
+C1969 gn3 avdd 0.91026f
+C1970 db8 gb9 0.00102f
+C1971 db2 d5 0.02685f
+C1972 db1 sg0 0.97653f
+C1973 sr7 d5 0.01988f
+C1974 d1 avdd 3.66398f
+C1975 xcmp_tail2 xcmp_o1 1.35518f
+C1976 ain sg1 0.2968f
+C1977 b4 rb0 0.12171f
+C1978 sg8 avdd 2.87796f
+C1979 b9 b5 0.0437f
+C1980 azc en 2.75971f
+C1981 cmp xcmp_vbi 0.05401f
+C1982 bsb rb3 0.19269f
+C1983 rb5 d4 0.01747f
+C1984 bsb db4 0
+C1985 b9 b3 0.04308f
+C1986 d9 avdd 1.11014f
+C1987 sg5 ts 0.02057f
+C1988 b5 sg0 0.09226f
+C1989 gn2 sg6 0.01988f
+C1990 b3 sg0 0.09682f
+C1991 hsn d2 0.02022f
+C1992 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# avdd 0.00109f
+C1993 bsb b0 0.83453f
+C1994 db9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_455_69# 0.00394f
+C1995 xcmp_a top 0.0992f
+C1996 rb8 d5 0.01437f
+C1997 sr0 sg5 0.62387f
+C1998 rb9 sr6 0.04952f
+C1999 hsgs ts 0.00977f
+C2000 en xcmp_azd 1.51738f
+C2001 hs sg4 0.19469f
+C2002 bsb b1 1.08583f
+C2003 sg7 avdd 2.01785f
+C2004 xcmp_vb xcmp_o1 1.14498f
+C2005 xcmp_x xcmp_azn 0
+C2006 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# rb3 0.00292f
+C2007 gn3 sg4 0.01988f
+C2008 q2 sg6 0.03437f
+C2009 d1 sg4 0.0189f
+C2010 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2700# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3300# 0.04819f
+C2011 sg8 sg4 0.10628f
+C2012 sr1 d6 0.03944f
+C2013 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# d5 0.00139f
+C2014 b8 sg2 0.06515f
+C2015 bsb gn2 0.0014f
+C2016 d9 sg4 0.02043f
+C2017 rb5 rb6 34.1045f
+C2018 bs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# 0
+C2019 gn1 sg6 0.01988f
+C2020 sr5 rb7 0.05229f
+C2021 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# gb4 0.00292f
+C2022 azn q2 0.06127f
+C2023 tsb bsn 0.00116f
+C2024 rb9 gn8 0.04019f
+C2025 b9 rb4 0.04152f
+C2026 gb8 gb9 0
+C2027 d4 sr6 0.01739f
+C2028 bs bsn 6.65018f
+C2029 rb9 az 0.02986f
+C2030 db9 gb9 6.17891f
+C2031 rb0 sr1 0.12469f
+C2032 sg2 sr8 0.09686f
+C2033 sr3 sr2 38.5917f
+C2034 sg7 sg4 0.05858f
+C2035 sg9 rb2 0.06005f
+C2036 sg0 rb4 0.53284f
+C2037 rb3 rb7 0.09178f
+C2038 rb7 db4 0.02594f
+C2039 sg0 d7 0.02043f
+C2040 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# avdd 0
+C2041 bsb q2 0.02613f
+C2042 gb7 avdd 0.89825f
+C2043 nr5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# 0.01168f
+C2044 nr5 sr8 0.01437f
+C2045 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# gb3 0.00292f
+C2046 bx rb2 0.01784f
+C2047 b8 sg1 0.06515f
+C2048 hs d5 0.11028f
+C2049 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# nr8 0.00232f
+C2050 sr1 q3 0.04545f
+C2051 bsb gn1 0.00138f
+C2052 b0 rb7 0.03721f
+C2053 sr9 d6 0.02763f
+C2054 gn3 d5 0.02022f
+C2055 ain bsn 0.00447f
+C2056 b2 sr0 0.16023f
+C2057 d1 d5 0.02233f
+C2058 cmp en 0.04563f
+C2059 azb rb2 0.02642f
+C2060 sr2 ts0 0.01437f
+C2061 sg8 d5 0.01437f
+C2062 b1 rb7 0.03648f
+C2063 sg6 avdd 2.45734f
+C2064 d9 d5 0.01531f
+C2065 hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# 0
+C2066 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_2400# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1800# 0.04819f
+C2067 en b3 0
+C2068 b7 sr3 0.13562f
+C2069 xcmp_y xcmp_a 0.33407f
+C2070 xcmp_tail xcmp_o1 0.00137f
+C2071 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2100# dn 0.0381f
+C2072 sr6 rb6 1.11141f
+C2073 xds_n1 hs 0.13136f
+C2074 sr8 sg1 0.09686f
+C2075 d2 sg5 0.01739f
+C2076 vrefp sr3 1.029f
+C2077 d4 az 0.02582f
+C2078 db9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# 0.00139f
+C2079 gn4 rb4 0.05683f
+C2080 gn7 hsg 1.35047f
+C2081 nr1 sr1 2.70929f
+C2082 sg2 db2 0.69295f
+C2083 sr7 sg2 0.05619f
+C2084 rb0 sr9 0.07088f
+C2085 nr0 sr2 0.0229f
+C2086 d3 sg9 0.02476f
+C2087 rb7 gn2 0.01437f
+C2088 gn0 rb9 0.01841f
+C2089 sample rb0 0
+C2090 sr4 d8 0.03176f
+C2091 bs hsg 0.19973f
+C2092 azn avdd 2.08656f
+C2093 gn4 d7 0.02022f
+C2094 a d6 0.04928f
+C2095 gb1 hsg 0.02749f
+C2096 ain nr9 0.00366f
+C2097 nr5 sr7 0.01437f
+C2098 b6 hsg 0.13689f
+C2099 sr9 q3 0.06332f
+C2100 sg7 d5 0.01437f
+C2101 b9 rb5 0.04034f
+C2102 d1b dn 0.05192f
+C2103 rb5 sg0 0.69897f
+C2104 ain hsg 0.42001f
+C2105 vbp top 10.48988f
+C2106 bsb avdd 66.87767f
+C2107 azb d3 0.02654f
+C2108 sr5 hsb 0.02463f
+C2109 sg4 sg6 0.06086f
+C2110 sg2 rb8 0.10407f
+C2111 q2 rb7 0.0402f
+C2112 bs hsn 0.00637f
+C2113 sr5 sg3 0.0563f
+C2114 a rb0 0.04924f
+C2115 sr5 db1 0.02201f
+C2116 ain db5 0
+C2117 xcmp_xm xcmp_vb 1.3879f
+C2118 nr5 rb8 0.01437f
+C2119 azc q2 0.10945f
+C2120 db2 sg1 1.04856f
+C2121 sr7 sg1 0.05619f
+C2122 rb7 gn1 0.01437f
+C2123 rb6 az 0.02582f
+C2124 d0 d6 0.04004f
+C2125 gn0 d4 0.01988f
+C2126 hsg db7 0.17874f
+C2127 nr1 sr9 0.029f
+C2128 sg9 gb5 0.02736f
+C2129 azn sg4 0.05702f
+C2130 ain gn5 0
+C2131 hsb rb3 0.02458f
+C2132 b5 sr5 1.2668f
+C2133 sg3 rb3 0.06562f
+C2134 sg3 db4 1.19263f
+C2135 ain hsn 0
+C2136 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# avdd 0.00109f
+C2137 db1 rb3 0.02505f
+C2138 nr5 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# 0.00232f
+C2139 b4 sr4 2.128f
+C2140 bsb sg4 0.15974f
+C2141 rb5 gn4 0.02331f
+C2142 b0 sg3 0.0466f
+C2143 sg1 rb8 0.10447f
+C2144 b5 rb3 0.07214f
+C2145 xcmp_n1 xcmp_a 0.05317f
+C2146 hsg gn6 4.7172f
+C2147 rb0 d0 1.10844f
+C2148 b3 rb3 0.99851f
+C2149 b1 sg3 0.04651f
+C2150 b9 sr6 0.05338f
+C2151 hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# 0.00297f
+C2152 d0 q3 0.06821f
+C2153 sg6 d5 0.01437f
+C2154 b0 b5 0.17f
+C2155 nr2 d2 5.37986f
+C2156 sg0 sr6 0.06454f
+C2157 sr8 bsn 0.01988f
+C2158 gn0 rb6 0.01437f
+C2159 b0 b3 0.15837f
+C2160 hs sg2 0.14768f
+C2161 rb7 avdd 10.64443f
+C2162 rb9 nr7 0.03561f
+C2163 sg3 gn2 0.01988f
+C2164 b5 b1 0.16403f
+C2165 azn d5 0.06165f
+C2166 nr5 hs 4.75183f
+C2167 gb0 hsg 0.02726f
+C2168 d1 sg2 0.0189f
+C2169 b3 b1 0.15445f
+C2170 azc avdd 7.48218f
+C2171 xcmp_y xcmp_ym 0.54037f
+C2172 xcmp_vbi xcmp_azn 0.06076f
+C2173 sg8 sg2 0.10566f
+C2174 rb1 d6 0.0192f
+C2175 d8 nr6 0.02034f
+C2176 b8 hsg 0.09221f
+C2177 d9 sg2 0.02043f
+C2178 sr5 rb4 0.06127f
+C2179 nr5 sg8 0.01437f
+C2180 vbp xcmp_y 0.11245f
+C2181 sr5 d7 0.01899f
+C2182 rb2 ts 0.02057f
+C2183 nr5 d9 0.02043f
+C2184 xcmp_enb xcmp_o2 2.60221f
+C2185 q2 hsb 0.46347f
+C2186 db8 avdd 0.7041f
+C2187 bsb d5 0.02405f
+C2188 q2 sg3 0.03437f
+C2189 azn xds_n1 0.13151f
+C2190 xcmp_azd avdd 6.02123f
+C2191 hs sg1 0.12359f
+C2192 gn4 sr6 0.01988f
+C2193 sr7 bsn 0.01988f
+C2194 bs sg5 0.19774f
+C2195 xcmp_o2 xcmp_o1 0.44025f
+C2196 sg0 az 0.02986f
+C2197 rb4 db4 0.06733f
+C2198 hsg sr8 0.28865f
+C2199 db3 sr3 0.04037f
+C2200 sg9 sr2 0.48852f
+C2201 sg4 rb7 0.05412f
+C2202 sg7 sg2 0.05709f
+C2203 sg3 gn1 0.01988f
+C2204 sr4 sr1 0.07849f
+C2205 rb3 rb4 35.78248f
+C2206 rb1 rb0 36.39566f
+C2207 sr0 rb2 0.12121f
+C2208 rb3 d7 0.01842f
+C2209 db4 d7 0.02685f
+C2210 db1 gn1 2.58917f
+C2211 tsb hsgs 0
+C2212 d1 sg1 0.02515f
+C2213 b6 sg5 0.14623f
+C2214 nr5 sg7 0.01437f
+C2215 sg8 sg1 0.10552f
+C2216 bx sr2 0.04626f
+C2217 d9 sg1 0.02043f
+C2218 sr8 db5 0.0411f
+C2219 rb1 q3 0.04545f
+C2220 bs hsgs 0.02952f
+C2221 nr3 d6 0.01437f
+C2222 ain sg5 0.22185f
+C2223 d1b a 0.78957f
+C2224 gb3 d4 0.00711f
+C2225 gn5 sr8 0.01656f
+C2226 bsn rb8 0.01988f
+C2227 azb sr2 0.02642f
+C2228 d3 ts 0.02057f
+C2229 hsn sr8 0.02027f
+C2230 ain gn9 0.00511f
+C2231 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# gn7 0.01168f
+C2232 sg7 sg1 0.05682f
+C2233 vrefp sg9 2.26207f
+C2234 d3 sr0 0.03481f
+C2235 sr1 d8 0.03944f
+C2236 azc xcmp_tail2 0
+C2237 hsg db2 0.13623f
+C2238 gn0 sg0 2.57573f
+C2239 rb1 nr1 0.05658f
+C2240 sr7 hsg 0.22089f
+C2241 sr4 sr9 0.04272f
+C2242 sample sr4 0.01739f
+C2243 rb9 d4 0.02598f
+C2244 gn2 rb4 0.01437f
+C2245 xcmp_ym xcmp_n1 0
+C2246 rb5 sr5 2.7599f
+C2247 gn2 d7 0.02022f
+C2248 b7 bx 0.20784f
+C2249 hsb avdd 0.43035f
+C2250 bx vrefp 0.38038f
+C2251 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# sr8 0
+C2252 sg3 avdd 1.01391f
+C2253 gn8 gb9 0.00839f
+C2254 b2 tsb 0
+C2255 vbp xcmp_n1 0.0611f
+C2256 sr7 db5 0.0411f
+C2257 rb7 d5 0.01437f
+C2258 db1 avdd 0.44352f
+C2259 cmp avdd 1.78972f
+C2260 gb8 avdd 0.91233f
+C2261 en xcmp_azn 16.83906f
+C2262 rb5 rb3 0.09672f
+C2263 rb5 db4 0.02594f
+C2264 b2 bs 1.99234f
+C2265 db9 avdd 0.53469f
+C2266 gn5 sr7 0.01656f
+C2267 hsg rb8 1.39177f
+C2268 sr3 ab 0.03727f
+C2269 sg2 sg6 0.05759f
+C2270 q2 rb4 0.04309f
+C2271 b5 avdd 5.76074f
+C2272 hsn sr7 0.02027f
+C2273 q2 d7 0.0227f
+C2274 b3 avdd 2.54303f
+C2275 a sr4 0.04924f
+C2276 b2 b6 0.10798f
+C2277 azc xcmp_vb 0.68879f
+C2278 b0 rb5 0.0344f
+C2279 nr5 sg6 0.01437f
+C2280 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# db7 0.00394f
+C2281 rb4 gn1 0.01437f
+C2282 gn1 d7 0.01899f
+C2283 rb8 db5 0.04414f
+C2284 rb2 d2 0.02871f
+C2285 hs bsn 0.02021f
+C2286 d8 sr9 0.06805f
+C2287 azn sg2 0.05702f
+C2288 rb9 rb6 0.07178f
+C2289 b2 ain 2.17585f
+C2290 gb1 nr2 0.00761f
+C2291 hsb sg4 0.02458f
+C2292 azc xds_n1 0.13172f
+C2293 b1 rb5 0.03419f
+C2294 d1 bsn 0.02049f
+C2295 sg3 sg4 38.19042f
+C2296 gn5 rb8 0.01656f
+C2297 ab ts0 0
+C2298 db1 sg4 0.02201f
+C2299 sg8 bsn 0.01988f
+C2300 hsn rb8 0.02022f
+C2301 b8 sg5 0.06515f
+C2302 d9 bsn 0.01988f
+C2303 b4 sr1 0.11349f
+C2304 gb2 d2 0.02128f
+C2305 sr5 sr6 36.92214f
+C2306 bsb sg2 0.20093f
+C2307 rb5 gn2 0.01437f
+C2308 ain nr2 0
+C2309 sg1 sg6 0.05709f
+C2310 b5 sg4 0.07214f
+C2311 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# gn6 0.00232f
+C2312 gb0 hsgs 0
+C2313 sr4 d0 0.04146f
+C2314 b3 sg4 0
+C2315 hs nr9 1.35371f
+C2316 bsb nr5 0.00393f
+C2317 a d8 0.04927f
+C2318 azn sg1 0.05702f
+C2319 d3 d2 8.62574f
+C2320 sg8 nr9 0.00728f
+C2321 sr8 sg5 0.0955f
+C2322 db4 sr6 0.0229f
+C2323 rb3 sr6 0.05268f
+C2324 sg7 bsn 0.01988f
+C2325 d4 rb6 0.01739f
+C2326 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# gn7 0.00232f
+C2327 d9 nr9 1.51543f
+C2328 hs hsg 21.19507f
+C2329 rb4 avdd 5.32566f
+C2330 q2 rb5 0.04181f
+C2331 gn3 hsg 4.71103f
+C2332 d7 avdd 3.32425f
+C2333 d1 hsg 0.05166f
+C2334 sg8 hsg 0.27332f
+C2335 hsb d5 0.01895f
+C2336 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# nr1 0
+C2337 hs db5 0.84022f
+C2338 bsb sg1 0.18976f
+C2339 rb5 gn1 0.01437f
+C2340 hsgs sr8 0
+C2341 sr9 nr6 0.03424f
+C2342 d9 hsg 0.16187f
+C2343 sg3 d5 0.02043f
+C2344 sr5 az 0.0259f
+C2345 db1 d5 0.02505f
+C2346 d8 d0 0.03991f
+C2347 gn5 hs 0.0149f
+C2348 sr2 ts 0.0208f
+C2349 sg8 db5 0.0411f
+C2350 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# hsg 0.00297f
+C2351 hsn hs 3.53806f
+C2352 d9 db5 0.04468f
+C2353 gn5 sg8 0.01656f
+C2354 hsn d1 0.02022f
+C2355 b9 rb9 17.44155f
+C2356 b2 b8 0.18157f
+C2357 sr7 sg5 0.05484f
+C2358 gn2 sr6 0.01988f
+C2359 db2 sg5 0.0229f
+C2360 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# db7 0.00139f
+C2361 rb3 az 0.02582f
+C2362 gn5 d9 0.01437f
+C2363 hsn sg8 0.02022f
+C2364 xcmp_x xcmp_vbi 0.10441f
+C2365 sg4 rb4 0.1161f
+C2366 sg7 hsg 0.43473f
+C2367 rb1 sr4 0.09927f
+C2368 db3 sg9 0.03027f
+C2369 rb7 sg2 0.05449f
+C2370 sg0 rb9 4.85514f
+C2371 sr0 sr2 0.10142f
+C2372 sg4 d7 0.02043f
+C2373 hsn d9 0.02022f
+C2374 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# hs 0
+C2375 nr5 rb7 0.01437f
+C2376 ts vcm 3.67708f
+C2377 sg7 db5 0.0411f
+C2378 hsgs sr7 0
+C2379 sg9 gb6 0.03104f
+C2380 azn rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# 0
+C2381 a dn 0.33601f
+C2382 b2 sr8 0.04429f
+C2383 sr5 gn0 0.01988f
+C2384 q2 sr6 0.03437f
+C2385 rb5 avdd 3.965f
+C2386 sg5 rb8 0.10276f
+C2387 gn5 sg7 0.01656f
+C2388 bsn sg6 0.01988f
+C2389 hsn sg7 0.02022f
+C2390 sr6 gn1 0.01988f
+C2391 b7 sr0 0.15648f
+C2392 azn bsn 0.01029f
+C2393 rb7 sg1 0.05491f
+C2394 vrefp sr0 0.95033f
+C2395 gn0 rb3 0.01437f
+C2396 sg0 d4 0.02043f
+C2397 rb1 d8 0.01936f
+C2398 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# hsg 0
+C2399 nr3 sr4 0.01899f
+C2400 sr8 nr2 0.01899f
+C2401 sr1 sr9 0.04215f
+C2402 sample sr1 0.01746f
+C2403 gn4 rb9 0.02296f
+C2404 bs rb2 0.16451f
+C2405 hsg gb7 0.06144f
+C2406 b6 rb2 0.13665f
+C2407 rb4 d5 0.028f
+C2408 d5 d7 0.01733f
+C2409 q1 hs 0.35812f
+C2410 bsb bsn 0.0985f
+C2411 rb5 sg4 0.06288f
+C2412 ain rb2 0.61365f
+C2413 gb2 gb1 0.64032f
+C2414 rb9 gb9 0.07123f
+C2415 q2 az 0.02582f
+C2416 rb0 db0 0.0353f
+C2417 hsg sg6 0.22043f
+C2418 sg9 ab 0.03727f
+C2419 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# 0.04819f
+C2420 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# avdd 0
+C2421 a sr1 0.04924f
+C2422 b9 rb6 0.04026f
+C2423 vrefp nr8 0.00416f
+C2424 sg6 db5 0.0411f
+C2425 bs d3 0.02006f
+C2426 gn4 d4 0
+C2427 hs sg5 0.21385f
+C2428 nr2 db2 0.14308f
+C2429 sr2 d2 0.02537f
+C2430 sr7 nr2 0.01899f
+C2431 sample sr9 0.01739f
+C2432 sg0 rb6 1.48608f
+C2433 azn hsg 0.05702f
+C2434 nr3 d8 0.01437f
+C2435 sr6 avdd 2.00836f
+C2436 hsb sg2 0.02458f
+C2437 bsb nr9 0.03419f
+C2438 gn3 sg5 0.01988f
+C2439 xcmp_x en 0.1365f
+C2440 sg3 sg2 38.14014f
+C2441 gn5 sg6 0.01656f
+C2442 d1 sg5 0.0189f
+C2443 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# avdd 0
+C2444 azb ab 0
+C2445 db1 sg2 0.02201f
+C2446 sg8 sg5 0.10562f
+C2447 hsn sg6 0.02022f
+C2448 xcmp_azn avdd 0.8623f
+C2449 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# hs 0.00297f
+C2450 d9 sg5 0.01956f
+C2451 b4 rb1 0.12157f
+C2452 hsgs hs 0.04155f
+C2453 bsb hsg 0.25059f
+C2454 ain d3 0
+C2455 rb9 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# 0.00292f
+C2456 azn rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# 0
+C2457 b5 sg2 0.07214f
+C2458 nr1 db0 0
+C2459 sr1 d0 0.04146f
+C2460 nr2 rb8 0.01437f
+C2461 b3 sg2 0.0748f
+C2462 azc xcmp_o2 0.14058f
+C2463 a sample 0.03016f
+C2464 a sr9 0.05734f
+C2465 bsb db5 0.00104f
+C2466 gn8 avdd 4.31207f
+C2467 rb5 d5 0.02364f
+C2468 sg4 sr6 0.0563f
+C2469 sg7 sg5 0.05941f
+C2470 hsb sg1 0.02458f
+C2471 gn4 rb6 0.01437f
+C2472 rb7 bsn 0.01988f
+C2473 bsb gn5 0.00129f
+C2474 az avdd 0.55241f
+C2475 sg3 sg1 0.10305f
+C2476 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# hsg 0.00297f
+C2477 bsb hsn 0.63162f
+C2478 db1 sg1 0.75432f
+C2479 xcmp_o2 xcmp_azd 0.21158f
+C2480 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# gn6 0.01168f
+C2481 sr3 d6 0.03176f
+C2482 b8 rb2 0.07424f
+C2483 b5 sg1 0.07214f
+C2484 ain gb5 0
+C2485 b3 sg1 0.0748f
+C2486 gb3 rb3 0.02941f
+C2487 gb3 db4 0.19202f
+C2488 sr5 rb9 0.02793f
+C2489 sr9 d0 0.06115f
+C2490 b2 sg8 0.05201f
+C2491 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# avdd 0.00109f
+C2492 b9 sg0 0.04957f
+C2493 ts0 d6 0.01899f
+C2494 sg4 az 0.02582f
+C2495 xcmp_azn xcmp_tail2 0
+C2496 rb1 sr1 2.82547f
+C2497 hs nr2 2.0853f
+C2498 rb7 hsg 2.79443f
+C2499 sr3 rb0 0.0612f
+C2500 sg2 rb4 0.09408f
+C2501 rb3 rb9 0.06826f
+C2502 vbp b4 0
+C2503 rb2 sr8 0.09335f
+C2504 rb9 db4 0.03452f
+C2505 gn0 avdd 0.70347f
+C2506 sg2 d7 0.02043f
+C2507 nr5 rb4 0
+C2508 sr6 d5 0.01988f
+C2509 nr5 d7 0.02043f
+C2510 sg8 nr2 0.01437f
+C2511 a d0 0.04949f
+C2512 azn q1 0
+C2513 sr3 q3 0.04545f
+C2514 rb7 db5 0.04414f
+C2515 nr0 d6 0.01739f
+C2516 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# gb9 0.00292f
+C2517 d9 nr2 0.01437f
+C2518 gb3 gn2 0.01294f
+C2519 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2100# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2700# 0.04819f
+C2520 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# hsb 0
+C2521 sr5 d4 0.01739f
+C2522 sg5 sg6 37.14998f
+C2523 gn5 rb7 0.01656f
+C2524 rb0 ts0 0.01899f
+C2525 dum vcm 10.54303f
+C2526 hsg db8 0.10603f
+C2527 hsn rb7 0.02022f
+C2528 cmp xcmp_o2 0.09121f
+C2529 tsb sr2 0
+C2530 xcmp_azn xcmp_vb 1.10548f
+C2531 rb4 sg1 0.09415f
+C2532 azn sg5 0.05702f
+C2533 sg1 d7 0.02043f
+C2534 hsb bsn 2.82725f
+C2535 rb0 nr0 0.11032f
+C2536 rb3 d4 0.02787f
+C2537 d3 sr8 0.01739f
+C2538 sr7 rb2 0.05268f
+C2539 rb1 sr9 0.06655f
+C2540 sr3 nr1 0.01899f
+C2541 sg9 nr4 0.02247f
+C2542 sg7 nr2 0.01437f
+C2543 gn0 sg4 0.01988f
+C2544 gn2 rb9 0.02174f
+C2545 rb1 sample 0
+C2546 bs sr2 0.22517f
+C2547 rb2 db2 0.06611f
+C2548 d4 db4 1.26212f
+C2549 sg3 bsn 0.01988f
+C2550 d5 az 0.02582f
+C2551 ab ts 0
+C2552 b6 sr2 0.13651f
+C2553 nr0 q3 0.00752f
+C2554 xcmp_enb xcmp_oc 3.26311f
+C2555 azn hsgs 0.83929f
+C2556 xds_n2 q2 0.12069f
+C2557 bsb sg5 0.26718f
+C2558 tsb vcm 0.04251f
+C2559 gb2 db2 0.99016f
+C2560 rb5 sg2 0.05412f
+C2561 sr5 rb6 0.05229f
+C2562 ain sr2 0.37704f
+C2563 xcmp_oc xcmp_o1 0.93184f
+C2564 sr0 ab 0.03727f
+C2565 rb2 rb8 0.05331f
+C2566 q2 rb9 0.03442f
+C2567 nr5 rb5 0.05207f
+C2568 a rb1 0.04924f
+C2569 bsb gn9 0.03558f
+C2570 bsb hsgs 0.03229f
+C2571 xds_n1 az 0
+C2572 bs b7 6.65504f
+C2573 rb9 gn1 0.02055f
+C2574 vrefp gn7 0.00209f
+C2575 bs vrefp 0.81457f
+C2576 d3 db2 0.02691f
+C2577 d3 sr7 0.01739f
+C2578 nr3 sr9 0.029f
+C2579 rb3 rb6 0.09229f
+C2580 gn2 d4 0.02022f
+C2581 gb8 nr9 0
+C2582 sr8 gb5 0.01843f
+C2583 db4 rb6 0.02594f
+C2584 vcb avdd 0
+C2585 hsb hsg 0.02357f
+C2586 db9 nr9 0.08064f
+C2587 b6 b7 43.42393f
+C2588 sg3 hsg 0.2222f
+C2589 nr7 avdd 2.23433f
+C2590 b6 vrefp 3.97962f
+C2591 db1 hsg 0.1344f
+C2592 gn0 d5 0.01988f
+C2593 b0 rb6 0.03537f
+C2594 en xcmp_vbi 1.08526f
+C2595 gb8 hsg 0.02957f
+C2596 b7 ain 23.55301f
+C2597 rb5 sg1 0.05426f
+C2598 ain vrefp 3.72704f
+C2599 db9 hsg 0.11226f
+C2600 b5 hsg 0.0725f
+C2601 b1 rb6 0.03499f
+C2602 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_2400# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3000# 0.04819f
+C2603 azc q1 0.24872f
+C2604 gb3 avdd 0.54044f
+C2605 d3 rb8 0.01739f
+C2606 rb1 d0 0.03677f
+C2607 q2 d4 0.02245f
+C2608 nr2 sg6 0.01437f
+C2609 b3 hsg 0.07497f
+C2610 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# hsb 0.00297f
+C2611 hsn hsb 0.05104f
+C2612 xds_n2 avdd 2.16759f
+C2613 hsn sg3 0.02022f
+C2614 d4 gn1 0.01899f
+C2615 sr7 gb5 0.01843f
+C2616 sg2 sr6 0.05627f
+C2617 rb7 sg5 0.05315f
+C2618 gn2 rb6 0.01437f
+C2619 rb4 bsn 0.01988f
+C2620 b2 bsb 2.6433f
+C2621 bsn d7 0.01988f
+C2622 xcmp_x avdd 2.67789f
+C2623 hs rb2 0.14583f
+C2624 rb9 avdd 27.10188f
+C2625 nr5 sr6 0.01437f
+C2626 d1 rb2 0.01898f
+C2627 sg8 rb2 0.10163f
+C2628 sg9 d6 0.02655f
+C2629 b8 sr2 0.06515f
+C2630 b9 sr5 0.04328f
+C2631 d9 rb2 0.01871f
+C2632 bsb nr2 0.0014f
+C2633 vrefp gn6 0
+C2634 gb2 hs 1.17736f
+C2635 ts top 0.32034f
+C2636 sr5 sg0 0.06454f
+C2637 d2 ab 0.03729f
+C2638 gb5 rb8 0.01437f
+C2639 q2 rb6 0.04089f
+C2640 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# avdd 0
+C2641 sr6 sg1 0.05619f
+C2642 rb6 gn1 0.01437f
+C2643 b9 rb3 0.04026f
+C2644 azb d6 0.02647f
+C2645 sg2 az 0.02582f
+C2646 rb4 hsg 2.75703f
+C2647 hs d3 1.50474f
+C2648 sr3 sr4 38.4505f
+C2649 sr8 sr2 0.07462f
+C2650 sg4 rb9 0.30607f
+C2651 sg7 rb2 0.05268f
+C2652 sg9 rb0 0.06374f
+C2653 sg0 rb3 0.31292f
+C2654 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# gb5 0.00292f
+C2655 d4 avdd 0.74663f
+C2656 hsg d7 0.08595f
+C2657 gn3 d3 0
+C2658 d1 d3 0.02435f
+C2659 b9 b0 0.04289f
+C2660 bx rb0 0.10812f
+C2661 b7 b8 38.79727f
+C2662 sg8 d3 0.01739f
+C2663 b8 vrefp 13.56616f
+C2664 xcmp_ym xcmp_a 0
+C2665 rb4 db5 0
+C2666 sg9 q3 0.04545f
+C2667 b0 sg0 1.0756f
+C2668 db5 d7 0.04468f
+C2669 xcmp_b top 3.75641f
+C2670 d9 d3 0.02122f
+C2671 rb5 bsn 0.01988f
+C2672 b9 b1 0.04295f
+C2673 b2 rb7 0.03592f
+C2674 sr5 gn4 0.02847f
+C2675 vt ts 0.93943f
+C2676 vbp xcmp_a 0.10962f
+C2677 azb rb0 0.02642f
+C2678 sr4 ts0 0.01437f
+C2679 gn5 d7 0.01437f
+C2680 b1 sg0 0.12079f
+C2681 xcmp_x xcmp_tail2 3.00147f
+C2682 vbp xcmp_d1 0.18487f
+C2683 hsn rb4 0.02022f
+C2684 hsn d7 0.02022f
+C2685 b7 sr8 0.04127f
+C2686 sg1 az 0.02582f
+C2687 vrefp sr8 8.53684f
+C2688 hs gb5 0.88046f
+C2689 gn4 db4 1.9966f
+C2690 sr2 db2 0.03918f
+C2691 sg4 d4 0.02602f
+C2692 sr7 sr2 0.0344f
+C2693 nr0 sr4 0.0229f
+C2694 sg7 d3 0.01739f
+C2695 sg9 nr1 0.01841f
+C2696 gn0 sg2 0.01988f
+C2697 hsb sg5 0.02458f
+C2698 rb7 nr2 0.01437f
+C2699 sr3 d8 0.03176f
+C2700 rb6 avdd 5.37594f
+C2701 sg3 sg5 0.10371f
+C2702 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2700# dn 0.0381f
+C2703 db1 sg5 0.02201f
+C2704 sg8 gb5 0.01843f
+C2705 rb9 d5 0.02331f
+C2706 d9 gb5 0.01437f
+C2707 hsgs hsb 3.7305f
+C2708 xcmp_x xcmp_vb 0.34955f
+C2709 ain db3 0
+C2710 b5 sg5 1.62661f
+C2711 rb5 hsg 1.2136f
+C2712 b3 sg5 0.04773f
+C2713 d8 ts0 0.01899f
+C2714 xcmp_o2 xcmp_azn 0.42509f
+C2715 xds_n2 xds_n1 0
+C2716 rb2 sg6 0.05268f
+C2717 sr2 rb8 0.11974f
+C2718 q2 sg0 0.03441f
+C2719 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# gb8 0.00292f
+C2720 db9 gn9 7.14564f
+C2721 rb5 db5 0.06749f
+C2722 b7 sr7 2.83112f
+C2723 ain gb6 0
+C2724 bsn sr6 0.01988f
+C2725 gn0 sg1 0.01988f
+C2726 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# avdd 0
+C2727 vrefp sr7 6.54468f
+C2728 nr0 d8 0.01739f
+C2729 sg7 gb5 0.01843f
+C2730 sg4 rb6 0.05402f
+C2731 azn rb2 0.05702f
+C2732 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# rb7 0.00292f
+C2733 gn5 rb5 1.98213f
+C2734 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# 0.04819f
+C2735 rb5 hsn 0.02022f
+C2736 d4 d5 11.3259f
+C2737 db7 gb6 0.01745f
+C2738 tsb ab 0
+C2739 b4 sr3 0.12434f
+C2740 xcmp_y xcmp_b 2.13532f
+C2741 bsb rb2 0.20216f
+C2742 b7 rb8 0
+C2743 hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# 0
+C2744 vrefp rb8 9.24707f
+C2745 b0 en 0
+C2746 sr9 db0 0.09363f
+C2747 d3 sg6 0.01739f
+C2748 bs ab 0.08012f
+C2749 b2 sg3 0.10269f
+C2750 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# rb4 0.00292f
+C2751 en b1 0
+C2752 bsn az 0.00262f
+C2753 azn d3 0.06266f
+C2754 hsg sr6 0.19748f
+C2755 rb4 sg5 0.10702f
+C2756 gn6 gb6 0.09446f
+C2757 b9 avdd 12.45424f
+C2758 ts d6 0.02057f
+C2759 sg5 d7 0.01956f
+C2760 hs sr2 0.16011f
+C2761 b2 b5 0.1647f
+C2762 sg0 avdd 1.18747f
+C2763 ain ab 0
+C2764 b2 b3 50.54645f
+C2765 sg3 nr2 0.01437f
+C2766 xcmp_vbi avdd 32.70388f
+C2767 db1 nr2 0
+C2768 d1 sr2 0.0189f
+C2769 sr6 db5 0.05004f
+C2770 rb6 d5 0.01445f
+C2771 gn8 nr9 0.00971f
+C2772 sg8 sr2 0.07741f
+C2773 sr0 d6 0.0348f
+C2774 d9 sr2 0.03176f
+C2775 bsb d3 0.02457f
+C2776 gn5 sr6 0.02554f
+C2777 gb3 sg2 0.02445f
+C2778 sr5 db4 0.0229f
+C2779 sr5 rb3 0.05268f
+C2780 gb5 sg6 0.02762f
+C2781 hsn sr6 0.02026f
+C2782 rb0 ts 0.02057f
+C2783 hsg gn8 1.42324f
+C2784 b9 sg4 0.04122f
+C2785 dum top 40.37025f
+C2786 vrefp hs 0
+C2787 hsg az 0.02582f
+C2788 rb0 sr0 2.17326f
+C2789 rb3 db4 0
+C2790 sg9 sr4 0.38136f
+C2791 db3 sr8 0.0229f
+C2792 sg2 rb9 0.43151f
+C2793 sg7 sr2 0.10396f
+C2794 sr3 sr1 0.03895f
+C2795 sg0 sg4 0.06593f
+C2796 rb7 rb2 0.09138f
+C2797 gn4 avdd 0.91024f
+C2798 xcmp_n1 xcmp_b 0.12701f
+C2799 b7 sg8 0.07597f
+C2800 vrefp sg8 0.46581f
+C2801 d0 db0 2.70649f
+C2802 nr5 rb9 0.02331f
+C2803 bx sr4 0.04273f
+C2804 azc xcmp_oc 0.11107f
+C2805 sr0 q3 0.04545f
+C2806 vrefp d9 0
+C2807 b0 rb3 0.03373f
+C2808 sr8 gb6 0.02211f
+C2809 bsb gb5 0
+C2810 rb5 sg5 0.09401f
+C2811 sr5 gn2 0.01988f
+C2812 azb sr4 0.02642f
+C2813 hs rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# 0.00297f
+C2814 sr1 ts0 0.01437f
+C2815 b1 rb3 0.03364f
+C2816 gb9 avdd 5.05071f
+C2817 xcmp_azd xcmp_oc 2.15804f
+C2818 xcmp_vbi xcmp_tail2 2.59499f
+C2819 b7 sg7 2.74129f
+C2820 vt dum 0
+C2821 rb9 sg1 0.52911f
+C2822 vrefp sg7 0.27293f
+C2823 sg2 d4 0.02043f
+C2824 b0 b1 54.0014f
+C2825 gn0 hsg 4.70862f
+C2826 gn4 sg4 2.91847f
+C2827 sr0 nr1 0
+C2828 db3 db2 0
+C2829 sr3 sr9 0.04244f
+C2830 db3 sr7 0.0229f
+C2831 sample sr3 0.01744f
+C2832 sg9 d8 0.06773f
+C2833 nr0 sr1 0.0229f
+C2834 d3 rb7 0.01739f
+C2835 rb3 gn2 0.02247f
+C2836 rb4 nr2 0.01437f
+C2837 nr2 d7 0.01437f
+C2838 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_0# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_600# 0.04819f
+C2839 q2 sr5 0.03437f
+C2840 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# nr1 0.01168f
+C2841 sg0 d5 0.02043f
+C2842 en avdd 2.41873f
+C2843 sr7 gb6 0.02215f
+C2844 d2 d6 0.02173f
+C2845 sr5 gn1 0.01988f
+C2846 azb d8 0.02645f
+C2847 sample ts0 4.20925f
+C2848 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# avdd 0
+C2849 sr9 ts0 0.01437f
+C2850 sr8 ab 0.03727f
+C2851 sr2 sg6 0.1038f
+C2852 db3 rb8 0.02594f
+C2853 q2 rb3 0.04498f
+C2854 xcmp_vbi xcmp_vb 2.83261f
+C2855 tsb vt 0.84588f
+C2856 a sr3 0.04924f
+C2857 d4 sg1 0.02043f
+C2858 sr6 sg5 0.06618f
+C2859 rb3 gn1 0.01437f
+C2860 vrefp gb7 0
+C2861 db6 db7 0
+C2862 xcmp_y dum 0.08948f
+C2863 nr0 sr9 0.03261f
+C2864 azn sr2 0.05702f
+C2865 sg2 rb6 0.05426f
+C2866 rb7 gb5 0.01437f
+C2867 rb0 d2 0.02001f
+C2868 b2 rb5 0.03404f
+C2869 rb8 gb6 0.02211f
+C2870 hsb rb2 0.02458f
+C2871 sg3 rb2 0.10711f
+C2872 nr5 rb6 0.01437f
+C2873 d2 q3 0.0509f
+C2874 gn4 d5 0.04792f
+C2875 db1 rb2 0.02505f
+C2876 hsgs sr6 0
+C2877 a ts0 0.01915f
+C2878 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# rb0 0
+C2879 d1b ts 0.0419f
+C2880 b4 sg9 0.00327f
+C2881 cmp xcmp_oc 0.09313f
+C2882 sg9 nr6 0.03376f
+C2883 b7 sg6 0.14416f
+C2884 ain nr4 0
+C2885 bsb sr2 0.25247f
+C2886 rb5 nr2 0.01437f
+C2887 vrefp sg6 0.34872f
+C2888 b5 rb2 0.07214f
+C2889 db6 gn6 1.60142f
+C2890 sr3 d0 0.04146f
+C2891 sr7 ab 0.03727f
+C2892 b3 rb2 0.08597f
+C2893 sr5 avdd 1.38578f
+C2894 b4 bx 0.19842f
+C2895 gb2 db1 0.00252f
+C2896 rb6 sg1 0.05449f
+C2897 sg5 az 0.02582f
+C2898 nr1 d2 0.01439f
+C2899 rb9 bsn 0.02392f
+C2900 en xcmp_tail2 0
+C2901 hsb d3 0.01895f
+C2902 hs db3 0.73038f
+C2903 rb3 avdd 5.64751f
+C2904 db4 avdd 0.44761f
+C2905 hsg nr7 0.03621f
+C2906 gn3 db3 2.19412f
+C2907 sg3 d3 0.02553f
+C2908 d0 ts0 0.01906f
+C2909 db1 d3 0.02505f
+C2910 rb8 ab 0.03727f
+C2911 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# nr1 0.00232f
+C2912 azb dn 0.44286f
+C2913 bsb b7 7.03362f
+C2914 hsgs az 0.02445f
+C2915 sg8 db3 0.0229f
+C2916 bsb vrefp 1.34175f
+C2917 hs gb6 0.75782f
+C2918 xcmp_vbi xcmp_tail 6.75673f
+C2919 b0 avdd 1.08667f
+C2920 d9 db3 0.02685f
+C2921 sr5 sg4 0.06534f
+C2922 gb3 hsg 0.02728f
+C2923 nr0 d0 3.96999f
+C2924 rb9 nr9 0.08271f
+C2925 sr4 ts 0.02099f
+C2926 xcmp_n1 dum 0.04962f
+C2927 sg8 gb6 0.02211f
+C2928 b1 avdd 1.89121f
+C2929 en xcmp_vb 11.75739f
+C2930 d9 gb6 0.02039f
+C2931 b9 sg2 0.04122f
+C2932 d4 bsn 0.01988f
+C2933 nr2 sr6 0.01899f
+C2934 gn0 sg5 0.01988f
+C2935 hsg rb9 1.73736f
+C2936 sg4 db4 0.56728f
+C2937 rb1 sr3 0.05654f
+C2938 rb3 sg4 0.05279f
+C2939 sg7 db3 0.0229f
+C2940 sg9 sr1 0.78719f
+C2941 sg0 sg2 0.06921f
+C2942 sr0 sr4 0.0939f
+C2943 rb4 rb2 0.05735f
+C2944 rb7 sr2 0.07012f
+C2945 gn2 avdd 0.91026f
+C2946 rb2 d7 0.01849f
+C2947 b9 nr5 0
+C2948 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# nr2 0.01168f
+C2949 bx sr1 0.04783f
+C2950 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# nr9 0.01168f
+C2951 rb9 db5 0.06201f
+C2952 sg7 gb6 0.02211f
+C2953 bs d6 0.01968f
+C2954 gn5 rb9 0.0255f
+C2955 azb sr1 0.02642f
+C2956 d8 ts 0.02057f
+C2957 rb1 ts0 0.01899f
+C2958 hs ab 0.17653f
+C2959 hsn rb9 0.02426f
+C2960 q2 avdd 2.51417f
+C2961 b9 sg1 0.04122f
+C2962 sr5 d5 1.74471f
+C2963 d1 ab 0.03729f
+C2964 ain d6 0
+C2965 b7 rb7 5.10594f
+C2966 azc vcm 0.01426f
+C2967 sg0 sg1 38.98852f
+C2968 bsn rb6 0.01988f
+C2969 vrefp rb7 4.57805f
+C2970 gn1 avdd 0.69343f
+C2971 sg8 ab 0.03727f
+C2972 sr0 d8 0.0348f
+C2973 sg9 sr9 14.16721f
+C2974 nr3 sr3 2.83093f
+C2975 hsg d4 0.05916f
+C2976 nr4 sr8 0.01899f
+C2977 sg4 gn2 0.01988f
+C2978 sample sg9 0.01749f
+C2979 d3 rb4 0.01747f
+C2980 rb1 nr0 0.01739f
+C2981 bs rb0 0.26123f
+C2982 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# db3 0.00394f
+C2983 d9 ab 0.03727f
+C2984 d3 d7 0.02173f
+C2985 gb1 rb0 0
+C2986 nr5 gn4 0.01188f
+C2987 b6 rb0 0.13679f
+C2988 db4 d5 0.02691f
+C2989 rb3 d5 0.01833f
+C2990 gb7 gb6 0
+C2991 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_4500# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_5100# 0.04819f
+C2992 rb5 rb2 0.09495f
+C2993 xcmp_o1 top 0.04929f
+C2994 ain rb0 0.38302f
+C2995 vrefp db8 0
+C2996 azb sr9 0.02642f
+C2997 azb sample 0.02642f
+C2998 q2 sg4 0.03437f
+C2999 db3 sg6 0.0229f
+C3000 sg7 ab 0.03727f
+C3001 hsn d4 0.02022f
+C3002 a sg9 0.04924f
+C3003 ain q3 0.00223f
+C3004 sg4 gn1 0.01988f
+C3005 hsg rb6 2.71254f
+C3006 nr8 d8 1.11389f
+C3007 sg6 gb6 1.49923f
+C3008 rb4 gb5 0
+C3009 gn6 d6 0
+C3010 sr7 nr4 0.01899f
+C3011 sr4 d2 0.01739f
+C3012 gb5 d7 0.01437f
+C3013 gb1 nr1 0.36368f
+C3014 hsb sr2 0.02461f
+C3015 xds_n2 q1 0.17911f
+C3016 sg3 sr2 0.07033f
+C3017 gn2 d5 0.02022f
+C3018 db1 sr2 0.02201f
+C3019 rb6 db5 0.05333f
+C3020 azb a 10.49838f
+C3021 dn ts 5.61728f
+C3022 b4 sr0 0.14516f
+C3023 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# nr9 0.00232f
+C3024 bsb db3 0
+C3025 rb5 d3 0.01739f
+C3026 ain nr1 0
+C3027 xcmp_o2 xcmp_vbi 3.34819f
+C3028 xcmp_o3 vbp 0.10668f
+C3029 gn5 rb6 0.02576f
+C3030 b5 sr2 0.07806f
+C3031 sg9 d0 0.03672f
+C3032 nr4 rb8 0.01437f
+C3033 b3 sr2 0.09121f
+C3034 hsn rb6 0.02022f
+C3035 bsb gb6 0.00131f
+C3036 q2 d5 0.0225f
+C3037 d8 d2 0.02122f
+C3038 rb2 sr6 0.05268f
+C3039 rb9 sg5 0.25842f
+C3040 sg0 bsn 0.02392f
+C3041 b7 sg3 0.13562f
+C3042 vrefp sg3 0.34006f
+C3043 sg4 avdd 1.01869f
+C3044 gb2 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# 0
+C3045 gn1 d5 0.01899f
+C3046 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# db3 0.00139f
+C3047 azb d0 0.02683f
+C3048 gb0 rb0 0.03196f
+C3049 sg6 ab 0.03727f
+C3050 vrefp gb8 0
+C3051 xcmp_azn xcmp_oc 0.07525f
+C3052 rb9 gn9 0.23332f
+C3053 vrefp db9 0
+C3054 sr8 d6 0.01761f
+C3055 b8 rb0 0.08053f
+C3056 b7 b5 0.11275f
+C3057 rb5 gb5 0.02802f
+C3058 b7 b3 0.10876f
+C3059 b5 vrefp 2.38688f
+C3060 xds_n1 q2 0.13096f
+C3061 xcmp_y xcmp_o1 2.13474f
+C3062 sr5 sg2 0.05628f
+C3063 vrefp b3 1.3647f
+C3064 azn ab 1.24908f
+C3065 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# d3 0.00394f
+C3066 sr1 ts 0.02075f
+C3067 nr5 sr5 0.83417f
+C3068 xcmp_tail2 avdd 4.95247f
+C3069 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# gn0 0.01168f
+C3070 b9 hsg 0.05764f
+C3071 d3 sr6 0.01739f
+C3072 d4 sg5 0.01739f
+C3073 rb2 az 0.02582f
+C3074 hs nr4 1.69025f
+C3075 sg0 hsg 0.18019f
+C3076 rb0 sr8 0.10187f
+C3077 rb3 sg2 0.06204f
+C3078 rb1 sg9 0.05687f
+C3079 sr0 sr1 39.37902f
+C3080 db3 rb7 0.02594f
+C3081 rb4 sr2 0.11025f
+C3082 sr2 d7 0.03176f
+C3083 bsb ab 0.16192f
+C3084 gn3 nr4 0.0113f
+C3085 nr5 db4 0
+C3086 gb0 nr1 0.00142f
+C3087 bx rb1 0.02386f
+C3088 sr8 q3 0.04545f
+C3089 sg8 nr4 0.01437f
+C3090 db2 d6 0.02685f
+C3091 d5 avdd 0.76848f
+C3092 sr7 d6 0.01761f
+C3093 rb7 gb6 0.02211f
+C3094 hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_455_69# 0
+C3095 sr5 sg1 0.05627f
+C3096 d9 nr4 0.01437f
+C3097 azb rb1 0.02642f
+C3098 sample ts 0.04635f
+C3099 sr9 ts 5.21861f
+C3100 xcmp_vb avdd 1.48253f
+C3101 xcmp_o2 en 0.49758f
+C3102 b1 sg2 0
+C3103 hsn sg0 0.02426f
+C3104 tsb sr4 0
+C3105 b7 rb4 0.13562f
+C3106 sr6 gb5 0.02744f
+C3107 rb6 sg5 0.06226f
+C3108 rb3 sg1 0.05402f
+C3109 vrefp rb4 1.12686f
+C3110 d3 az 0.02582f
+C3111 xds_n1 avdd 3.33158f
+C3112 vrefp d7 0
+C3113 gn4 hsg 4.71138f
+C3114 gn2 sg2 2.74743f
+C3115 nr1 sr8 0.01899f
+C3116 sr7 rb0 0.0612f
+C3117 sg7 nr4 0.01437f
+C3118 nr3 sg9 0.02174f
+C3119 sr0 sr9 0.04206f
+C3120 sample sr0 0.01747f
+C3121 rb8 d6 0.01761f
+C3122 rb9 nr2 0.02174f
+C3123 gn0 rb2 0.01437f
+C3124 bs sr4 0.18639f
+C3125 db6 gb7 0
+C3126 gb9 nr9 2.86861f
+C3127 xcmp_n1 xcmp_o1 4.86659f
+C3128 gb2 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# 0
+C3129 b0 sg1 0
+C3130 b6 sr4 0.13651f
+C3131 sg4 d5 0.27561f
+C3132 gn4 db5 0
+C3133 sr7 q3 0.04545f
+C3134 a ts 0.10793f
+C3135 rb5 sr2 0.07012f
+C3136 b1 sg1 0.27336f
+C3137 ain sr4 0.30169f
+C3138 hsg gb9 0.03329f
+C3139 db6 sg6 0.30451f
+C3140 rb0 rb8 0.06005f
+C3141 q2 sg2 0.0344f
+C3142 rb7 ab 0.03727f
+C3143 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# gn4 0.01168f
+C3144 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# d3 0.00139f
+C3145 a sr0 0.04924f
+C3146 sg2 gn1 0.01988f
+C3147 rb8 q3 0.04545f
+C3148 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# rb6 0.00292f
+C3149 gn0 d3 0.01989f
+C3150 nr2 d4 0.01437f
+C3151 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# gn0 0.00232f
+C3152 gn7 d8 0.23101f
+C3153 sr1 d2 0.04865f
+C3154 nr8 sr9 0.06422f
+C3155 sr7 nr1 0.01899f
+C3156 bs d8 0.0196f
+C3157 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# avdd 0.00154f
+C3158 sg3 db3 0.63023f
+C3159 d0 ts 0.02057f
+C3160 xcmp_xm xcmp_y 0.0078f
+C3161 xcmp_tail2 xcmp_vb 0.06711f
+C3162 b7 rb5 0.13562f
+C3163 sr6 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# 0
+C3164 xcmp_tail avdd 6.24519f
+C3165 vrefp rb5 1.32937f
+C3166 hs d6 0.14155f
+C3167 b2 rb6 0.03469f
+C3168 sr5 bsn 0.01988f
+C3169 hsg rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# 0.00297f
+C3170 q2 sg1 0.0344f
+C3171 gn3 d6 0.02022f
+C3172 d1 d6 0.022f
+C3173 nr0 db0 0.25139f
+C3174 sr0 d0 1.87649f
+C3175 nr4 sg6 0.01437f
+C3176 nr1 rb8 0.01437f
+C3177 sg8 d6 0.01761f
+C3178 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# db2 0.00139f
+C3179 gn1 sg1 2.66133f
+C3180 d9 d6 0.0192f
+C3181 b9 sg5 0.04122f
+C3182 d8 db7 0
+C3183 sr9 d2 0.0274f
+C3184 sr2 sr6 0.035f
+C3185 sg0 sg5 0.1195f
+C3186 nr2 rb6 0.01437f
+C3187 rb3 bsn 0.01988f
+C3188 hs rb0 0.10452f
+C3189 sg2 avdd 1.04234f
+C3190 d1 rb0 0.02892f
+C3191 nr5 avdd 1.02059f
+C3192 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# hs 0
+C3193 hs q3 2.18915f
+C3194 sg8 rb0 0.10865f
+C3195 sg7 d6 0.01761f
+C3196 b8 sr4 0.06515f
+C3197 xcmp_a xcmp_b 11.39428f
+C3198 bs b4 1.89043f
+C3199 bsb nr4 0.0014f
+C3200 d9 rb0 0.02101f
+C3201 gb3 rb2 0
+C3202 d1 q3 0.05093f
+C3203 sr5 hsg 0.20327f
+C3204 d8 gn6 0.0258f
+C3205 sg8 q3 0.04545f
+C3206 rb1 ts 0.02057f
+C3207 b6 b4 0.11197f
+C3208 a d2 0.04938f
+C3209 hsb ab 2.04237f
+C3210 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_455_69# gn9 0.01169f
+C3211 d9 q3 0.05063f
+C3212 sg3 ab 0.03727f
+C3213 b7 sr6 0.16357f
+C3214 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# gn4 0.00232f
+C3215 sr5 db5 0.08254f
+C3216 vrefp sr6 3.07556f
+C3217 ain nr6 0
+C3218 b4 ain 4.32292f
+C3219 gn4 sg5 0.01988f
+C3220 sg1 avdd 1.03582f
+C3221 sr2 az 0.02587f
+C3222 gb2 gb3 0.57909f
+C3223 hs nr1 2.67512f
+C3224 hsg db4 0.13745f
+C3225 rb3 hsg 2.85536f
+C3226 sr4 sr8 0.07541f
+C3227 sg4 sg2 0.06086f
+C3228 sg7 rb0 0.0597f
+C3229 db3 rb4 0.02594f
+C3230 rb9 rb2 0.06739f
+C3231 rb1 sr0 0.12144f
+C3232 gn5 sr5 0.03637f
+C3233 db3 d7 0.02685f
+C3234 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# rb1 0
+C3235 d1 nr1 2.48728f
+C3236 nr5 sg4 0.00244f
+C3237 sr5 hsn 0.02025f
+C3238 db4 db5 0
+C3239 sg8 nr1 0.01437f
+C3240 sg7 q3 0.04545f
+C3241 b0 hsg 0.08683f
+C3242 b2 b9 0.043f
+C3243 d9 nr1 0.01437f
+C3244 d7 gb6 0.1344f
+C3245 gb3 d3 0.02128f
+C3246 b2 sg0 0.16045f
+C3247 d2 d0 0.04173f
+C3248 q2 bsn 0.01988f
+C3249 vrefp gn8 0
+C3250 sr3 ts0 0.01437f
+C3251 b1 hsg 0.09413f
+C3252 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# nr1 0
+C3253 hsn rb3 0.02022f
+C3254 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# db4 0.00394f
+C3255 tsb sr1 0
+C3256 xcmp_tail xcmp_vb 0.00174f
+C3257 gn9 gb9 0.61086f
+C3258 sg4 sg1 0.05858f
+C3259 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# d0 0.00394f
+C3260 gn2 hsg 4.71054f
+C3261 sr8 d8 1.12224f
+C3262 gn6 nr6 0.00248f
+C3263 sr7 sr4 0.03621f
+C3264 sr4 db2 0.0229f
+C3265 gn0 sr2 0.01988f
+C3266 sr3 nr0 0.0229f
+C3267 sg6 d6 0.02681f
+C3268 sg7 nr1 0.01437f
+C3269 rb7 nr4 0.01437f
+C3270 d3 rb9 0.02549f
+C3271 rb2 d4 0.01833f
+C3272 bs sr1 0.2263f
+C3273 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# gb4 0
+C3274 b6 sr1 0.13651f
+C3275 sg2 d5 0.02043f
+C3276 azn d6 0.05702f
+C3277 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# hs 0.00297f
+C3278 xcmp_o2 avdd 3.21523f
+C3279 nr5 d5 5.22812f
+C3280 rb5 db3 0.02594f
+C3281 ain sr1 0.34915f
+C3282 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# avdd 0
+C3283 q2 hsg 5.58651f
+C3284 rb0 sg6 0.0597f
+C3285 sr4 rb8 0.11974f
+C3286 rb4 ab 0.03727f
+C3287 ab d7 0.03727f
+C3288 tsb sample 0.0274f
+C3289 tsb sr9 0.06493f
+C3290 d1b hs 0.21733f
+C3291 b4 b8 0.17613f
+C3292 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# gn9 0.00232f
+C3293 rb5 gb6 0
+C3294 bsb d6 0.02327f
+C3295 xcmp_ym xcmp_b 0
+C3296 hsg gn1 4.70981f
+C3297 sg6 q3 0.04545f
+C3298 d8 db2 0.02685f
+C3299 rb1 d2 0.02829f
+C3300 gn7 sr9 0.05063f
+C3301 rb9 gb5 0.02357f
+C3302 rb2 rb6 0.0915f
+C3303 azn rb0 0.05702f
+C3304 sr7 d8 0.03555f
+C3305 d3 d4 9.9758f
+C3306 bs sr9 0.07247f
+C3307 bsn avdd 3.57979f
+C3308 vbp xcmp_b 0.12301f
+C3309 sg1 d5 0.02043f
+C3310 azc xcmp_y 0.11088f
+C3311 q2 hsn 0.02079f
+C3312 b4 sr8 0.04127f
+C3313 sr8 nr6 0.02423f
+C3314 bsb rb0 0.23235f
+C3315 sr5 sg5 0.06404f
+C3316 a tsb 0.04187f
+C3317 ain sr9 0.16342f
+C3318 d8 rb8 0.30733f
+C3319 nr1 sg6 0.01437f
+C3320 nr9 avdd 10.28172f
+C3321 b2 en 0
+C3322 bs a 1.85281f
+C3323 bsb q3 0.01752f
+C3324 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# db4 0.00139f
+C3325 sr5 hsgs 0
+C3326 xcmp_a dum 3.75084f
+C3327 db3 sr6 0.0229f
+C3328 rb3 sg5 0.09659f
+C3329 db4 sg5 0.0229f
+C3330 sg4 bsn 0.01988f
+C3331 d3 rb6 0.01739f
+C3332 hs sr4 0.20783f
+C3333 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# d0 0.00139f
+C3334 hsg avdd 4.53187f
+C3335 rb5 ab 0.03727f
+C3336 sg3 nr4 0.00212f
+C3337 gn3 sr4 0.02798f
+C3338 ain a 0
+C3339 d1 sr4 0.0189f
+C3340 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# gb4 0
+C3341 b0 sg5 0.04828f
+C3342 sr6 gb6 0.06734f
+C3343 sg8 sr4 0.07667f
+C3344 db5 avdd 2.12244f
+C3345 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# sr5 0
+C3346 sr7 nr6 0.02423f
+C3347 rb7 d6 0.01769f
+C3348 b8 sr1 0.06515f
+C3349 d9 sr4 0.03176f
+C3350 bsb nr1 0.0014f
+C3351 b1 sg5 0.04813f
+C3352 vcb vcm 1.8257f
+C3353 sr9 gn6 0.03527f
+C3354 bs d0 0.0224f
+C3355 gn5 avdd 1.96376f
+C3356 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# avdd 0.00109f
+C3357 hsn avdd 2.45845f
+C3358 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# avdd 0
+C3359 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# d2 0.00139f
+C3360 azc xcmp_n1 0.15462f
+C3361 b9 rb2 0.04026f
+C3362 rb6 gb5 0.02357f
+C3363 gn2 sg5 0.01988f
+C3364 xcmp_o2 xcmp_vb 0.00174f
+C3365 q1 q2 2.29331f
+C3366 vrefp nr7 0
+C3367 hs d8 2.06151f
+C3368 sg4 hsg 0.19703f
+C3369 sr3 sg9 0.45488f
+C3370 sg7 sr4 0.1037f
+C3371 sg0 rb2 0.33328f
+C3372 rb7 rb0 0.09804f
+C3373 sr1 sr8 0.07445f
+C3374 rb8 nr6 0.02483f
+C3375 rb9 sr2 0.05161f
+C3376 db6 d7 0
+C3377 gn3 d8 0.02022f
+C3378 xcmp_vbi xcmp_oc 0.06079f
+C3379 d1 d8 0.0217f
+C3380 gb4 hs 0.97408f
+C3381 bsn d5 0.01988f
+C3382 gb0 sr9 0.02289f
+C3383 gb4 gn3 0.01294f
+C3384 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# avdd 0
+C3385 sg8 d8 0.06805f
+C3386 sg4 db5 1.26466f
+C3387 rb7 q3 0.04545f
+C3388 b8 sr9 0
+C3389 d9 d8 18.17759f
+C3390 b2 rb3 0.03358f
+C3391 sr5 nr2 0.01899f
+C3392 q2 sg5 0.03437f
+C3393 sr6 ab 0.03727f
+C3394 azb sr3 0.02642f
+C3395 sg9 ts0 0.01437f
+C3396 hsn sg4 0.02022f
+C3397 azn d1b 0.00242f
+C3398 sg5 gn1 0.01988f
+C3399 b2 b0 0.12434f
+C3400 b7 rb9 0.00346f
+C3401 sg2 sg1 38.64142f
+C3402 vrefp rb9 17.8644f
+C3403 sg0 d3 0.02043f
+C3404 sg7 d8 0.67591f
+C3405 rb4 nr4 0.02423f
+C3406 sample sr8 0.01739f
+C3407 sr7 sr1 0.03407f
+C3408 sg9 nr0 0.01739f
+C3409 rb3 nr2 0.01437f
+C3410 rb7 nr1 0.01437f
+C3411 sr2 d4 0.03176f
+C3412 bs rb1 0.16488f
+C3413 sr1 db2 0
+C3414 sr8 sr9 25.13716f
+C3415 nr4 d7 0.01437f
+C3416 gb1 rb1 0.03328f
+C3417 b2 b1 52.73653f
+C3418 azb ts0 0.05197f
+C3419 b6 rb1 0.13672f
+C3420 hsg d5 0.05803f
+C3421 hsb d6 0.01895f
+C3422 q1 avdd 4.87782f
+C3423 hs nr6 1.37014f
+C3424 ain rb1 0.29684f
+C3425 rb5 db6 0
+C3426 sg3 d6 0.02043f
+C3427 d5 db5 1.26597f
+C3428 ab az 0.03144f
+C3429 vbp dum 0.05154f
+C3430 db1 d6 0.02505f
+C3431 sr4 sg6 0.10364f
+C3432 sr1 rb8 0.11991f
+C3433 b4 sg8 0.04895f
+C3434 a sr8 0.04924f
+C3435 sg8 nr6 0.02483f
+C3436 dn hs 0.15368f
+C3437 gb0 d0 0.06049f
+C3438 gn5 d5 0
+C3439 d9 nr6 0.02034f
+C3440 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# avdd 0.00109f
+C3441 hsn d5 0.02022f
+C3442 gn2 nr2 0.0081f
+C3443 sr7 sr9 0.1002f
+C3444 azn sr4 0.05702f
+C3445 sample sr7 0.01739f
+C3446 sr9 db2 0.03291f
+C3447 sr2 rb6 0.07012f
+C3448 sg5 avdd 2.76136f
+C3449 d8 gb7 0.36213f
+C3450 hsb rb0 0.02458f
+C3451 sg3 rb0 0.10294f
+C3452 gb4 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# 0
+C3453 db1 rb0 0
+C3454 en xcmp_oc 0.16857f
+C3455 hsb q3 0.02874f
+C3456 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# avdd 0.00109f
+C3457 gn9 avdd 8.23782f
+C3458 sg7 nr6 0.02483f
+C3459 hsgs avdd 0.77131f
+C3460 ain nr3 0
+C3461 bsb sr4 0.2047f
+C3462 sg3 q3 0.04545f
+C3463 rb5 nr4 0.01437f
+C3464 b5 rb0 0.07241f
+C3465 sr9 rb8 0.06713f
+C3466 sr8 d0 0.04146f
+C3467 sample rb8 0.00295f
+C3468 d8 sg6 0.02562f
+C3469 b3 rb0 0.0748f
+C3470 a sr7 0.04924f
+C3471 b7 rb6 0.15271f
+C3472 nr2 gn1 0.0113f
+C3473 vrefp rb6 2.40092f
+C3474 azn d8 0.05702f
+C3475 db6 sr6 0.06566f
+C3476 gn4 gb5 0.01294f
+C3477 sg4 sg5 37.90041f
+C3478 sg2 bsn 0.01988f
+C3479 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# gb1 0
+C3480 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# avdd 0
+C3481 azc d1b 0.53628f
+C3482 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# avdd 0
+C3483 hs sr1 0.75526f
+C3484 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# avdd 0.00109f
+C3485 sg3 nr1 0.01437f
+C3486 db1 nr1 0.17788f
+C3487 d1 sr1 0.15864f
+C3488 sg8 sr1 0.07863f
+C3489 a rb8 0.04924f
+C3490 rb4 d6 0.01833f
+C3491 b8 rb1 0.07435f
+C3492 d9 sr1 0.03944f
+C3493 bsb d8 0.02242f
+C3494 nr7 gb6 0
+C3495 d7 d6 13.97208f
+C3496 gb3 db3 0.99016f
+C3497 sr5 rb2 0.05268f
+C3498 b2 avdd 1.86899f
+C3499 sr7 d0 0.04146f
+C3500 sr3 ts 0.02088f
+C3501 bsn sg1 0.01988f
+C3502 b9 sr2 0.04178f
+C3503 nr4 sr6 0.01899f
+C3504 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# db0 0
+C3505 hs sr9 0.29157f
+C3506 sg2 hsg 0.16068f
+C3507 rb1 sr8 0.0972f
+C3508 sg0 sr2 0.12231f
+C3509 sg7 sr1 0.10438f
+C3510 sr3 sr0 0.04223f
+C3511 rb7 sr4 0.07012f
+C3512 db3 rb9 0.03404f
+C3513 rb3 rb2 35.85321f
+C3514 rb4 rb0 0.06109f
+C3515 hs sample 0.0344f
+C3516 sg6 nr6 0.03404f
+C3517 nr2 avdd 0.82573f
+C3518 rb0 d7 0.02039f
+C3519 gn3 sr9 0.02989f
+C3520 d1 sr9 0.02891f
+C3521 ts0 ts 4.22189f
+C3522 sg5 d5 0.02336f
+C3523 nr5 hsg 0.02338f
+C3524 rb8 d0 0.03672f
+C3525 xcmp_enb xcmp_d1 0.28268f
+C3526 sg8 sr9 0.07415f
+C3527 sg8 sample 0.01754f
+C3528 rb4 q3 0.04545f
+C3529 q3 d7 0.05063f
+C3530 rb9 gb6 0.0313f
+C3531 d9 sr9 0.00272f
+C3532 d9 sample 0
+C3533 xcmp_a xcmp_o1 8.77792f
+C3534 nr5 db5 0.25434f
+C3535 sr5 d3 0.01739f
+C3536 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_4500# rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3900# 0.04819f
+C3537 azb sg9 0.02642f
+C3538 sr0 ts0 0.01437f
+C3539 hsn sg2 0.02022f
+C3540 azn dn 0.15414f
+C3541 b9 b7 0.24685f
+C3542 a hs 0.37535f
+C3543 gn5 nr5 0.00256f
+C3544 b9 vrefp 27.62178f
+C3545 b7 sg0 0.15886f
+C3546 bsb nr6 0.00132f
+C3547 bsb b4 2.9352f
+C3548 rb5 d6 0.03035f
+C3549 hsg sg1 0.14171f
+C3550 a d1 0.04942f
+C3551 vrefp sg0 0.56683f
+C3552 gn2 rb2 0.05683f
+C3553 nr0 sr0 2.66759f
+C3554 rb3 d3 0.02944f
+C3555 db3 d4 0.02691f
+C3556 rb1 db2 0
+C3557 sg7 sr9 0.06592f
+C3558 nr3 sr8 0.01899f
+C3559 rb1 sr7 0.05654f
+C3560 sg4 nr2 0.01437f
+C3561 sg7 sample 0.01759f
+C3562 rb7 d8 0.0364f
+C3563 rb4 nr1 0.01437f
+C3564 a sg8 0.04924f
+C3565 nr1 d7 0.01437f
+C3566 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# avdd 0.00109f
+C3567 a d9 0.04926f
+C3568 xcmp_y xcmp_azn 0.06512f
+C3569 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# bsn 0.01168f
+C3570 gb2 gn2 0.1027f
+C3571 sr5 gb5 0.02875f
+C3572 rb5 rb0 0.10078f
+C3573 hsn sg1 0.02022f
+C3574 hs d0 1.2439f
+C3575 rb1 rb8 0.05104f
+C3576 d8 db8 1.1196f
+C3577 sr1 sg6 0.10409f
+C3578 q2 rb2 0.04808f
+C3579 rb9 ab 0.04534f
+C3580 a sg7 0.04924f
+C3581 rb5 q3 0.04545f
+C3582 d1 d0 6.34826f
+C3583 rb2 gn1 0.02174f
+C3584 sg8 d0 0.03672f
+C3585 db4 gb5 0.00252f
+C3586 nr3 db2 0
+C3587 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# avdd 0
+C3588 d3 gn2 0.04764f
+C3589 sr7 nr3 0.01899f
+C3590 sr3 d2 0.01739f
+C3591 azn sr1 0.05702f
+C3592 db3 rb6 0.02594f
+C3593 d9 d0 0.03988f
+C3594 sr9 gb7 0.03358f
+C3595 hsb sr4 0.02462f
+C3596 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# db0 0
+C3597 sg3 sr4 0.10726f
+C3598 db1 sr4 0.02201f
+C3599 nr2 d5 0.01437f
+C3600 rb6 gb6 0.0617f
+C3601 sr6 d6 0.30144f
+C3602 gb2 gn1 0.01294f
+C3603 b4 rb7 0.03331f
+C3604 rb7 nr6 0.02483f
+C3605 bsb sr1 0.24285f
+C3606 rb5 nr1 0.01437f
+C3607 vrefp gb9 0
+C3608 b5 sr4 0.08807f
+C3609 d2 ts0 0.01905f
+C3610 q2 d3 0.02243f
+C3611 sg7 d0 0.03672f
+C3612 sample sg6 0.01766f
+C3613 nr3 rb8 0.01437f
+C3614 d4 ab 0.03727f
+C3615 sr9 sg6 0.06956f
+C3616 b3 sr4 0.04108f
+C3617 gb1 db0 0
+C3618 d3 gn1 0.019f
+C3619 vcb top 0
+C3620 xcmp_enb vbp 1.13172f
+C3621 xcmp_azn xcmp_n1 0.15122f
+C3622 nr0 d2 0.01741f
+C3623 xcmp_ym xcmp_o1 0.6413f
+C3624 azn sample 0.03444f
+C3625 rb0 sr6 0.0612f
+C3626 azn sr9 0.06703f
+C3627 sg2 sg5 0.10195f
+C3628 hsg bsn 0.01988f
+C3629 azc dn 0.70359f
+C3630 hsb d8 0.01895f
+C3631 hs rb1 0.12251f
+C3632 db6 nr7 0
+C3633 rb2 avdd 5.79005f
+C3634 sg3 d8 0.02043f
+C3635 xcmp_oc avdd 0.2268f
+C3636 nr5 sg5 0.02448f
+C3637 xcmp_xm xcmp_a 0
+C3638 vbp xcmp_o1 0.06075f
+C3639 db1 d8 0.02505f
+C3640 d1 rb1 0.09811f
+C3641 sr6 q3 0.04545f
+C3642 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# nr0 0.01168f
+C3643 gb8 d8 0.03979f
+C3644 gb4 sg3 0.02445f
+C3645 sg8 rb1 0.09964f
+C3646 az d6 0.02582f
+C3647 a sg6 0.04924f
+C3648 d9 rb1 0.01952f
+C3649 bsb sr9 0.16641f
+C3650 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# bsn 0.00232f
+C3651 sr5 sr2 0.03621f
+C3652 gb2 avdd 0.54037f
+C3653 rb6 ab 0.03727f
+C3654 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# rb1 0.0029f
+C3655 hsg nr9 0.07733f
+C3656 sg9 ts 0.02069f
+C3657 azn a 0.28475f
+C3658 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# avdd 0
+C3659 vcb vt 6.8572f
+C3660 sg5 sg1 0.10115f
+C3661 xcmp_x top 0.08964f
+C3662 nr1 sr6 0.01899f
+C3663 rb0 az 0.02582f
+C3664 rb4 sr4 1.95467f
+C3665 hs nr3 1.88777f
+C3666 sg4 rb2 0.05277f
+C3667 rb1 sg7 0.05069f
+C3668 sg9 sr0 12.6354f
+C3669 rb3 sr2 0.07012f
+C3670 rb7 sr1 0.07024f
+C3671 d3 avdd 0.72242f
+C3672 sr4 d7 0.03176f
+C3673 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# avdd 0.00109f
+C3674 gn3 nr3 0.0081f
+C3675 bsb a 0.05113f
+C3676 azb ts 0.19221f
+C3677 sg6 d0 0.03672f
+C3678 bx sr0 0
+C3679 hsg db5 0.13894f
+C3680 sg8 nr3 0.01437f
+C3681 b0 sr2 0.04229f
+C3682 gn0 d6 0.01988f
+C3683 b7 sr5 0.14456f
+C3684 d9 nr3 0.01437f
+C3685 vrefp sr5 1.96102f
+C3686 gb3 nr4 0.00761f
+C3687 b2 sg2 0.48618f
+C3688 b4 sg3 0.12434f
+C3689 azn d0 0.06589f
+C3690 gn5 hsg 1.42275f
+C3691 azb sr0 0.02642f
+C3692 b1 sr2 0.04461f
+C3693 hsn hsg 0.23771f
+C3694 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# hsg 0
+C3695 tsb sr3 0
+C3696 b7 rb3 0.13575f
+C3697 gn5 db5 4.71607f
+C3698 gb0 db0 1.37166f
+C3699 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# hs 0.00297f
+C3700 vrefp rb3 0.80737f
+C3701 b5 b4 47.96223f
+C3702 gn0 rb0 0.34925f
+C3703 gn2 sr2 0.00478f
+C3704 sg2 nr2 0.02174f
+C3705 rb7 sr9 0.06332f
+C3706 sg9 nr8 0.02839f
+C3707 sg7 nr3 0.01437f
+C3708 d3 sg4 0.01739f
+C3709 rb4 d8 0.01842f
+C3710 nr4 rb9 0.02296f
+C3711 sample rb7 0.00158f
+C3712 bs sr3 0.17493f
+C3713 b4 b3 49.32469f
+C3714 d8 d7 15.57782f
+C3715 bsb d0 4.03243f
+C3716 gb5 avdd 0.52868f
+C3717 gb4 rb4 0.02941f
+C3718 b0 b7 0.11355f
+C3719 b6 sr3 0.13651f
+C3720 b0 vrefp 3.91399f
+C3721 rb2 d5 0.01835f
+C3722 tsb ts0 0.14122f
+C3723 b2 sg1 0.13789f
+C3724 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# nr0 0.00232f
+C3725 b7 b1 0.1077f
+C3726 ain sr3 0.29711f
+C3727 rb5 sr4 0.07012f
+C3728 vrefp b1 1.14626f
+C3729 bs ts0 0.0191f
+C3730 q2 sr2 0.03437f
+C3731 xcmp_xm xcmp_ym 0
+C3732 sr8 db0 0
+C3733 sr9 db8 0.04018f
+C3734 rb1 sg6 0.05069f
+C3735 sg0 ab 0.04534f
+C3736 bsb rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# 0
+C3737 a rb7 0.04924f
+C3738 xcmp_x xcmp_y 2.64636f
+C3739 nr2 sg1 0.00212f
+C3740 sr2 gn1 0.02606f
+C3741 bsn sg5 0.01988f
+C3742 azc a 1.85716f
+C3743 db6 rb6 0.03381f
+C3744 nr4 d4 5.2811f
+C3745 sg4 gb5 0.02445f
+C3746 gn0 nr1 0.0082f
+C3747 sg9 d2 0.02357f
+C3748 azn rb1 0.05702f
+C3749 hsb sr1 0.0246f
+C3750 ain ts0 0
+C3751 sg3 sr1 0.07053f
+C3752 db1 sr1 0.04308f
+C3753 d3 d5 0.02375f
+C3754 hsgs bsn 0.15859f
+C3755 top vss 30.64006f
+C3756 vcm vss 49.69812f
+C3757 vcb vss 4.70668f
+C3758 vt vss 2.35655f
+C3759 dum vss 18.39822f
+C3760 nr6 vss 2.48644f
+C3761 d6 vss 1.77452f
+C3762 gb6 vss 2.00224f
+C3763 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_455_69# vss 0.01436f ; **FLOATING
+C3764 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_4/a_271_69# vss 0.01285f ; **FLOATING
+C3765 ts vss 15.61865f
+C3766 ts0 vss 2.19021f
+C3767 avdd vss 1.55001p
+C3768 nr9 vss 10.73588f
+C3769 gb9 vss 2.77732f
+C3770 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_455_69# vss 0.01428f ; **FLOATING
+C3771 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_3/a_271_69# vss 0.01282f ; **FLOATING
+C3772 az vss 2.35963f
+C3773 nr7 vss 3.89923f
+C3774 d7 vss 2.25415f
+C3775 gb7 vss 2.25042f
+C3776 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_455_69# vss 0.01491f ; **FLOATING
+C3777 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_2/a_271_69# vss 0.01357f ; **FLOATING
+C3778 db5 vss 2.43096f
+C3779 d5 vss 2.48748f
+C3780 q3 vss 4.89278f
+C3781 gn9 vss 10.67506f
+C3782 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_455_69# vss 0.01491f ; **FLOATING
+C3783 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_1/a_271_69# vss 0.01357f ; **FLOATING
+C3784 ab vss 4.78824f
+C3785 db0 vss 1.43628f
+C3786 d0 vss 3.0477f
+C3787 sg6 vss 10.15415f
+C3788 gn6 vss 2.58988f
+C3789 gn8 vss 5.37668f
+C3790 db8 vss 3.27098f
+C3791 rb8 vss 9.2712f
+C3792 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_455_69# vss 0.01421f ; **FLOATING
+C3793 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_0/a_271_69# vss 0.01333f ; **FLOATING
+C3794 sg1 vss 7.68952f
+C3795 gn1 vss 1.30768f
+C3796 gb5 vss 1.74751f
+C3797 sg5 vss 7.00404f
+C3798 db7 vss 1.68252f
+C3799 rb6 vss 7.65452f
+C3800 sr6 vss 8.89107f
+C3801 bsn vss 4.92401f
+C3802 db2 vss 2.15757f
+C3803 d2 vss 2.38635f
+C3804 sr9 vss 36.07558f
+C3805 db4 vss 2.15147f
+C3806 d4 vss 2.31663f
+C3807 sr2 vss 10.12653f
+C3808 nr2 vss 1.84309f
+C3809 d8 vss 4.78764f
+C3810 sr8 vss 18.68325f
+C3811 nr8 vss 9.42575f
+C3812 rb2 vss 4.13328f
+C3813 sr1 vss 6.35223f
+C3814 nr1 vss 4.55285f
+C3815 rb9 vss 14.36117f
+C3816 sr4 vss 8.55324f
+C3817 nr4 vss 1.96995f
+C3818 sr0 vss 5.70061f
+C3819 nr0 vss 1.54993f
+C3820 hsg vss 26.74314f
+C3821 rb0 vss 4.02117f
+C3822 sg9 vss 36.11927f
+C3823 rb4 vss 4.04174f
+C3824 sg2 vss 8.40622f
+C3825 gn2 vss 1.46271f
+C3826 db6 vss 1.34513f
+C3827 sr3 vss 8.29744f
+C3828 nr3 vss 1.90654f
+C3829 rb7 vss 5.87757f
+C3830 sr7 vss 12.20463f
+C3831 sg4 vss 7.24476f
+C3832 gn4 vss 1.58114f
+C3833 db3 vss 2.15453f
+C3834 d3 vss 2.38311f
+C3835 sample vss 3.00808f
+C3836 sg7 vss 13.21574f
+C3837 gn7 vss 3.74536f
+C3838 rb3 vss 3.69851f
+C3839 rb1 vss 4.39334f
+C3840 sg0 vss 6.50142f
+C3841 gn0 vss 1.32278f
+C3842 hsb vss 2.32383f
+C3843 hs vss 20.0322f
+C3844 sg3 vss 5.84334f
+C3845 gn3 vss 1.47449f
+C3846 db1 vss 3.03311f
+C3847 d1 vss 1.96425f
+C3848 gb8 vss 3.11261f
+C3849 sg8 vss 21.03603f
+C3850 db9 vss 2.45615f
+C3851 d9 vss 1.68903f
+C3852 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_455_69# vss 0.01314f ; **FLOATING
+C3853 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_19/a_271_69# vss 0.01176f ; **FLOATING
+C3854 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_455_69# vss 0.01447f ; **FLOATING
+C3855 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_18/a_271_69# vss 0.01256f ; **FLOATING
+C3856 gb3 vss 1.56017f
+C3857 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_455_69# vss 0.01384f ; **FLOATING
+C3858 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_17/a_271_69# vss 0.01181f ; **FLOATING
+C3859 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_455_69# vss 0.01414f ; **FLOATING
+C3860 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_16/a_271_69# vss 0.01207f ; **FLOATING
+C3861 gb4 vss 1.48695f
+C3862 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_455_69# vss 0.01384f ; **FLOATING
+C3863 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_15/a_271_69# vss 0.01181f ; **FLOATING
+C3864 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_455_69# vss 0.01414f ; **FLOATING
+C3865 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_14/a_271_69# vss 0.01207f ; **FLOATING
+C3866 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_455_69# vss 0.01384f ; **FLOATING
+C3867 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_13/a_271_69# vss 0.01181f ; **FLOATING
+C3868 hsgs vss 3.25504f
+C3869 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_455_69# vss 0.01392f ; **FLOATING
+C3870 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_12/a_271_69# vss 0.01184f ; **FLOATING
+C3871 hsn vss 4.14307f
+C3872 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand2_1_0/a_245_69# vss 0.01067f ; **FLOATING
+C3873 gb0 vss 2.07748f
+C3874 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_455_69# vss 0.01379f ; **FLOATING
+C3875 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_11/a_271_69# vss 0.0118f ; **FLOATING
+C3876 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_455_69# vss 0.01392f ; **FLOATING
+C3877 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_10/a_271_69# vss 0.01184f ; **FLOATING
+C3878 gb1 vss 2.42875f
+C3879 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_455_69# vss 0.01357f ; **FLOATING
+C3880 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_9/a_271_69# vss 0.01225f ; **FLOATING
+C3881 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_455_69# vss 0.01403f ; **FLOATING
+C3882 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_20/a_271_69# vss 0.01242f ; **FLOATING
+C3883 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_455_69# vss 0.01392f ; **FLOATING
+C3884 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_8/a_271_69# vss 0.01184f ; **FLOATING
+C3885 gb2 vss 1.63332f
+C3886 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_455_69# vss 0.01384f ; **FLOATING
+C3887 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_7/a_271_69# vss 0.01181f ; **FLOATING
+C3888 tsb vss 4.93399f
+C3889 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_455_69# vss 0.01414f ; **FLOATING
+C3890 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_6/a_271_69# vss 0.01207f ; **FLOATING
+C3891 gn5 vss 1.57935f
+C3892 rb5 vss 5.04433f
+C3893 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_455_69# vss 0.0146f ; **FLOATING
+C3894 rv328_adcfe_p2_0/gf180mcu_fd_sc_mcu9t5v0__nand3_1_5/a_271_69# vss 0.01323f ; **FLOATING
+C3895 sr5 vss 8.21966f
+C3896 nr5 vss 1.45895f
+C3897 b1 vss 10.78629f
+C3898 b3 vss 10.70392f
+C3899 vrefp vss 57.61804f
+C3900 b8 vss 30.83313f
+C3901 ain vss 0.10227p
+C3902 b7 vss 23.85972f
+C3903 bs vss 65.95095f
+C3904 b5 vss 13.32597f
+C3905 b2 vss 12.14933f
+C3906 b0 vss 19.4487f
+C3907 bx vss 22.45685f
+C3908 b6 vss 19.51845f
+C3909 bsb vss 31.78849f
+C3910 b4 vss 12.61193f
+C3911 azn vss 5.19925f
+C3912 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_0# vss 0.59211f ; **FLOATING
+C3913 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_300# vss 0.52995f ; **FLOATING
+C3914 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_600# vss 0.55537f ; **FLOATING
+C3915 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_900# vss 0.52713f ; **FLOATING
+C3916 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1200# vss 0.55491f ; **FLOATING
+C3917 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_1500# vss 0.52509f ; **FLOATING
+C3918 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_1800# vss 0.55477f ; **FLOATING
+C3919 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2100# vss 0.52237f ; **FLOATING
+C3920 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_2400# vss 0.55477f ; **FLOATING
+C3921 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_2700# vss 0.52237f ; **FLOATING
+C3922 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3000# vss 0.55477f ; **FLOATING
+C3923 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3300# vss 0.52237f ; **FLOATING
+C3924 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_3600# vss 0.55477f ; **FLOATING
+C3925 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_3900# vss 0.52237f ; **FLOATING
+C3926 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4200# vss 0.55491f ; **FLOATING
+C3927 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_4500# vss 0.52269f ; **FLOATING
+C3928 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_4800# vss 0.55537f ; **FLOATING
+C3929 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_n128_5100# vss 0.52345f ; **FLOATING
+C3930 rv328_adcfe_p1_0/res1k_l60_n20_w1_0/a_12000_5400# vss 0.59211f ; **FLOATING
+C3931 d1b vss 7.18114f
+C3932 a vss 15.6215f
+C3933 q1 vss 6.39996f
+C3934 q2 vss 8.97506f
+C3935 xds_n2 vss 3.73858f
+C3936 azb vss 4.16673f
+C3937 xds_n1 vss 1.77305f
+C3938 dn vss 15.02608f
+C3939 xcmp_o1 vss 5.40265f
+C3940 xcmp_oc vss 10.26958f
+C3941 xcmp_b vss 9.40438f
+C3942 xcmp_a vss 10.2634f
+C3943 xcmp_azd vss 7.41322f
+C3944 xcmp_vb vss 16.22625f
+C3945 xcmp_n1 vss 8.62997f
+C3946 xcmp_tail2 vss 4.33135f
+C3947 xcmp_d1 vss 11.14256f
+C3948 xcmp_azn vss 3.62514f
+C3949 xcmp_ym vss 2.18058f
+C3950 xcmp_y vss 5.14995f
+C3951 xcmp_xm vss 2.09078f
+C3952 xcmp_tail vss 5.25984f
+C3953 vbp vss 4.03912f
+C3954 xcmp_vbi vss 6.28473f
+C3955 en vss 7.45968f
+C3956 xcmp_x vss 5.08826f
+C3957 xcmp_enb vss 2.9699f
+C3958 xcmp_o2 vss 5.06193f
+C3959 azc vss 39.72789f
+C3960 cmp vss 1.8554f
+C3961 xcmp_o3 vss 3.29304f
+C3962 b9 vss 46.06073f
+* the capacitor array, a cell of its own (blocks/adccap.spice or its extracted netlist)
+xcap top dum vss bx b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 rv328_adc_caparray
+.ends

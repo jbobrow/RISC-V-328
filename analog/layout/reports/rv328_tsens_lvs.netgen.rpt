@@ -1,0 +1,76 @@
+
+Circuit 1 cell pfet_06v0 and Circuit 2 cell pfet_06v0 are black boxes.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: pfet_06v0                       |Circuit 2: pfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes pfet_06v0 and pfet_06v0 are equivalent.
+
+Circuit 1 cell nfet_06v0 and Circuit 2 cell nfet_06v0 are black boxes.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: nfet_06v0                       |Circuit 2: nfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes nfet_06v0 and nfet_06v0 are equivalent.
+
+Circuit 1 cell ppolyf_u_1k_6p0 and Circuit 2 cell ppolyf_u_1k_6p0 are black boxes.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: ppolyf_u_1k_6p0                 |Circuit 2: ppolyf_u_1k_6p0                 
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes ppolyf_u_1k_6p0 and ppolyf_u_1k_6p0 are equivalent.
+Flattening unmatched subcell pfet_w16_l8_nf1 in circuit rv328_tsens (0)(1 instance)
+Flattening unmatched subcell nfet_w1_l0p7_nf1 in circuit rv328_tsens (0)(1 instance)
+Flattening unmatched subcell res1k_l13p4_n6_w1 in circuit rv328_tsens (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l0p55_nf1 in circuit rv328_tsens (0)(1 instance)
+Flattening unmatched subcell pfet_w4_l0p6_nf1 in circuit rv328_tsens (0)(1 instance)
+
+Class rv328_tsens (0):  Merged 5 series devices.
+Subcircuit summary:
+Circuit 1: rv328_tsens                     |Circuit 2: rv328_tsens                     
+-------------------------------------------|-------------------------------------------
+pfet_06v0 (3)                              |pfet_06v0 (3)                              
+nfet_06v0 (1)                              |nfet_06v0 (1)                              
+ppolyf_u_1k_6p0 (6->1)                     |ppolyf_u_1k_6p0 (1)                        
+Number of devices: 5                       |Number of devices: 5                       
+Number of nets: 7                          |Number of nets: 7                          
+---------------------------------------------------------------------------------------
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: rv328_tsens                     |Circuit 2: rv328_tsens                     
+-------------------------------------------|-------------------------------------------
+vss                                        |vss                                        
+avdd                                       |avdd                                       
+vbp                                        |vbp                                        
+en                                         |en                                         
+vtemp                                      |vtemp                                      
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes rv328_tsens and rv328_tsens are equivalent.
+
+Final result: Circuits match uniquely.
+.

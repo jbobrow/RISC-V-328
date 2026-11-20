@@ -1,0 +1,43 @@
+* rv328_bod : brown-out detector. Compares a tap of the supply divider with the 1.1 V reference.
+*   level[1:0]  0: 2.3 V (the lowest level the reference supports; stands in for the AVR's 1.8 V)
+*               1: 2.7 V    2 or 3: 4.3 V
+*   bod_o = 1 when the supply is below the level (about 2 % hysteresis), or the reference is not up.
+*   en = 0 disconnects the divider and forces bod_o = 0.
+.subckt rv328_bod avdd vss en level1 level0 vref vbp ok bod_o
+* supply divider, 5.0 Mohm in total (1 uA at 5 V), taps for the three levels. Written as drawn: strips of
+* 51 to 59 um, so that every section has nearly the same share of end resistance (0.31 to 0.35 %)
+xmen top enb avdd avdd pfet_06v0 w=10u l=0.6u
+xr1 top t23 vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u s=45
+xr2 t23 t27 vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u s=6
+xr3 t27 t43 vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u s=14
+xr4 t43 nh  vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u s=24
+xrh nh  vss vss ppolyf_u_1k_6p0 r_width=1u r_length=54u
+* hysteresis: the bottom section is shorted while the output reports "below"
+xmh nh  low vss vss nfet_06v0 w=10u l=0.7u
+* level select
+xi1 avdd vss level1 l1b rv328_inv
+xi2 avdd vss level0 l0b rv328_inv
+xn1 avdd vss l1b l0b s23b rv328_nand2
+xn2 avdd vss l1b level0 s27b rv328_nand2
+xi3 avdd vss s23b s23 rv328_inv
+xi4 avdd vss s27b s27 rv328_inv
+xi5 avdd vss l1b s43 rv328_inv
+xt1 avdd vss t23 tap s23 s23b rv328_tg
+xt2 avdd vss t27 tap s27 s27b rv328_tg
+xt3 avdd vss t43 tap s43 l1b rv328_tg
+* The tap is a megohm node, and when the output changes, the first thing it feels is the charge the
+* hysteresis switch injects, which pushes it the wrong way: on a slow supply ramp the output chattered
+* for 3 us when it cleared. 1 pF on the tap swallows that charge (and makes the detector ignore dips
+* shorter than about 2 us), and 50 fF from the output's complement pushes the tap 0.1 V the right way
+* at once, before the divider has settled to its new ratio.
+xct tap vss  cap_mim_2f0fF c_width=22.5u c_length=22.5u
+xcf tap lowb cap_mim_2f0fF c_width=5u c_length=5u
+* comparator: 1 when the reference is above the tap
+xc avdd vss vref tap cmp vbp en rv328_cmp mt=0.5
+* low = cmp or not ok ; bod_o = low and en
+xi6 avdd vss en enb rv328_inv
+xo1 avdd vss cmp okb lowb rv328_nor2
+xi7 avdd vss ok okb rv328_inv
+xi8 avdd vss lowb low rv328_inv
+xo2 avdd vss lowb enb bod_o rv328_nor2
+.ends

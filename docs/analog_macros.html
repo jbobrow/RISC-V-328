@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RV328 analog macro specification - RV328</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><div class="wrap">
+<nav><a class="name" href="index.html">RV328</a><p class="tag">A RISC-V chip in the ATmega328PB footprint</p>
+<h2>The story</h2>
+<a class="l" href="index.html">Overview</a>
+<a class="l" href="build_log.html">Build log</a>
+<a class="l" href="decisions.html">Decisions</a>
+<h2>Results</h2>
+<a class="l" href="cache_study.html">Cache study</a>
+<a class="l" href="layout_results.html">Layout results</a>
+<a class="l" href="memory_research.html">Memory research</a>
+<h2>Reference</h2>
+<a class="l" href="datasheet.html">Datasheet</a>
+<a class="l" href="verification.html">Verification</a>
+<a class="l" href="tapeout_checklist.html">Tape-out checklist</a>
+<a class="l on" href="analog_macros.html">Analog macro spec</a>
+<a class="l" href="bondout.html">Bond-out</a>
+<h2>Tools</h2><a class="l" href="layout_viewer.html">Layout viewer</a>
+</nav>
+<main>
+<h1>RV328 analog macro specification</h1>
+<p>The digital core talks to one analog block, <code>rv328_analog</code>, through the ports below. Two views exist today:
+<code>rtl/analog/rv328_analog_model.v</code> (behavioural, used in simulation - treat it as the executable version of
+this specification) and <code>rtl/analog/rv328_analog_stub.v</code> (synthesisable placeholder for the digital-first
+tapeout).</p>
+<p><strong>Status.</strong> A transistor-level design of every block now exists in <code>analog/</code>, simulated against the
+foundry models over corners, supply and temperature, and assembled into one netlist with these ports
+(<code>analog/blocks/rv328_analog.spice</code>). <code>analog/README.md</code> has the results against the targets below and
+the list of deviations. Every block has a layout, and the blocks are assembled into one macro layout with these ports (<code>analog/layout/</code>: 1380 x 927 um, DRC and LVS clean, simulated from its extraction). It has no supply or guard rings, its pins are where its wires end (44 at the foot of a trunk on one edge, the ten analog inputs on the same edge, the crystal pins on the opposite one), and there is
+no LEF or liberty file, so the chip layout still uses the stub. At 1.28 mm2 there is barely room for it beside the digital layout in the half-height slot: a trial layout with its room reserved (cells at 74 % of the rows left, against 46 % today) routes, but has no room for the flow's repair steps, and one register's fan-out misses 20 MHz at the slow corner (<code>docs/layout_results.md</code>, "Trial with the analog block"). The targets it does not meet as designed: the 1.8 V brown-out
+level (2.3 V instead), the accuracy of the 128 kHz oscillator without trim, and a rail-to-rail comparator
+input. The ADC front end and the power-down current, which were wrong after the first design round,
+were corrected in the second. A third round followed the first layouts: the ADC comparator, which
+took most of a bit time to reverse a decision, was made ten times faster, and every large resistor was
+moved to the 1 kohm-per-square film, the only high-resistance film this process variant has. The ADC's
+code transitions are within half an LSB in simulation.</p>
+<p>Supply: AVCC pad (analog), VSS. All digital ports are 5 V-domain CMOS levels (the core runs from the pad supply).</p>
+<h2>Ports</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Dir</th>
+<th>Function</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XTAL1, XTAL2</td>
+<td>analog</td>
+<td>crystal pins (asig_5p0 pads, double-bonded with PB6/PB7)</td>
+<td></td>
+</tr>
+<tr>
+<td>AREF, AVCC</td>
+<td>analog</td>
+<td>reference input / analog supply</td>
+<td></td>
+</tr>
+<tr>
+<td>ADC[7:0]</td>
+<td>analog</td>
+<td>ADC inputs (double-bonded with PC0-PC5, PE2, PE3)</td>
+<td></td>
+</tr>
+<tr>
+<td>AIN0, AIN1</td>
+<td>analog</td>
+<td>comparator inputs (double-bonded with PD6, PD7)</td>
+<td></td>
+</tr>
+<tr>
+<td>por_n</td>
+<td>out</td>
+<td>power-on reset, low until VCC is valid and stable</td>
+<td>threshold about 1.4 V rising, at least 1 ms after the RC oscillator runs, glitch-free (the designed circuit releases after 0.2 to 0.3 ms; the rest of the delay belongs in the reset controller)</td>
+</tr>
+<tr>
+<td>bod_o</td>
+<td>out</td>
+<td>supply below the selected level (level, asynchronous)</td>
+<td>levels 1.8 / 2.7 / 4.3 V, 2 % hysteresis</td>
+</tr>
+<tr>
+<td>bod_en, bod_level[2:0]</td>
+<td>in</td>
+<td>brown-out enable and level</td>
+<td>below 25 uA when enabled</td>
+</tr>
+<tr>
+<td>clk_rc</td>
+<td>out</td>
+<td>8 MHz RC oscillator, gated cleanly by rc_en (no runt pulses)</td>
+<td>+/-2 % after trim at 25 C, +/-10 % over range; start-up below 10 us</td>
+</tr>
+<tr>
+<td>rc_en, rc_trim[7:0]</td>
+<td>in</td>
+<td>enable and frequency trim (0x80 = centre, monotonic)</td>
+<td>about 0.5 % per step</td>
+</tr>
+<tr>
+<td>clk_lf</td>
+<td>out</td>
+<td>128 kHz oscillator, always running</td>
+<td>+/-10 %, below 2 uA</td>
+</tr>
+<tr>
+<td>clk_xa</td>
+<td>out</td>
+<td>crystal oscillator output, released only when amplitude is stable</td>
+<td></td>
+</tr>
+<tr>
+<td>xo_en, xo_mode[1:0]</td>
+<td>in</td>
+<td>enable; 1 low-power crystal (0.4-16 MHz), 2 full-swing (to 20 MHz), 3 32.768 kHz</td>
+<td></td>
+</tr>
+<tr>
+<td>adc_en</td>
+<td>in</td>
+<td>power up ADC front end and reference</td>
+<td></td>
+</tr>
+<tr>
+<td>adc_mux[3:0]</td>
+<td>in</td>
+<td>0-7 pins, 8 temperature sensor, 14 bandgap 1.1 V, 15 ground</td>
+<td></td>
+</tr>
+<tr>
+<td>adc_refs[1:0]</td>
+<td>in</td>
+<td>0 AREF, 1 AVCC, 3 internal 1.1 V (driven onto AREF for decoupling)</td>
+<td></td>
+</tr>
+<tr>
+<td>adc_sample</td>
+<td>in</td>
+<td>high: track selected input; falling edge: hold</td>
+<td>two ADC clock periods of tracking (ADC clock 50-200 kHz); the internal channels (8, 14) need 40 us. As designed, the input is actually sampled 0.9 to 2.0 us after the falling edge, and the first trial code must already be on adc_dac then; the first decision is taken one ADC clock period after the edge</td>
+</tr>
+<tr>
+<td>adc_dac[9:0]</td>
+<td>in</td>
+<td>SAR trial code</td>
+<td>DAC settles within one ADC clock period</td>
+</tr>
+<tr>
+<td>adc_cmp</td>
+<td>out</td>
+<td>1 when held input &gt;= adc_dac / 1024 x reference</td>
+<td>10-bit monotonic, +/-2 LSB absolute accuracy</td>
+</tr>
+<tr>
+<td>ac_en, ac_bg, ac_mux_en</td>
+<td>in</td>
+<td>comparator enable; positive input = bandgap instead of AIN0; negative input = ADC mux instead of AIN1</td>
+<td></td>
+</tr>
+<tr>
+<td>ac_out</td>
+<td>out</td>
+<td>1 when positive input &gt; negative input (asynchronous)</td>
+<td>offset below 10 mV, delay below 500 ns</td>
+</tr>
+<tr>
+<td>dig_clk_i, dig_rstn_i</td>
+<td>in</td>
+<td>used only by the stub (external clock and reset)</td>
+<td>leave unconnected in the real macro</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Integration notes</h2>
+<ul>
+<li>Every output of the macro crosses into the digital core through a synchroniser except the clocks and <code>por_n</code>.</li>
+<li><code>clk_rc</code>, <code>clk_xa</code> and <code>clk_lf</code> feed a glitch-free clock multiplexer; each must stop and start without
+  partial pulses when its enable changes.</li>
+<li>In power-down the core drives <code>rc_en</code> and <code>xo_en</code> low and raises them again asynchronously on a wake event.</li>
+<li>The pads carrying analog signals are plain <code>gf180mcu_fd_io__asig_5p0</code> cells; the digital function of the
+  same package pin uses a separate <code>bi_24t</code> pad and a second bond wire, so no custom pad cell is needed.</li>
+<li>For layout, the macro needs a LEF with the ports above, a liberty file for the digital ports (clock
+  outputs declared as clocks) and GDS; add it to <code>flow/librelane/macros.yaml</code>, remove the stub from
+  <code>config.yaml</code> and replace the stub clocks in <code>chip_top.sdc</code>.</li>
+</ul>
+<footer>Generated from <code>docs/analog_macros.md</code> by <code>scripts/build_site.py</code>. Nothing here has been measured on silicon.</footer>
+</main></div></body></html>

@@ -1,0 +1,59 @@
+* rv328_amux : ADC / comparator input multiplexer
+*   s[3:0]  0-7: a0..a7   8: temperature sensor   14: 1.1 V reference   15: ground   others: open
+*   en = 0: everything open
+.subckt rv328_amux avdd vss a7 a6 a5 a4 a3 a2 a1 a0 vtemp vbg s3 s2 s1 s0 en out
+xi3 avdd vss s3 s3b rv328_sinv
+xi2 avdd vss s2 s2b rv328_sinv
+xi1 avdd vss s1 s1b rv328_sinv
+xi0 avdd vss s0 s0b rv328_sinv
+* predecode: upper pair with the enable, lower pair
+xh0 avdd vss s3b s2b en hn0 rv328_snand3
+xhi0 avdd vss hn0 h0 rv328_sinv
+xh1 avdd vss s3b s2 en hn1 rv328_snand3
+xhi1 avdd vss hn1 h1 rv328_sinv
+xh2 avdd vss s3 s2b en hn2 rv328_snand3
+xhi2 avdd vss hn2 h2 rv328_sinv
+xh3 avdd vss s3 s2 en hn3 rv328_snand3
+xhi3 avdd vss hn3 h3 rv328_sinv
+xl0 avdd vss s1b s0b ln0 rv328_snand2
+xli0 avdd vss ln0 l0 rv328_sinv
+xl1 avdd vss s1b s0 ln1 rv328_snand2
+xli1 avdd vss ln1 l1 rv328_sinv
+xl2 avdd vss s1 s0b ln2 rv328_snand2
+xli2 avdd vss ln2 l2 rv328_sinv
+xl3 avdd vss s1 s0 ln3 rv328_snand2
+xli3 avdd vss ln3 l3 rv328_sinv
+xn0 avdd vss h0 l0 cb0 rv328_snand2
+xc0 avdd vss cb0 c0 rv328_sinv
+xt0 avdd vss a0 out c0 cb0 rv328_tg wp=40u wn=20u
+xn1 avdd vss h0 l1 cb1 rv328_snand2
+xc1 avdd vss cb1 c1 rv328_sinv
+xt1 avdd vss a1 out c1 cb1 rv328_tg wp=40u wn=20u
+xn2 avdd vss h0 l2 cb2 rv328_snand2
+xc2 avdd vss cb2 c2 rv328_sinv
+xt2 avdd vss a2 out c2 cb2 rv328_tg wp=40u wn=20u
+xn3 avdd vss h0 l3 cb3 rv328_snand2
+xc3 avdd vss cb3 c3 rv328_sinv
+xt3 avdd vss a3 out c3 cb3 rv328_tg wp=40u wn=20u
+xn4 avdd vss h1 l0 cb4 rv328_snand2
+xc4 avdd vss cb4 c4 rv328_sinv
+xt4 avdd vss a4 out c4 cb4 rv328_tg wp=40u wn=20u
+xn5 avdd vss h1 l1 cb5 rv328_snand2
+xc5 avdd vss cb5 c5 rv328_sinv
+xt5 avdd vss a5 out c5 cb5 rv328_tg wp=40u wn=20u
+xn6 avdd vss h1 l2 cb6 rv328_snand2
+xc6 avdd vss cb6 c6 rv328_sinv
+xt6 avdd vss a6 out c6 cb6 rv328_tg wp=40u wn=20u
+xn7 avdd vss h1 l3 cb7 rv328_snand2
+xc7 avdd vss cb7 c7 rv328_sinv
+xt7 avdd vss a7 out c7 cb7 rv328_tg wp=40u wn=20u
+xn8 avdd vss h2 l0 cb8 rv328_snand2
+xc8 avdd vss cb8 c8 rv328_sinv
+xt8 avdd vss vtemp out c8 cb8 rv328_tg wp=10u wn=10u
+xn14 avdd vss h3 l2 cb14 rv328_snand2
+xc14 avdd vss cb14 c14 rv328_sinv
+xt14 avdd vss vbg out c14 cb14 rv328_tg wp=10u wn=10u
+xn15 avdd vss h3 l3 cb15 rv328_snand2
+xc15 avdd vss cb15 c15 rv328_sinv
+xt15 out c15 vss vss nfet_06v0 w=10u l=0.7u
+.ends

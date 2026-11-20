@@ -1,0 +1,70 @@
+* rv328_xosc : crystal oscillator (Pierce). The crystal sits between xi and xo, with its load
+*   capacitors from each pin to ground on the board.
+*   m[1:0]  1: 0.4-16 MHz, about 0.4 mA    2: to 20 MHz, about 1.2 mA    3: 32.768 kHz, a few uA
+*           0 (or en = 0): off, both pins released (xi can then take an external clock)
+*   vbp     bias from rv328_bgr; needed in settings 1 and 2 only. Setting 3 has its own bias so
+*           that the watch crystal can run with everything else off.
+*   clk     squared-up output through a Schmitt trigger. It starts once the swing at xi is a few
+*           tens of millivolts (the replica stage's gain times that exceeds the hysteresis), so
+*           the core must still count cycles before it uses the clock.
+* The amplifier is one NMOS with a current-source load: the bias current sets both the gain and,
+* by running out, the amplitude.
+.subckt rv328_xosc avdd vss en m1 m0 xi xo vbp clk
+xim1 avdd vss m1 m1b rv328_inv
+xim0 avdd vss m0 m0b rv328_inv
+xd1  avdd vss en m1b m0  e1n rv328_nand3
+xd2  avdd vss en m1  m0b e2n rv328_nand3
+xd3  avdd vss en m1  m0  e3n rv328_nand3
+xdi1 avdd vss e1n e1 rv328_inv
+xdi2 avdd vss e2n e2 rv328_inv
+xdi3 avdd vss e3n e3 rv328_inv
+xda  avdd vss e1n e2n ehf rv328_nand2
+xdb  avdd vss ehf e3 off rv328_nor2
+xdc  avdd vss off on rv328_inv
+* amplifier and its bias resistor (10 Mohm, switched out when off)
+* The foot switch matters when the oscillator is off: xi may then carry an external clock or a
+* port signal, and without it the amplifier would pull xo (port pin PB7) low.
+xmn  xo xi ft vss nfet_06v0 w=50u l=0.7u m=8
+xmft ft on vss vss nfet_06v0 w=50u l=0.7u m=8
+xrf  xi rf vss ppolyf_u_1k_6p0 r_width=1u r_length=151.5u s=66
+xtf  avdd vss rf xo on off rv328_tg wp=2u wn=1u
+* a second, 500 kohm path in the MHz settings, so that the bias point settles in tens of
+* microseconds instead of a millisecond (it would load a watch crystal too much)
+xrg  xi rg vss ppolyf_u_1k_6p0 r_width=1u r_length=50.1u s=10
+xtg  avdd vss rg xo ehf ehfb rv328_tg wp=2u wn=1u
+xie  avdd vss ehf ehfb rv328_inv
+* replica of the amplifier at one eighth of its size and current: its threshold is the
+* amplifier's own bias point, so the output duty cycle follows the sine at xi
+xmr  r1 xi ftr vss nfet_06v0 w=50u l=0.7u
+xmfr ftr on vss vss nfet_06v0 w=50u l=0.7u
+* --- MHz settings: 4 uA unit -> 20 uA -> 300 uA (setting 1) or 1 mA (setting 2)
+xmu  nb vbp avdd avdd pfet_06v0 w=16u l=8u
+xmus nbs ehf nb vss nfet_06v0 w=4u l=0.7u
+xmnb nbs nbs vss vss nfet_06v0 w=4u l=4u
+xmn5 pb  nbs vss vss nfet_06v0 w=4u l=4u m=5
+xmpb pb  pb  avdd avdd pfet_06v0 w=10u l=1u
+xmpo pb  ehf avdd avdd pfet_06v0 w=1u l=0.6u
+xmp1 s1  pb  avdd avdd pfet_06v0 w=10u l=1u m=15
+xms1 xo  e1n s1 avdd pfet_06v0 w=40u l=0.55u m=2
+xmp2 s2  pb  avdd avdd pfet_06v0 w=10u l=1u m=50
+xms2 xo  e2n s2 avdd pfet_06v0 w=40u l=0.55u m=6
+xmpr sr  pb  avdd avdd pfet_06v0 w=10u l=1u m=2
+xmsr r1  e1n sr avdd pfet_06v0 w=10u l=0.55u
+xmpq sq  pb  avdd avdd pfet_06v0 w=10u l=1u m=6
+xmsq r1  e2n sq avdd pfet_06v0 w=10u l=0.55u m=3
+* --- 32.768 kHz setting: (avdd - Vgs) / 4 Mohm (about 1 uA at 5 V), three times that in the amplifier
+xrl  lb lbs vss ppolyf_u_1k_6p0 r_width=1u r_length=64.5u s=62
+xmle lbs e3 vss vss nfet_06v0 w=2u l=0.7u
+xmlb lb  lb avdd avdd pfet_06v0 w=4u l=20u
+xmlo lb  e3 avdd avdd pfet_06v0 w=1u l=0.6u
+xml1 s3  lb avdd avdd pfet_06v0 w=12u l=20u
+xms3 xo  e3n s3 avdd pfet_06v0 w=4u l=0.6u
+xmlr s3r lb avdd avdd pfet_06v0 w=1.5u l=20u
+xmsl r1  e3n s3r avdd pfet_06v0 w=2u l=0.6u
+* replica output held low when off
+xmro r1 off vss vss nfet_06v0 w=1u l=0.7u
+* output: Schmitt trigger, then a buffer
+xsm  avdd vss r1 c1 rv328_schmitt
+xb1  avdd vss c1 c2 rv328_inv
+xb2  avdd vss c2 clk rv328_inv wp=4u wn=2u
+.ends

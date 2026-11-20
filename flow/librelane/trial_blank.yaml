@@ -1,0 +1,22 @@
+# Trial floorplan, variant 'corner': the digital layout with a blank block of 951 x 1405 um at (2539, 442) where the
+# analog macro would stand (scripts/gen_analog_blank.py). Pass this file last.
+IGNORE_DISCONNECTED_MODULES: [gf180mcu_fd_io__bi_24t, gf180mcu_fd_io__in_c, gf180mcu_fd_io__asig_5p0, gf180mcu_ws_ip__qrcode_id, gf180mcu_ws_ip__shuttle_id, gf180mcu_ws_ip__project_id, gf180mcu_ws_ip__marker,
+  rv328_analog_blank]
+VERILOG_DEFINES: [SLOT_1X0P5, RV328_TECH_GF180, RV328_ANALOG_STUB, RV328_WAFERSPACE_IDS, RV328_SC9T, RV328_ANALOG_BLANK]
+# Synthesis leaves 1.0 mm2 of cells and timing repair grows them to 1.4 mm2; with 1.9 mm2 of rows left
+# the cells must start out spread over all of it, so that the buffers find room where they are needed.
+# Global placement raises a target below the utilization (59 % here) to the uniform density.
+PL_TARGET_DENSITY_PCT: 33
+# Buffers for the pads behind the block have no rows near them: let the legaliser carry them to the nearest ones
+PL_MAX_DISPLACEMENT_X: 3000
+PL_MAX_DISPLACEMENT_Y: 1600
+# No double spacing for the upper clock nets: where global routing finds congestion it takes that rule off
+# one net at a time, fifty iterations each, and does not finish in hours
+CTS_APPLY_NDR: none
+# No design or timing repair after global routing: at this density the buffers it adds cannot be placed
+# without moving cells 33 um on average, and the routing that was clean is congested again
+RUN_POST_GRT_DESIGN_REPAIR: false
+RUN_POST_GRT_RESIZER_TIMING: false
+# Antennas by jumpers only: there is no room to place diodes (25 cells could not be legalised)
+GRT_ANTENNA_REPAIR_JUMPER_ONLY: true
+DRT_ANTENNA_REPAIR_JUMPER_ONLY: true

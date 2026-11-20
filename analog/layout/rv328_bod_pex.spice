@@ -1,0 +1,849 @@
+* rv328_bod with the wiring capacitance of its layout. Written by analog/layout/pex_block.py from rv328_bod_named.gds;
+* same cell name and pins as the schematic. 687 wiring capacitors, no wiring resistance;
+* 63 transistor fingers; groups of 9 or more identical parallel ones are one line with m=.
+* NGSPICE file created from rv328_bod.ext - technology: gf180mcuD
+
+.subckt rv328_bod avdd vss en level1 level0 vref vbp ok bod_o
+X0 cmp xc_o3 vss vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.7u
+X1 s27b l1b xn2_n1 vss nfet_06v0 ad=1p pd=5u as=2p ps=10u w=2u l=0.7u
+X2 xn2_n1 level0 vss vss nfet_06v0 ad=0 pd=0 as=18p ps=93.99999u w=2u l=0.7u
+X3 xn1_n1 l0b vss vss nfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.7u
+X4 bod_o lowb vss vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X5 s23b l1b xn1_n1 vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X6 bod_o enb vss vss nfet_06v0 ad=1p pd=6u as=0 ps=0 w=1u l=0.7u
+X7 low lowb vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X8 okb ok vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X9 lowb okb vss vss nfet_06v0 ad=1p pd=6u as=0 ps=0 w=1u l=0.7u
+X10 lowb cmp vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.7u
+X11 enb en vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X12 xc_o3 xc_o2 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X13 xc_o2 xc_enb vss vss nfet_06v0 ad=1p pd=6u as=0 ps=0 w=1u l=0.7u
+X14 xc_enb en vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X15 bod_o enb xo2_n1 avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.55u
+X16 lowb okb xo1_n1 avdd pfet_06v0 ad=2p pd=9u as=4p ps=18u w=4u l=0.55u
+X17 xo2_n1 lowb avdd avdd pfet_06v0 ad=4p pd=18u as=33.5p ps=0.155m w=4u l=0.55u
+X18 low lowb avdd avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.55u
+X19 okb ok avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X20 xo1_n1 cmp avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=4u l=0.55u
+X21 enb en avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X22 cmp xc_o3 avdd avdd pfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=0.55u
+X23 xc_o3 xc_o2 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X24 xc_enb en avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X25 s43 l1b avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X26 s27 s27b avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X27 s23 s23b avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X28 s43 l1b vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X29 s27 s27b vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X30 s27b level0 avdd avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X31 s27b l1b avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X32 s23 s23b vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X33 l0b level0 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X34 s23b l0b avdd avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X35 l1b level1 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X36 s23b l1b avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X37 l0b level0 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X38 l1b level1 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X39 xc_vbi en avdd avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.6u
+X40 nh low vss vss nfet_06v0 ad=5p pd=21u as=5p ps=21u w=10u l=0.7u
+X41 t43 s43 tap vss nfet_06v0 ad=1p pd=5u as=3p ps=15u w=2u l=0.7u
+X42 nh vss vss ppolyf_u_1k_6p0 r_width=1u r_length=54u
+X43 t27 s27 tap vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X44 t23 s23 tap vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X45 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X46 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X47 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X48 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X49 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X50 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X51 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X52 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X53 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X54 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X55 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12900# t23 vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X56 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X57 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X58 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X59 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X60 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X61 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X62 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X63 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X64 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_10500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X65 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X66 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X67 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X68 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_10500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X69 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X70 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X71 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X72 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X73 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_7500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X74 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X75 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X76 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_7500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X77 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_4500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X78 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X79 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X80 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X81 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_4500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X82 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X83 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X84 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X85 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X86 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X87 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X88 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X89 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=57.98u
+X90 vbp en xc_vbi vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X91 xc_o1 xc_n1 vss vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=4u
+X92 xc_n1 xc_n1 vss vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=4u
+X93 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u
+X94 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u
+X95 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u
+X96 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u
+X97 t27 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u
+X98 t23 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=59.1u
+X99 xc_o1 vref xc_tail avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=2u
+X100 xc_o1 vref xc_tail avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X101 xc_tail vref xc_o1 avdd pfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=2u
+X102 xc_tail vref xc_o1 avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=2u
+X103 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X104 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X105 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X106 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X107 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X108 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X109 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X110 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X111 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X112 t43 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X113 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X114 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X115 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X116 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=54.15u
+X117 xc_n1 tap xc_tail avdd pfet_06v0 ad=11.2p pd=42.24u as=35.2p ps=0.14324m w=10u l=2u
+X118 xc_n1 tap xc_tail avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X119 xc_tail tap xc_n1 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X120 xc_tail tap xc_n1 avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=2u
+X121 t43 l1b tap avdd pfet_06v0 ad=2p pd=9u as=6p ps=27u w=4u l=0.55u
+X122 vbp xc_enb xc_vbi avdd pfet_06v0 ad=1p pd=5u as=1.5p ps=8u w=2u l=0.55u
+X123 t23 s23b tap avdd pfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=0.55u
+X124 t27 s27b tap avdd pfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=0.55u
+X125 xc_o2 xc_o1 vss vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=1u
+X126 tap vss cap_mim_2f0_m4m5_noshield c_width=22.5u c_length=22.5u
+X127 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X128 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X129 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5700# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X130 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X131 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5700# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X132 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X133 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_6300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X134 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X135 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_6300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X136 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X137 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X138 nh rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X139 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X140 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X141 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X142 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3900# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X143 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3900# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X144 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_4500# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X145 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X146 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_4500# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X147 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X148 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X149 t43 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X150 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=51.05u
+X151 xc_o2 xc_vbi avdd avdd pfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=8u
+X152 xc_tail xc_vbi avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=8u l=8u
+X153 top enb avdd avdd pfet_06v0 ad=5p pd=21u as=5p ps=21u w=10u l=0.6u
+X154 tap lowb cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+C0 s27b level0 0.17681f
+C1 t27 nh 0.14911f
+C2 t43 xc_enb 0.08337f
+C3 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5700# nh 0.03818f
+C4 s43 level0 0.04718f
+C5 t23 s23 0.30937f
+C6 t23 en 0.0959f
+C7 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4800# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_5400# 0.04819f
+C8 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_600# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1200# 0.04819f
+C9 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4800# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_5400# 0.04819f
+C10 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3900# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_4500# 0.04819f
+C11 low xn2_n1 0.05677f
+C12 t27 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# 0.00175f
+C13 avdd t43 0.74122f
+C14 xc_n1 xc_tail 1.77384f
+C15 xc_n1 en 0.0071f
+C16 xc_o1 xc_tail 1.22144f
+C17 xc_o2 t43 0.08338f
+C18 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12900# 0.07465f
+C19 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# 0.07008f
+C20 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12300# 0.04819f
+C21 s27b bod_o 0.08014f
+C22 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# low 0
+C23 tap xc_enb 0.24913f
+C24 t23 enb 0
+C25 s43 bod_o 0.04638f
+C26 t23 vref 0.10115f
+C27 tap avdd 4.32446f
+C28 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# nh 0.0381f
+C29 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# nh 0.00348f
+C30 tap xc_o2 0.26234f
+C31 xc_n1 vref 0.67752f
+C32 s27b s23b 0.35764f
+C33 s27 l1b 0.99922f
+C34 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8700# 0.07008f
+C35 vref xc_o1 1.96579f
+C36 s43 s23b 0.19907f
+C37 s23 xn1_n1 0.03997f
+C38 en xn1_n1 0.04611f
+C39 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9300# 0.04819f
+C40 s23 xc_vbi 0.46464f
+C41 xc_tail xc_vbi 1.50751f
+C42 en xc_vbi 1.58643f
+C43 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4800# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4200# 0.04819f
+C44 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# 0
+C45 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# 0.04819f
+C46 t23 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# 0.05537f
+C47 cmp bod_o 0.12618f
+C48 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# 0.00225f
+C49 level1 ok 0.04744f
+C50 en level0 0.12607f
+C51 s23 level0 0.04785f
+C52 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_8400# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7800# 0.04819f
+C53 lowb s27 0.14896f
+C54 lowb l1b 11.03478f
+C55 enb xn1_n1 0.04596f
+C56 top t27 0.35097f
+C57 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# 0.04819f
+C58 vbp s27 0.11355f
+C59 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2700# 0.07008f
+C60 vbp l1b 0.03144f
+C61 avdd rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# 0.0067f
+C62 vref xc_vbi 0.10433f
+C63 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_4500# nh 0.0381f
+C64 s27b xc_enb 0.20877f
+C65 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11100# 0.04819f
+C66 s27 low 0.10326f
+C67 t27 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9000# 0.0028f
+C68 low l1b 2.06254f
+C69 cmp xc_o3 0.57721f
+C70 s43 xc_enb 21.7749f
+C71 enb level0 0.12707f
+C72 s23 bod_o 0.04648f
+C73 en bod_o 6.66797f
+C74 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3000# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3600# 0.04819f
+C75 avdd s27b 5.51879f
+C76 l0b ok 0.12422f
+C77 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_900# 0.07018f
+C78 t43 nh 1.56225f
+C79 level1 l0b 0
+C80 avdd s43 1.25104f
+C81 s27b xc_o2 0.24363f
+C82 lowb vbp 0.09734f
+C83 s43 xc_o2 0.95022f
+C84 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# 0.04819f
+C85 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# t27 0.00175f
+C86 t27 t43 10.23728f
+C87 s23 s23b 19.26503f
+C88 en s23b 0.12791f
+C89 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# 0.00225f
+C90 xn2_n1 level0 0.20803f
+C91 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_10500# 0.07008f
+C92 lowb low 13.11643f
+C93 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3300# 0.04819f
+C94 t43 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# 0.04878f
+C95 en xc_o3 0.06927f
+C96 enb bod_o 2.25615f
+C97 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_600# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1200# 0.04819f
+C98 vbp low 0.33746f
+C99 tap nh 0.36284f
+C100 avdd rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# 0
+C101 t23 s27 0.1442f
+C102 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2700# 0.04819f
+C103 t23 l1b 0.09574f
+C104 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3000# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3600# 0.04819f
+C105 tap t27 2.37828f
+C106 enb s23b 0.16554f
+C107 avdd cmp 6.30594f
+C108 xn2_n1 bod_o 0.04667f
+C109 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12300# 0.07008f
+C110 enb xc_o3 0.08657f
+C111 xc_o2 cmp 0
+C112 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# t43 0
+C113 cmp okb 0.09183f
+C114 cmp xo1_n1 0.41314f
+C115 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1800# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_2400# 0.04819f
+C116 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# t43 0
+C117 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# low 0
+C118 s23 xc_enb 0.08964f
+C119 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6300# 0.07008f
+C120 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# 0.04819f
+C121 xn2_n1 s23b 0.34347f
+C122 en xc_enb 0.79118f
+C123 t23 lowb 0.08343f
+C124 t23 vbp 0.8173f
+C125 avdd xc_tail 4.99139f
+C126 avdd s23 1.24846f
+C127 en avdd 4.12831f
+C128 t23 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# 0.00118f
+C129 xc_o2 xc_tail 0.18671f
+C130 s27 xn1_n1 0.04002f
+C131 s23 xc_o2 0.106f
+C132 xc_n1 vbp 0.08307f
+C133 en xc_o2 0.19479f
+C134 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# s23b 0.00264f
+C135 xn1_n1 l1b 1.4041f
+C136 t27 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# 0.03818f
+C137 s27 xc_vbi 0.31385f
+C138 t23 low 0.12989f
+C139 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# 0.04819f
+C140 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3300# 0.07008f
+C141 enb xc_enb 0.13599f
+C142 en xo1_n1 0
+C143 en okb 0
+C144 s27b nh 0.04163f
+C145 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_6300# nh 0.08688f
+C146 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1200# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1800# 0.04819f
+C147 s43 nh 0.04163f
+C148 avdd enb 5.83983f
+C149 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_7500# 0.07008f
+C150 s27 level0 0.0474f
+C151 avdd vref 2.78412f
+C152 l1b level0 3.82026f
+C153 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2700# 0.04819f
+C154 t27 s27b 0.32426f
+C155 enb xc_o2 0.12861f
+C156 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5700# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_6300# 0.04819f
+C157 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# 0.04819f
+C158 t27 s43 0.13202f
+C159 vref xc_o2 0.05891f
+C160 lowb xn1_n1 0.03991f
+C161 xn2_n1 xc_enb 0.04332f
+C162 t27 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# 0.00175f
+C163 enb okb 0.08187f
+C164 enb xo1_n1 0.0583f
+C165 lowb xc_vbi 0.00131f
+C166 vbp xc_vbi 4.15285f
+C167 avdd xn2_n1 0.11412f
+C168 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_4500# 0.07008f
+C169 nh rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# 0.00291f
+C170 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# t27 0.00175f
+C171 xc_o2 xn2_n1 0.15303f
+C172 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# xc_enb 0
+C173 s27 bod_o 0.04638f
+C174 low xn1_n1 0.04607f
+C175 l1b bod_o 0.09615f
+C176 lowb level0 0.0493f
+C177 s27b ok 0.089f
+C178 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# nh 0.0381f
+C179 low xc_vbi 0.12234f
+C180 s27b level1 0.04656f
+C181 s43 ok 0.1454f
+C182 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# avdd 0.00259f
+C183 level1 s43 0.04652f
+C184 tap t43 7.73103f
+C185 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# xc_o2 0
+C186 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1200# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# 0.04819f
+C187 xc_n1 xc_o1 0.32542f
+C188 s27 s23b 18.57479f
+C189 top rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# 0
+C190 l1b s23b 1.35276f
+C191 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1800# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1200# 0.04819f
+C192 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12900# vref 0
+C193 low level0 1.36556f
+C194 lowb bod_o 0.27179f
+C195 s23 nh 0.10703f
+C196 en nh 0.04916f
+C197 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7200# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7800# 0.04819f
+C198 s27b l0b 0.11723f
+C199 top s27b 0.04546f
+C200 enb xo2_n1 0.67608f
+C201 l0b s43 0.11726f
+C202 avdd rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6600# 0
+C203 top s43 0.04546f
+C204 cmp ok 0.14576f
+C205 t23 xc_vbi 0.07994f
+C206 lowb s23b 0.13409f
+C207 t27 en 0.09481f
+C208 t27 s23 0.134f
+C209 low bod_o 0.0401f
+C210 vbp s23b 0.0157f
+C211 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# 0.04819f
+C212 lowb xc_o3 0.06647f
+C213 xc_n1 xc_vbi 0.48983f
+C214 xc_o1 xc_vbi 0.65616f
+C215 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# 0.04819f
+C216 s27 xc_enb 0.08567f
+C217 vref nh 0.10282f
+C218 l1b xc_enb 0.33852f
+C219 low s23b 0.13711f
+C220 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3000# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_2400# 0.04819f
+C221 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_1500# 0.04819f
+C222 t27 enb 0
+C223 s23 ok 4.24475f
+C224 avdd s27 1.24297f
+C225 low xc_o3 0.0859f
+C226 en ok 0.09615f
+C227 avdd l1b 6.09542f
+C228 t27 vref 1.53867f
+C229 level1 s23 0.04713f
+C230 s27b t43 0.04171f
+C231 avdd rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# 0.00154f
+C232 en level1 0.05262f
+C233 s27 xc_o2 0.10155f
+C234 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3900# 0.04819f
+C235 xc_o2 l1b 0.38482f
+C236 s43 t43 0.26558f
+C237 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5100# 0.07008f
+C238 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2100# nh 0.0381f
+C239 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# 0.07018f
+C240 lowb xc_enb 0.17138f
+C241 vbp xc_enb 0.19061f
+C242 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# 0.04819f
+C243 enb ok 0.096f
+C244 tap s27b 0.73514f
+C245 enb level1 0.04901f
+C246 lowb avdd 6.66654f
+C247 t27 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# 0.00175f
+C248 tap s43 1.0253f
+C249 t23 s23b 0.32529f
+C250 en l0b 0.12635f
+C251 l0b s23 0.12424f
+C252 avdd vbp 0.58283f
+C253 xn1_n1 level0 0.0467f
+C254 lowb xc_o2 0.13689f
+C255 top s23 0.04546f
+C256 t23 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# 0
+C257 top en 0.06585f
+C258 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6600# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6000# 0.04819f
+C259 low xc_enb 0.09282f
+C260 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9300# 0.04819f
+C261 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# 0.00449f
+C262 vbp xc_o2 0.04561f
+C263 avdd rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# 0.00516f
+C264 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# t43 0.00118f
+C265 lowb xo1_n1 0.9855f
+C266 lowb okb 0.61404f
+C267 vref rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# 0
+C268 xn2_n1 ok 0.04822f
+C269 avdd low 16.94781f
+C270 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3600# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4200# 0.04819f
+C271 low xc_o2 13.93285f
+C272 enb l0b 0.12606f
+C273 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# xc_enb 0
+C274 xn1_n1 bod_o 0.04632f
+C275 top enb 0.82196f
+C276 low xo1_n1 0.05111f
+C277 low okb 0.04952f
+C278 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2100# 0.04819f
+C279 top vref 0.091f
+C280 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# avdd 0.00259f
+C281 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# xc_o2 0
+C282 xc_tail t43 0.05964f
+C283 s23 t43 0.13542f
+C284 en t43 0.11564f
+C285 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3600# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4200# 0.04819f
+C286 xn1_n1 s23b 0.7766f
+C287 t23 xc_enb 0.08305f
+C288 level0 bod_o 0.12591f
+C289 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3300# nh 0.0381f
+C290 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2100# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2700# 0.04819f
+C291 s27 nh 0.04163f
+C292 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# 0.00449f
+C293 t23 avdd 0.82869f
+C294 l1b nh 0.04787f
+C295 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# 0.0701f
+C296 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11700# 0.07008f
+C297 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# nh 0.0381f
+C298 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_4500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5100# 0.04819f
+C299 s27b s43 19.78074f
+C300 t23 xc_o2 0.08305f
+C301 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12300# 0.04819f
+C302 lowb xo2_n1 0.24994f
+C303 tap en 0.40318f
+C304 xc_n1 avdd 0.77184f
+C305 tap xc_tail 3.1858f
+C306 tap s23 0.77312f
+C307 avdd xc_o1 0.76582f
+C308 s23b level0 0.08992f
+C309 t27 s27 0.29282f
+C310 t27 l1b 0.26492f
+C311 vref t43 2.54863f
+C312 xc_n1 xc_o2 0.06674f
+C313 xc_o1 xc_o2 0.35324f
+C314 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_8400# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9000# 0.04819f
+C315 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# 0.00449f
+C316 low xo2_n1 0.00112f
+C317 lowb nh 0.04163f
+C318 xn1_n1 xc_enb 0.04037f
+C319 vbp nh 1.44461f
+C320 s23b bod_o 0.08043f
+C321 xc_vbi xc_enb 0.52773f
+C322 s27 ok 0.20368f
+C323 tap vref 5.45922f
+C324 l1b ok 0.26564f
+C325 t27 lowb 0.08199f
+C326 s27 level1 0.0467f
+C327 level1 l1b 0.93559f
+C328 xc_o3 bod_o 0.06734f
+C329 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9300# 0.07008f
+C330 avdd xn1_n1 0.19863f
+C331 t27 vbp 0.11385f
+C332 avdd xc_vbi 7.92597f
+C333 low nh 0.46911f
+C334 xc_o2 xn1_n1 0.1246f
+C335 t27 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# 0.08688f
+C336 xc_o2 xc_vbi 1.32956f
+C337 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_600# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_0# 0.04819f
+C338 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# 0.07008f
+C339 level0 xc_enb 0.04703f
+C340 t27 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# 0.00175f
+C341 s23b rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# 0.00179f
+C342 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2100# 0.07008f
+C343 t27 low 0.12898f
+C344 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8100# 0.04819f
+C345 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1800# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_2400# 0.04819f
+C346 avdd level0 2.94088f
+C347 lowb ok 8.83502f
+C348 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# nh 0.00291f
+C349 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# 0.00225f
+C350 en s27b 0.12737f
+C351 lowb level1 0.0493f
+C352 s27 l0b 0.11697f
+C353 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4800# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4200# 0.04819f
+C354 s27b s23 0.41237f
+C355 xc_o2 level0 0.05862f
+C356 l0b l1b 0.6662f
+C357 top s27 0.04546f
+C358 enb rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# 0
+C359 top l1b 0.05166f
+C360 s23 s43 0.09004f
+C361 s43 xc_tail 0.67323f
+C362 en s43 1.21683f
+C363 bod_o xc_enb 0.03857f
+C364 t27 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# 0.07008f
+C365 low ok 0.04534f
+C366 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_2400# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3000# 0.04819f
+C367 t23 nh 8.22736f
+C368 low level1 0.91072f
+C369 avdd bod_o 1.28593f
+C370 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# 0.04819f
+C371 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_10500# 0.04819f
+C372 s27b enb 0.16498f
+C373 xc_o2 bod_o 0.03373f
+C374 s23b xc_enb 0.19823f
+C375 t27 t23 14.64856f
+C376 enb s43 0.13274f
+C377 lowb l0b 0.12419f
+C378 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_0# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_600# 0.04819f
+C379 top lowb 0.04549f
+C380 vref s43 0.04058f
+C381 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_5400# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6000# 0.04819f
+C382 xo1_n1 bod_o 0.048f
+C383 okb bod_o 0.0402f
+C384 xc_o3 xc_enb 0
+C385 top vbp 0.09542f
+C386 avdd s23b 5.51085f
+C387 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9900# 0.07008f
+C388 s27 t43 0.14158f
+C389 avdd rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# 0
+C390 en cmp 0.11027f
+C391 l1b t43 0.33145f
+C392 xc_o2 s23b 0.2145f
+C393 top rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# 0
+C394 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3000# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# 0.04819f
+C395 avdd xc_o3 5.65716f
+C396 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# t43 0.05537f
+C397 s27b xn2_n1 0.86399f
+C398 low l0b 0.14263f
+C399 s43 xn2_n1 0.04323f
+C400 top low 0.04546f
+C401 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# 0.00449f
+C402 xc_o2 xc_o3 0.39528f
+C403 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9000# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# 0.04819f
+C404 xc_vbi nh 0.0919f
+C405 tap s27 0.78511f
+C406 enb cmp 0.21666f
+C407 tap l1b 1.09013f
+C408 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# s43 0
+C409 lowb t43 0.09189f
+C410 en s23 0.52994f
+C411 en xc_tail 0.26523f
+C412 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5700# 0.07008f
+C413 vbp t43 0.10594f
+C414 t27 xc_vbi 0.06824f
+C415 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# 0.04819f
+C416 avdd xc_enb 2.09221f
+C417 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# 0.00449f
+C418 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8100# 0.07008f
+C419 t43 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# 0
+C420 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5100# nh 0.03811f
+C421 low t43 0.13043f
+C422 xo2_n1 bod_o 0.68479f
+C423 xc_o2 xc_enb 24.70625f
+C424 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2700# nh 0.0381f
+C425 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7200# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6600# 0.04819f
+C426 top t23 0
+C427 tap lowb 1.45477f
+C428 enb s23 0.13145f
+C429 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5700# 0.04819f
+C430 en enb 11.20466f
+C431 tap vbp 0.32684f
+C432 s23 vref 0.04058f
+C433 xn1_n1 ok 0.03995f
+C434 vref xc_tail 3.1816f
+C435 avdd xc_o2 11.90258f
+C436 en vref 0.05174f
+C437 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5700# 0.04819f
+C438 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_10500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11100# 0.04819f
+C439 avdd xo1_n1 2.54869f
+C440 avdd okb 3.88101f
+C441 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# t43 0.00225f
+C442 tap low 0.25977f
+C443 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# nh 0.00291f
+C444 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# t43 0
+C445 s23 xn2_n1 0.06023f
+C446 en xn2_n1 0.04645f
+C447 level0 ok 0.04816f
+C448 okb xo1_n1 0.66622f
+C449 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11100# 0.07008f
+C450 level1 level0 0.79859f
+C451 s23b nh 0.04163f
+C452 s27b s27 20.45041f
+C453 s27b l1b 1.19037f
+C454 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# t23 0
+C455 t23 t43 0.22459f
+C456 s27 s43 2.46172f
+C457 s43 l1b 1.04937f
+C458 l0b xn1_n1 0.65896f
+C459 t27 s23b 0.04068f
+C460 enb xn2_n1 0.04631f
+C461 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_7500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8100# 0.04819f
+C462 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6000# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6600# 0.04819f
+C463 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# 0.04819f
+C464 ok bod_o 0.04004f
+C465 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6900# 0.07008f
+C466 level1 bod_o 0.04722f
+C467 tap t23 2.35704f
+C468 l0b level0 0.87927f
+C469 lowb s27b 0.13164f
+C470 vbp s27b 0.01178f
+C471 lowb s43 0.14385f
+C472 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# 0.00225f
+C473 avdd xo2_n1 3.95635f
+C474 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# 0.00225f
+C475 tap xc_n1 1.96579f
+C476 s23b ok 0.08434f
+C477 vbp s43 0.10344f
+C478 level1 s23b 0.04685f
+C479 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6300# 0.04819f
+C480 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# 0.04819f
+C481 nh xc_enb 0.04163f
+C482 xc_o3 ok 0.08927f
+C483 s27b low 0.13508f
+C484 xc_vbi t43 0.02414f
+C485 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3000# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_2400# 0.04819f
+C486 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# 0.04819f
+C487 low s43 0.10591f
+C488 l0b bod_o 0.12677f
+C489 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5100# rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_4500# 0.04819f
+C490 avdd nh 0.0535f
+C491 t27 xc_enb 0.08199f
+C492 xc_o2 nh 0.04163f
+C493 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3900# 0.07008f
+C494 t27 avdd 0.86064f
+C495 t23 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# 0.05537f
+C496 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3900# nh 0.0381f
+C497 s27 xc_tail 0.10042f
+C498 s27 s23 2.48311f
+C499 lowb cmp 0.88551f
+C500 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_2400# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1800# 0.04819f
+C501 en s27 0.28676f
+C502 s23 l1b 0.36108f
+C503 l0b s23b 0.7061f
+C504 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_300# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_900# 0.04819f
+C505 en l1b 5.38982f
+C506 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# s43 0
+C507 t27 xc_o2 0.08199f
+C508 tap xc_vbi 0.15902f
+C509 top s23b 0.04546f
+C510 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_7500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6900# 0.04819f
+C511 ok xc_enb 0.15477f
+C512 level1 xc_enb 0.04646f
+C513 t23 s27b 0.19992f
+C514 low cmp 0.14165f
+C515 t23 s43 0.08303f
+C516 avdd ok 2.68444f
+C517 s27 enb 0.13135f
+C518 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# 0.00449f
+C519 enb l1b 8.78274f
+C520 avdd level1 1.17954f
+C521 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# 0.04819f
+C522 s27 vref 0.04058f
+C523 lowb s23 15.35331f
+C524 xc_o2 ok 0.12924f
+C525 en lowb 0.91898f
+C526 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_1500# 0.04819f
+C527 level1 xc_o2 0.05795f
+C528 vbp xc_tail 0.14399f
+C529 vbp s23 0.13538f
+C530 en vbp 15.35561f
+C531 xo1_n1 ok 0.05185f
+C532 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# 0.04819f
+C533 okb ok 0.33154f
+C534 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3900# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3300# 0.04819f
+C535 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# t23 0.00118f
+C536 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_300# 0.11887f
+C537 s23b t43 0.04163f
+C538 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_5400# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6000# 0.04819f
+C539 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1800# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1200# 0.04819f
+C540 s27 xn2_n1 0.04525f
+C541 l0b xc_enb 0.11777f
+C542 xn2_n1 l1b 0.83607f
+C543 low s23 0.14918f
+C544 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5700# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5100# 0.04819f
+C545 en low 0.48246f
+C546 top xc_enb 0.04546f
+C547 lowb enb 0.45638f
+C548 avdd l0b 4.16529f
+C549 vbp enb 0.04711f
+C550 top avdd 2.14805f
+C551 vbp vref 0.0549f
+C552 l0b xc_o2 1.19122f
+C553 s27b xn1_n1 0.04111f
+C554 enb rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# 0
+C555 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_300# t27 0.11887f
+C556 top xc_o2 0.04546f
+C557 tap s23b 0.81572f
+C558 s43 xn1_n1 0.04017f
+C559 top rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_1500# 0.0701f
+C560 s43 xc_vbi 0.22042f
+C561 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_4500# rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3900# 0.04819f
+C562 enb low 1.41163f
+C563 lowb xn2_n1 0.04822f
+C564 low vref 0.04723f
+C565 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_0# vss 0.59211f ; **FLOATING
+C566 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_300# vss 0.52393f ; **FLOATING
+C567 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_600# vss 0.55537f ; **FLOATING
+C568 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_900# vss 0.52319f ; **FLOATING
+C569 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1200# vss 0.55491f ; **FLOATING
+C570 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_1500# vss 0.52333f ; **FLOATING
+C571 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_1800# vss 0.55477f ; **FLOATING
+C572 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2100# vss 0.52237f ; **FLOATING
+C573 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_2400# vss 0.55477f ; **FLOATING
+C574 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_2700# vss 0.52237f ; **FLOATING
+C575 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3000# vss 0.55477f ; **FLOATING
+C576 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3300# vss 0.52237f ; **FLOATING
+C577 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_3600# vss 0.55477f ; **FLOATING
+C578 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_3900# vss 0.52237f ; **FLOATING
+C579 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4200# vss 0.55477f ; **FLOATING
+C580 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_4500# vss 0.52237f ; **FLOATING
+C581 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_4800# vss 0.55477f ; **FLOATING
+C582 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5100# vss 0.52237f ; **FLOATING
+C583 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_5400# vss 0.55491f ; **FLOATING
+C584 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_5700# vss 0.52269f ; **FLOATING
+C585 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6000# vss 0.55537f ; **FLOATING
+C586 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_n128_6300# vss 0.52345f ; **FLOATING
+C587 rv328_bod_p0_0/res1k_l51p05_n24_w1_0/a_10210_6600# vss 0.59211f ; **FLOATING
+C588 xc_tail vss 3.8669f
+C589 t27 vss 3.40763f
+C590 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_0# vss 0.59211f ; **FLOATING
+C591 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_300# vss 0.52393f ; **FLOATING
+C592 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_600# vss 0.55537f ; **FLOATING
+C593 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_900# vss 0.52319f ; **FLOATING
+C594 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1200# vss 0.55491f ; **FLOATING
+C595 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_1500# vss 0.52288f ; **FLOATING
+C596 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_1800# vss 0.55477f ; **FLOATING
+C597 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2100# vss 0.52288f ; **FLOATING
+C598 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_2400# vss 0.55491f ; **FLOATING
+C599 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_2700# vss 0.52321f ; **FLOATING
+C600 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3000# vss 0.55614f ; **FLOATING
+C601 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_n128_3300# vss 0.52467f ; **FLOATING
+C602 rv328_bod_p0_0/res1k_l54p15_n14_w1_0/a_10830_3600# vss 0.59662f ; **FLOATING
+C603 t43 vss 3.42509f
+C604 vref vss 20.31555f
+C605 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_0# vss 0.59309f ; **FLOATING
+C606 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_300# vss 0.52373f ; **FLOATING
+C607 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_600# vss 0.55682f ; **FLOATING
+C608 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_n128_900# vss 0.52376f ; **FLOATING
+C609 rv328_bod_p0_0/res1k_l59p1_n6_w1_0/a_11820_1200# vss 0.59309f ; **FLOATING
+C610 xc_n1 vss 7.4951f
+C611 xc_o1 vss 4.02165f
+C612 vbp vss 2.00841f
+C613 xc_vbi vss 2.74004f
+C614 top vss 1.78305f
+C615 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_0# vss 0.59211f ; **FLOATING
+C616 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_300# vss 0.55581f ; **FLOATING
+C617 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_600# vss 0.55537f ; **FLOATING
+C618 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_900# vss 0.55508f ; **FLOATING
+C619 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1200# vss 0.55491f ; **FLOATING
+C620 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_1500# vss 0.55477f ; **FLOATING
+C621 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_1800# vss 0.55477f ; **FLOATING
+C622 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2100# vss 0.55477f ; **FLOATING
+C623 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_2400# vss 0.55477f ; **FLOATING
+C624 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_2700# vss 0.55477f ; **FLOATING
+C625 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3000# vss 0.55477f ; **FLOATING
+C626 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3300# vss 0.55477f ; **FLOATING
+C627 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_3600# vss 0.55477f ; **FLOATING
+C628 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_3900# vss 0.55477f ; **FLOATING
+C629 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4200# vss 0.55477f ; **FLOATING
+C630 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_4500# vss 0.55477f ; **FLOATING
+C631 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_4800# vss 0.55477f ; **FLOATING
+C632 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5100# vss 0.55477f ; **FLOATING
+C633 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_5400# vss 0.55477f ; **FLOATING
+C634 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_5700# vss 0.55477f ; **FLOATING
+C635 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6000# vss 0.55477f ; **FLOATING
+C636 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6300# vss 0.55477f ; **FLOATING
+C637 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_6600# vss 0.55477f ; **FLOATING
+C638 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_6900# vss 0.55477f ; **FLOATING
+C639 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7200# vss 0.55477f ; **FLOATING
+C640 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_7500# vss 0.55477f ; **FLOATING
+C641 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_7800# vss 0.55477f ; **FLOATING
+C642 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8100# vss 0.55477f ; **FLOATING
+C643 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_8400# vss 0.55477f ; **FLOATING
+C644 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_8700# vss 0.55477f ; **FLOATING
+C645 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9000# vss 0.55629f ; **FLOATING
+C646 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9300# vss 0.55477f ; **FLOATING
+C647 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_9600# vss 0.5556f ; **FLOATING
+C648 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_9900# vss 0.55477f ; **FLOATING
+C649 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10200# vss 0.5556f ; **FLOATING
+C650 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_10500# vss 0.55477f ; **FLOATING
+C651 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_10800# vss 0.5556f ; **FLOATING
+C652 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11100# vss 0.55477f ; **FLOATING
+C653 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_11400# vss 0.5556f ; **FLOATING
+C654 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_11700# vss 0.55491f ; **FLOATING
+C655 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12000# vss 0.55591f ; **FLOATING
+C656 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12300# vss 0.55567f ; **FLOATING
+C657 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_11596_12600# vss 0.55856f ; **FLOATING
+C658 t23 vss 3.05759f
+C659 rv328_bod_p0_0/res1k_l57p98_n45_w1_0/a_n128_12900# vss 0.59313f ; **FLOATING
+C660 tap vss 15.17036f
+C661 nh vss 5.38919f
+C662 l1b vss 8.78096f
+C663 level1 vss 1.92259f
+C664 s23b vss 5.45684f
+C665 avdd vss 0.19666p
+C666 l0b vss 3.17573f
+C667 level0 vss 3.50873f
+C668 s23 vss 3.84057f
+C669 s27b vss 4.97638f
+C670 s27 vss 3.67817f
+C671 s43 vss 3.86491f
+C672 xc_o3 vss 5.2522f
+C673 xc_o2 vss 7.85313f
+C674 cmp vss 5.3231f
+C675 enb vss 6.37545f
+C676 xo1_n1 vss 0.93548f
+C677 okb vss 5.32931f
+C678 ok vss 4.1806f
+C679 low vss 6.24764f
+C680 xo2_n1 vss 1.38841f
+C681 bod_o vss 14.73153f
+C682 xc_enb vss 6.33534f
+C683 en vss 8.17287f
+C684 lowb vss 14.42344f
+C685 xn1_n1 vss 1.92397f
+C686 xn2_n1 vss 2.15176f
+.ends

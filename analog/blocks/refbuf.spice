@@ -1,0 +1,21 @@
+* rv328_refbuf : drives the 1.1 V reference onto the AREF pin (adc_refs = 3), and the switch that
+*   connects AREF to AVCC (adc_refs = 1). With both off the pin is an input (external reference).
+*   Single-stage amplifier in unity feedback: the load capacitor is its compensation, so it is
+*   stable with nothing, with the ADC's capacitor array, or with the usual 100 nF on the pin.
+*   Its output resistance is 1/gm, about 2 kohm, and the output current is limited to the tail
+*   current (about 100 uA either way): the capacitor on the pin supplies the ADC's charge pulses,
+*   the amplifier only the average.
+.subckt rv328_refbuf avdd vss en_buf en_avcc vref vbp aref
+xi1  avdd vss en_buf enb rv328_inv
+xtg  avdd vss vbp vbg en_buf enb rv328_tg wp=2u wn=1u
+xmo  vbg en_buf avdd avdd pfet_06v0 w=1u l=0.6u
+xmt  tail vbg avdd avdd pfet_06v0 w=16u l=8u m=25
+xm1  n1   vref tail avdd pfet_06v0 w=40u l=2u m=8
+xm2  aref aref tail avdd pfet_06v0 w=40u l=2u m=8
+xmn1 n1   n1 vss vss nfet_06v0 w=8u l=4u m=6
+xmn2 aref n1 vss vss nfet_06v0 w=8u l=4u m=6
+xcc  aref vss cap_mim_2f0fF c_width=50u c_length=50u m=2
+* AVCC as reference
+xi2  avdd vss en_avcc eab rv328_inv
+xma  aref eab avdd avdd pfet_06v0 w=50u l=0.55u m=4
+.ends

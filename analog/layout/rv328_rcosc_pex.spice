@@ -1,0 +1,1553 @@
+* rv328_rcosc with the wiring capacitance of its layout. Written by analog/layout/pex_block.py from rv328_rcosc_named.gds;
+* same cell name and pins as the schematic. 968 wiring capacitors, no wiring resistance;
+* 178 transistor fingers; groups of 9 or more identical parallel ones are one line with m=.
+* NGSPICE file created from rv328_rcosc.ext - technology: gf180mcuD
+
+.subckt rv328_rcosc avdd vss en t7 t6 t5 t4 t3 t2 t1 t0 clk
+X0 run n_a avdd avdd pfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.55u
+X1 s2b s2 avdd avdd pfet_06v0 ad=1p pd=5u as=0.17172n ps=0.71884m w=2u l=0.55u
+X2 xo3_n1 s2 vss vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=0.7u
+X3 clkb osc xo3_n1 vss nfet_06v0 ad=1p pd=5u as=2p ps=10u w=2u l=0.7u
+X4 osc ob vss vss nfet_06v0 ad=1p pd=5u as=0.26356n ps=1.07192m w=2u l=0.7u
+X5 runb run vss vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X6 s2 xf2_s vss vss nfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.7u
+X7 xf2_mb xf2_ci xf2_s vss nfet_06v0 ad=1p pd=6u as=0.75p ps=5u w=1u l=0.7u
+X8 xg3_n1 s2b vss vss nfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.7u
+X9 run n_a xg3_n1 vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X10 xf2_mb xf2_m vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.7u
+X11 xf2_sf xf2_cb xf2_s vss nfet_06v0 ad=0.25p pd=2u as=0.25p ps=2u w=0.5u l=0.7u
+X12 s1 xf2_cb xf2_m vss nfet_06v0 ad=1p pd=6u as=0.75p ps=5u w=1u l=0.7u
+X13 xf2_sf s2 vss vss nfet_06v0 ad=0.5p pd=4u as=0 ps=0 w=0.5u l=0.7u
+X14 xf2_ci xf2_cb vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X15 xf2_mf xf2_ci xf2_m vss nfet_06v0 ad=0.5p pd=4u as=0 ps=0 w=0.5u l=0.7u
+X16 xf2_cb ob vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X17 xf2_mf xf2_mb vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X18 s1 xf1_s vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.7u
+X19 clk clkb avdd avdd pfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=0.55u
+X20 xf1_sf xf1_cb xf1_s vss nfet_06v0 ad=0.5p pd=4u as=0.75p ps=5u w=0.5u l=0.7u
+X21 xf1_mb xf1_ci xf1_s vss nfet_06v0 ad=1p pd=6u as=0 ps=0 w=1u l=0.7u
+X22 xf1_sf s1 vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X23 xf1_mb xf1_m vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.7u
+X24 xf1_mf xf1_ci xf1_m vss nfet_06v0 ad=0.5p pd=4u as=0.75p ps=5u w=0.5u l=0.7u
+X25 en xf1_cb xf1_m vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X26 osc ob avdd avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.55u
+X27 xf1_mf xf1_mb vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=0.5u l=0.7u
+X28 runb run avdd avdd pfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=0.55u
+X29 clkb s2 avdd avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X30 n_a s1 xg1_n1 avdd pfet_06v0 ad=2p pd=9u as=4p ps=18u w=4u l=0.55u
+X31 clkb osc avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X32 xf2_sf xf2_ci xf2_s avdd pfet_06v0 ad=0.5p pd=3u as=0.5p ps=3u w=1u l=0.55u
+X33 xg1_n1 en avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=4u l=0.55u
+X34 xf2_sf s2 avdd avdd pfet_06v0 ad=1p pd=6u as=0 ps=0 w=1u l=0.55u
+X35 s2 xf2_s avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X36 xf2_mb xf2_cb xf2_s avdd pfet_06v0 ad=2p pd=10u as=1.5p ps=8u w=2u l=0.55u
+X37 xf2_mf xf2_cb xf2_m avdd pfet_06v0 ad=1p pd=6u as=1.5p ps=8u w=1u l=0.55u
+X38 xf2_mf xf2_mb avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.55u
+X39 xf2_mb xf2_m avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X40 xf1_sf xf1_ci xf1_s avdd pfet_06v0 ad=1p pd=6u as=1.5p ps=8u w=1u l=0.55u
+X41 s1 xf2_ci xf2_m avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X42 xf2_ci xf2_cb avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X43 xf1_sf s1 avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.55u
+X44 xf2_cb ob avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X45 xf1_mf xf1_cb xf1_m avdd pfet_06v0 ad=1p pd=6u as=1.5p ps=8u w=1u l=0.55u
+X46 xf1_ci xf1_cb vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X47 s1 xf1_s avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X48 xf1_mf xf1_mb avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.55u
+X49 xf1_cb ob vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X50 xf1_mb xf1_cb xf1_s avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X51 ob q vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X52 s2b s2 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X53 xf1_mb xf1_m avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X54 n_a s1 vss vss nfet_06v0 ad=1p pd=6u as=0 ps=0 w=1u l=0.7u
+X55 en xf1_ci xf1_m avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X56 n_a en vss vss nfet_06v0 ad=0 pd=0 as=0 ps=0 w=1u l=0.7u
+X57 xf1_ci xf1_cb avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X58 xf1_cb ob avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X59 clk clkb vss vss nfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=0.7u
+X60 ob q avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X61 run s2b avdd avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X62 vc cb2 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X63 vc cb2 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X64 vc cb1 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X65 vc cb1 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X66 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X67 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X68 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X69 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X70 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X71 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X72 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X73 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X74 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X75 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X76 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X77 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X78 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X79 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X80 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X81 vc cb4 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X82 vc cb0 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X83 cb0 tb0 vss vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X84 tb7 t7 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X85 tb6 t6 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X86 tb5 t5 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X87 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X88 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X89 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X90 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X91 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X92 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X93 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X94 vc cb3 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X95 tb4 t4 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X96 tb3 t3 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X97 tb2 t2 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X98 tb1 t1 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X99 tb0 t0 vss vss nfet_06v0 ad=0.5p pd=3u as=0 ps=0 w=1u l=0.7u
+X100 tb7 t7 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X101 tb6 t6 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X102 cb3 tb3 vss vss nfet_06v0 ad=8p pd=33u as=8p ps=33u w=16u l=0.7u
+X103 cb2 tb2 vss vss nfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=0.7u
+X104 tb5 t5 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X105 tb4 t4 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X106 tb3 t3 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X107 tb2 t2 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X108 tb1 t1 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X109 tb0 t0 avdd avdd pfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.55u
+X110 cb6 tb6 vss vss nfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=0.7u
+X111 vss tb6 cb6 vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X112 vss tb6 cb6 vss nfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=0.7u
+X113 vss tb6 cb6 vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X114 vss tb6 cb6 vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X115 cb6 tb6 vss vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X116 cb6 tb6 vss vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X117 cb6 tb6 vss vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X118 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X119 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X120 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X121 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X122 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X123 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X124 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X125 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X126 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X127 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X128 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X129 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X130 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X131 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X132 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X133 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X134 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X135 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X136 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X137 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X138 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X139 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X140 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X141 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X142 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X143 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X144 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X145 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X146 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X147 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X148 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X149 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X150 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X151 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X152 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X153 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X154 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X155 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X156 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X157 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X158 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X159 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X160 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X161 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X162 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X163 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X164 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X165 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X166 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X167 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X168 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X169 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X170 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X171 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X172 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X173 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X174 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X175 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X176 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X177 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X178 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X179 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X180 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X181 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X182 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X183 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X184 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X185 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X186 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X187 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X188 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X189 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X190 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X191 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X192 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X193 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X194 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X195 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X196 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X197 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X198 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X199 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X200 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X201 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X202 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X203 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X204 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X205 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X206 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X207 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X208 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X209 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X210 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X211 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X212 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X213 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X214 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X215 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X216 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X217 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X218 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X219 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X220 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X221 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X222 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X223 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X224 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X225 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X226 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X227 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X228 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X229 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X230 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X231 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X232 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X233 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X234 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X235 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X236 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X237 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X238 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X239 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X240 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X241 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X242 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X243 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X244 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X245 vc cb7 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X246 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X247 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X248 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X249 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X250 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X251 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X252 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X253 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X254 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X255 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X256 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X257 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X258 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X259 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X260 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X261 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X262 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X263 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X264 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X265 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X266 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X267 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X268 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X269 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X270 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X271 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X272 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X273 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X274 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X275 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X276 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X277 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X278 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X279 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X280 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X281 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X282 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X283 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X284 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X285 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X286 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X287 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X288 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X289 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X290 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X291 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X292 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X293 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X294 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X295 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X296 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X297 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X298 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X299 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X300 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X301 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X302 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X303 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X304 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X305 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X306 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X307 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X308 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X309 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X310 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X311 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X312 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X313 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X314 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X315 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X316 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X317 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X318 vc vss cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X319 cb7 tb7 vss vss nfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=0.7u
+X320 cb7 tb7 vss vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u m=14
+X333 vss tb7 cb7 vss nfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=0.7u
+X335 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X336 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X337 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X338 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X339 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X340 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X341 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X342 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X343 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X344 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X345 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X346 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X347 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X348 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X349 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X350 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X351 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X352 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X353 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X354 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X355 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X356 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X357 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X358 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X359 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X360 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X361 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X362 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X363 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X364 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X365 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X366 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X367 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X368 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X369 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X370 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X371 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X372 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X373 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X374 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X375 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X376 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X377 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X378 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X379 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X380 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X381 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X382 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X383 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X384 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X385 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X386 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X387 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X388 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X389 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X390 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X391 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X392 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X393 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X394 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X395 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X396 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X397 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X398 vc cb6 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X399 cb5 tb5 vss vss nfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=0.7u
+X400 vss tb5 cb5 vss nfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=0.7u
+X401 vss tb5 cb5 vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X402 cb5 tb5 vss vss nfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.7u
+X403 cb1 tb1 vss vss nfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=0.7u
+X404 vc cb2 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X405 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X406 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X407 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X408 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X409 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X410 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X411 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X412 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X413 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X414 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X415 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X416 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X417 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X418 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X419 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X420 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X421 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X422 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X423 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X424 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X425 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X426 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X427 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X428 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X429 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X430 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X431 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X432 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X433 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X434 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X435 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X436 vc cb5 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X437 cb4 tb4 vss vss nfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=0.7u
+X438 vss tb4 cb4 vss nfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=0.7u
+X439 vc cb2 cap_mim_2f0_m4m5_noshield c_width=5u c_length=5u
+X440 xq2_n2 run vss vss nfet_06v0 ad=1.5p pd=7u as=1.5p ps=7u w=3u l=0.7u
+X441 xq2_n1 q xq2_n2 vss nfet_06v0 ad=3p pd=14u as=3p ps=14u w=3u l=0.7u
+X442 qb rstb xq2_n1 vss nfet_06v0 ad=1.5p pd=7u as=0 ps=0 w=3u l=0.7u
+X443 xq1_n1 qb vss vss nfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.7u
+X444 los vbpl avdd avdd pfet_06v0 ad=5p pd=21u as=5p ps=21u w=10u l=1u
+X445 q setb xq1_n1 vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X446 xsb_n1 los vss vss nfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.7u
+X447 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X448 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X449 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X450 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X451 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X452 vss rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X453 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X454 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X455 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X456 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X457 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X458 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X459 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X460 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X461 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X462 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X463 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X464 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X465 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X466 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X467 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X468 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X469 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X470 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X471 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X472 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X473 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X474 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X475 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X476 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X477 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X478 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X479 d1 q avdd avdd pfet_06v0 ad=3.36p pd=12.56u as=6p ps=25u w=12u l=0.55u
+X480 avdd q d1 avdd pfet_06v0 ad=6p pd=25u as=3.36p ps=12.56u w=12u l=0.55u
+X481 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X482 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X483 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X484 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X485 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X486 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X487 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X488 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X489 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X490 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X491 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X492 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X493 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X494 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X495 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X496 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X497 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X498 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X499 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X500 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X501 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X502 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X503 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X504 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X505 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X506 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X507 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X508 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X509 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X510 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X511 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X512 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X513 setb run xsb_n1 vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=0.7u
+X514 drv d1 vss vss nfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=0.7u
+X515 drv d1 vss vss nfet_06v0 ad=2.8p pd=10.56u as=2.8p ps=10.56u w=10u l=0.7u m=10
+X520 vss d1 drv vss nfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=0.7u
+X526 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X527 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X528 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X529 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X530 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X531 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X532 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X533 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X534 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X535 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X536 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X537 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X538 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X539 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X540 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X541 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X542 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X543 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X544 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X545 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X546 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X547 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X548 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X549 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X550 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X551 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X552 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X553 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X554 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X555 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X556 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X557 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# vss ppolyf_u_1k_6p0 r_width=1u r_length=12.5u
+X558 ho1 hn1 avdd avdd pfet_06v0 ad=2p pd=9u as=2p ps=9u w=4u l=1u
+X559 hn1 hn1 avdd avdd pfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=1u
+X560 bt runb avdd avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=0.6u
+X561 avdd runb bt avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=0.6u
+X562 vc rv328_rcosc_p1_0/respp_l14p4_n2_w2_0/a_2880_0# vss ppolyf_u r_width=2u r_length=14.4u
+X563 drv rv328_rcosc_p1_0/respp_l14p4_n2_w2_0/a_2880_0# vss ppolyf_u r_width=2u r_length=14.4u
+X564 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_2500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_3000# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X565 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X566 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X567 vbn rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_3000# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X568 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_0# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X569 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_2500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X570 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X571 bt rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_0# vss ppolyf_u_1k_6p0 r_width=2u r_length=15u
+X572 lo1 ln1 vss vss nfet_06v0 ad=1p pd=5u as=1p ps=5u w=2u l=1u
+X573 rstb ho1 avdd avdd pfet_06v0 ad=4p pd=17u as=4p ps=17u w=8u l=0.6u
+X574 ln1 ln1 vss vss nfet_06v0 ad=1p pd=5u as=0 ps=0 w=2u l=1u
+X575 rstb vbn vss vss nfet_06v0 ad=2.5p pd=11u as=2.5p ps=11u w=5u l=1u
+X576 qb run avdd avdd pfet_06v0 ad=3p pd=15u as=0 ps=0 w=2u l=0.55u
+X577 qb q avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X578 qb rstb avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X579 tl vbpl avdd avdd pfet_06v0 ad=2.8p pd=10.56u as=5p ps=21u w=10u l=1u
+X580 avdd vbpl tl avdd pfet_06v0 ad=5p pd=21u as=2.8p ps=10.56u w=10u l=1u
+X581 q qb avdd avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X582 vbpl vbpl avdd avdd pfet_06v0 ad=5.6p pd=21.12u as=0 ps=0 w=10u l=1u
+X583 avdd vbpl vbpl avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=10u l=1u
+X584 q setb avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X585 setb los avdd avdd pfet_06v0 ad=2p pd=10u as=0 ps=0 w=2u l=0.55u
+X586 setb run avdd avdd pfet_06v0 ad=0 pd=0 as=0 ps=0 w=2u l=0.55u
+X587 th vbn vss vss nfet_06v0 ad=5p pd=21u as=5p ps=21u w=10u l=1u
+X588 vbpl vbn vss vss nfet_06v0 ad=5p pd=21u as=0 ps=0 w=10u l=1u
+X589 vbn vbn vss vss nfet_06v0 ad=5p pd=21u as=0 ps=0 w=10u l=1u
+X590 ho1 vh th vss nfet_06v0 ad=2.5p pd=11u as=2.5p ps=11u w=5u l=0.7u
+X591 hn1 vc th vss nfet_06v0 ad=2.5p pd=11u as=10p ps=43u w=5u l=0.7u
+X592 drv d1 avdd avdd pfet_06v0 ad=4.48p pd=16.56u as=8p ps=33u w=16u l=0.55u
+X593 avdd d1 drv avdd pfet_06v0 ad=4.48p pd=16.56u as=4.48p ps=16.56u w=16u l=0.55u m=13
+X604 drv d1 avdd avdd pfet_06v0 ad=8p pd=33u as=4.48p ps=16.56u w=16u l=0.55u
+X607 lo1 vl tl avdd pfet_06v0 ad=5p pd=21u as=5p ps=21u w=10u l=0.6u
+X608 ln1 vc tl avdd pfet_06v0 ad=5p pd=21u as=15.6p ps=63.12u w=10u l=0.6u
+X609 d1 q vss vss nfet_06v0 ad=6p pd=25u as=6p ps=25u w=12u l=0.7u
+X610 los lo1 vss vss nfet_06v0 ad=2p pd=9u as=0 ps=0 w=4u l=0.7u
+X611 dtop runb avdd avdd pfet_06v0 ad=5p pd=21u as=0 ps=0 w=10u l=0.6u
+C0 vbn vc 0.45848f
+C1 tb3 cb2 1.05161f
+C2 osc xf1_sf 0.10742f
+C3 t3 tb2 0.14832f
+C4 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8700# 0.07008f
+C5 xf1_s xf2_cb 0
+C6 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# 0.04819f
+C7 xf1_s clk 0.14893f
+C8 avdd bt 2.1343f
+C9 ob s2 3.04905f
+C10 xf2_mf xf2_cb 0.98131f
+C11 t4 t3 6.06021f
+C12 xf2_sf xf2_ci 0.6291f
+C13 xf2_mf clk 0.11243f
+C14 xq2_n2 xq2_n1 1.56052f
+C15 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1200# 0.04819f
+C16 n_a en 0.26628f
+C17 run s2b 0.65588f
+C18 t4 t1 0.00153f
+C19 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# 0.04819f
+C20 avdd cb3 0.13378f
+C21 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# 0.00175f
+C22 q en 3.59981f
+C23 xf1_mb xf1_m 2.14803f
+C24 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# bt 0
+C25 vc setb 0.10421f
+C26 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# 0.07008f
+C27 xq2_n2 run 0.55658f
+C28 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_7500# 0.04819f
+C29 xf2_s osc 0.17311f
+C30 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# 0.00225f
+C31 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# 0.04819f
+C32 bt rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# 0
+C33 bt rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# 0
+C34 s1 en 0.52421f
+C35 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3900# 0.0381f
+C36 clkb xf2_ci 0
+C37 avdd xg1_n1 3.19205f
+C38 t3 t1 0.00328f
+C39 xo3_n1 clk 0.36989f
+C40 t6 cb7 0
+C41 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6300# vl 0.0381f
+C42 los xsb_n1 0.77266f
+C43 t0 t6 0
+C44 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# 0.00175f
+C45 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# vl 0.0701f
+C46 xf1_mb clk 0.15634f
+C47 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_1500# 0.0701f
+C48 d1 qb 0
+C49 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# vl 0
+C50 cb4 cb5 1.90631f
+C51 avdd tb5 2.15965f
+C52 vbpl xsb_n1 0.06041f
+C53 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2100# 0.07008f
+C54 t4 cb0 0.04378f
+C55 cb4 t6 0.04452f
+C56 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# 0.00225f
+C57 avdd xf1_s 1.78179f
+C58 ho1 avdd 2.80787f
+C59 tb4 avdd 2.04837f
+C60 vbpl rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_0# 0.00641f
+C61 ho1 vh 0.15381f
+C62 xf1_m en 1.83376f
+C63 vc t2 1.00631f
+C64 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8700# 0.04819f
+C65 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_2500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# 0.04819f
+C66 avdd xf2_mf 1.53146f
+C67 vc vl 0.96009f
+C68 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# 0.00225f
+C69 runb rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# 0
+C70 xf1_cb osc 4.23067f
+C71 t7 t2 0
+C72 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# 0.00225f
+C73 xf2_s xf2_mb 2.42997f
+C74 cb0 t3 0.04378f
+C75 rstb avdd 3.21356f
+C76 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1800# 0.04819f
+C77 vh xsb_n1 0.08104f
+C78 t0 t5 0
+C79 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# 0.00225f
+C80 los vc 0.10266f
+C81 cb0 t1 0.1881f
+C82 ob xf1_ci 0.14554f
+C83 avdd rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_0# 0.01952f
+C84 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5700# 0.0381f
+C85 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2700# 0.07008f
+C86 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_1500# 0.04819f
+C87 tb6 cb7 0.8842f
+C88 s2 xf1_s 0.14896f
+C89 run runb 11.52258f
+C90 tb0 t0 0.54777f
+C91 drv avdd 17.28373f
+C92 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# 0.00225f
+C93 cb4 t5 0.11394f
+C94 s1 xf1_sf 0.84436f
+C95 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# 0.00376f
+C96 xf2_mf s2 0.12819f
+C97 t2 cb2 0
+C98 xf2_sf xf2_cb 0.355f
+C99 vbpl vc 0.68683f
+C100 avdd xo3_n1 0.33709f
+C101 t4 cb3 0.08411f
+C102 xf2_sf clk 0.11219f
+C103 s2b n_a 0.53935f
+C104 en clk 5.29191f
+C105 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_5400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6000# 0.04819f
+C106 q s2b 0.12536f
+C107 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# 0.00225f
+C108 xf2_s xf2_ci 2.57061f
+C109 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# 0.04819f
+C110 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# vh 0
+C111 xf1_mb avdd 2.74898f
+C112 xq2_n2 q 1.25809f
+C113 run xq2_n1 0.26707f
+C114 t6 cb5 0.07211f
+C115 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5100# 0.04819f
+C116 t3 cb3 0
+C117 s1 s2b 1.18941f
+C118 vc avdd 8.82842f
+C119 vc cb1 3.62603f
+C120 clkb xf2_cb 0
+C121 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# vl 0.07008f
+C122 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# 0.00175f
+C123 vc vh 0.17261f
+C124 clkb clk 2.44401f
+C125 bt rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# 0.00107f
+C126 xo3_n1 s2 0.31671f
+C127 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# 0.00225f
+C128 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_8400# 0.04819f
+C129 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_5400# 0.04819f
+C130 hn1 run 0.06099f
+C131 t7 cb1 0.10771f
+C132 t7 avdd 4.52121f
+C133 tb1 t6 0.1263f
+C134 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# 0.00225f
+C135 xf1_mb s2 0.16949f
+C136 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# 0.00225f
+C137 xq1_n1 qb 1.1147f
+C138 ln1 run 0.46235f
+C139 runb dtop 1.136f
+C140 tb4 t4 0.29366f
+C141 t5 cb5 0.29247f
+C142 avdd cb2 0.60674f
+C143 cb1 cb2 0.34648f
+C144 xf2_s xf2_m 0.01585f
+C145 t6 t5 9.15295f
+C146 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# 0.00225f
+C147 xf1_cb xf1_mf 1.10462f
+C148 vc rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# 0
+C149 xf2_sf avdd 1.82843f
+C150 avdd en 2.13977f
+C151 tl vc 2.94175f
+C152 xf1_sf xf2_cb 0
+C153 clk xf1_sf 0.11161f
+C154 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7800# 0.04819f
+C155 tb6 cb5 0
+C156 tb0 t6 0.13901f
+C157 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# dtop 0
+C158 tb1 t5 0.1263f
+C159 t6 tb6 0.40652f
+C160 d1 drv 7.43003f
+C161 xf1_ci xf1_s 2.57056f
+C162 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# 0.00225f
+C163 xf1_cb s1 0.32802f
+C164 runb rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# 0
+C165 runb n_a 0.91758f
+C166 run lo1 0.21493f
+C167 tb1 tb0 0
+C168 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# 0.00225f
+C169 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8700# 0.04878f
+C170 q runb 0.66982f
+C171 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_2400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1800# 0.04819f
+C172 clkb avdd 5.29626f
+C173 run dtop 0.05039f
+C174 xf2_sf s2 0.76962f
+C175 s2 en 0.10095f
+C176 s2b clk 0.12602f
+C177 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# 0.00225f
+C178 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# 0.00225f
+C179 ho1 th 0.74112f
+C180 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3300# vl 0.0381f
+C181 osc xf2_mb 0.19213f
+C182 vc tb2 1.59332f
+C183 xf2_s xf2_cb 2.27681f
+C184 vbn runb 0.0119f
+C185 ln1 lo1 0.74411f
+C186 xf2_s clk 0.15017f
+C187 s1 runb 0.43694f
+C188 cb6 tb5 0.88949f
+C189 d1 vc 0.14892f
+C190 tb0 t5 0.13901f
+C191 t6 tb3 0.11198f
+C192 t7 tb2 0.46511f
+C193 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# 0.00175f
+C194 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# avdd 0.00812f
+C195 vc t4 1.25377f
+C196 th rstb 0
+C197 th xsb_n1 0.02081f
+C198 en xg3_n1 0.0462f
+C199 xq2_n1 q 0.58058f
+C200 xf1_cb xf1_m 2.42136f
+C201 clkb s2 0.14359f
+C202 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_4500# 0.04819f
+C203 t7 t4 0.00153f
+C204 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# vl 0.07008f
+C205 run n_a 1.16885f
+C206 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6600# 0.04819f
+C207 xf2_ci osc 0.18559f
+C208 hn1 q 0.04971f
+C209 ob xf1_s 0.13799f
+C210 run q 19.51993f
+C211 xf1_mb xf1_ci 0.49807f
+C212 tb2 cb2 0.86323f
+C213 avdd xf1_sf 1.37277f
+C214 vc t3 1.18793f
+C215 osc xf1_mf 0.08827f
+C216 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# 0.04819f
+C217 q osc 0
+C218 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# 0.04819f
+C219 t0 t2 0.00328f
+C220 vbn hn1 0.05168f
+C221 vc t1 0.69807f
+C222 vbn run 0.11002f
+C223 rstb qb 1.62218f
+C224 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# 0.04819f
+C225 t4 cb2 0.18709f
+C226 ln1 q 0.12433f
+C227 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# 0.00175f
+C228 s1 run 0.21473f
+C229 t7 t3 0
+C230 t5 tb3 0.11198f
+C231 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# 0.00225f
+C232 xf1_cb xf2_cb 0
+C233 s1 osc 0.21454f
+C234 t7 t1 0
+C235 xf1_cb clk 0.1848f
+C236 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_300# 0.11887f
+C237 rstb xq1_n1 0.33047f
+C238 th vc 1.27495f
+C239 avdd s2b 3.18936f
+C240 vbn ln1 0.14393f
+C241 s2 xf1_sf 0.11531f
+C242 xf2_s avdd 2.05627f
+C243 t3 cb2 0.43511f
+C244 xq2_n2 avdd 0.15966f
+C245 tb4 cb3 0
+C246 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# 0.07008f
+C247 hn1 setb 0.47735f
+C248 run setb 1.29039f
+C249 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# 0.04819f
+C250 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3300# 0.04819f
+C251 vc cb6 26.05318f
+C252 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# vl 0.07018f
+C253 runb clk 0.04714f
+C254 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6900# 0.07008f
+C255 xf1_mb ob 0.15126f
+C256 xf1_ci en 0.52549f
+C257 xf2_m osc 0.18125f
+C258 xf2_ci xf2_mb 0.49807f
+C259 q lo1 0.08269f
+C260 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3900# 0.04819f
+C261 t7 cb6 0.10938f
+C262 vl runb 0.05296f
+C263 s2 s2b 2.17508f
+C264 q dtop 0.05116f
+C265 vc qb 0.11027f
+C266 xf1_m osc 0.12278f
+C267 vc cb0 2.79292f
+C268 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_900# 0.07018f
+C269 avdd cb7 0.24109f
+C270 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# 0.04819f
+C271 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_900# 0.04819f
+C272 xf2_s s2 1.69158f
+C273 vbn lo1 0.10129f
+C274 t7 cb0 0.04993f
+C275 t0 avdd 2.19933f
+C276 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# 0.04819f
+C277 xq1_n1 vc 0.10373f
+C278 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# dtop 0
+C279 s1 xf2_mb 0.00828f
+C280 s2b xg3_n1 0.29692f
+C281 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# 0.0381f
+C282 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3000# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3600# 0.04819f
+C283 tb7 avdd 1.96923f
+C284 cb4 avdd 0.28136f
+C285 xf1_cb avdd 3.88761f
+C286 run clk 0.08197f
+C287 t6 t2 0
+C288 vc bt 0
+C289 q n_a 0.08062f
+C290 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# 0.07008f
+C291 osc xf2_cb 0.80361f
+C292 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# 0.00225f
+C293 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6000# 0.04819f
+C294 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_4500# 0.04819f
+C295 lo1 setb 0
+C296 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# 0.00175f
+C297 osc clk 0.04653f
+C298 vl run 0.0921f
+C299 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# 0.04819f
+C300 vc cb3 4.2077f
+C301 ob en 0.21852f
+C302 vbn rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# 0.06976f
+C303 s1 xf2_ci 0.54727f
+C304 tb1 t2 0.15109f
+C305 xf2_m xf2_mb 2.13524f
+C306 ho1 rstb 0.75412f
+C307 s1 n_a 2.19973f
+C308 vbn q 0.05066f
+C309 avdd runb 5.23682f
+C310 runb vh 0.05432f
+C311 s1 xf1_mf 0.12259f
+C312 t7 cb3 0.05721f
+C313 s1 q 0.20458f
+C314 los run 0.62165f
+C315 los hn1 0
+C316 ln1 vl 0.42757f
+C317 xf1_cb s2 0.21664f
+C318 xf1_ci xf1_sf 0.70547f
+C319 runb rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0
+C320 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# runb 0.00314f
+C321 d1 xq2_n2 0.24615f
+C322 t2 t5 0.00153f
+C323 vbpl run 0.28775f
+C324 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# 0.04819f
+C325 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5100# 0.0381f
+C326 avdd rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# 0.0067f
+C327 runb rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# 0.00314f
+C328 cb2 cb3 0.34677f
+C329 xf2_m xf2_ci 4.05061f
+C330 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# 0.05537f
+C331 runb rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# 0.00226f
+C332 tb0 t2 0.13901f
+C333 xq2_n1 avdd 0.1195f
+C334 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# 0.04819f
+C335 runb s2 0.11521f
+C336 q setb 1.01175f
+C337 xf1_mb xf1_s 2.53234f
+C338 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# vl 0.07008f
+C339 avdd cb5 0.60029f
+C340 ln1 vbpl 1.63549f
+C341 vc tb5 1.57769f
+C342 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# runb 0
+C343 xf2_mb xf2_cb 0.49238f
+C344 t6 cb1 0.08759f
+C345 t6 avdd 3.32033f
+C346 xf1_m xf1_mf 1.96947f
+C347 xf2_mb clk 0.17011f
+C348 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# 0.00225f
+C349 vl lo1 0.71905f
+C350 hn1 avdd 4.16151f
+C351 run avdd 7.5853f
+C352 ho1 vc 0.0598f
+C353 vbn setb 0.05592f
+C354 vc tb4 1.09021f
+C355 run vh 0.08204f
+C356 hn1 vh 0.05419f
+C357 t7 tb5 0.29703f
+C358 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4800# 0.04819f
+C359 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# 0.00225f
+C360 vl dtop 0.41466f
+C361 t0 t4 0
+C362 avdd osc 2.96086f
+C363 xf2_m s1 1.74223f
+C364 runb xg3_n1 0.04967f
+C365 xg1_n1 en 0.90244f
+C366 t7 tb4 0.3265f
+C367 tb1 cb1 0.35571f
+C368 tb1 avdd 1.82458f
+C369 s1 xf1_m 0.17327f
+C370 los lo1 0.46206f
+C371 ln1 avdd 1.35139f
+C372 vc xsb_n1 0.1022f
+C373 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# 0.07008f
+C374 ob xf1_sf 0.85408f
+C375 rstb vc 0.11225f
+C376 ln1 vh 0.14197f
+C377 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# 0.04819f
+C378 cb4 t4 0.4932f
+C379 xf2_ci xf2_cb 4.68795f
+C380 xf2_ci clk 0.16186f
+C381 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# 0.07008f
+C382 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# bt 0
+C383 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_5400# 0.04819f
+C384 vbpl lo1 0.37427f
+C385 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# 0.04819f
+C386 t0 t3 0.00153f
+C387 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# 0.00175f
+C388 run s2 0.19659f
+C389 n_a clk 0.08076f
+C390 drv vc 1.0439f
+C391 cb1 t5 0.08759f
+C392 avdd t5 3.12844f
+C393 xf1_mf clk 0.11161f
+C394 q clk 0.06391f
+C395 osc s2 1.85359f
+C396 t0 t1 1.38152f
+C397 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6900# 0.0381f
+C398 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# vl 0.07008f
+C399 tl run 0.14444f
+C400 tb0 avdd 1.88683f
+C401 vl q 0.08174f
+C402 s1 xf2_cb 0.81676f
+C403 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5700# 0.04819f
+C404 avdd tb6 2.33725f
+C405 s1 clk 0.92573f
+C406 xf1_cb xf1_ci 4.60207f
+C407 run xg3_n1 1.63965f
+C408 xq2_n2 qb 0.19281f
+C409 avdd lo1 1.35159f
+C410 lo1 vh 0.09551f
+C411 vbn vl 3.16368f
+C412 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# 0.04819f
+C413 tl ln1 1.87046f
+C414 avdd dtop 2.15968f
+C415 los q 0.08375f
+C416 vh dtop 0.47605f
+C417 cb6 cb7 3.56687f
+C418 avdd xf2_mb 2.84527f
+C419 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# 0.0381f
+C420 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# 0.00175f
+C421 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# 0.00225f
+C422 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0
+C423 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_3000# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# 0.04819f
+C424 t6 tb2 0.12359f
+C425 vbpl q 0.16887f
+C426 t7 vc 0.70621f
+C427 vbn los 0.11115f
+C428 xf2_m xf2_cb 2.45557f
+C429 xf2_m clk 0.14976f
+C430 tb7 cb6 0
+C431 avdd tb3 1.97787f
+C432 t0 cb0 0
+C433 d1 run 0
+C434 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4200# 0.04819f
+C435 vbpl rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# 0.00641f
+C436 t6 t4 0.00328f
+C437 runb rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# 0.00111f
+C438 vbn vbpl 0.61247f
+C439 xf1_m clk 0.13776f
+C440 vc rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# 0.00314f
+C441 avdd xf2_ci 2.73995f
+C442 xf2_mb s2 0.44464f
+C443 avdd rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# 0.01148f
+C444 xf1_mb en 0.00828f
+C445 avdd n_a 2.02098f
+C446 vc cb2 6.99942f
+C447 tl lo1 2.35406f
+C448 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# 0.00175f
+C449 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# dtop 0
+C450 avdd xf1_mf 1.37277f
+C451 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5100# 0.07008f
+C452 q avdd 6.83869f
+C453 q vh 0.04144f
+C454 tb1 t4 0.1263f
+C455 xf1_cb ob 1.12338f
+C456 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5700# 0.07008f
+C457 clkb xo3_n1 0.88119f
+C458 los setb 1.34441f
+C459 t7 cb2 0.21503f
+C460 t6 t3 0.00153f
+C461 xf1_s xf1_sf 2.63771f
+C462 t5 tb2 0.12359f
+C463 avdd rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# 0.01604f
+C464 vbn avdd 0.10924f
+C465 vbn vh 5.69663f
+C466 s1 avdd 3.91574f
+C467 t6 t1 0
+C468 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# avdd 0.00221f
+C469 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# 0.04819f
+C470 vbpl setb 0
+C471 xf2_ci s2 0.29124f
+C472 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4200# 0.04819f
+C473 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# 0.00225f
+C474 t5 t4 7.68573f
+C475 clk xf2_cb 0.21872f
+C476 s2 n_a 0.50634f
+C477 tb1 t3 0.1263f
+C478 osc xf1_ci 0.12773f
+C479 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0.04819f
+C480 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8700# vl 0.08688f
+C481 s2 xf1_mf 0.11269f
+C482 runb ob 0.00775f
+C483 q s2 0.11217f
+C484 tb1 t1 0.46674f
+C485 tb0 t4 0.13901f
+C486 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# 0
+C487 th hn1 0.83466f
+C488 th run 0
+C489 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6300# 0.07008f
+C490 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3300# 0.04819f
+C491 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# 0.04819f
+C492 cb4 cb3 1.21309f
+C493 tl q 0.11457f
+C494 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# 0.04819f
+C495 avdd setb 3.26228f
+C496 cb6 cb5 3.0056f
+C497 s1 s2 4.04062f
+C498 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# 0.00175f
+C499 vh setb 0.04289f
+C500 n_a xg3_n1 1.44863f
+C501 t5 t3 0.00328f
+C502 xf2_m avdd 1.85805f
+C503 t6 cb6 0.35742f
+C504 q xg3_n1 0.04617f
+C505 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# 0.07008f
+C506 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3900# 0.04819f
+C507 xf2_s xf2_mf 0
+C508 xf1_m avdd 1.78179f
+C509 t5 t1 0
+C510 xq2_n1 qb 1.74981f
+C511 tl vbn 0
+C512 tb0 t3 0.13901f
+C513 runb bt 0.94824f
+C514 los vl 0
+C515 t6 cb0 0.04378f
+C516 tb0 t1 0.16522f
+C517 s1 xg3_n1 0.05476f
+C518 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# dtop 0.07008f
+C519 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# 0.00102f
+C520 rstb xq2_n2 0.00439f
+C521 run qb 0.8486f
+C522 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# 0.00225f
+C523 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6900# 0.04819f
+C524 run ob 0
+C525 xf2_sf clkb 0
+C526 vbpl vl 1.85256f
+C527 t4 tb3 0.13677f
+C528 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5100# 0.04819f
+C529 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# 0.04819f
+C530 xf2_m s2 0.17637f
+C531 osc ob 6.53932f
+C532 tb1 cb0 0.49725f
+C533 xq1_n1 run 0.10979f
+C534 xf1_m s2 0.1587f
+C535 cb4 tb5 0
+C536 d1 q 1.30936f
+C537 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_8400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_9000# 0.04819f
+C538 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_7500# 0.04819f
+C539 cb6 t5 0
+C540 avdd xf2_cb 3.94068f
+C541 runb xg1_n1 0.2731f
+C542 avdd clk 2.04719f
+C543 los vbpl 1.61499f
+C544 cb4 tb4 1.20546f
+C545 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# 0.00225f
+C546 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# 0.04819f
+C547 t2 cb1 0.25302f
+C548 t2 avdd 2.57174f
+C549 xf1_cb xf1_s 2.25397f
+C550 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6900# 0.04819f
+C551 t3 tb3 0.50675f
+C552 run bt 0.14706f
+C553 vl avdd 1.20971f
+C554 t5 cb0 0.04378f
+C555 vl vh 2.70604f
+C556 cb6 tb6 2.91017f
+C557 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6000# 0.04819f
+C558 t6 cb3 0.04563f
+C559 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0.0381f
+C560 xq2_n2 vc 0.10259f
+C561 tb0 cb0 0.14359f
+C562 los avdd 3.17734f
+C563 s2 xf2_cb 0.34811f
+C564 xf1_ci xf1_mf 0.43937f
+C565 los vh 0.09248f
+C566 s2 clk 0.72734f
+C567 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# 0.00225f
+C568 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# 0
+C569 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# 0.04819f
+C570 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2700# vl 0.0381f
+C571 vbpl avdd 8.40542f
+C572 run xg1_n1 0.03468f
+C573 vbpl vh 0.04912f
+C574 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_8400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7800# 0.04819f
+C575 s1 xf1_ci 0.28836f
+C576 vc cb7 51.6729f
+C577 th q 0.00137f
+C578 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# vl 0.0381f
+C579 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# 0.04819f
+C580 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# 0.11887f
+C581 clk xg3_n1 0.04638f
+C582 t0 vc 0.27039f
+C583 s2b en 0.12577f
+C584 tl vl 1.89927f
+C585 vbn rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# 0.0698f
+C586 t5 cb3 0.04563f
+C587 tb5 cb5 1.59115f
+C588 t7 cb7 0.38904f
+C589 xf1_cb xf1_mb 0.45895f
+C590 xf2_s xf2_sf 2.58783f
+C591 vbn th 0.80371f
+C592 t6 tb5 0.15217f
+C593 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# 0.04819f
+C594 vbn rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_2500# 0.1187f
+C595 t7 t0 0
+C596 tb4 cb5 0.28636f
+C597 tb7 vc 0.29139f
+C598 cb1 avdd 0.42798f
+C599 cb4 vc 6.79245f
+C600 avdd vh 0.06709f
+C601 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# 0.04819f
+C602 t6 tb4 0.12912f
+C603 tl los 0
+C604 xf2_ci ob 0
+C605 ho1 run 0.06056f
+C606 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# 0.00175f
+C607 ho1 hn1 0.57442f
+C608 avdd rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0.00493f
+C609 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0
+C610 q qb 1.7411f
+C611 tb7 t7 0.83153f
+C612 t7 cb4 0.05493f
+C613 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# avdd 0.01071f
+C614 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# 0.04819f
+C615 rstb xq2_n1 1.53588f
+C616 ob xf1_mf 0.10048f
+C617 osc xf1_s 0.13447f
+C618 q ob 0.83409f
+C619 xf1_m xf1_ci 4.05061f
+C620 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_8400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# 0.04819f
+C621 tl vbpl 1.49976f
+C622 t2 tb2 0.48501f
+C623 xf2_s clkb 0
+C624 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# 0.04819f
+C625 xf2_mf osc 0.12783f
+C626 avdd rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# 0.00859f
+C627 hn1 rstb 0
+C628 run xsb_n1 1.05852f
+C629 rstb run 0.10808f
+C630 xq1_n1 q 1.18738f
+C631 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# 0.00225f
+C632 avdd rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# 0.00724f
+C633 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# vl 0.07008f
+C634 vc runb 0.03189f
+C635 avdd s2 5.65732f
+C636 s1 ob 0.35698f
+C637 t2 t4 0.00328f
+C638 t5 tb5 0.54717f
+C639 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# 0.04819f
+C640 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# avdd 0.00516f
+C641 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_2400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# 0.04819f
+C642 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# vh 0.00118f
+C643 bt rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# 0.05242f
+C644 vbn xq1_n1 0.00554f
+C645 tb3 cb3 0.60807f
+C646 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_7500# 0.03811f
+C647 tb4 t5 0.15529f
+C648 tl avdd 3.13945f
+C649 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# 0.04819f
+C650 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# 0.00175f
+C651 tl vh 0
+C652 q bt 0
+C653 xf1_cb en 0.74952f
+C654 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3300# 0.07008f
+C655 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# 0.00225f
+C656 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# 0.04819f
+C657 avdd xg3_n1 0.06336f
+C658 xf1_ci xf2_cb 0
+C659 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3900# 0.07008f
+C660 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2100# 0.04819f
+C661 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3000# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_2400# 0.04819f
+C662 xo3_n1 osc 0.57131f
+C663 xf1_ci clk 0.14987f
+C664 t2 t3 4.40641f
+C665 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8700# 0.04819f
+C666 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7800# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7200# 0.04819f
+C667 qb setb 0.00561f
+C668 vc xq2_n1 0.09934f
+C669 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_2400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3000# 0.04819f
+C670 vbn bt 1.54064f
+C671 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# 0.00225f
+C672 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# 0.07008f
+C673 t2 t1 2.75969f
+C674 vc cb5 13.08204f
+C675 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# 0.04819f
+C676 xf1_mb osc 0.13306f
+C677 t6 vc 1.46966f
+C678 xf1_m ob 0.14066f
+C679 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# 0.00175f
+C680 xq1_n1 setb 1.28239f
+C681 hn1 vc 0.2487f
+C682 runb en 0.14653f
+C683 xg1_n1 n_a 0.84018f
+C684 vc run 0.20498f
+C685 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7200# 0.04819f
+C686 t7 cb5 0.05779f
+C687 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8100# vl 0.03818f
+C688 q xg1_n1 0.03416f
+C689 cb1 tb2 0.60723f
+C690 avdd tb2 1.89952f
+C691 xf2_mf xf2_mb 1.66824f
+C692 t7 t6 10.79829f
+C693 lo1 xsb_n1 0.00416f
+C694 s2 xg3_n1 0.38545f
+C695 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5700# 0.04819f
+C696 tb1 vc 1.72787f
+C697 d1 avdd 11.31965f
+C698 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6000# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_5400# 0.04819f
+C699 dtop rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_4500# 0.07008f
+C700 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_4500# 0.0381f
+C701 ln1 vc 0.7644f
+C702 cb1 t4 0.08759f
+C703 avdd t4 2.9382f
+C704 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# 0.00225f
+C705 s1 xg1_n1 0.83285f
+C706 tb1 t7 0.5917f
+C707 vl rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# 0.00175f
+C708 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2700# 0.04819f
+C709 los th 0
+C710 t6 cb2 0.17546f
+C711 ob xf2_cb 0.8184f
+C712 vc t5 0.75649f
+C713 ob clk 0.19585f
+C714 xf1_mf xf1_s 0
+C715 xf2_mf xf2_ci 0.58978f
+C716 ho1 q 0.04946f
+C717 vh rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# 0
+C718 t2 cb0 0.05541f
+C719 cb1 t3 0.08759f
+C720 avdd t3 2.75425f
+C721 run en 0.16611f
+C722 xf1_cb xf1_sf 0.26839f
+C723 tb0 vc 0.16917f
+C724 t7 t5 0.00328f
+C725 avdd xf1_ci 2.69116f
+C726 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# runb 0.00314f
+C727 xf2_sf osc 1.03848f
+C728 cb1 t1 0
+C729 avdd t1 2.39056f
+C730 osc en 0.09868f
+C731 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# 0.04819f
+C732 vc tb6 1.22255f
+C733 ho1 vbn 0.08134f
+C734 vbpl rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# 0.00225f
+C735 s1 xf1_s 1.5616f
+C736 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5100# 0.04819f
+C737 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5700# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6300# 0.04819f
+C738 q xsb_n1 0.08139f
+C739 vc lo1 0.24356f
+C740 rstb q 0.79269f
+C741 tb0 t7 0.90336f
+C742 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# 0.00225f
+C743 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4200# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3600# 0.04819f
+C744 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# 0.04819f
+C745 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6900# 0.04819f
+C746 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3600# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3000# 0.04819f
+C747 avdd rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# 0.00825f
+C748 vc dtop 0.06435f
+C749 t7 tb6 0.30436f
+C750 vc rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_300# 0
+C751 t5 cb2 0.17546f
+C752 vbn xsb_n1 0.12368f
+C753 drv q 0
+C754 th vh 0.58517f
+C755 vbn rstb 0.22608f
+C756 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# vl 0.07008f
+C757 clkb osc 0.5941f
+C758 vl bt 0
+C759 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_0# rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# 0.04819f
+C760 avdd rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# 0.00507f
+C761 s2 xf1_ci 0.16226f
+C762 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# 0.04819f
+C763 ho1 setb 0.18854f
+C764 cb6 avdd 0.41545f
+C765 vc tb3 1.67297f
+C766 xf1_mb xf1_mf 1.68103f
+C767 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# 0.04819f
+C768 xf1_m xf1_s 0.01585f
+C769 xf2_m xf2_mf 1.92162f
+C770 runb s2b 0.13752f
+C771 t7 tb3 0.3802f
+C772 vbn rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# 0
+C773 xg1_n1 clk 0.03387f
+C774 avdd qb 4.40879f
+C775 t4 tb2 0.12359f
+C776 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# 0.00225f
+C777 avdd cb0 0.27784f
+C778 cb1 cb0 0.34677f
+C779 rstb setb 0.71203f
+C780 xsb_n1 setb 1.61431f
+C781 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# 0.04819f
+C782 vc q 11.87377f
+C783 tb7 cb7 5.62796f
+C784 avdd ob 4.73106f
+C785 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# 0.04819f
+C786 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_0# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_600# 0.04819f
+C787 s1 xf1_mb 0.35223f
+C788 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# 0.04819f
+C789 xq1_n1 avdd 0.12639f
+C790 runb vss 6.67402f
+C791 avdd vss 0.3368p
+C792 los vss 3.84162f
+C793 d1 vss 11.20098f
+C794 tl vss 1.65179f
+C795 hn1 vss 2.09809f
+C796 th vss 4.19744f
+C797 ho1 vss 1.99316f
+C798 vbn vss 11.33957f
+C799 vbpl vss 4.32315f
+C800 rstb vss 4.6513f
+C801 ln1 vss 4.67407f
+C802 lo1 vss 3.16797f
+C803 bt vss 2.07677f
+C804 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_0# vss 1.02127f ; **FLOATING
+C805 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_500# vss 0.92497f ; **FLOATING
+C806 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_1000# vss 0.98314f ; **FLOATING
+C807 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_1500# vss 0.92401f ; **FLOATING
+C808 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_2000# vss 0.98314f ; **FLOATING
+C809 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_n128_2500# vss 0.92502f ; **FLOATING
+C810 rv328_rcosc_p1_0/res1k_l15_n8_w2_0/a_3000_3000# vss 1.02127f ; **FLOATING
+C811 rv328_rcosc_p1_0/respp_l14p4_n2_w2_0/a_2880_0# vss 1.08182f ; **FLOATING
+C812 dtop vss 1.93301f
+C813 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_0# vss 0.59709f ; **FLOATING
+C814 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_300# vss 0.52504f ; **FLOATING
+C815 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_600# vss 0.55804f ; **FLOATING
+C816 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_900# vss 0.52383f ; **FLOATING
+C817 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1200# vss 0.55723f ; **FLOATING
+C818 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_1500# vss 0.52352f ; **FLOATING
+C819 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_1800# vss 0.55709f ; **FLOATING
+C820 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2100# vss 0.52352f ; **FLOATING
+C821 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_2400# vss 0.55709f ; **FLOATING
+C822 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_2700# vss 0.52352f ; **FLOATING
+C823 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3000# vss 0.55709f ; **FLOATING
+C824 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3300# vss 0.52352f ; **FLOATING
+C825 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_3600# vss 0.55709f ; **FLOATING
+C826 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_3900# vss 0.52352f ; **FLOATING
+C827 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4200# vss 0.55709f ; **FLOATING
+C828 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_4500# vss 0.52352f ; **FLOATING
+C829 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_4800# vss 0.55709f ; **FLOATING
+C830 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5100# vss 0.52352f ; **FLOATING
+C831 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_5400# vss 0.55709f ; **FLOATING
+C832 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_5700# vss 0.52352f ; **FLOATING
+C833 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6000# vss 0.55709f ; **FLOATING
+C834 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6300# vss 0.52352f ; **FLOATING
+C835 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_6600# vss 0.55709f ; **FLOATING
+C836 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_6900# vss 0.52352f ; **FLOATING
+C837 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7200# vss 0.55709f ; **FLOATING
+C838 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_7500# vss 0.52352f ; **FLOATING
+C839 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_7800# vss 0.55723f ; **FLOATING
+C840 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8100# vss 0.52385f ; **FLOATING
+C841 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_8400# vss 0.55846f ; **FLOATING
+C842 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_n128_8700# vss 0.52531f ; **FLOATING
+C843 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_2/a_2500_9000# vss 0.60111f ; **FLOATING
+C844 vh vss 11.23426f
+C845 drv vss 10.70838f
+C846 setb vss 3.23861f
+C847 xsb_n1 vss 2.1238f
+C848 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_0# vss 0.59211f ; **FLOATING
+C849 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_300# vss 0.52341f ; **FLOATING
+C850 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_600# vss 0.55537f ; **FLOATING
+C851 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_900# vss 0.52268f ; **FLOATING
+C852 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1200# vss 0.55491f ; **FLOATING
+C853 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_1500# vss 0.52237f ; **FLOATING
+C854 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_1800# vss 0.55477f ; **FLOATING
+C855 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2100# vss 0.52237f ; **FLOATING
+C856 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_2400# vss 0.55477f ; **FLOATING
+C857 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_2700# vss 0.52237f ; **FLOATING
+C858 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3000# vss 0.55477f ; **FLOATING
+C859 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3300# vss 0.52237f ; **FLOATING
+C860 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_3600# vss 0.55477f ; **FLOATING
+C861 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_3900# vss 0.52237f ; **FLOATING
+C862 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4200# vss 0.55477f ; **FLOATING
+C863 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_4500# vss 0.52237f ; **FLOATING
+C864 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_4800# vss 0.55477f ; **FLOATING
+C865 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5100# vss 0.52237f ; **FLOATING
+C866 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_5400# vss 0.55477f ; **FLOATING
+C867 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_5700# vss 0.52237f ; **FLOATING
+C868 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6000# vss 0.55477f ; **FLOATING
+C869 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6300# vss 0.52237f ; **FLOATING
+C870 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_6600# vss 0.55477f ; **FLOATING
+C871 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_6900# vss 0.52237f ; **FLOATING
+C872 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7200# vss 0.55477f ; **FLOATING
+C873 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_7500# vss 0.52237f ; **FLOATING
+C874 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_7800# vss 0.55491f ; **FLOATING
+C875 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8100# vss 0.52269f ; **FLOATING
+C876 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_8400# vss 0.55537f ; **FLOATING
+C877 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_n128_8700# vss 0.52345f ; **FLOATING
+C878 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_1/a_2500_9000# vss 0.59211f ; **FLOATING
+C879 vl vss 3.67486f
+C880 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_0# vss 0.59359f ; **FLOATING
+C881 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_300# vss 0.52556f ; **FLOATING
+C882 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_600# vss 0.55686f ; **FLOATING
+C883 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_900# vss 0.52435f ; **FLOATING
+C884 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1200# vss 0.5564f ; **FLOATING
+C885 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_1500# vss 0.52404f ; **FLOATING
+C886 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_1800# vss 0.55625f ; **FLOATING
+C887 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2100# vss 0.52404f ; **FLOATING
+C888 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_2400# vss 0.55625f ; **FLOATING
+C889 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_2700# vss 0.52404f ; **FLOATING
+C890 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3000# vss 0.55625f ; **FLOATING
+C891 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3300# vss 0.52404f ; **FLOATING
+C892 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_3600# vss 0.55625f ; **FLOATING
+C893 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_3900# vss 0.52404f ; **FLOATING
+C894 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4200# vss 0.55625f ; **FLOATING
+C895 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_4500# vss 0.52404f ; **FLOATING
+C896 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_4800# vss 0.55625f ; **FLOATING
+C897 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5100# vss 0.52404f ; **FLOATING
+C898 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_5400# vss 0.55625f ; **FLOATING
+C899 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_5700# vss 0.52404f ; **FLOATING
+C900 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6000# vss 0.55625f ; **FLOATING
+C901 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6300# vss 0.52404f ; **FLOATING
+C902 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_6600# vss 0.55625f ; **FLOATING
+C903 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_6900# vss 0.52404f ; **FLOATING
+C904 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7200# vss 0.55628f ; **FLOATING
+C905 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_7500# vss 0.52406f ; **FLOATING
+C906 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_7800# vss 0.55643f ; **FLOATING
+C907 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8100# vss 0.52444f ; **FLOATING
+C908 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_8400# vss 0.55766f ; **FLOATING
+C909 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_n128_8700# vss 0.57461f ; **FLOATING
+C910 rv328_rcosc_p1_0/res1k_l12p5_n32_w1_0/a_2500_9000# vss 0.59661f ; **FLOATING
+C911 q vss 8.89225f
+C912 xq1_n1 vss 2.06846f
+C913 qb vss 4.46514f
+C914 xq2_n1 vss 1.67371f
+C915 xq2_n2 vss 2.42569f
+C916 cb4 vss 10.22196f
+C917 cb1 vss 4.25038f
+C918 cb5 vss 14.28941f
+C919 cb7 vss 32.78765f
+C920 vc vss 0.18785p
+C921 cb6 vss 20.15878f
+C922 tb0 vss 3.69071f
+C923 t0 vss 1.94481f
+C924 tb1 vss 3.65313f
+C925 t1 vss 1.86998f
+C926 tb2 vss 3.71808f
+C927 t2 vss 1.83084f
+C928 tb3 vss 3.28086f
+C929 t3 vss 1.82033f
+C930 tb4 vss 4.17628f
+C931 t4 vss 1.96781f
+C932 tb5 vss 5.47244f
+C933 t5 vss 1.89731f
+C934 cb2 vss 7.38754f
+C935 cb3 vss 7.22659f
+C936 tb6 vss 7.79311f
+C937 t6 vss 2.02141f
+C938 tb7 vss 12.66868f
+C939 t7 vss 2.52335f
+C940 cb0 vss 2.80761f
+C941 run vss 10.18277f
+C942 clk vss 16.89007f
+C943 s2b vss 3.44953f
+C944 s2 vss 11.7843f
+C945 ob vss 8.69225f
+C946 xf1_cb vss 6.62362f
+C947 xf1_ci vss 4.66152f
+C948 n_a vss 7.35483f
+C949 xg1_n1 vss 0.91358f
+C950 s1 vss 9.5172f
+C951 clkb vss 5.28502f
+C952 xf1_mf vss 2.90736f
+C953 en vss 6.22283f
+C954 xf1_m vss 3.84644f
+C955 xf1_mb vss 4.79209f
+C956 xf1_sf vss 2.93786f
+C957 xf1_s vss 3.6482f
+C958 xf2_mf vss 3.07258f
+C959 xf2_cb vss 8.08944f
+C960 xf2_ci vss 5.28795f
+C961 xf2_sf vss 3.01996f
+C962 xf2_m vss 4.21214f
+C963 xf2_mb vss 5.18261f
+C964 xg3_n1 vss 1.95374f
+C965 xf2_s vss 4.28487f
+C966 osc vss 5.01566f
+C967 xo3_n1 vss 2.16391f
+.ends

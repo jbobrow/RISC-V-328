@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Denser on-chip memory for RV328: options on GF180MCU - RV328</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><div class="wrap">
+<nav><a class="name" href="index.html">RV328</a><p class="tag">A RISC-V chip in the ATmega328PB footprint</p>
+<h2>The story</h2>
+<a class="l" href="index.html">Overview</a>
+<a class="l" href="build_log.html">Build log</a>
+<a class="l" href="decisions.html">Decisions</a>
+<h2>Results</h2>
+<a class="l" href="cache_study.html">Cache study</a>
+<a class="l" href="layout_results.html">Layout results</a>
+<a class="l on" href="memory_research.html">Memory research</a>
+<h2>Reference</h2>
+<a class="l" href="datasheet.html">Datasheet</a>
+<a class="l" href="verification.html">Verification</a>
+<a class="l" href="tapeout_checklist.html">Tape-out checklist</a>
+<a class="l" href="analog_macros.html">Analog macro spec</a>
+<a class="l" href="bondout.html">Bond-out</a>
+<h2>Tools</h2><a class="l" href="layout_viewer.html">Layout viewer</a>
+</nav>
+<main>
+<h1>Denser on-chip memory for RV328: options on GF180MCU</h1>
+<p>Research report, 20 November 2026. Nothing in this report has been placed and routed, and nothing was
+simulated at transistor level. Every number is marked as one of:</p>
+<ul>
+<li><strong>measured</strong>: taken by me from files in the installed PDK (process design kit) or the project, with the
+  method in "What I measured";</li>
+<li><strong>cited</strong>: stated by a source, with its URL in "Sources";</li>
+<li><strong>estimate</strong>: my own arithmetic on measured numbers, for something that does not exist yet.</li>
+</ul>
+<h2>Summary and recommendation</h2>
+<p><strong>The foundry memory is sparse because of its surroundings, not its storage cell.</strong> In the 512 x 8 macro
+the cells that store bits take 26 % of the area; the other 74 % is the row decoder, the read and write
+circuits and the guard ring (measured). Thirty-one small macros pay that overhead thirty-one times.</p>
+<p><strong>There is a denser memory already in the installed PDK</strong>, which the project does not use: the 3.3 V
+macros of library <code>gf180mcu_ocd_ip_sram</code>, redrawn from the foundry macro by Tim Edwards (Open Circuit
+Design). The largest, 1024 x 8, holds twice the bits of our macro in three quarters of its area:
+19.0 um2 per bit against 51.1, which is 2.7 times denser (measured). It has the same pin arrangement as
+the foundry macro. With it, the whole 32 KB program plus the 2 KB RAM is 34 macros and 5.28 mm2, less
+than the 6.49 mm2 the 31 macros take today (measured macro areas, no routing channels). It was made on
+the first wafer.space run, and its author's test notes and conference abstract say it works (cited).
+But it needs a 3.3 V supply on a 5 V chip, and its timing files are copies of the 5 V macro's files,
+not a characterisation (measured).</p>
+<p><strong>Recommendation, in three steps.</strong></p>
+<ol>
+<li><strong>First silicon: keep the 5 V foundry macro.</strong> It is the only memory here with foundry timing at our
+   corner (slow silicon, 4.5 V, 125 C: output 10.3 ns after the clock, shortest cycle 11.9 ns, measured
+   from the liberty file) and it needs no second supply. The run 3 deadline is 16 December 2026 (cited);
+   no denser option can be adopted and verified by then. Do not make the tape-out wait for memory.</li>
+<li><strong>Next, try the cheapest gain, which needs no new memory at all: a read-only library built from
+   ordinary logic cells.</strong> In the benchmark firmware 13.5 KB of 19.1 KB is library code (C library and
+   software floating point); only 5.7 KB is the application (measured from the linker map).
+   Synthesised as logic, the complete 19.4 KB firmware image is 0.31 mm2 of cells, 2.0 um2 per bit,
+   against 8.2 mm2 for the same bytes in foundry SRAM (measured by synthesis only: no buffering, no
+   placement, and the unbuffered netlist does not meet 50 ns). A library in such a ROM would leave the
+   cache holding only application code. This changes what the chip is: the library is frozen at tape-out
+   and the tool chain must link against it. It is worth one experiment: a ROM block through the flow,
+   and the cache study repeated with the library outside the cache.</li>
+<li><strong>For the whole program on the chip, plan a 3.3 V memory island with the <code>gf180mcu_ocd_ip_sram</code>
+   1024 x 8 macro, for a second silicon.</strong> It needs a voltage regulator in the analog macro, level
+   shifters, a second supply net in the flow, and real timing for the macro. Start with the questions
+   in "Open questions"; the author's measurements were presented in September 2026 and a second test
+   chip is being delivered now.</li>
+</ol>
+<p><strong>Not recommended:</strong> memories from flip-flops or latches (2 to 3 times <em>worse</em> than the foundry macro,
+measured cell areas), eFuse (87 to 166 um2 per bit and one-time), OpenRAM on GF180MCU (experimental, no
+macro, no silicon), and building our own 5 V array from the foundry's cells (about 2 times denser by
+estimate, but a custom-memory project with no silicon proof; reconsider it only if the 3.3 V island is
+ruled out).</p>
+<p><strong>The half-size slot is out of reach by memory density alone.</strong> With the 3.3 V macros the present
+contents (12 KB cache, tags, 2 KB RAM) take 2.47 mm2; with 1.88 mm2 of logic cells and the 1.30 mm2
+analog block that is 5.65 mm2 in a 5.02 mm2 core (estimate from measured areas).</p>
+<h2>Comparison</h2>
+<p>Density is area per stored bit, whole macro or block, not just the storage cell. "x" is the density
+relative to the 512 x 8 foundry macro (51.1 um2 per bit); below 1 means worse.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>um2 per bit</th>
+<th>x</th>
+<th>Speed at our corner</th>
+<th>Status</th>
+<th>Silicon</th>
+<th>Effort in our flow</th>
+<th>Main risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1a. Foundry 5 V macro, 512 x 8 (today)</td>
+<td>51.1 (measured)</td>
+<td>1.0</td>
+<td>10.3 ns clock to output, 11.9 ns cycle (measured from liberty)</td>
+<td>in the PDK</td>
+<td>foundry IP; used on run 1 chips; no published measurement found</td>
+<td>done</td>
+<td>none new</td>
+</tr>
+<tr>
+<td>1b. 3.3 V macro <code>gf180mcu_ocd_ip_sram</code> 1024 x 8</td>
+<td>19.0 (measured)</td>
+<td>2.7</td>
+<td>unknown: liberty is a copy of the 5 V macro's</td>
+<td>in the PDK</td>
+<td>made on run 1, reported working; partial bench test documented</td>
+<td>LEF, GDS, netlist ready; needs regulator, level shifters, second supply, timing</td>
+<td>supply island; no real timing; little silicon data</td>
+</tr>
+<tr>
+<td>2. OpenRAM for GF180MCU</td>
+<td>none published</td>
+<td>?</td>
+<td>unknown</td>
+<td>open repository, experimental</td>
+<td>none found</td>
+<td>large: no working configuration</td>
+<td>may not produce a usable macro</td>
+</tr>
+<tr>
+<td>2b. Other generators (Arrakeen, 2AM Logic)</td>
+<td>none published</td>
+<td>?</td>
+<td>unknown</td>
+<td>test chips on run 2; one array without timing files</td>
+<td>none yet</td>
+<td>not available as macros</td>
+<td>unknown</td>
+</tr>
+<tr>
+<td>3. Latch array (DFFRAM style), 7-track cells</td>
+<td>99 to 121 (estimate from measured cells)</td>
+<td>0.4 to 0.5</td>
+<td>standard-cell timing</td>
+<td>open repository; GF180 not sign-off clean</td>
+<td>none on GF180</td>
+<td>small</td>
+<td>worse than today</td>
+</tr>
+<tr>
+<td>4. Own 5 V array from foundry cells, 4 KB or 8 KB blocks</td>
+<td>25.5 or 22.2 (estimate)</td>
+<td>2.0 or 2.3</td>
+<td>unknown; must be simulated</td>
+<td>does not exist</td>
+<td>none</td>
+<td>very large: design, checks, timing files</td>
+<td>custom memory without silicon proof</td>
+</tr>
+<tr>
+<td>4b. The same in 3.3 V, 8 KB blocks</td>
+<td>10.6 (estimate)</td>
+<td>4.8</td>
+<td>unknown</td>
+<td>does not exist</td>
+<td>none</td>
+<td>very large, plus the 3.3 V island</td>
+<td>as 4 and 1b together</td>
+</tr>
+<tr>
+<td>5a. eFuse macros <code>gf180mcu_re_efuse</code></td>
+<td>87 to 166 (measured)</td>
+<td>0.3 to 0.6</td>
+<td>not examined</td>
+<td>in the PDK</td>
+<td>test chip on run 1, no results found</td>
+<td>macros ready</td>
+<td>one-time; larger than SRAM</td>
+</tr>
+<tr>
+<td>5b. Mask ROM array</td>
+<td>about 3 to 6 with periphery (rough estimate)</td>
+<td>8 to 17</td>
+<td>unknown</td>
+<td>no macro, no verified generator</td>
+<td>none</td>
+<td>very large</td>
+<td>custom design; fixed content</td>
+</tr>
+<tr>
+<td>5c. ROM from logic cells</td>
+<td>2.0 cells only; about 3 to 5 placed (measured by synthesis; placed figure is an estimate)</td>
+<td>10 to 17</td>
+<td>not met without buffering; unverified</td>
+<td>needs nothing new</td>
+<td>ordinary logic</td>
+<td>small</td>
+<td>fixed content; timing not shown</td>
+</tr>
+</tbody>
+</table></div>
+<h2>1. The foundry SRAM and its relatives</h2>
+<h3>1a. The 5 V foundry macros</h3>
+<p>Library <code>gf180mcu_fd_ip_sram</code> in the installed PDK holds four macros, all 8 bits wide and all
+431.86 um wide (measured from the LEF files):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Macro</th>
+<th>Size (um)</th>
+<th>Area (mm2)</th>
+<th>Bits</th>
+<th>um2 per bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>64 x 8</td>
+<td>431.86 x 232.88</td>
+<td>0.1006</td>
+<td>512</td>
+<td>196.4</td>
+</tr>
+<tr>
+<td>128 x 8</td>
+<td>431.86 x 268.88</td>
+<td>0.1161</td>
+<td>1024</td>
+<td>113.4</td>
+</tr>
+<tr>
+<td>256 x 8</td>
+<td>431.86 x 340.88</td>
+<td>0.1472</td>
+<td>2048</td>
+<td>71.9</td>
+</tr>
+<tr>
+<td>512 x 8</td>
+<td>431.86 x 484.88</td>
+<td>0.2094</td>
+<td>4096</td>
+<td>51.1</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The other PDK variants on this machine (gf180mcuA, B, C) hold the same four macros (measured: same
+  file names). The foundry's documentation lists only these four (cited).</li>
+<li>No larger 5 V macro exists in any source I found. A Google repository named as the foundry's "SRAM
+  build space" (<code>gf180mcu_fd_bd_sram</code>) holds only a placeholder README from July 2022 (measured from a
+  clone).</li>
+<li>Inside the 512 x 8 macro (measured from the GDS):<ul>
+<li>The storage cell (<code>018SRAM_cell1</code>) repeats every 3.00 um by 4.50 um: 13.5 um2. The foundry's design
+  manual gives the same size for its 5 V cell (cited).</li>
+<li>4096 storing cells cover 55,296 um2: <strong>26.4 % of the macro</strong>.</li>
+<li>With the well-tap columns, the unused edge rows and columns, the two array blocks cover 33.0 %.</li>
+<li>The row decoder and word-line drivers, a 180 um column between the two array halves: 25.6 %.</li>
+<li>The 176 um band below the array (column selection, sense amplifiers, write drivers, input and
+  output latches, control and address pre-decoding): 36.3 %.</li>
+<li>Guard ring at the top and sides: 5.1 %.</li>
+</ul>
+</li>
+<li>The four macros follow one size law (measured, exact for all four): height = 196.88 um + 4.50 um per
+  row, at 8 words per row. The 196.88 um is paid by every macro.</li>
+<li>Timing at slow silicon, 4.5 V, 125 C (measured from the liberty file): output valid 8.8 to 10.3 ns
+  after the clock depending on load, shortest clock period 11.89 ns, address set-up up to 2.0 ns, hold
+  up to 2.2 ns. From 64 to 512 words the largest output delay grows only from 9.29 to 10.30 ns. The
+  same macro is also characterised at 3.0 V (15.9 ns, period 18.3 ns) and 1.62 V.</li>
+<li>Silicon: the liberty header is dated June 2014 (measured), so this is the foundry's own older IP.
+  Run 1 of wafer.space carried it in several chips, among them RISCBoy-180 with 60 blocks and the
+  TZ01 test chip with eight (cited). I found no published measurement of it.</li>
+</ul>
+<h3>1b. The 3.3 V macros of Open Circuit Design</h3>
+<p>Library <code>gf180mcu_ocd_ip_sram</code> is installed in the same PDK directory and is listed by wafer.space next
+to the foundry macros (cited). It is the foundry macro redrawn with 3.3 V transistors by Tim Edwards
+(cited); the netlist uses <code>nfet_03v3</code> and <code>pfet_03v3</code> at 0.28 um gate length where the foundry macro
+uses 6 V transistors at 0.60 um (measured).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Macro</th>
+<th>Size (um)</th>
+<th>Area (mm2)</th>
+<th>Bits</th>
+<th>um2 per bit</th>
+<th>x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>64 x 8</td>
+<td>301.30 x 152.21</td>
+<td>0.0459</td>
+<td>512</td>
+<td>89.6</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>256 x 8</td>
+<td>301.30 x 224.93</td>
+<td>0.0678</td>
+<td>2048</td>
+<td>33.1</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>512 x 8</td>
+<td>301.30 x 321.89</td>
+<td>0.0970</td>
+<td>4096</td>
+<td>23.7</td>
+<td>2.2</td>
+</tr>
+<tr>
+<td>1024 x 8</td>
+<td>301.30 x 515.81</td>
+<td>0.1554</td>
+<td>8192</td>
+<td>19.0</td>
+<td>2.7</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Storage cell 2.18 um by 3.03 um: 6.6 um2, half the 5 V cell (measured). In the 1024 x 8 macro the
+  storing cells are 34.8 % of the area (measured).</li>
+<li>Same architecture as the foundry macro: two array halves around a row decoder, eight words per row.
+  Size law: height = 127.97 um + 3.03 um per row (measured, exact for all four).</li>
+<li>Same integration as the foundry macro: signal pins on Metal2 along the south edge, obstruction on
+  Metal1 to Metal3, power on Metal2 and Metal3 (measured from the LEF). The floorplan scripts would
+  need new sizes only.</li>
+<li><strong>What it would save</strong> (measured macro areas, no channels):<ul>
+<li>today's contents, 14 macros of 1024 x 8 and 3 of 512 x 8: 2.47 mm2 instead of 6.49 mm2;</li>
+<li>the whole 32 KB program plus 2 KB RAM, 34 macros: 5.28 mm2. In 5 V foundry macros that would be
+  68 macros and 14.2 mm2, more than the core.</li>
+<li>wafer.space's own table gives 108 of these macros in a full slot against 80 of the 5 V macro, or
+  108 KB against 40 KB (cited).</li>
+</ul>
+</li>
+<li><strong>History and silicon</strong> (all cited):<ul>
+<li>Added to the PDK build in November 2025, three macros finished 18 December 2025, rule fixes in
+  February 2026, the 64-word macro in June 2026.</li>
+<li>Test chip OCD2 on wafer.space run 1 with one 1024, one 512 and two 256-word macros; wafers came
+  back 6 April 2026.</li>
+<li>The test chip's own notes describe a bench set-up for the run 1 chip that exercises the 256-word
+  macros with four data bits and six address bits at 3.3 V. A logic-analyser picture in the same
+  repository, dated 30 June 2026, shows the four outputs counting. By my reading of its time axis
+  one value lasts about 40 ns (25 MHz); that is my reading of a picture, not a stated result.</li>
+<li>The author's ORConf talk of 12 September 2026 announces characterisation results for the 3.3 V
+  SRAM and says the circuits are functional. I could not read the results themselves (only the
+  abstract and a video link).</li>
+<li>A second test chip (OCD3, with all four macros, 3.3 V transistors only) went on run 2; first
+  bare dies of that run were shipped 30 October 2026. Other designers have
+  weighed or used the macros for run 2 (cited: one design write-up); I found no silicon report
+  from them.</li>
+</ul>
+</li>
+<li><strong>The timing files are placeholders (measured).</strong> The liberty file of the 3.3 V 1024 x 8 macro is the
+  5 V foundry 512 x 8 file of the same corner with the name, header and address width changed: same
+  delay tables, same 18.26 ns period at 3.0 V, even the 5 V macro's area. The 3.3 V transistors are
+  not the transistors those numbers were made for. Real timing must come from simulation of the
+  extracted netlist or from the author's measurements.</li>
+<li><strong>What adopting it takes.</strong><ul>
+<li><em>A 3.3 V supply on the chip.</em> The ATmega328PB package has no spare pin, so a regulator without
+  an external capacitor, added to the analog macro. Nothing of the kind is in the PDK libraries.
+  It must carry the read current of the active macros, which the placeholder files do not tell.</li>
+<li><em>Level shifters.</em> A 5 V signal must not reach a 3.3 V gate, and a 3.3 V output is not a valid
+  high for 5 V logic. The cell libraries in the PDK contain no level-shifter cell (measured: no
+  such macro name in the LEF files); the dual-voltage pad library <code>gf180mcu_ocd_io</code> has no separate one either. A macro
+  has 29 inputs and 8 outputs (measured from the LEF). The inputs can share shifters across a
+  bank; every output needs one, unless the read multiplexing is also built at 3.3 V.</li>
+<li><em>A second supply net in LibreLane</em>: power grid for the island, power pins of the macros on the
+  new net, LVS with two supplies.</li>
+<li><em>Low supply.</em> The ATmega328PB runs from 1.8 V and our analog blocks are designed from 2.7 V.
+  Below about 3.5 V a regulator only passes the supply through; whether the macro works there is
+  not known.</li>
+<li><em>Standby current</em> of 34 KB at 3.3 V and 125 C is not known, and it flows in power-down unless the
+  island is switched off and reloaded on wake-up.</li>
+</ul>
+</li>
+<li>A different way to use the same macros is to build the whole core at 3.3 V with the 3.3 V cell
+  library (<code>gf180mcu_as_sc_mcu7t3v3</code>) and the dual-voltage pads (<code>gf180mcu_ocd_io</code>), as the OCD3 test
+  chip does (cited). That removes the level shifters inside the core but replaces the cell library,
+  the pads and every timing result of this project. I did not look into it further.</li>
+</ul>
+<h3>What the whole program on the chip would mean</h3>
+<p>A static memory forgets at power-off, so the program still lives in the serial memory die and is copied
+at reset. By the cache study's figure of 580 clocks per 32-byte line, 32 KB takes about 594,000 clocks:
+30 ms at 20 MHz (estimate), but 0.6 s if the copy ran at a 1 MHz start-up clock. After that there are
+no misses, no tags and no cache controller.</p>
+<h2>2. Memory compilers</h2>
+<ul>
+<li><strong>OpenRAM</strong> (University of California Santa Cruz and Oklahoma State University). Its stable branch
+  has a <code>technology/gf180mcu</code> directory (measured from a clone of 27 October 2026). It contains one
+  single-port storage cell, which is the foundry's 5 V cell (3.00 x 4.50 um pitch, 6 V transistors),
+  one decoder gate named as a 3.3 V cell, and a technology file that names 3.3 V transistors
+  and a 1.8 V nominal supply. There is no GF180MCU SRAM configuration among its example macros, only
+  one 1 KB ROM configuration whose common settings switch the DRC and LVS checks off. The project's own
+  2023 status slides call the port under way with basic arrays and note that only the 5 V cell exists
+  (cited). I found no GF180MCU macro, tape-out or measurement. The same slides report an earlier
+  OpenRAM test chip, in a process they do not name, free of errors below 34 MHz at 1.7 V (cited).</li>
+<li><strong>Arrakeen / c4m-flexmem</strong> (Chips4Makers, Staf Verhaegen). A memory generator with three test chips
+  on wafer.space run 2 (July 2026): 3.3 V blocks drawn with the ordinary rules, 3.3 V blocks with the
+  SRAM rules, and 5 V blocks (cited). The generator is described by its author as experimental (cited).
+  I found no block sizes, densities or results. Worth watching; nothing to adopt today.</li>
+<li><strong>2AM Logic <code>gf180-sram</code></strong>. One 256 x 32 block with its own storage cell, laid out and checked by
+  software agents; array clean in DRC and LVS, no timing files, no tape-out (cited). Not usable.</li>
+<li><strong>DFFRAM</strong> is a standard-cell generator; see the next section.</li>
+</ul>
+<h2>3. Memories from standard cells</h2>
+<p>Cell areas from the PDK's LEF files (measured):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Cell</th>
+<th>9-track 5 V</th>
+<th>7-track 5 V</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>latch (<code>latq_1</code>)</td>
+<td>56.4 um2</td>
+<td>43.9 um2</td>
+</tr>
+<tr>
+<td>flip-flop (<code>dffq_1</code>)</td>
+<td>79.0 um2</td>
+<td>63.7 um2</td>
+</tr>
+<tr>
+<td>tri-state buffer (<code>bufz_1</code>)</td>
+<td>36.7 um2</td>
+<td>30.7 um2</td>
+</tr>
+<tr>
+<td>4-input multiplexer (<code>mux4_1</code>)</td>
+<td>87.5 um2</td>
+<td>70.2 um2</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>A bare latch is already as large as a whole bit of the foundry macro (51.1 um2), before anything can
+  read it.</li>
+<li>DFFRAM builds a byte from eight latches, eight tri-state buffers, a clock gate and a gate for the
+  write enable, plus inverters I did not count (read from its GF180MCU cell definitions). That is 84.5 um2 per bit in 7-track cells
+  and 105.5 in 9-track cells, without word decoders, output buffers, taps or routing space (estimate
+  from measured cells). At 70 to 85 % row fill: 99 to 121 um2 per bit in 7-track cells, 124 to 151 in
+  9-track: <strong>1.9 to 2.9 times worse than the foundry macro</strong>.</li>
+<li>DFFRAM's README lists its GF180MCU platform as not sign-off clean (hold violations in the netlist)
+  and not silicon-proven (cited).</li>
+<li>The 3.3 V cell libraries have the same row heights and similar latch sizes (41.7 um2 in
+  <code>gf180mcu_as_sc_mcu7t3v3</code>, measured), so they do not change this.</li>
+</ul>
+<p>As expected: confirmed worse, with numbers. Useful only for very small memories such as a register file.</p>
+<h2>4. Our own array from the foundry's cells</h2>
+<p><strong>The idea.</strong> Keep the storage cell and the leaf cells of the foundry macro (row decoder slice, column
+multiplexer, sense amplifier, write driver, control), and build fewer, larger arrays so the periphery is
+shared. The leaf cells are in the PDK as separate layout cells (measured: <code>xdec</code>, <code>ypass_gate</code>,
+<code>mux821</code>, <code>sa</code>, <code>wen_wm1</code>, <code>din</code>, <code>outbuf_oe</code> and others inside the macro GDS and as Magic files).</p>
+<p><strong>What it could save (estimate).</strong> I extended the macro family's own size law: fixed periphery plus
+4.50 um per row, and 27.0 um per group of eight columns with its well-tap column (measured pitches).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Array (5 V cell)</th>
+<th>Size (um)</th>
+<th>mm2</th>
+<th>um2 per bit</th>
+<th>x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 KB, 1024 x 8 (128 rows)</td>
+<td>432 x 773</td>
+<td>0.334</td>
+<td>40.7</td>
+<td>1.25</td>
+</tr>
+<tr>
+<td>2 KB, 2048 x 8 (256 rows)</td>
+<td>432 x 1349</td>
+<td>0.583</td>
+<td>35.6</td>
+<td>1.4</td>
+</tr>
+<tr>
+<td>4 KB, 1024 x 32 (128 rows, 256 columns)</td>
+<td>1080 x 773</td>
+<td>0.835</td>
+<td>25.5</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>8 KB, 2048 x 32 (256 rows, 256 columns)</td>
+<td>1080 x 1349</td>
+<td>1.457</td>
+<td>22.2</td>
+<td>2.3</td>
+</tr>
+<tr>
+<td>32 KB in one array (512 rows, 512 columns)</td>
+<td>1944 x 2501</td>
+<td>4.861</td>
+<td>18.5</td>
+<td>2.8</td>
+</tr>
+<tr>
+<td>limit for an endless array</td>
+<td></td>
+<td></td>
+<td>15.2</td>
+<td>3.4</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>On the chip: 12 KB of cache as three 4 KB blocks, RAM as one 2 KB block, tags unchanged: about
+  3.7 mm2 instead of 6.5. The whole program as four 8 KB blocks plus RAM: about 6.4 mm2, the area
+  the memories take today.</li>
+<li><strong>These are estimates and optimistic.</strong> They assume the periphery does not grow. In a real design the
+  word-line drivers must drive four times as many cells, the bit lines are two to four times longer,
+  the address decoding gains bits and the self-timing of the read must be redone. Expect 10 to 25 %
+  more area, and the 32 KB single array is not credible without a redesign of the periphery.</li>
+<li>The same law for the 3.3 V cell gives 12.1 um2 per bit for a 4 KB block and 10.6 for 8 KB (estimate).</li>
+</ul>
+<p><strong>What it involves.</strong></p>
+<ul>
+<li>Draw the new assemblies: decoder for 128 or 256 rows, 32 column slices, wider control and power.
+  Only adding rows is the simple part: the 3.3 V 1024 x 8 macro is the 512 x 8 with twice the rows
+  (measured), added in December 2025 (cited). In 5 V that step brings only 1.25 times.</li>
+<li>Simulate read, write and the self-timing at transistor level with extracted wiring at all corners,
+  including cell stability with the longer bit lines.</li>
+<li>DRC with the foundry deck. The storage cell uses tighter rules that the deck applies only inside
+  the "SRAM core" marker layer (measured from the deck: rule files <code>sram_5p0</code> and <code>sram_3p3</code>, layer
+  108/5). Reusing the foundry cell unchanged inside the marker is how the existing macros pass. A run 2
+  test chip from Chips4Makers whose 3.3 V memory blocks use these rules passed the wafer.space
+  precheck (cited); whether wafer.space or the foundry restricts the rules to foundry cells I could
+  not find stated.</li>
+<li>LVS of the array, then LEF, liberty (from simulation) and a Verilog model for the flow.</li>
+</ul>
+<p><strong>Risks.</strong> No silicon proof; a failure in memory makes the whole chip useless; the people on this
+project are not memory designers; it needs its own test chip to be trusted, which costs a run.</p>
+<h2>5. Read-only and one-time-programmable storage</h2>
+<p>A chip whose program the user writes cannot keep that program in ROM or in one-time memory. These
+options are only for content that is the same in every chip: a boot loader or a runtime library.</p>
+<h3>eFuse</h3>
+<ul>
+<li>Library <code>gf180mcu_re_efuse</code> is in the installed PDK: seven macros made by an open eFuse compiler
+  (cited), with LEF, GDS, netlists and liberty files at our corners (measured: file list).</li>
+<li>Density (measured from the LEF sizes): the bare 64 x 32 array is 87 um2 per bit; the complete
+  1024 x 32 memory with its bus interface is 3.75 mm2, 114 um2 per bit; the small ones 132 to 166.
+  <strong>Worse than SRAM</strong>, and each bit can be written once.</li>
+<li>Silicon: an earlier version went on the first open GF180MCU shuttle (GFMPW-0) in an FPGA project, and a test chip with
+  2,424 eFuses was on wafer.space run 1 (cited). I found no results. The compiler's README lists open
+  improvements to wiring and timing (cited).</li>
+<li>Use for RV328: a few dozen bits of calibration or configuration (oscillator trim), not program
+  storage.</li>
+</ul>
+<h3>One-time-programmable memory</h3>
+<p>The foundry DRC deck has rules for an OTP marker layer (measured), but the PDK contains no OTP cell or
+macro, and wafer.space's statistics list OTP as drawn by no design (cited). Not available.</p>
+<h3>Mask ROM as a custom array</h3>
+<ul>
+<li>No ROM macro exists in the PDK, and the only generator I found with a GF180MCU entry is the
+  unverified OpenRAM configuration above.</li>
+<li>Rough size of a ROM cell from the ordinary design rules in the DRC deck (gate length 0.60 um at 5 V
+  or 0.28 um at 3.3 V, contact 0.22 um, contact to gate 0.15 um, diffusion width and space): about
+  0.8 um2 at 5 V and 0.5 um2 at 3.3 V, against 13.5 and 6.6 um2 for the SRAM cells. With decoders and
+  sensing a block of 8 to 32 KB might reach 3 to 6 um2 per bit. This is a rough estimate of something
+  nobody has drawn.</li>
+<li>Same effort and risk as section 4. Not worth it while the next option exists.</li>
+</ul>
+<h3>ROM built from logic cells (measured by synthesis)</h3>
+<p>A ROM is a fixed truth table; the synthesis tool can build it from ordinary cells. I synthesised real
+RV328 code from the benchmark firmware (<code>build/bench/full.bin</code>) as a 32-bit-wide ROM with registered
+output, with Yosys and the 9-track 5 V library:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Content</th>
+<th>Bits</th>
+<th>Cell area</th>
+<th>um2 per bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 KB slice</td>
+<td>16,384</td>
+<td>0.052 mm2</td>
+<td>3.15</td>
+</tr>
+<tr>
+<td>8 KB slice</td>
+<td>65,536</td>
+<td>0.155 mm2 (0.121 in 7-track cells)</td>
+<td>2.36 (1.85)</td>
+</tr>
+<tr>
+<td>whole image, 19,852 bytes (19.4 KB)</td>
+<td>158,816</td>
+<td>0.310 mm2</td>
+<td>1.95</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The same 19.4 KB in foundry SRAM is 39 macros, 8.2 mm2. Even at 50 % row fill the ROM is about
+  0.6 mm2 (estimate).</li>
+<li><strong>Limits of this measurement.</strong> Cell area after synthesis only. No buffers were inserted: a static
+  timing run without wires at the slow corner misses a 50 ns cycle by 55 ns, because each address bit
+  drives thousands of gates. A real block needs buffer trees or two clock cycles per read; both add
+  area or cost speed, and neither was tried. The area per bit depends on the content.</li>
+<li><strong>Why it matters here.</strong> In the benchmark firmware <code>full</code> the linker map gives 5.7 KB for the
+  application and the project's runtime, 7.4 KB for the C library (printf, logarithm) and 6.0 KB for
+  the compiler's arithmetic library (software floating point and 64-bit helpers): 70 % library
+  (measured; KB of 1024 bytes as elsewhere in the project). In <code>logger</code> 13.5 of 15.0 KB is library. The cache study found that programs under 4 KB never reload a
+  line with any cache of 4 KB or more.</li>
+<li><strong>What it would mean for the product.</strong><ul>
+<li>The library is fixed at tape-out. A fault in it cannot be repaired except by linking a replacement
+  into the user's program, which then goes through the cache as today.</li>
+<li>The tool chain must know the ROM: a symbol file per chip revision, and a linker script that
+  resolves library calls to it. The user sees nothing of this in an Arduino-style package. The
+  RP2040 keeps floating-point routines in its boot ROM in the same way (from memory, not checked).</li>
+<li>Which routines to include is a guess about users' programs; the benchmarks are our own.</li>
+<li>The user's program stays fully programmable.</li>
+</ul>
+</li>
+</ul>
+<h2>6. Anything else</h2>
+<ul>
+<li><strong>Another process option on the same shuttle.</strong> wafer.space offers one variant (gf180mcuD, five metal
+  layers). The 3.3 V transistors are part of it, which is what option 1b uses. There is no embedded
+  flash, and no denser foundry memory is offered (cited: technology page lists only the macros above).</li>
+<li><strong>Dynamic memory.</strong> One- to three-transistor cells with refresh would be denser than six-transistor
+  SRAM. I found a compiler paper for such memories but no GF180MCU cell, generator or silicon. Not
+  credible for this chip.</li>
+<li><strong>A smaller cache instead of a denser one.</strong> Section 5's ROM library is really this: it does not make
+  memory denser, it removes the need for most of it.</li>
+</ul>
+<h2>What I measured</h2>
+<p>Scripts are in <code>/home/claude/memres_scripts</code> (outside the project, nothing in the project was changed):
+<code>cells.py</code>, <code>array.py</code>, <code>lefpins.py</code>, <code>lefcells.py</code>, <code>libtime.py</code>, <code>model.py</code>, and <code>romtest/</code>. Run with
+<code>source /home/claude/env_ll.sh</code> and <code>python3 -I</code>. PDK: <code>/home/claude/pdk/gf180mcuD</code>, open_pdks revision
+<code>792ef67</code>.</p>
+<p><strong>Macro sizes.</strong> <code>SIZE</code> lines of the LEF files in <code>libs.ref/gf180mcu_fd_ip_sram/lef</code>,
+<code>gf180mcu_ocd_ip_sram/lef</code> and <code>gf180mcu_re_efuse/lef</code>. Tables in sections 1 and 5.</p>
+<p><strong>Storage cell and array</strong> (<code>array.py &lt;gds&gt; &lt;cell name&gt;</code>): reads the GDS with KLayout's Python module,
+walks the hierarchy, and lists every placement of the named cell in top-level coordinates.</p>
+<ul>
+<li>5 V 512 x 8: cell <code>018SRAM_cell1_512x8m81</code>, drawn box 3.68 x 5.18 um (it overlaps its neighbours by
+  0.34 um on each side). 4164 placements: 64 columns by 64 rows that store, plus unused edge cells. Column
+  step 3.00 um, with a 6.00 um step after every eighth column where a well-tap column stands; row step
+  4.50 um. Array blocks from x = 8.87 to 123.55 um and 303.75 to 421.43 um, y = 175.79 to 473.47 um.
+  Row decoder cell <code>xdec</code> 121 um wide, 64 placements, between the blocks.</li>
+<li>3.3 V 1024 x 8: cell <code>018SRAM_cell1_3v1024x8m81</code>, 8324 placements, column step 2.18 um (19.54 um per
+  eight columns with the tap column), 128 rows in 387.84 um: 3.03 um per row. Array blocks x = 5.72 to
+  87.55 um and 209.47 to 292.98 um, y = 113.02 to 508.90 um.</li>
+<li>Break-down (<code>model.py</code>):</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>5 V 512 x 8</th>
+<th>3.3 V 1024 x 8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macro</td>
+<td>209,400 um2</td>
+<td>155,414 um2</td>
+</tr>
+<tr>
+<td>storing cells</td>
+<td>55,296 um2, 26.4 %</td>
+<td>54,111 um2, 34.8 %</td>
+</tr>
+<tr>
+<td>array blocks with taps and edge cells</td>
+<td>33.0 %</td>
+<td>42.1 %</td>
+</tr>
+<tr>
+<td>row decoder column between the halves</td>
+<td>25.6 % (180.2 um wide)</td>
+<td>31.1 % (121.9 um wide)</td>
+</tr>
+<tr>
+<td>band below the array</td>
+<td>36.3 % (175.8 um high)</td>
+<td>21.9 % (113.0 um high)</td>
+</tr>
+<tr>
+<td>top and side margins</td>
+<td>5.1 %</td>
+<td>4.9 %</td>
+</tr>
+<tr>
+<td>periphery share (all but storing cells)</td>
+<td>73.6 %</td>
+<td>65.2 %</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Size laws, checked against all four macros of each family: 5 V height = 196.88 + 4.50 x rows,
+  width = 215.86 + 27.00 x (columns / 8); 3.3 V height = 127.97 + 3.03 x rows,
+  width = 144.98 + 19.54 x (columns / 8). The estimates in section 4 are these formulas with more rows
+  and columns.</li>
+</ul>
+<p><strong>Transistor types.</strong> Counted device names in the SPICE netlists: 5 V macro <code>nfet_06v0</code>/<code>pfet_06v0</code>,
+most at L = 0.6 um; 3.3 V macro <code>nfet_03v3</code>/<code>pfet_03v3</code>, most at L = 0.28 um.</p>
+<p><strong>Pins and obstructions</strong> (<code>lefpins.py</code>): both families have all signal pins on Metal2 within 2 um of
+the south edge and obstructions on Nwell and Metal1 to Metal3.</p>
+<p><strong>Timing</strong> (<code>libtime.py</code>): largest clock-to-output table value, <code>min_period</code> and set-up values of the
+liberty files.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Clock to output, max</th>
+<th>Shortest period</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5 V 512 x 8, ss 125 C 4.5 V</td>
+<td>10.30 ns</td>
+<td>11.89 ns</td>
+</tr>
+<tr>
+<td>5 V 64 x 8, ss 125 C 4.5 V</td>
+<td>9.29 ns</td>
+<td>10.28 ns</td>
+</tr>
+<tr>
+<td>5 V 512 x 8, tt 25 C 5.0 V</td>
+<td>5.68 ns</td>
+<td>6.59 ns</td>
+</tr>
+<tr>
+<td>5 V 512 x 8, ss 125 C 3.0 V</td>
+<td>15.87 ns</td>
+<td>18.26 ns</td>
+</tr>
+<tr>
+<td>3.3 V 1024 x 8, ss 125 C 3.0 V</td>
+<td>15.87 ns (copy)</td>
+<td>18.26 ns (copy)</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>diff</code> of the last two files, after replacing the macro names, shows differences only in the header
+comments, the date, the comment string and the address bus width. The <code>area</code> in the 3.3 V file is
+209400.2768, the 5 V macro's.</p>
+<p><strong>Standard cells</strong> (<code>lefcells.py</code>): table in section 3. DFFRAM's byte composition from
+<code>platforms/gf180mcuD/gf180mcu_fd_sc_mcu7t5v0/block_definitions.v</code> of its repository.</p>
+<p><strong>ROM from logic cells</strong> (<code>romtest/</code>): <code>gen_rom.py</code> writes a Verilog case statement from a slice of
+<code>build/bench/full.bin</code>; Yosys 0.69 <code>synth -flatten</code>, <code>dfflibmap</code>, <code>abc -liberty</code>, <code>stat -liberty</code> with
+the typical 5 V library; results in the table of section 5. OpenSTA on the netlist with the slow-corner
+library, a 50 ns clock and no wires: worst slack -55.3 ns from an address input.</p>
+<p><strong>Firmware by origin.</strong> Summed the input sections of <code>build/bench/full.map</code> and <code>logger.map</code> by the
+archive they come from: <code>full</code> 5,793 bytes project objects, 7,607 <code>libc.a</code> (picolibc), 6,190 <code>libgcc</code>;
+<code>logger</code> 1,579 / 7,585 / 6,190.</p>
+<p><strong>DRC deck.</strong> Read <code>libs.tech/klayout/tech/drc/rule_decks/</code>: <code>sram_5p0.rb</code> and <code>sram_3p3.rb</code> apply their
+rules to shapes under layer 108/5; <code>otp_mk.rb</code> and <code>efuse.rb</code> exist; rule values used in the ROM
+estimate from <code>poly2.rb</code>, <code>comp.rb</code>, <code>contact.rb</code>.</p>
+<p><strong>Cloned and removed again</strong> (shallow, without file contents except the few files read): OpenRAM,
+DFFRAM, <code>gf180mcu_ocd_sram_test</code>, <code>globalfoundries-pdk-libs-gf180mcu_fd_bd_sram</code>. Nothing from them was
+executed.</p>
+<h2>Open questions</h2>
+<ol>
+<li><strong>Does the 5 V foundry macro have published silicon results?</strong> I found none, only its use on run 1
+   chips. Not a reason to doubt it, but it is not shown here.</li>
+<li><strong>Real speed of the 3.3 V macro</strong> at 3.0 V and 125 C. The September 2026 characterisation was
+   presented in a talk whose content I could not read. Ask the author, or simulate the extracted
+   netlist.</li>
+<li><strong>How completely was the 3.3 V macro tested?</strong> The written notes cover one macro size, four data
+   bits and six address bits. The 1024-word macro, all addresses, write margins, temperature and
+   supply range are not documented where I could read them.</li>
+<li><strong>Read and standby current</strong> of the 3.3 V macro, to size a regulator and to know the power-down
+   current.</li>
+<li><strong>Regulator without an external capacitor and level-shifter cells</strong>: neither exists in the PDK. How
+   much area and design time they take was not estimated.</li>
+<li><strong>May designs use the SRAM rules for cells that are not the foundry's?</strong> Not stated in the open
+   design manual. Matters only for section 4 with a changed cell.</li>
+<li><strong>ROM from logic cells after buffering and placement</strong>: area, and whether one 50 ns cycle is
+   enough. One block through the flow would answer it.</li>
+<li><strong>How much smaller can the cache be with the library in ROM?</strong> Repeat the cache study with the
+   library addresses served without misses.</li>
+<li><strong>Arrakeen's block sizes and results</strong> are not published yet.</li>
+<li><strong>Run 3 silicon and later runs</strong>: I found dates for run 3 only (submission 16 December 2026,
+    parts in the second quarter of 2027).</li>
+</ol>
+<h2>Sources</h2>
+<p>PDK and foundry documentation</p>
+<ul>
+<li>GF180MCU design manual, 5 V SRAM core cell (3 x 4.5 um cell, rule list):
+  https://gf180mcu-pdk.readthedocs.io/en/latest/physical_verification/design_manual/drm_11_1.html</li>
+<li>GF180MCU design manual, 3.3 V SRAM rules:
+  https://gf180mcu-pdk.readthedocs.io/en/latest/physical_verification/design_manual/drm_11_2.html</li>
+<li>Foundry SRAM documentation (four macros):
+  https://gf180mcu-pdk.readthedocs.io/en/latest/IPs/SRAM/gf180mcu_fd_ip_sram/index.html</li>
+<li>open_pdks change log (dates of the 3.3 V SRAM and eFuse libraries):
+  https://opencircuitdesign.com/open_pdks/history.html</li>
+<li>Placeholder "SRAM build space" repository:
+  https://github.com/google/globalfoundries-pdk-libs-gf180mcu_fd_bd_sram</li>
+</ul>
+<p>3.3 V SRAM</p>
+<ul>
+<li>Library: https://github.com/RTimothyEdwards/gf180mcu_ocd_ip_sram</li>
+<li>Test chip, notes in <code>doc/README</code>, picture <code>doc/4bit_count_bench_test.png</code>:
+  https://github.com/RTimothyEdwards/gf180mcu_ocd_sram_test</li>
+<li>Test chip on run 1: https://wafer.space/ws-run1/projects/OCD2.html</li>
+<li>Test chip on run 2: https://wafer.space/ws-run2/projects/OCD3.html</li>
+<li>ORConf 2026 programme, talk by R. Timothy Edwards, 12 September 2026 (video
+  https://youtu.be/77NwPPjNKZY, not viewed): https://fossi-foundation.org/orconf/2026</li>
+<li>A run 2 design that weighed these macros (sizes agree with mine):
+  https://essenceia.github.io/projects/ethernet_switch_asic/</li>
+</ul>
+<p>wafer.space</p>
+<ul>
+<li>Technology page (SRAM table, origin of the 3.3 V macros): https://wafer.space/technology.html</li>
+<li>Run 3 dates and slot prices: https://wafer.space/</li>
+<li>Run 1 (dates, designs, SRAM totals): https://wafer.space/ws-run1/</li>
+<li>Run 2 (dates, memory test chips): https://wafer.space/ws-run2/</li>
+<li>eFuse and SRAM test chip TZ01: https://wafer.space/ws-run1/projects/TZ01.html</li>
+<li>Chips4Makers test chips: https://wafer.space/ws-run2/projects/FS01.html,
+  https://wafer.space/ws-run2/projects/FS02.html, https://wafer.space/ws-run2/projects/FS03.html</li>
+<li>Earlier shuttles (eFuse use, no OTP): https://wafer.space/google-gf180mcu-mpw0/</li>
+<li>RISCBoy-180 design notes (5 V macro density as the limit):
+  https://github.com/Wren6991/RISCBoy-180/blob/main/notes.md</li>
+</ul>
+<p>Compilers and generators</p>
+<ul>
+<li>OpenRAM (directory <code>technology/gf180mcu</code>, <code>macros/rom_configs/gf180mcu_rom_*.py</code>):
+  https://github.com/VLSIDA/OpenRAM</li>
+<li>OpenRAM request for GF180MCU support: https://github.com/VLSIDA/OpenRAM/issues/167</li>
+<li>OpenRAM status slides, 2023:
+  https://open-source-eda-birds-of-a-feather.github.io/doc/slides_2023/Guthaus-DAC-BoaF-2023.pdf</li>
+<li>DFFRAM (platform status table, GF180MCU cell definitions): https://github.com/AUCOHL/DFFRAM</li>
+<li>Arrakeen test chip repository: https://gitlab.com/Chips4Makers/arrakeen-sram-testchip</li>
+<li>c4m-flexmem: https://pypi.org/project/c4m-flexmem/</li>
+<li>2AM Logic SRAM block: https://github.com/2AMLogic/gf180-sram</li>
+<li>eFuse compiler: https://github.com/egorxe/gf180_efuse_compiler and
+  https://egorxe.github.io/gf180_efuse_compiler</li>
+<li>Gain-cell memory compiler paper (no GF180MCU content found): https://arxiv.org/abs/2602.21278</li>
+</ul>
+<footer>Generated from <code>docs/memory_research.md</code> by <code>scripts/build_site.py</code>. Nothing here has been measured on silicon.</footer>
+</main></div></body></html>

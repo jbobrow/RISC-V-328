@@ -1,0 +1,147 @@
+
+Circuit 1 cell pfet_06v0 and Circuit 2 cell pfet_06v0 are black boxes.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell pfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: pfet_06v0                       |Circuit 2: pfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes pfet_06v0 and pfet_06v0 are equivalent.
+
+Circuit 1 cell ppolyf_u and Circuit 2 cell ppolyf_u are black boxes.
+Warning: Equate pins:  cell ppolyf_u is a placeholder, treated as a black box.
+Warning: Equate pins:  cell ppolyf_u is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: ppolyf_u                        |Circuit 2: ppolyf_u                        
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes ppolyf_u and ppolyf_u are equivalent.
+
+Circuit 1 cell nfet_06v0 and Circuit 2 cell nfet_06v0 are black boxes.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell nfet_06v0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: nfet_06v0                       |Circuit 2: nfet_06v0                       
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+4                                          |4                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes nfet_06v0 and nfet_06v0 are equivalent.
+
+Circuit 1 cell ppolyf_u_1k_6p0 and Circuit 2 cell ppolyf_u_1k_6p0 are black boxes.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+Warning: Equate pins:  cell ppolyf_u_1k_6p0 is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: ppolyf_u_1k_6p0                 |Circuit 2: ppolyf_u_1k_6p0                 
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+3                                          |3                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes ppolyf_u_1k_6p0 and ppolyf_u_1k_6p0 are equivalent.
+
+Circuit 1 cell cap_mim_2f0_m4m5_noshield and Circuit 2 cell cap_mim_2f0fF are black boxes.
+Warning: Equate pins:  cell cap_mim_2f0_m4m5_noshield is a placeholder, treated as a black box.
+Warning: Equate pins:  cell cap_mim_2f0fF is a placeholder, treated as a black box.
+
+Subcircuit pins:
+Circuit 1: cap_mim_2f0_m4m5_noshield       |Circuit 2: cap_mim_2f0fF                   
+-------------------------------------------|-------------------------------------------
+1                                          |1                                          
+2                                          |2                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes cap_mim_2f0_m4m5_noshield and cap_mim_2f0fF are equivalent.
+Flattening unmatched subcell pfet_w1_l2_nf3 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell respp_l11p4_n2_w2 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell nfet_w0p5_l0p7_nf1 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell nfet_w8_l8_nf1 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell res1k_l13p75_n10_w1 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell pfet_w16_l8_nf4 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell mim_w30_l30 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell respp_l34p3_n1_w2 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell mim_w5_l5_x20 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell nfet_w2_l1_nf2 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell res1k_l21p75_n4_w1 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell pfet_w2_l0p6_nf1 in circuit devtest (0)(1 instance)
+Flattening unmatched subcell res1k_l13p4_n1_w1 in circuit devtest (0)(1 instance)
+
+Class devtest (0):  Merged 25 parallel devices.
+Class devtest (0):  Merged 13 series devices.
+Subcircuit summary:
+Circuit 1: devtest                         |Circuit 2: devtest                         
+-------------------------------------------|-------------------------------------------
+pfet_06v0 (8->3)                           |pfet_06v0 (8->3)                           
+ppolyf_u (3->2)                            |ppolyf_u (2)                               
+nfet_06v0 (4->3)                           |nfet_06v0 (4->3)                           
+ppolyf_u_1k_6p0 (15->3)                    |ppolyf_u_1k_6p0 (3)                        
+cap_mim_2f0_m4m5_noshield (21->2)          |cap_mim_2f0fF (21->2)                      
+Number of devices: 13                      |Number of devices: 13                      
+Number of nets: 36                         |Number of nets: 36                         
+---------------------------------------------------------------------------------------
+Resolving symmetries by property value.
+Resolving symmetries by pin name.
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: devtest                         |Circuit 2: devtest                         
+-------------------------------------------|-------------------------------------------
+vss                                        |vss                                        
+g0                                         |g0                                         
+g1                                         |g1                                         
+g2                                         |g2                                         
+d0                                         |d0                                         
+s0                                         |s0                                         
+d1                                         |d1                                         
+s1                                         |s1                                         
+d2                                         |d2                                         
+s2                                         |s2                                         
+g3                                         |g3                                         
+g4                                         |g4                                         
+g5                                         |g5                                         
+d3                                         |d3                                         
+s3                                         |s3                                         
+d4                                         |d4                                         
+s4                                         |s4                                         
+d5                                         |d5                                         
+s5                                         |s5                                         
+nw3                                        |nw3                                        
+nw4                                        |nw4                                        
+nw5                                        |nw5                                        
+ra0                                        |ra0                                        
+rb0                                        |rb0                                        
+ra1                                        |ra1                                        
+rb1                                        |rb1                                        
+ra2                                        |ra2                                        
+rb2                                        |rb2                                        
+pa0                                        |pa0                                        
+pb0                                        |pb0                                        
+pa1                                        |pa1                                        
+pb1                                        |pb1                                        
+ct                                         |ct                                         
+bt                                         |bt                                         
+cb                                         |cb                                         
+bb                                         |bb                                         
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes devtest and devtest are equivalent.
+
+Final result: Circuits match uniquely.
+.
