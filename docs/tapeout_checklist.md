@@ -87,7 +87,15 @@ Status key: [x] done in this repository, [ ] open.
       three-way cache, the fast multiplier and a blank block for the macro: cells at 41 % of their rows,
       0 routing violations, 20 MHz met at all nine corners (+0.64 ns at the slowest), hold met,
       routed netlist passes the basic test at gate level (docs/layout_results.md)
-- [ ] Full-height layout to sign-off: 94 slow edges to look at (worst 8.2 ns at the PB0 pad), only
+- [ ] Full-height floorplan: four variants tried against the reference `full4` (+0.64 ns, 94 slow
+      edges, 646 overloads). Pad buffers with wider strips (`full7`, -1.73 ns), lanes kept free
+      (`full8`, -3.09 ns) and pad buffers alone (`full9`, stopped) were worse. Repeaters every 600 um
+      (`full10`) came out at -0.03 ns on one path; with more repair margin (`full11`) setup is met at
+      all corners (+0.17 ns), 79 slow edges and 265 overloads, one 9 ps hold miss on FL_MISO.
+- [ ] FL_MISO input constraint from the memory die's data sheet (today `-min 0`, pessimistic), then
+      rerun timing on `full11` and adopt it as the reference PB0's 2.2 mm wire over
+      the memories needs its driver moved or a repeater placed by hand (docs/layout_results.md)
+- [ ] Full-height layout to sign-off: 94 slow edges (one at the PB0 pad, 8.2 ns; 93 inside the logic), only
       0.64 ns of margin on the multiplier at the slowest corner, DRC/LVS/density/antenna decks and the
       equivalence check not run, more supply pads for the taller die and an IR-drop check, the build
       still has the analog stub
@@ -95,6 +103,11 @@ Status key: [x] done in this repository, [ ] open.
       multiplier); the half-height files stay as the record of that layout
 - [ ] Board support: a linker script that puts interrupt handlers in the first 2 KB and start-up code
       that sets NVMCFG = 0 (sw/bench/bench.ld.S and hal.c do this for the benchmarks only)
+- [ ] Second silicon, denser memory (docs/memory_research.md, third pass): the 3.3 V 1024 x 8 block
+      is 5.57 ns at the slow corner with its wiring and works at 1.8 V; a regulator needs 2 nF on chip
+      besides the blocks' own 2.7 nF (first order). Still to do: the real regulator with a bypass
+      switch and start-up, the level-shifter cell's layout and timing files, the rail grid, and the
+      power-down decision (island on asleep, or reload in about 30 ms)
 - [ ] Slot cost: the full-height slot is about twice the half-height one (wafer.space lists 7,000 to
       8,000 USD against 4,000 to 5,000 USD)
 - [x] Standard-cell area corrected: 1.48 mm2, 46 % of the cell rows, not 1.99 mm2 and 62 % (the

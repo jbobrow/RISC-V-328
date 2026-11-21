@@ -40,6 +40,167 @@ module chip_top (
 	assign pad_in[15]    = 1'b0;
 	assign pad_in[31:28] = 4'h0;
 
+	// Core side of the pad signals. With RV328_PADBUF every pad signal has a buffer of its own,
+	// which the floorplan places beside its pad; without it the two sides are the same nets.
+	wire [31:0] c_in, c_out, c_oe, c_pu, c_ie;
+	wire        p_fl_csn, p_fl_sck, p_fl_mosi, p_fl_miso;
+`ifdef RV328_PADBUF
+	rv328_padbuf u_pb_a_21 (.i (c_out[21]), .o (pad_out[21]));
+	rv328_padbuf u_pb_e_21 (.i (c_oe[21]), .o (pad_oe[21]));
+	rv328_padbuf u_pb_u_21 (.i (c_pu[21]), .o (pad_pu[21]));
+	rv328_padbuf u_pb_i_21 (.i (c_ie[21]), .o (pad_ie[21]));
+	rv328_padbuf u_pb_y_21 (.i (pad_in[21]), .o (c_in[21]));
+	rv328_padbuf u_pb_a_22 (.i (c_out[22]), .o (pad_out[22]));
+	rv328_padbuf u_pb_e_22 (.i (c_oe[22]), .o (pad_oe[22]));
+	rv328_padbuf u_pb_u_22 (.i (c_pu[22]), .o (pad_pu[22]));
+	rv328_padbuf u_pb_i_22 (.i (c_ie[22]), .o (pad_ie[22]));
+	rv328_padbuf u_pb_y_22 (.i (pad_in[22]), .o (c_in[22]));
+	rv328_padbuf u_pb_a_23 (.i (c_out[23]), .o (pad_out[23]));
+	rv328_padbuf u_pb_e_23 (.i (c_oe[23]), .o (pad_oe[23]));
+	rv328_padbuf u_pb_u_23 (.i (c_pu[23]), .o (pad_pu[23]));
+	rv328_padbuf u_pb_i_23 (.i (c_ie[23]), .o (pad_ie[23]));
+	rv328_padbuf u_pb_y_23 (.i (pad_in[23]), .o (c_in[23]));
+	rv328_padbuf u_pb_a_0 (.i (c_out[0]), .o (pad_out[0]));
+	rv328_padbuf u_pb_e_0 (.i (c_oe[0]), .o (pad_oe[0]));
+	rv328_padbuf u_pb_u_0 (.i (c_pu[0]), .o (pad_pu[0]));
+	rv328_padbuf u_pb_i_0 (.i (c_ie[0]), .o (pad_ie[0]));
+	rv328_padbuf u_pb_y_0 (.i (pad_in[0]), .o (c_in[0]));
+	rv328_padbuf u_pb_a_1 (.i (c_out[1]), .o (pad_out[1]));
+	rv328_padbuf u_pb_e_1 (.i (c_oe[1]), .o (pad_oe[1]));
+	rv328_padbuf u_pb_u_1 (.i (c_pu[1]), .o (pad_pu[1]));
+	rv328_padbuf u_pb_i_1 (.i (c_ie[1]), .o (pad_ie[1]));
+	rv328_padbuf u_pb_y_1 (.i (pad_in[1]), .o (c_in[1]));
+	rv328_padbuf u_pb_a_2 (.i (c_out[2]), .o (pad_out[2]));
+	rv328_padbuf u_pb_e_2 (.i (c_oe[2]), .o (pad_oe[2]));
+	rv328_padbuf u_pb_u_2 (.i (c_pu[2]), .o (pad_pu[2]));
+	rv328_padbuf u_pb_i_2 (.i (c_ie[2]), .o (pad_ie[2]));
+	rv328_padbuf u_pb_y_2 (.i (pad_in[2]), .o (c_in[2]));
+	rv328_padbuf u_pb_a_3 (.i (c_out[3]), .o (pad_out[3]));
+	rv328_padbuf u_pb_e_3 (.i (c_oe[3]), .o (pad_oe[3]));
+	rv328_padbuf u_pb_u_3 (.i (c_pu[3]), .o (pad_pu[3]));
+	rv328_padbuf u_pb_i_3 (.i (c_ie[3]), .o (pad_ie[3]));
+	rv328_padbuf u_pb_y_3 (.i (pad_in[3]), .o (c_in[3]));
+	rv328_padbuf u_pb_a_4 (.i (c_out[4]), .o (pad_out[4]));
+	rv328_padbuf u_pb_e_4 (.i (c_oe[4]), .o (pad_oe[4]));
+	rv328_padbuf u_pb_u_4 (.i (c_pu[4]), .o (pad_pu[4]));
+	rv328_padbuf u_pb_i_4 (.i (c_ie[4]), .o (pad_ie[4]));
+	rv328_padbuf u_pb_y_4 (.i (pad_in[4]), .o (c_in[4]));
+	rv328_padbuf u_pb_a_5 (.i (c_out[5]), .o (pad_out[5]));
+	rv328_padbuf u_pb_e_5 (.i (c_oe[5]), .o (pad_oe[5]));
+	rv328_padbuf u_pb_u_5 (.i (c_pu[5]), .o (pad_pu[5]));
+	rv328_padbuf u_pb_i_5 (.i (c_ie[5]), .o (pad_ie[5]));
+	rv328_padbuf u_pb_y_5 (.i (pad_in[5]), .o (c_in[5]));
+	rv328_padbuf u_pb_a_26 (.i (c_out[26]), .o (pad_out[26]));
+	rv328_padbuf u_pb_e_26 (.i (c_oe[26]), .o (pad_oe[26]));
+	rv328_padbuf u_pb_u_26 (.i (c_pu[26]), .o (pad_pu[26]));
+	rv328_padbuf u_pb_i_26 (.i (c_ie[26]), .o (pad_ie[26]));
+	rv328_padbuf u_pb_y_26 (.i (pad_in[26]), .o (c_in[26]));
+	rv328_padbuf u_pb_a_27 (.i (c_out[27]), .o (pad_out[27]));
+	rv328_padbuf u_pb_e_27 (.i (c_oe[27]), .o (pad_oe[27]));
+	rv328_padbuf u_pb_u_27 (.i (c_pu[27]), .o (pad_pu[27]));
+	rv328_padbuf u_pb_i_27 (.i (c_ie[27]), .o (pad_ie[27]));
+	rv328_padbuf u_pb_y_27 (.i (pad_in[27]), .o (c_in[27]));
+	rv328_padbuf u_pb_a_18 (.i (c_out[18]), .o (pad_out[18]));
+	rv328_padbuf u_pb_e_18 (.i (c_oe[18]), .o (pad_oe[18]));
+	rv328_padbuf u_pb_u_18 (.i (c_pu[18]), .o (pad_pu[18]));
+	rv328_padbuf u_pb_i_18 (.i (c_ie[18]), .o (pad_ie[18]));
+	rv328_padbuf u_pb_y_18 (.i (pad_in[18]), .o (c_in[18]));
+	rv328_padbuf u_pb_a_17 (.i (c_out[17]), .o (pad_out[17]));
+	rv328_padbuf u_pb_e_17 (.i (c_oe[17]), .o (pad_oe[17]));
+	rv328_padbuf u_pb_u_17 (.i (c_pu[17]), .o (pad_pu[17]));
+	rv328_padbuf u_pb_i_17 (.i (c_ie[17]), .o (pad_ie[17]));
+	rv328_padbuf u_pb_y_17 (.i (pad_in[17]), .o (c_in[17]));
+	rv328_padbuf u_pb_a_16 (.i (c_out[16]), .o (pad_out[16]));
+	rv328_padbuf u_pb_e_16 (.i (c_oe[16]), .o (pad_oe[16]));
+	rv328_padbuf u_pb_u_16 (.i (c_pu[16]), .o (pad_pu[16]));
+	rv328_padbuf u_pb_i_16 (.i (c_ie[16]), .o (pad_ie[16]));
+	rv328_padbuf u_pb_y_16 (.i (pad_in[16]), .o (c_in[16]));
+	rv328_padbuf u_pb_a_14 (.i (c_out[14]), .o (pad_out[14]));
+	rv328_padbuf u_pb_e_14 (.i (c_oe[14]), .o (pad_oe[14]));
+	rv328_padbuf u_pb_u_14 (.i (c_pu[14]), .o (pad_pu[14]));
+	rv328_padbuf u_pb_i_14 (.i (c_ie[14]), .o (pad_ie[14]));
+	rv328_padbuf u_pb_y_14 (.i (pad_in[14]), .o (c_in[14]));
+	rv328_padbuf u_pb_a_13 (.i (c_out[13]), .o (pad_out[13]));
+	rv328_padbuf u_pb_e_13 (.i (c_oe[13]), .o (pad_oe[13]));
+	rv328_padbuf u_pb_u_13 (.i (c_pu[13]), .o (pad_pu[13]));
+	rv328_padbuf u_pb_i_13 (.i (c_ie[13]), .o (pad_ie[13]));
+	rv328_padbuf u_pb_y_13 (.i (pad_in[13]), .o (c_in[13]));
+	rv328_padbuf u_pb_a_12 (.i (c_out[12]), .o (pad_out[12]));
+	rv328_padbuf u_pb_e_12 (.i (c_oe[12]), .o (pad_oe[12]));
+	rv328_padbuf u_pb_u_12 (.i (c_pu[12]), .o (pad_pu[12]));
+	rv328_padbuf u_pb_i_12 (.i (c_ie[12]), .o (pad_ie[12]));
+	rv328_padbuf u_pb_y_12 (.i (pad_in[12]), .o (c_in[12]));
+	rv328_padbuf u_pb_a_11 (.i (c_out[11]), .o (pad_out[11]));
+	rv328_padbuf u_pb_e_11 (.i (c_oe[11]), .o (pad_oe[11]));
+	rv328_padbuf u_pb_u_11 (.i (c_pu[11]), .o (pad_pu[11]));
+	rv328_padbuf u_pb_i_11 (.i (c_ie[11]), .o (pad_ie[11]));
+	rv328_padbuf u_pb_y_11 (.i (pad_in[11]), .o (c_in[11]));
+	rv328_padbuf u_pb_a_10 (.i (c_out[10]), .o (pad_out[10]));
+	rv328_padbuf u_pb_e_10 (.i (c_oe[10]), .o (pad_oe[10]));
+	rv328_padbuf u_pb_u_10 (.i (c_pu[10]), .o (pad_pu[10]));
+	rv328_padbuf u_pb_i_10 (.i (c_ie[10]), .o (pad_ie[10]));
+	rv328_padbuf u_pb_y_10 (.i (pad_in[10]), .o (c_in[10]));
+	rv328_padbuf u_pb_a_9 (.i (c_out[9]), .o (pad_out[9]));
+	rv328_padbuf u_pb_e_9 (.i (c_oe[9]), .o (pad_oe[9]));
+	rv328_padbuf u_pb_u_9 (.i (c_pu[9]), .o (pad_pu[9]));
+	rv328_padbuf u_pb_i_9 (.i (c_ie[9]), .o (pad_ie[9]));
+	rv328_padbuf u_pb_y_9 (.i (pad_in[9]), .o (c_in[9]));
+	rv328_padbuf u_pb_a_8 (.i (c_out[8]), .o (pad_out[8]));
+	rv328_padbuf u_pb_e_8 (.i (c_oe[8]), .o (pad_oe[8]));
+	rv328_padbuf u_pb_u_8 (.i (c_pu[8]), .o (pad_pu[8]));
+	rv328_padbuf u_pb_i_8 (.i (c_ie[8]), .o (pad_ie[8]));
+	rv328_padbuf u_pb_y_8 (.i (pad_in[8]), .o (c_in[8]));
+	rv328_padbuf u_pb_a_7 (.i (c_out[7]), .o (pad_out[7]));
+	rv328_padbuf u_pb_e_7 (.i (c_oe[7]), .o (pad_oe[7]));
+	rv328_padbuf u_pb_u_7 (.i (c_pu[7]), .o (pad_pu[7]));
+	rv328_padbuf u_pb_i_7 (.i (c_ie[7]), .o (pad_ie[7]));
+	rv328_padbuf u_pb_y_7 (.i (pad_in[7]), .o (c_in[7]));
+	rv328_padbuf u_pb_a_6 (.i (c_out[6]), .o (pad_out[6]));
+	rv328_padbuf u_pb_e_6 (.i (c_oe[6]), .o (pad_oe[6]));
+	rv328_padbuf u_pb_u_6 (.i (c_pu[6]), .o (pad_pu[6]));
+	rv328_padbuf u_pb_i_6 (.i (c_ie[6]), .o (pad_ie[6]));
+	assign c_in[6] = pad_in[6];
+	rv328_padbuf u_pb_a_25 (.i (c_out[25]), .o (pad_out[25]));
+	rv328_padbuf u_pb_e_25 (.i (c_oe[25]), .o (pad_oe[25]));
+	rv328_padbuf u_pb_u_25 (.i (c_pu[25]), .o (pad_pu[25]));
+	rv328_padbuf u_pb_i_25 (.i (c_ie[25]), .o (pad_ie[25]));
+	rv328_padbuf u_pb_y_25 (.i (pad_in[25]), .o (c_in[25]));
+	rv328_padbuf u_pb_a_24 (.i (c_out[24]), .o (pad_out[24]));
+	rv328_padbuf u_pb_e_24 (.i (c_oe[24]), .o (pad_oe[24]));
+	rv328_padbuf u_pb_u_24 (.i (c_pu[24]), .o (pad_pu[24]));
+	rv328_padbuf u_pb_i_24 (.i (c_ie[24]), .o (pad_ie[24]));
+	rv328_padbuf u_pb_y_24 (.i (pad_in[24]), .o (c_in[24]));
+	rv328_padbuf u_pb_a_20 (.i (c_out[20]), .o (pad_out[20]));
+	rv328_padbuf u_pb_e_20 (.i (c_oe[20]), .o (pad_oe[20]));
+	rv328_padbuf u_pb_u_20 (.i (c_pu[20]), .o (pad_pu[20]));
+	rv328_padbuf u_pb_i_20 (.i (c_ie[20]), .o (pad_ie[20]));
+	rv328_padbuf u_pb_y_20 (.i (pad_in[20]), .o (c_in[20]));
+	rv328_padbuf u_pb_a_19 (.i (c_out[19]), .o (pad_out[19]));
+	rv328_padbuf u_pb_e_19 (.i (c_oe[19]), .o (pad_oe[19]));
+	rv328_padbuf u_pb_u_19 (.i (c_pu[19]), .o (pad_pu[19]));
+	rv328_padbuf u_pb_i_19 (.i (c_ie[19]), .o (pad_ie[19]));
+	rv328_padbuf u_pb_y_19 (.i (pad_in[19]), .o (c_in[19]));
+	assign c_in[15] = pad_in[15];
+	assign c_in[28] = pad_in[28];
+	assign c_in[29] = pad_in[29];
+	assign c_in[30] = pad_in[30];
+	assign c_in[31] = pad_in[31];
+	rv328_padbuf u_pb_fl_csn (.i (core_fl_csn), .o (p_fl_csn));
+	rv328_padbuf u_pb_fl_sck (.i (core_fl_sck), .o (p_fl_sck));
+	rv328_padbuf u_pb_fl_mosi (.i (core_fl_mosi), .o (p_fl_mosi));
+	rv328_padbuf u_pb_fl_miso (.i (p_fl_miso), .o (core_fl_miso));
+`else
+	assign c_in = pad_in;
+	assign pad_out = c_out;
+	assign pad_oe = c_oe;
+	assign pad_pu = c_pu;
+	assign pad_ie = c_ie;
+	assign p_fl_csn = core_fl_csn;
+	assign p_fl_sck = core_fl_sck;
+	assign p_fl_mosi = core_fl_mosi;
+	assign core_fl_miso = p_fl_miso;
+`endif
+
 	// ---------------- power pads ----------------
 	genvar i;
 	generate
@@ -136,25 +297,25 @@ module chip_top (
 `ifdef USE_POWER_PINS
 		.DVDD (DVDD), .DVSS (DVSS), .VDD (VDD), .VSS (VSS),
 `endif
-		.PAD (FL_CSN), .A (core_fl_csn), .OE (1'b1), .Y (),
+		.PAD (FL_CSN), .A (p_fl_csn), .OE (1'b1), .Y (),
 		.IE (1'b0), .PU (1'b0), .PD (1'b0), .CS (1'b0), .SL (1'b0));
 	(* keep *) gf180mcu_fd_io__bi_24t pad_fl_sck (
 `ifdef USE_POWER_PINS
 		.DVDD (DVDD), .DVSS (DVSS), .VDD (VDD), .VSS (VSS),
 `endif
-		.PAD (FL_SCK), .A (core_fl_sck), .OE (1'b1), .Y (),
+		.PAD (FL_SCK), .A (p_fl_sck), .OE (1'b1), .Y (),
 		.IE (1'b0), .PU (1'b0), .PD (1'b0), .CS (1'b0), .SL (1'b0));
 	(* keep *) gf180mcu_fd_io__bi_24t pad_fl_mosi (
 `ifdef USE_POWER_PINS
 		.DVDD (DVDD), .DVSS (DVSS), .VDD (VDD), .VSS (VSS),
 `endif
-		.PAD (FL_MOSI), .A (core_fl_mosi), .OE (1'b1), .Y (),
+		.PAD (FL_MOSI), .A (p_fl_mosi), .OE (1'b1), .Y (),
 		.IE (1'b0), .PU (1'b0), .PD (1'b0), .CS (1'b0), .SL (1'b0));
 	(* keep *) gf180mcu_fd_io__in_c pad_fl_miso (
 `ifdef USE_POWER_PINS
 		.DVDD (DVDD), .DVSS (DVSS), .VDD (VDD), .VSS (VSS),
 `endif
-		.PAD (FL_MISO), .Y (core_fl_miso), .PU (1'b1), .PD (1'b0));
+		.PAD (FL_MISO), .Y (p_fl_miso), .PU (1'b1), .PD (1'b0));
 	(* keep *) gf180mcu_fd_io__in_s pad_tck (
 `ifdef USE_POWER_PINS
 		.DVDD (DVDD), .DVSS (DVSS), .VDD (VDD), .VSS (VSS),
@@ -416,7 +577,7 @@ module chip_top (
 		.adc_en (adc_en), .adc_mux (adc_mux), .adc_refs (adc_refs), .adc_sample (adc_sample),
 		.adc_dac (adc_dac), .adc_cmp (adc_cmp),
 		.ac_en (ac_en), .ac_bg (ac_bg), .ac_mux_en (ac_mux_en), .ac_out (ac_out),
-		.pad_in (pad_in), .pad_out (pad_out), .pad_oe (pad_oe), .pad_pu (pad_pu), .pad_ie (pad_ie),
+		.pad_in (c_in), .pad_out (c_out), .pad_oe (c_oe), .pad_pu (c_pu), .pad_ie (c_ie),
 		.fl_csn (core_fl_csn), .fl_sck (core_fl_sck), .fl_mosi (core_fl_mosi), .fl_miso (core_fl_miso),
 		.jtag_tck (jtag_tck), .jtag_tms (jtag_tms), .jtag_tdi (jtag_tdi), .jtag_tdo (jtag_tdo)
 	);

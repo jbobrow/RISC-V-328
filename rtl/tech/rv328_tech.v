@@ -14,12 +14,14 @@
 `ifdef RV328_SC9T
 `define RV328_ICG_CELL    gf180mcu_fd_sc_mcu9t5v0__icgtp_2
 `define RV328_CLKBUF_CELL gf180mcu_fd_sc_mcu9t5v0__clkbuf_4
+`define RV328_PADBUF_CELL gf180mcu_fd_sc_mcu9t5v0__buf_8
 `endif
 `ifndef RV328_ICG_CELL
 `define RV328_ICG_CELL gf180mcu_fd_sc_mcu7t5v0__icgtp_2
 `endif
 `ifndef RV328_CLKBUF_CELL
 `define RV328_CLKBUF_CELL gf180mcu_fd_sc_mcu7t5v0__clkbuf_4
+`define RV328_PADBUF_CELL gf180mcu_fd_sc_mcu7t5v0__buf_8
 `endif
 
 // ----------------------------------------------------------------------------
@@ -53,6 +55,20 @@ module rv328_clkbuf (
 );
 `ifdef RV328_TECH_GF180
 	(* keep *) `RV328_CLKBUF_CELL u_buf (.I(i), .Z(o));
+`else
+	assign o = i;
+`endif
+endmodule
+
+// ----------------------------------------------------------------------------
+// Buffer that the floorplan places beside a pad (rv328_chip_top.v, RV328_PADBUF):
+// the place-and-route flow does not buffer a net that ends at a pad.
+module rv328_padbuf (
+	input  wire i,
+	output wire o
+);
+`ifdef RV328_TECH_GF180
+	(* keep *) `RV328_PADBUF_CELL u_buf (.I(i), .Z(o));
 `else
 	assign o = i;
 `endif

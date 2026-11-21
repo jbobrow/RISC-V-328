@@ -16,7 +16,7 @@ did. The [build log](build_log.md) tells the same story in order.
 | 9 | Full-height slot for the product | chosen |
 | 10 | Half-height digital-only layout kept ready for tape-out | chosen, 20 November |
 | 11 | Flat placement with guided regions now; finished blocks for the final chip | chosen, 20 November |
-| 12 | Denser memory | first report in; nothing decided |
+| 12 | Denser memory | 3.3 V memory: still go after the third pass (two conditions held in simulation, power-down open); second silicon, not the first |
 
 ## 1. RISC-V processor, not an AVR clone
 
@@ -103,6 +103,20 @@ that boundary early stops the tool from optimising across it; each block also ne
 timing budget and hand-off files.
 **Why blocks in the end:** each is closed once and reused, the top level becomes simple, and the chip
 reads as designed.
+**Evidence since (run `full7`, 20 November):** giving the logic more room at the edges without saying
+what goes where made things worse: logic spread along the west edge and the slowest corner missed timing
+by 1.73 ns; and 93 of the reference layout's 94 slow edges are logic left in the channels between memory
+rows. The regions therefore have three jobs: channels for memory-interface cells only, the debug port
+near its pads, edge strips kept for pad cells (`docs/layout_results.md`).
+**Evidence since (runs `full8` and `full9`, 21 November):** keeping lanes free by soft obstructions
+packed the logic tighter and pushed part of the processor under the analog block (-3.09 ns); pad buffers
+in the reference's 60 um strips left 805 endpoints up to 8.9 ns short after global routing (the run was
+stopped during repair, at +2.3 ns).
+Guiding the placer by taking room away does not work in this flow; the regions need to say where logic
+*goes*, not where it may not.
+What did help (runs `full10`, `full11`): leaving the floorplan alone and having the repair steps put a
+repeater on every wire longer than 600 um: setup met, overloads down 59 %. Regions remain the aim for
+the final chip; for now the flat floorplan with tuned repair is the working layout.
 
 ## 12. Denser memory
 
@@ -124,6 +138,53 @@ denser, the whole 32 KB program could sit on the chip and cache misses would dis
 
 **Recommended by the report, not decided:** keep the foundry block for first silicon; try the read-only
 library as an experiment; plan the 3.3 V memory for a second silicon.
+
+**Second pass on the 3.3 V block** (20 November, by simulation of its transistor netlist):
+
+* It cannot run at 5 V: it is built only from the process's 3.3 V transistors, rated for 3.3 V plus
+  10 %. It needs its own 3.3 V supply inside the chip.
+* It works in simulation: writes and reads of both values at near and far addresses, at slow, typical
+  and fast corners.
+* It is fast: output 3.2 ns after the clock at the slow corner without wiring, an estimated 5 to 6 ns
+  with wiring. The foundry block's data sheet figure is 10.3 ns.
+* Signals from the memory back to the 5 V logic need a real level shifter (a plain 5 V gate driven
+  from 3.0 V draws 68 to 180 uA standing current). The pad library contains such a circuit to copy;
+  it adds 1 to 2 ns.
+* The supply is the hard part. No regulator exists in the kit or in open designs with silicon. It must
+  work without an external capacitor (the pinout has no spare pin), which takes 3.5 to 7 nF on the chip:
+  0.9 to 1.75 mm2 of capacitor, against 1.27 mm2 of core that the denser memory frees.
+* Power-down: either the memory stays powered (leakage up to 0.67 mA when hot, nowhere near an ATmega's
+  power-down current) or it is switched off and the program is copied again on wake-up, about 30 ms.
+
+**Verdict of the report:** go, if (1) the block stays under about 8 ns with wiring at the slow corner,
+(2) a regulator without external capacitor can be designed and fitted, (3) the cost in power-down is
+accepted. Not for the first tape-out. **Not decided.**
+
+**Third pass on the 3.3 V block** (21 November, [memory research](memory_research.md), "Third pass"):
+
+* With its own wiring (capacitance from its layout) the block answers in **5.57 ns** at the slow corner,
+  3.48 ns typical, and works at 1.8 V (11.2 ns). Condition 1 held in simulation. A first extraction that
+  failed every read was a fault of the extraction step, found and documented.
+* The regulator: at most 8 blocks fire on one clock edge in this design, 0.55 to 0.68 nC. The 32 program
+  blocks bring 2.7 nF of their own; with **2 nF more** (about 1 mm2 of MIM, or 0.5 to 0.65 mm2 of MOS
+  capacitor) a first-order regulator keeps the rail at 3.04 V or more. Less than half the 3.5 to 7 nF
+  feared. Condition 2 held at first order; the real circuit, a bypass switch for low VCC and start-up
+  are still to design.
+* The level shifter from the pad library: 1.1 to 1.3 ns at the slow corner, no standing current, about
+  50 um2 each. With it the block delivers a 5 V signal about 6.9 ns after the clock, against 10.3 ns for
+  today's 5 V block.
+* Power-down (condition 3) is a decision, not a measurement: keep the island on (about 15 uA plus
+  leakage, up to 0.67 mA hot) or reload the program on wake-up (about 30 ms).
+
+**Verdict now:** still go, for a second silicon. **Not decided.**
+
+**Power-down, recommended** (21 November): the ATmega keeps its program in flash (0.2 uA in power-down,
+wakes in microseconds to a millisecond); this memory is RAM, so the serial memory stays the permanent
+copy. Neither keeping the whole memory powered nor copying it back on every wake behaves like a drop-in.
+Recommended: switch the memory off in power-down, keep only the first 2 KB (interrupt and wake-up code)
+powered, and refill the rest one 32-byte line at a time on first use (a "loaded" flag per line; the whole
+program fits, so nothing is evicted). Expected sleep current a few uA (estimate). Agreed with Jon as the
+direction; not yet designed.
 
 ## Still open
 

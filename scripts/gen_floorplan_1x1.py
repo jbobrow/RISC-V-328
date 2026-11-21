@@ -17,12 +17,28 @@ The plan, bottom to top (core 3048 x 4238 um):
   row C       six memories upside down, pins facing the logic
   middle      cell rows; the analog block at the east edge; one more memory at the west edge
   rows D, E   two rows of six memories, pins facing one channel
-A strip of cell rows runs along the west, south and north edges so that the pads there have cells
-(buffers, level shifters' loads) next to them, and a column of rows on the east side joins everything.
+A strip of cell rows runs along the west, south and north edges so that the pads there have cells next
+to them, and a column of rows on the east side joins everything.
+
+Options (none: the layout of run full4, the reference full-height layout, 60 um strips):
+  --padbuf     one buffer per pad signal (RV328_PADBUF) set down in front of its pad
+  --edge N     width of the edge strips in um (default 60)
+  --lanes      soft placement obstructions: the first placement keeps logic out of the edge strips, out
+               of the 30 um gap between memory rows B and C and out of the middle 60 um of the two
+               channels, which stay free for the repeaters, hold buffers and clock buffers the later
+               steps add. In the reference layout 93 of 94 slow edges are on nets whose repeaters had no
+               room in those places.
+  --wire N     the design-repair steps after placement and after global routing break every wire longer
+               than N um with a repeater (the flow's default, 0, turns this off)
+  --grt-margin N  setup margin the timing repair after global routing aims for (default 3.5 ns)
+Runs: full7 = --padbuf --edge 120 (pad wires fast, but logic spread into the wider strips and the
+slowest corner missed timing by 1.7 ns); full8 = --padbuf --lanes. See docs/layout_results.md.
 """
 import json
 import math
 import os
+import re
+import sys
 import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -32,11 +48,50 @@ NAME = "rv328_analog_blank"
 SRAM = "gf180mcu_fd_ip_sram__sram512x8m8wm1"
 CORE = (442.0, 442.0, 3490.0, 4680.0)
 SRAM_W, SRAM_H, PITCH = 431.86, 484.88, 442.0
-EDGE = 60.0       # cell rows between the core edge and the memories (west, south, north)
+PADBUF = "--padbuf" in sys.argv
+LANES = "--lanes" in sys.argv
+EDGE = float(sys.argv[sys.argv.index("--edge") + 1]) if "--edge" in sys.argv else 60.0   # cell rows between the core edge and the memories (west, south, north)
+WIRE = float(sys.argv[sys.argv.index("--wire") + 1]) if "--wire" in sys.argv else 0.0
+GRT_MARGIN = float(sys.argv[sys.argv.index("--grt-margin") + 1]) if "--grt-margin" in sys.argv else 3.5
+LANE_SIDE = 30.0  # left open for cells on each side of a channel, next to the memory pins
 CHANNEL = 120.0   # between two rows of memories whose pins face each other
 GAP = 30.0        # between two rows back to back
 STRIP = 24.0      # wires only, between the analog block and the core's east edge
 CACHE = dict(RV328_CACHE_KB=4, RV328_CACHE_WAYS=3, RV328_CACHE_PIN=2, RV328_MUL_FAST=1)
+PORT_BASE = dict(b=0, c=8, d=16, e=24)
+CLOCK_INPUTS = {6}          # PB6: no input buffer (see gen_padring.py)
+
+
+def pad_buffers(blank):
+    """Where the buffer of every pad signal goes (rv328_chip_top.v, RV328_PADBUF): in the cell rows right
+    inside the core edge, in front of its pad. Pad positions are those of the pad ring as the flow places
+    it (flow/librelane/pads_1x1.json, read once from a routed layout). blank = (x0, y0, x1, y1) of the
+    analog block, which has no rows: pads behind it get their buffers just above or below it."""
+    pads = json.load(open(os.path.join(FLOW, "pads_1x1.json")))
+    out = {}
+    for name, (x, y, _) in sorted(pads.items()):
+        m = re.fullmatch(r"pad_p([bcde])(\d)", name)
+        if m:
+            idx = PORT_BASE[m.group(1)] + int(m.group(2))
+            insts = ["u_pb_%s_%d.u_buf" % (t, idx) for t in ("aeui" if idx in CLOCK_INPUTS else "aeuiy")]
+        elif name.startswith("pad_fl_"):
+            insts = ["u_pb_fl_%s.u_buf" % name[7:]]
+        else:
+            continue
+        for k, inst in enumerate(insts):
+            off = (k - (len(insts) - 1) / 2) * 12.0
+            if y < CORE[1]:                      # south
+                px, py = x + 37.5 + off, CORE[1] + 10
+            elif y > CORE[3]:                    # north
+                px, py = x + 37.5 + off, CORE[3] - 20
+            elif x < CORE[0]:                    # west
+                px, py = CORE[0] + 10, y + 37.5 + off
+            else:                                # east
+                px, py = CORE[2] - 30, y + 37.5 + off
+                if blank[1] - 10 < py < blank[3] + 10:
+                    py = blank[1] - 20 - k * 11 if py - blank[1] < blank[3] - py else blank[3] + 20 + k * 11
+            out[inst] = dict(location=[round(px, 1), round(py, 1)], orientation="N")
+    return out
 
 
 def memories():
@@ -63,14 +118,24 @@ def memories():
             out[n] = (round(x0 + k * PITCH, 2), round(y, 2), o)
     band = (round(yc + SRAM_H, 2), round(yd, 2))
     out[tag(2)] = (round(x0, 2), round(band[0] + CHANNEL, 2), "N")
-    return out, band
+    x1 = x0 + 6 * PITCH
+    r = lambda *v: [round(a, 2) for a in v]
+    lanes = [
+        r(CORE[0], CORE[1], CORE[0] + EDGE, CORE[3]),                              # west strip
+        r(CORE[0] + EDGE, CORE[1], CORE[2], CORE[1] + EDGE),                       # south strip
+        r(CORE[0] + EDGE, CORE[3] - EDGE, CORE[2], CORE[3]),                       # north strip
+        r(x0, yb + SRAM_H, x1, yc),                                                # gap between rows B and C
+        r(x0, ya + SRAM_H + LANE_SIDE, x1, yb - LANE_SIDE),                        # channel A-B, middle
+        r(x0, yd + SRAM_H + LANE_SIDE, x1, ye - LANE_SIDE),                        # channel D-E, middle
+    ]
+    return out, band, lanes
 
 
 def main():
     m = json.load(open(os.path.join(ROOT, "analog", "layout", "reports", "macro.json")))
     w, h = math.ceil(m["width"]), math.ceil(m["height"])
     W, H = w + STRIP, h                                    # outline; blocked: x 0..w
-    mem, band = memories()
+    mem, band, lanes = memories()
     x, y = CORE[2] - W, round((band[0] + band[1] - H) / 2)
     ip = os.path.join(FLOW, "ip", NAME)
     for d in ("lef", "lib", "vh", "gds"):
@@ -108,14 +173,24 @@ def main():
     slot = yaml.safe_load(open(os.path.join(FLOW, "slot_1x1.yaml")))
     cfg = yaml.safe_load(open(os.path.join(FLOW, "config.yaml")))
     over = {
-        "VERILOG_DEFINES": slot["VERILOG_DEFINES"] + ["RV328_ANALOG_BLANK"] + ["%s=%d" % kv for kv in CACHE.items()],
+        "VERILOG_DEFINES": slot["VERILOG_DEFINES"] + ["RV328_ANALOG_BLANK"] + (["RV328_PADBUF"] if PADBUF else []) + ["%s=%d" % kv for kv in CACHE.items()],
         "IGNORE_DISCONNECTED_MODULES": cfg["IGNORE_DISCONNECTED_MODULES"] + [NAME],
         "PDN_CFG": "dir::pdn/pdn_cfg_1x1.tcl",
     }
+    if LANES:
+        over["PL_SOFT_OBSTRUCTIONS"] = lanes
+    if WIRE:
+        over["DESIGN_REPAIR_MAX_WIRE_LENGTH"] = WIRE
+        over["GRT_DESIGN_REPAIR_MAX_WIRE_LENGTH"] = WIRE
+    if PADBUF:
+        # one buffer per pad signal, set down beside its pad (not marked "don't touch": the repair
+        # steps then refuse to buffer the net that feeds it)
+        over["MANUAL_GLOBAL_PLACEMENTS"] = pad_buffers((x, y, x + W, y + H))
     text = ("# Full-height slot with the 12 KB three-way cache and the fast multiplier; a blank block of %g x %g um at\n"
             "# (%g, %g) stands where the analog macro goes (scripts/gen_floorplan_1x1.py). Pass this file last.\n" % (W, H, x, y)
             + yaml.safe_dump(over, default_flow_style=None, width=200))
-    text += ("PL_TARGET_DENSITY_PCT: 45\n"
+    text += ("PL_TARGET_DENSITY_PCT: %d\n" % (52 if LANES else 45) +
+            
              "# pads behind a row of memories: let the legaliser carry their buffers to the nearest rows\n"
              "PL_MAX_DISPLACEMENT_X: 3000\nPL_MAX_DISPLACEMENT_Y: 1600\n"
              "# no double spacing for the upper clock nets: where global routing finds congestion it takes that rule\n"
@@ -123,7 +198,7 @@ def main():
              "CTS_APPLY_NDR: none\n"
              "# Timing repair works on the nominal wire model; the slowest corner with the worst-case wire model was\n"
              "# 2.0 ns slower on the multiplier in the first run (-1.57 ns), so ask for that much more margin\n"
-             "PL_RESIZER_SETUP_SLACK_MARGIN: 4.0\nGRT_RESIZER_SETUP_SLACK_MARGIN: 3.5\n")
+             "PL_RESIZER_SETUP_SLACK_MARGIN: 4.0\nGRT_RESIZER_SETUP_SLACK_MARGIN: %g\n" % GRT_MARGIN)
     open(os.path.join(FLOW, "full_1x1.yaml"), "w").write(text)
 
     pdn = open(os.path.join(FLOW, "pdn", "pdn_cfg.tcl")).read()

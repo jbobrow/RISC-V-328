@@ -286,14 +286,204 @@ How it got there:
 What is not good yet:
 
 * **Slow edges.** 94 pins exceed the slew limit, the worst an 8.2 ns edge on the wire to the PB0 pad
-  (limit 1 ns at a pad, 3 ns elsewhere). The third layout had 16. Long wires to pads were not all
-  buffered; it needs a look at where the flow could not place buffers.
+  (limit 1 ns at a pad, 3 ns elsewhere). The third layout had 16. One of the 94 is a pad pin; the rest
+  are inside the logic, on nets whose repeaters could not be placed where they were wanted (next
+  subsection).
 * **Margin at the slowest corner is 0.64 ns of 50.** It is the multiplier. If that does not hold with
   the real analog macro in place, the fallback is the multiplier for the low half of the product only:
   the float-heavy benchmark then runs at 0.81 of an ATmega328P's speed instead of 0.97
   (`docs/cache_study.md`); everything else is unchanged.
 * The upper clock nets were routed without the double-spacing rule (`CTS_APPLY_NDR: none`), as in the
   trial above.
+
+### A second floorplan with a buffer at every pad (`full7`): not adopted
+
+The next run tried to cure the slow edge at the PB0 pad for all pads at once: every pad signal gets a
+buffer of its own (`RV328_PADBUF`, 138 of them) set down by hand in front of its pad, and the strips of
+cell rows along the edges were widened from 60 to 120 um to hold them
+(`scripts/gen_floorplan_1x1.py --padbuf`).
+
+![Full-height layout with pad buffers and wider edge strips](full_height_padbuf.png)
+
+**It routes clean and no pad wire is slow any more, but it is worse than `full4` where it counts: it
+misses 20 MHz by 1.73 ns at the slowest corner, and has more slow edges inside the logic.** `full4`
+stays the reference full-height layout, and the generator's default reproduces it.
+
+| | `full4` (reference) | `full7` (pad buffers, 120 um strips) |
+|---|---|---|
+| Standard cells with taps | 1.88 mm2, 41 % | 1.94 mm2, 43 % |
+| Global routing | 14.0 % of capacity | 15.7 % |
+| Detailed routing | 0 violations, 5.68 m, 368,086 vias | 0 violations, 6.40 m, 381,978 vias |
+| Hold buffers (after clock tree / after global routing) | 2,338 / 625 | 4,991 / 1,252 |
+| Setup, slowest corner, worst-case wires | +0.64 ns | **-1.73 ns**, 68 endpoints |
+| Setup, slow corner, nominal wires | +2.50 ns | +0.65 ns |
+| Setup, typical | +10.96 ns | +12.70 ns |
+| Hold, worst corner | +0.14 ns | +0.15 ns |
+| Slew / capacitance limits exceeded | 94 / 646 | 142 / 937 |
+| Pad pins among the slow edges | 1 (PB0, 8.2 ns) | 0 |
+
+What it showed:
+
+* **The slow edges were never mainly a pad problem.** Of the 94 in `full4` one is a pad pin; the other
+  93 are inside the logic. The earlier text here said "long wires to pads were not all buffered", which
+  described the worst one and not the rest. The pad buffers take that one off the pad pin (all pad wires are within their 1 ns limit), but the
+  slow edge reappears on the wire into PB0's buffer (4.3 ns): see the next run.
+* **The slow edges inside come from logic that sits in the channels between memory rows.** The worst
+  (14.3 ns) is a gate of the debug port at (1141, 1149) driving a repeater 1.1 mm away at (1715, 1663):
+  both are in channels where the rows are full, so the repeater the flow inserted could not be put down
+  where it was wanted and was legalised far along the channel. The debug logic runs on the 10 MHz JTAG
+  clock, has slack to spare, and is pushed to wherever is left.
+* **Wider edge strips pull logic out of the middle.** In `full4` the 60 um strips stayed nearly empty.
+  At 120 um the placer filled the west strip beside the lower memory block and more of the east column
+  (picture). Wires got longer: 13 % more wire in total, and the two tightest groups of paths both fail,
+  28 endpoints from the cache's address register through the tag compare to the register file
+  (-1.73 ns) and 40 from the multiplier's operand register (-0.89 ns).
+* **One buffer had to go: the clock pin's.** With an input buffer on PB6 the external clock reached the
+  core one buffer later than the copy the oscillator stand-in takes from the same pad, the tool saw two
+  skewed versions of one clock, and hold repair after clock-tree synthesis stalled (17 minutes on ten
+  endpoints, each buffer forcing a full timing update; found with a stack trace of the tool and a hold
+  report of the placed design). PB6 now goes to the clock tree straight from the pad
+  (`CLOCK_INPUTS` in `scripts/gen_padring.py`); the step then takes 11 minutes as before.
+* All ten RTL tests pass with the pad buffers in and the full-height configuration
+  (`SIMDEFS="-DRV328_PADBUF -DRV328_CACHE_KB=4 -DRV328_CACHE_WAYS=3 -DRV328_CACHE_PIN=2 -DRV328_MUL_FAST=1"`).
+  No gate-level test was run on this layout.
+
+What follows for the next floorplan: the logic needs regions, not more room at the edges. Keep the
+channels between memory rows for the cells that talk to those memories, give the debug port a place
+near its pads, keep the strips narrow, and keep the pad buffers only where a pad is far from the logic.
+That is the "guided regions" step of `docs/decisions.md` (11); this run is the evidence for what the
+regions have to do. Timing table: `docs/full_height_padbuf_timing.txt`.
+
+### Lanes kept free for buffers (`full8`): not adopted either
+
+The next run kept the pad buffers and the reference layout's 60 um edge strips, and told the first
+placement to leave lanes free for the cells the later steps add: the edge strips, the 30 um gap between
+two memory rows, and the middle 60 um of the two channels (soft placement obstructions, which bind the
+first placement only; buffers, hold cells and clock buffers may still go there). Target density 52 %
+instead of 45 % so the logic fits in what is left (`scripts/gen_floorplan_1x1.py --padbuf --lanes`).
+
+![Full-height layout with lanes kept free](full_height_lanes.png)
+
+**The lanes stayed free, but timing got worse again: -3.09 ns at the slowest corner, three hold
+violations at the fast corner, and 357 slow edges.**
+
+| | `full4` (reference) | `full7` (pad buffers, 120 um strips) | `full8` (pad buffers, lanes) |
+|---|---|---|---|
+| Standard cells with taps | 1.88 mm2, 41 % | 1.94 mm2, 43 % | 1.93 mm2, 43 % |
+| Global routing | 14.0 % | 15.7 % | 16.1 % |
+| Detailed routing | 0 violations, 5.68 m | 0 violations, 6.40 m | 0 violations, 6.64 m, 387,956 vias |
+| Hold buffers (after clock tree / after global routing) | 2,338 / 625 | 4,991 / 1,252 | 4,847 / 108 |
+| Setup, slowest corner, worst-case wires | +0.64 ns | -1.73 ns, 68 endpoints | **-3.09 ns**, 65 endpoints |
+| Setup, slow corner, nominal wires | +2.50 ns | +0.65 ns | -0.24 ns, 1 endpoint |
+| Setup, typical | +10.96 ns | +12.70 ns | +11.69 ns |
+| Hold, worst corner | +0.14 ns | +0.15 ns | **-0.17 ns**, 3 endpoints (fast corners) |
+| Slew / capacitance limits exceeded | 94 / 646 | 142 / 937 | 357 / 1102 |
+
+What it showed:
+
+* **The lanes did what they were for:** the channels and the gap stayed nearly empty in the first
+  placement, and repair after global routing needed only 108 hold buffers (625 and 1,252 before).
+* **The logic paid for it.** With the lanes taken away, the logic was packed tighter in the middle band
+  (the dark area in the picture) and part of the processor moved east, under the analog block: 55 of
+  the 65 failing paths start at a processor result register placed at (2602, 2293) and 10 at a
+  multiplier operand register at (3208, 2328), both in the row just below the block, far from the
+  register file and the cache they talk to.
+* **The pad buffers move the PB0 problem rather than cure it.** The logic that drives PB0 sits in the
+  middle of the chip; with a buffer at the pad, the long wire is now between that logic and the buffer,
+  and its edge is 4.3 ns (`full7`) and 7.5 ns (`full8`) instead of 8.2 ns at the pad. The repair steps
+  do not break that wire up either.
+* The slowest edges are now in the middle band itself (9.5 ns on a debug-port gate at (1586, 2152)
+  driving a repeater 263 um away), where the packing is densest.
+
+Timing table: `docs/full_height_lanes_timing.txt`.
+
+### Pad buffers in the reference floorplan (`full9`): stopped
+
+To separate the two changes of `full7`, the next run took the reference floorplan unchanged (60 um
+strips, no lanes) and added only the pad buffers. It went through placement and clock tree like the
+others (setup +4.07 ns before hold repair, 4,953 hold buffers), but after global routing the timing
+repair found **805 endpoints failing, the worst by 8.86 ns** on the nominal wire model, where the
+reference had none failing (+0.37 ns, 167 endpoints inside the margin). The repair recovered most of
+that: when I stopped it by hand after 100 minutes (the step usually takes 17), the worst slack was
++2.26 ns, still inside the 3.5 ns margin it aims for on all 805 endpoints. So the run might well have
+finished and met timing; stopping it was a judgment about time, not a result. Why the design was so
+slow after global routing was not found: the run's databases were deleted to free disk space before
+they were looked at. With 138 hand-placed buffers in strips only 60 um wide, many will have been moved
+far from their pads by the legaliser; that is a guess.
+
+What the three runs together say: in this flow, hand-placed buffers and room taken away from the placer
+did not make the full-height layout faster, and twice made it clearly slower. The reference stays. The pad-buffer option stays in the
+RTL, off by default.
+
+### Repeaters on long wires (`full10`): nearly level, much cleaner
+
+After three runs that changed the floorplan, this one leaves the reference floorplan exactly as it is
+and changes one thing in the flow: the design-repair steps after placement and after global routing
+break every wire longer than 600 um with a repeater (`DESIGN_REPAIR_MAX_WIRE_LENGTH` and
+`GRT_DESIGN_REPAIR_MAX_WIRE_LENGTH`, which the flow leaves off; `gen_floorplan_1x1.py --wire 600`).
+
+| | `full4` (reference) | `full10` (repeaters every 600 um) |
+|---|---|---|
+| Buffers inserted by design repair (after placement / after global routing) | 10,064 / not recorded | 11,198 / 1,754 |
+| Hold buffers (after clock tree / after global routing) | 2,338 / 625 | 2,537 / 749 |
+| Global routing | 14.0 % | 14.0 % |
+| Detailed routing | 0 violations, 5.68 m, 368,086 vias | 0 violations, 5.76 m, 376,944 vias |
+| Antenna | 0 nets | 0 nets |
+| Setup, slowest corner, worst-case wires | +0.64 ns | **-0.03 ns**, 1 endpoint |
+| Setup, slow corner, nominal wires | +2.50 ns | +1.89 ns |
+| Setup, typical | +10.96 ns | +11.33 ns |
+| Hold, worst corner | +0.14 ns | +0.05 ns |
+| Slew / capacitance limits exceeded | 94 / 646 | **81 / 264** |
+
+* **Capacitance overloads fell by 59 % and slow edges by 14 %** for 1.4 % more wire. Of the 81 slow
+  edges all but 5 are between 3.0 and 4.4 ns; the worst is still the PB0 pad (7.5 ns).
+* **One path misses by 34 ps** at the slowest corner: from the cache's address register (at 1530,
+  2500) through the tag compare and the processor's fetch buffer to the register file (2005, 2812).
+  Every other endpoint at every corner meets. The repair after global routing aimed for 3.5 ns of
+  margin on its estimate of the wires and got it (+3.59 ns); the routed layout at the slowest corner
+  with worst-case wires came out 3.6 ns below that estimate. A run with 4.5 ns asked for (`full11`, next) meets it.
+* **Why PB0 is still slow:** the multiplexer that drives it sits in the middle band at (1348, 2681);
+  the pad is at the bottom edge, 2.2 mm away, and the wire crosses three rows of memories, over which
+  no repeater can stand. Long-wire repair does not change that. It needs the PB0 output logic placed
+  near the south edge, or a repeater placed by hand in the channel between rows B and C.
+
+No picture: the run's layout was deleted for disk space before it was drawn; its floorplan is the
+reference's. Timing table: `docs/full_height_wire600_timing.txt`.
+
+### The same with more repair margin (`full11`): the new candidate
+
+`full10` again, with the timing repair after global routing asked for 4.5 ns of margin instead of 3.5
+(`gen_floorplan_1x1.py --wire 600 --grt-margin 4.5`). Everything up to global routing is identical
+(the flow is deterministic); the repair then resized 187 cells and added 3 buffers instead of 116 and 2.
+
+![Full-height layout with repeaters on long wires](full_height_wire600.png)
+
+| | `full4` (reference) | `full11` (repeaters every 600 um, 4.5 ns margin) |
+|---|---|---|
+| Standard cells with taps | 1.88 mm2, 41 % | 1.94 mm2, 43 % |
+| Detailed routing | 0 violations, 5.68 m, 368,086 vias | 0 violations, 5.76 m, 376,752 vias |
+| Antenna | 0 nets | 0 nets |
+| Setup, slowest corner, worst-case wires | +0.64 ns | **+0.17 ns** |
+| Setup, slow corner, nominal wires | +2.50 ns | +2.25 ns |
+| Setup, typical | +10.96 ns | +11.23 ns |
+| Hold, worst corner | +0.14 ns | **-0.009 ns**, 1 endpoint (below) |
+| Slew / capacitance limits exceeded | 94 / 646 | **79 / 265** |
+
+* **Setup is met at all nine corners.** The margin at the slowest corner is smaller than the
+  reference's (0.17 against 0.64 ns), in exchange for 59 % fewer capacitance overloads and 16 % fewer
+  slow edges.
+* **One hold miss of 9 ps**, at the fast corner, from the serial memory's data input `FL_MISO` to its
+  first register. Its constraint is the pessimistic one: the data is taken to change at the very edge of
+  the external clock (`set_input_delay -min 0`), whereas it really changes only after the chip's own
+  memory clock has gone out through a pad, through the bond wire and through the memory's clock-to-output
+  time, several nanoseconds later. A realistic minimum delay in `chip_top.sdc`, or one delay cell on that
+  input, closes it. Not done yet: the constraint should come from the chosen memory die's data sheet.
+* PB0 is unchanged (7.7 ns at the pad), for the reason given under `full10`.
+
+**Recommendation:** make `full11`'s settings the full-height reference once the `FL_MISO` constraint is
+set from the memory's data sheet and timing is rerun; until then `full4` remains the reference, since it
+is the only full-height layout with nothing failing. Timing table:
+`docs/full_height_wire600_margin_timing.txt`.
 
 What this layout does not tell:
 

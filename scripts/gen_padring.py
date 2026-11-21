@@ -63,6 +63,7 @@ NORTH = [G("PD2"), G("PD1"), G("PD0"), G("PC6"),
 SIDES = [("SOUTH", SOUTH), ("EAST", EAST), ("NORTH", NORTH), ("WEST", WEST)]
 
 PORT_BASE = {"B": 0, "C": 8, "D": 16, "E": 24}
+CLOCK_INPUTS = {6}          # PB6 (XTAL1 / external clock): no input buffer beside the pad
 
 
 def inst(p):
@@ -156,13 +157,13 @@ def gen_top():
         elif k == "A":
             body.append("\t(* keep *) gf180mcu_fd_io__asig_5p0 %s (%s.ASIG5V (A_%s));" % (inst(p), pw, p[1]))
         elif k == "F" or (k == "J" and p[1] == "TDO"):
-            sig = {"FL_CSN": "core_fl_csn", "FL_SCK": "core_fl_sck", "FL_MOSI": "core_fl_mosi", "TDO": "jtag_tdo"}.get(p[1])
+            sig = {"FL_CSN": "p_fl_csn", "FL_SCK": "p_fl_sck", "FL_MOSI": "p_fl_mosi", "TDO": "jtag_tdo"}.get(p[1])
             if sig:
                 body.append(
                     "\t(* keep *) gf180mcu_fd_io__bi_24t %s (%s.PAD (%s), .A (%s), .OE (1'b1), .Y (),\n"
                     "\t\t.IE (1'b0), .PU (1'b0), .PD (1'b0), .CS (1'b0), .SL (1'b0));" % (inst(p), pw, p[1], sig))
             else:
-                body.append("\t(* keep *) gf180mcu_fd_io__in_c %s (%s.PAD (FL_MISO), .Y (core_fl_miso), .PU (1'b1), .PD (1'b0));"
+                body.append("\t(* keep *) gf180mcu_fd_io__in_c %s (%s.PAD (FL_MISO), .Y (p_fl_miso), .PU (1'b1), .PD (1'b0));"
                             % (inst(p), pw))
         elif k == "J":
             cell, pu, pd = ("in_s", "1'b0", "1'b1") if p[1] == "TCK" else ("in_c", "1'b1", "1'b0")
@@ -171,8 +172,28 @@ def gen_top():
         elif k == "S":
             body.append("\t(* keep *) gf180mcu_fd_io__in_c %s (%s.PAD (SPARE[%d]), .Y (), .PU (1'b0), .PD (1'b1));"
                         % (inst(p), pw, p[1]))
+    # buffers beside the pads (RV328_PADBUF): instance u_pb_<signal>_<index>, placed by the floorplan
+    used, bufs = set(), []
+    for p in allp:
+        if p[0] == "G":
+            idx = PORT_BASE[p[1][1]] + int(p[1][2])
+            used.add(idx)
+            for tag, src, dst in (("a", "c_out", "pad_out"), ("e", "c_oe", "pad_oe"), ("u", "c_pu", "pad_pu"), ("i", "c_ie", "pad_ie")):
+                bufs.append("\trv328_padbuf u_pb_%s_%d (.i (%s[%d]), .o (%s[%d]));" % (tag, idx, src, idx, dst, idx))
+            if idx in CLOCK_INPUTS:
+                # the clock pin goes to the clock tree as it leaves the pad: a buffer here would put the
+                # external clock one buffer behind the copy the oscillator stand-in takes from the same pad
+                bufs.append("\tassign c_in[%d] = pad_in[%d];" % (idx, idx))
+            else:
+                bufs.append("\trv328_padbuf u_pb_y_%d (.i (pad_in[%d]), .o (c_in[%d]));" % (idx, idx, idx))
+    for idx in range(32):
+        if idx not in used:
+            bufs.append("\tassign c_in[%d] = pad_in[%d];" % (idx, idx))
+    for name in ("csn", "sck", "mosi"):
+        bufs.append("\trv328_padbuf u_pb_fl_%s (.i (core_fl_%s), .o (p_fl_%s));" % (name, name, name))
+    bufs.append("\trv328_padbuf u_pb_fl_miso (.i (p_fl_miso), .o (core_fl_miso));")
     tmpl = open(os.path.join(ROOT, "scripts/chip_top.v.in")).read()
-    open(os.path.join(ROOT, "rtl/rv328_chip_top.v"), "w").write(tmpl.replace("@PADS@", "\n".join(body)))
+    open(os.path.join(ROOT, "rtl/rv328_chip_top.v"), "w").write(tmpl.replace("@PADS@", "\n".join(body)).replace("@PADBUFS@", "\n".join(bufs)))
 
 
 def pad_info():

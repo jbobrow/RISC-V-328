@@ -40,6 +40,24 @@ module chip_top (
 	assign pad_in[15]    = 1'b0;
 	assign pad_in[31:28] = 4'h0;
 
+	// Core side of the pad signals. With RV328_PADBUF every pad signal has a buffer of its own,
+	// which the floorplan places beside its pad; without it the two sides are the same nets.
+	wire [31:0] c_in, c_out, c_oe, c_pu, c_ie;
+	wire        p_fl_csn, p_fl_sck, p_fl_mosi, p_fl_miso;
+`ifdef RV328_PADBUF
+@PADBUFS@
+`else
+	assign c_in = pad_in;
+	assign pad_out = c_out;
+	assign pad_oe = c_oe;
+	assign pad_pu = c_pu;
+	assign pad_ie = c_ie;
+	assign p_fl_csn = core_fl_csn;
+	assign p_fl_sck = core_fl_sck;
+	assign p_fl_mosi = core_fl_mosi;
+	assign core_fl_miso = p_fl_miso;
+`endif
+
 	// ---------------- power pads ----------------
 	genvar i;
 	generate
@@ -106,7 +124,7 @@ module chip_top (
 		.adc_en (adc_en), .adc_mux (adc_mux), .adc_refs (adc_refs), .adc_sample (adc_sample),
 		.adc_dac (adc_dac), .adc_cmp (adc_cmp),
 		.ac_en (ac_en), .ac_bg (ac_bg), .ac_mux_en (ac_mux_en), .ac_out (ac_out),
-		.pad_in (pad_in), .pad_out (pad_out), .pad_oe (pad_oe), .pad_pu (pad_pu), .pad_ie (pad_ie),
+		.pad_in (c_in), .pad_out (c_out), .pad_oe (c_oe), .pad_pu (c_pu), .pad_ie (c_ie),
 		.fl_csn (core_fl_csn), .fl_sck (core_fl_sck), .fl_mosi (core_fl_mosi), .fl_miso (core_fl_miso),
 		.jtag_tck (jtag_tck), .jtag_tms (jtag_tms), .jtag_tdi (jtag_tdi), .jtag_tdo (jtag_tdo)
 	);

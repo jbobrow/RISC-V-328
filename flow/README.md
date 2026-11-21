@@ -15,7 +15,7 @@ has the numbers, the open problems and the fixes that were needed to get there. 
 | `librelane/pdn/` | power grid scripts (template's `pdn_cfg.tcl` plus RV328 SRAM grid) |
 | `librelane/chip_top.sdc` | timing constraints for the digital-first build |
 | `librelane/trial_macros.yaml`, `trial_blank.yaml`, `ip/rv328_analog_blank/` | trial floorplan with a blank block of the analog macro's size (written by `scripts/gen_analog_blank.py`; results in `docs/layout_results.md`). Run it as below with `slot_1x0p5.yaml trial_macros.yaml config.yaml trial_blank.yaml`; `scripts/trial_figure.py` draws the result |
-| `librelane/slot_1x1.yaml`, `macros_1x1.yaml`, `full_1x1.yaml`, `pdn/pdn_cfg_1x1.tcl`, `pdn/pdn_sram_1x1.tcl` | full-height slot with the 12 KB three-way cache, the fast multiplier and a blank block for the analog macro (pad order from `scripts/gen_padring.py`, the rest from `scripts/gen_floorplan_1x1.py`; results in `docs/layout_results.md`). Run: `librelane slot_1x1.yaml macros_1x1.yaml config.yaml full_1x1.yaml ...` |
+| `librelane/slot_1x1.yaml`, `macros_1x1.yaml`, `full_1x1.yaml`, `pdn/pdn_cfg_1x1.tcl`, `pdn/pdn_sram_1x1.tcl` | full-height slot with the 12 KB three-way cache, the fast multiplier and a blank block for the analog macro (pad order from `scripts/gen_padring.py`, the rest from `scripts/gen_floorplan_1x1.py`, whose default is the reference layout `full4` and whose `--padbuf` option writes the variant with a buffer at every pad, run `full7`, which missed timing; results in `docs/layout_results.md`). Run: `librelane slot_1x1.yaml macros_1x1.yaml config.yaml full_1x1.yaml ...` |
 
 ## Running it
 

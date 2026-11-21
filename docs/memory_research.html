@@ -41,7 +41,10 @@ the foundry macro. With it, the whole 32 KB program plus the 2 KB RAM is 34 macr
 than the 6.49 mm2 the 31 macros take today (measured macro areas, no routing channels). It was made on
 the first wafer.space run, and its author's test notes and conference abstract say it works (cited).
 But it needs a 3.3 V supply on a 5 V chip, and its timing files are copies of the 5 V macro's files,
-not a characterisation (measured).</p>
+not a characterisation (measured). A second pass (next section) simulated the macro at transistor
+level: it works at three corners and answers in 3.2 ns at the slow corner without wiring, an estimated
+5 to 6 ns with it, and draws 0.7 to 0.9 mA when read at 20 MHz, more with wiring. The open cost is a
+regulator without external capacitor and 3.5 to 7 nF of capacitance on the chip (estimate).</p>
 <p><strong>Recommendation, in three steps.</strong></p>
 <ol>
 <li><strong>First silicon: keep the 5 V foundry macro.</strong> It is the only memory here with foundry timing at our
@@ -59,9 +62,9 @@ not a characterisation (measured).</p>
    and the cache study repeated with the library outside the cache.</li>
 <li><strong>For the whole program on the chip, plan a 3.3 V memory island with the <code>gf180mcu_ocd_ip_sram</code>
    1024 x 8 macro, for a second silicon.</strong> It needs a voltage regulator in the analog macro, level
-   shifters, a second supply net in the flow, and real timing for the macro. Start with the questions
-   in "Open questions"; the author's measurements were presented in September 2026 and a second test
-   chip is being delivered now.</li>
+   shifters, a second supply net in the flow, and real timing for the macro. The second pass below
+   gives it a "go, if" verdict and lists the next steps; the author's measurements were presented in
+   September 2026 and a second test chip is being delivered now.</li>
 </ol>
 <p><strong>Not recommended:</strong> memories from flip-flops or latches (2 to 3 times <em>worse</em> than the foundry macro,
 measured cell areas), eFuse (87 to 166 um2 per bit and one-time), OpenRAM on GF180MCU (experimental, no
@@ -71,6 +74,1144 @@ ruled out).</p>
 <p><strong>The half-size slot is out of reach by memory density alone.</strong> With the 3.3 V macros the present
 contents (12 KB cache, tags, 2 KB RAM) take 2.47 mm2; with 1.88 mm2 of logic cells and the 1.30 mm2
 analog block that is 5.65 mm2 in a 5.02 mm2 core (estimate from measured areas).</p>
+<h2>The 3.3 V memory, second pass</h2>
+<p>Added 20 November 2026 after the first pass, for option 1b (the <code>gf180mcu_ocd_ip_sram</code> 1024 x 8 macro).
+New here: transistor-level simulation of the macro's own netlist. The same marks apply: <strong>measured</strong>
+(here that includes "simulated by me"), <strong>cited</strong>, <strong>estimate</strong>. The work was cut short; what was not
+done is listed as <strong>not done</strong>. Verdict at the end of the section.</p>
+<p><strong>In short.</strong> In simulation the macro works at all three corners and is fast: at slow silicon, 3.0 V and
+125 C the output follows the clock by 3.2 ns without wiring and by an estimated 5 to 6 ns with it, against
+10.3 ns for the 5 V foundry macro. One access takes 36 to 45 pC from the supply without wiring, about
+1.75 times that with it. A level shifter that is already drawn inside the 3.3 V pad library adds 1.0 to
+1.9 ns. Nothing found so far kills the idea. What remains is engineering that this project has not done
+before: a regulator without an external capacitor, a few nanofarads of decoupling, and a second supply
+in the flow.</p>
+<h3>1. Does it work and how fast (simulation)</h3>
+<p><strong>What was simulated.</strong></p>
+<ul>
+<li>The PDK ships one SPICE netlist per macro. It is the schematic exported from xschem (its first line
+  names the schematic file): transistors with their own junction areas, <strong>no wiring capacitance or
+  resistance</strong>. The PDK ships no extracted netlist (measured: file list).</li>
+<li>To see what wiring does, I extracted the 64 x 8 and 1024 x 8 layouts from the PDK's Magic files
+  myself: flattened, with capacitance between wires and to the substrate, without wire resistance.
+  A hierarchical extraction was unusable (it contains large negative correction capacitors). Only the
+  64 x 8 extracted netlist was simulated; <strong>the extracted 1024 x 8 run was not done.</strong></li>
+<li>Simulator ngspice 42 with the PDK models (<code>sm141064.ngspice</code>, sections <code>ss</code>, <code>typical</code>, <code>ff</code>).</li>
+<li>One change to the netlist was needed. ngspice picks a transistor's model bin from its total width
+  but evaluates it with the width of one finger; two device sizes in the macro then get an invalid
+  model and one is wider than any bin, and the simulation fails at the first time step. I rewrote every
+  multi-finger transistor as parallel single-finger ones with the same total junction area
+  (<code>fixnet.py</code>). A check on one device gave the same current within 0.5 %.</li>
+<li>Bench (<code>bench.py</code>): supply ramped up in 10 ns, CEN high at power-up as the author's notes require,
+  input edges 0.5 ns, 50 fF on every output, inputs changing 5 ns before the clock unless stated. One
+  operation per clock: write A5 to address 0, write 5A to the highest address, read both, read the
+  first again; then the same with the two values exchanged. So every bit is written and read as 0 and
+  as 1 at the first row and at the last row. The 1024 x 8 runs use the first half of that sequence.</li>
+</ul>
+<p><strong>Results (all reads correct in every run of this table).</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Macro, netlist</th>
+<th>Corner</th>
+<th>Clock to output</th>
+<th>Read, per access</th>
+<th>Write, per access</th>
+<th>Clocked but not selected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>64 x 8, schematic</td>
+<td>slow, 3.0 V, 125 C</td>
+<td>2.76 ns</td>
+<td>29.0 pC</td>
+<td>33.1 pC</td>
+<td>0.51 pC</td>
+</tr>
+<tr>
+<td>64 x 8, schematic</td>
+<td>typical, 3.3 V, 25 C</td>
+<td>1.73 ns</td>
+<td>32.1 pC</td>
+<td>36.6 pC</td>
+<td>0.61 pC</td>
+</tr>
+<tr>
+<td>64 x 8, schematic</td>
+<td>fast, 3.6 V, -40 C</td>
+<td>1.19 ns</td>
+<td>36.2 pC</td>
+<td>41.2 pC</td>
+<td>0.77 pC</td>
+</tr>
+<tr>
+<td>64 x 8, extracted (capacitance)</td>
+<td>slow, 3.0 V, 125 C</td>
+<td>4.12 ns</td>
+<td>50.5 pC</td>
+<td>59.6 pC</td>
+<td>0.93 pC</td>
+</tr>
+<tr>
+<td>1024 x 8, schematic</td>
+<td>slow, 3.0 V, 125 C</td>
+<td>3.17 ns</td>
+<td>36.1 pC</td>
+<td>41.6 pC</td>
+<td>0.52 pC</td>
+</tr>
+<tr>
+<td>1024 x 8, schematic</td>
+<td>typical, 3.3 V, 25 C</td>
+<td>1.98 ns</td>
+<td>40.0 pC</td>
+<td>45.9 pC</td>
+<td>0.61 pC</td>
+</tr>
+<tr>
+<td>1024 x 8, schematic</td>
+<td>fast, 3.6 V, -40 C</td>
+<td>1.36 ns</td>
+<td>44.8 pC</td>
+<td>51.4 pC</td>
+<td>0.75 pC</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Clock to output is from the clock's half level to the last output crossing its half level, the
+  slowest of the eight bits and of the near and far address. Near and far differ by less than 0.1 ns.</li>
+<li><strong>Wiring matters.</strong> On the 64 x 8 macro the extracted netlist is 1.49 times slower and takes 1.74
+  times the read charge and 1.80 times the write charge. Applying the same factors to the 1024 x 8
+  macro gives 4.7 ns and 63 pC per read at the slow corner (estimate). Its bit lines are sixteen times
+  longer than the 64 x 8 macro's, so the factor for delay is probably larger; I use <strong>5 to 6 ns</strong> as the
+  working figure. The extracted 1024 x 8 netlist exists (59,873 transistors, 123,595 capacitors) and
+  the bench runs it unchanged; it needs about an hour per corner.</li>
+<li><strong>Cycle.</strong> The 1024 x 8 schematic netlist also passes the sequence with an 8 ns clock period (4 ns
+  high) at the slow corner. Shorter periods, and the shortest clock pulse, were <strong>not done</strong>.</li>
+<li><strong>Set-up of address and data</strong> (64 x 8, schematic, slow corner, 10 ns period): correct with the
+  input's half level 0.25 ns before the clock's, wrong at 0 ns, for address and for data alike. So the
+  need is between 0 and 0.25 ns without wiring. Hold times were <strong>not done</strong>.</li>
+<li>Wire resistance is in neither netlist. It should matter little: the word line is strapped at every
+  eighth cell (measured in the first pass), and a 390 um bit line in Metal2 is on the order of 100 ohm
+  against about 100 fF (estimate).</li>
+</ul>
+<p><strong>What this means for the 50 ns clock.</strong> After the clock edge the path is: macro output 5 to 6 ns
+(estimate), level shifter 1.0 to 1.9 ns (simulated, below), then the read multiplexing and the
+processor's fetch path at 5 V as today. That is 6 to 8 ns where the foundry macro takes 10.3 ns, so the
+memory would be <strong>no slower than today's, with a margin of about 2 ns</strong>. Before the edge, the address
+passes one buffer on the 3.3 V rail (0.4 to 0.6 ns, simulated) and needs a few tenths of a nanosecond of
+set-up, where the foundry macro asks for 2.0 ns. The memory clock passes the same kind of buffer, which
+the clock tree has to balance.</p>
+<p><strong>How far to trust it.</strong> The function and the order of magnitude are solid: two netlists, three
+corners, two macro sizes. The absolute delay of the 1024 x 8 macro with wiring is an estimate until the
+extracted run is done. Nothing here covers transistor mismatch, which decides whether a sense amplifier
+reads a weak cell correctly; that is what silicon measurements are for.</p>
+<h3>2. Current</h3>
+<p>Per macro, from the same runs. Current at 20 MHz is charge per access times 20 million.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>1024 x 8</th>
+<th>Slow, 3.0 V</th>
+<th>Typical, 3.3 V</th>
+<th>Fast, 3.6 V</th>
+<th>With wiring (estimate, x 1.75)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read every clock at 20 MHz</td>
+<td>0.72 mA</td>
+<td>0.80 mA</td>
+<td>0.90 mA</td>
+<td>1.3 to 1.6 mA</td>
+</tr>
+<tr>
+<td>written every clock at 20 MHz</td>
+<td>0.83 mA</td>
+<td>0.92 mA</td>
+<td>1.03 mA</td>
+<td>1.5 to 1.8 mA</td>
+</tr>
+<tr>
+<td>clocked, not selected</td>
+<td>10 uA</td>
+<td>12 uA</td>
+<td>15 uA</td>
+<td>18 to 27 uA</td>
+</tr>
+</tbody>
+</table></div>
+<p>Standby, clock stopped, chip enable off, 1024 x 8 schematic netlist, 3 us after the last clock:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Corner</th>
+<th>Per macro</th>
+<th>34 macros</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>typical, 3.3 V, 25 C</td>
+<td>below 0.19 uA</td>
+<td>below 6.5 uA</td>
+</tr>
+<tr>
+<td>slow, 3.0 V, 125 C</td>
+<td>below 0.32 uA</td>
+<td>below 11 uA</td>
+</tr>
+<tr>
+<td>typical, 3.3 V, 125 C</td>
+<td>1.7 uA</td>
+<td>59 uA</td>
+</tr>
+<tr>
+<td>fast, 3.6 V, 125 C</td>
+<td>19.7 uA</td>
+<td>0.67 mA</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The two "below" values are the simulator's own floor (its default 1 pS across every junction gives
+  about 0.3 uA for 100,000 junctions), not the transistors. Runs with that floor lowered were
+  <strong>not done</strong>, so the 25 C leakage is not known; the two larger values are well above the floor.</li>
+<li><strong>Load on a regulator, 34 macros, 20 MHz.</strong><ul>
+<li>(a) One macro read per clock, the others clocked but not selected: 0.8 + 33 x 0.012 = 1.2 mA
+  typical without wiring, about 2.1 mA with it (estimate).</li>
+<li>(b) Realistic worst case: a 32-bit instruction is four macros read at once (one per byte), and a
+  store to RAM in the same clock is four macros written. At the fast corner that is
+  4 x 0.90 + 4 x 1.03 + 26 x 0.015 = 8.1 mA without wiring, about 14 mA with it (estimate).
+  Gating the clock of macros that are not selected would save 0.4 to 0.7 mA.</li>
+<li>Design figure: <strong>15 to 20 mA</strong>, plus up to 0.7 mA of leakage at 125 C.</li>
+</ul>
+</li>
+<li>The current comes in a burst of one to two nanoseconds after the clock, which no regulator follows.
+  The charge of one clock, 0.38 nC in case (b) without wiring and about 0.7 nC with it, has to come
+  from capacitance on the 3.3 V rail: 3.5 nF for a 0.2 V dip, 7 nF for 0.1 V (estimate). The capacitance
+  the 34 macros bring themselves was <strong>not done</strong> (the run was prepared).</li>
+</ul>
+<h3>3. Silicon evidence</h3>
+<p>What I could find about measurements on run 1 silicon (all cited unless marked):</p>
+<ul>
+<li>The test chip's commit of 4 July 2026 says the first test chip has been tested on silicon. The one
+  finding it reports is in the power-on reset block: working, but 14 to 16 seconds long at a 3.3 V
+  supply, redesigned for run 2. No memory fault is reported.</li>
+<li>The written test notes cover one bench set-up: one pattern generator at 3.3 V on core and pads, the
+  256-word macros, four data bits, six address bits, with a note that the core can also be tried at
+  1.8 V and that further tests with two instruments are still to do. The screenshot of 30 June 2026
+  shows correct counting at about 40 ns per value (my reading). I found <strong>no</strong> result for the
+  1024-word macro, no speed limit, no voltage or temperature sweep, and no failure report.</li>
+<li>The ORConf talk of 12 September 2026 announces characterisation of the 3.3 V memory; I could not
+  read its content (video only). <strong>Not verified.</strong></li>
+<li>The library's own history confirms the timing files: its first commit says timing has not been
+  updated from the original, and a merged change of May 2026 by another user notes that the Verilog
+  timing block was a verbatim copy of the 5 V model and replaces it with values from the specification
+  tables in the repository. Those tables are the 5 V macro's (measured: the same 18.2595 ns period at
+  3.0 V and 125 C as the foundry liberty file). The change reports no simulation and no silicon, and
+  points out one implausible pair of entries.</li>
+<li>Other users: that same user builds a chip with 16 of these macros at a 10 MHz target; a Tiny Tapeout
+  project carries the 256-word macro with a 50 MHz clock entry. Neither reports silicon results.</li>
+<li>The foundry asked for one rule fix in the cell array (enclosed implant area) on 2 January 2026, before
+  the masks; it was made.</li>
+<li>The wafer.space "BondView" page for the test chip (20 of 50 boards passing) is about wire bonding of
+  the boards, not about the memory (my reading; the page does not explain itself).</li>
+</ul>
+<p>So: silicon exists, its author says it works, and one partial functional test is documented. Speed
+and margins on silicon are <strong>not verified</strong> by anything I could read.</p>
+<h3>4. The boundary between 5 V and 3.3 V</h3>
+<p><strong>Down, 5 V into the island.</strong> No special cell is needed.</p>
+<ul>
+<li>A cell of <code>gf180mcu_fd_sc_mcu9t5v0</code> supplied from the 3.3 V rail can take a 5 V input: the input
+  touches only gates, and the cells are built from the thick-oxide transistors (<code>nfet_05v0</code>,
+  <code>pfet_05v0</code> in the library netlist, measured). These cells need rows of their own with the n-well on
+  3.3 V.</li>
+<li>Speed (simulated, <code>buf_2</code>, 30 fF load, 5 V swing at the input): 0.21/0.39 ns rise/fall typical at
+  3.3 V, 0.42/0.59 ns at slow silicon, 3.0 V, 125 C, 0.46/0.67 ns at 2.7 V. The library has liberty
+  files for 3.0, 3.3 and 3.6 V, so the flow can time such cells; in those files the cells are about 1.4
+  to 1.9 times slower at 3.0 V than at 4.5 V (measured, first and last table entries of <code>buf_2</code>).</li>
+</ul>
+<p><strong>Up, 3.3 V into the 5 V core.</strong></p>
+<ul>
+<li>A plain 5 V gate will not do. Simulated: a 5 V inverter at 5.5 V with its input held at 3.0 V still
+  gives a low output (0.2 to 0.5 V), but draws 68 to 180 uA continuously, depending on the corner. On
+  272 memory outputs that is up to 49 mA.</li>
+<li>Level-shifter cells in the installed PDK (measured, all of <code>libs.ref</code> searched by cell name):<ul>
+<li><code>gf180mcu_osu_sc_gp12t3v3__lshifup</code> and <code>__lshifdown</code> exist, but are built only from 3.3 V
+  transistors, for a lower core voltage. <strong>Not usable at 5 V.</strong> (My first pass said the PDK has no
+  level-shifter cell; that was wrong in the letter, and is corrected below.)</li>
+<li>The dual-voltage pad library <code>gf180mcu_ocd_io</code> has the right circuit inside its pads
+  (<code>io_lvlshft</code>: a 3.3 V inverter, two thick-oxide n-transistors and two cross-coupled thick-oxide
+  p-transistors, each 1.5 um wide and 0.7 um long). Its layout cell <code>lvlshift_up</code> is 5.53 x 12.91 um,
+  71 um2, plus 12 um2 for the inverter. It is not a library cell: no LEF, no liberty file. It has
+  been made on run 1 inside the pads of the test chip.</li>
+</ul>
+</li>
+<li>That circuit simulated alone, 30 fF load: 0.6 ns typical; 1.0 to 1.3 ns at slow silicon, 125 C, 3.0 V
+  in, 4.5 or 5.5 V out; 1.9 ns in the worst cases tried (slow n with fast p at -40 C, or a 2.7 V input).
+  It switched fully in all ten cases, with no static current.</li>
+<li>So the smallest safe circuit is this one, redrawn as a standard cell with two wells, with LEF and a
+  liberty file made by simulation. About 85 um2 each (measured from the pad library's cells).</li>
+</ul>
+<p><strong>How many signals.</strong> One macro has 29 inputs and 8 outputs (measured). Per macro that would be 986
+inputs and 272 outputs for 34 macros. With shared buses it is far fewer (estimate):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Down</th>
+<th>Up</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>program store, 32 macros as 4 bytes x 8 banks</td>
+<td>10 address, 8 bank enables, 32 data, 4 byte enables, write, clock: 56</td>
+<td>32 if the 8-to-1 read selection is built inside the island, 256 if each output is shifted</td>
+</tr>
+<tr>
+<td>RAM, 4 x 512 x 8</td>
+<td>9 address, 32 data, 4 byte enables, enable, write, clock: 48</td>
+<td>32</td>
+</tr>
+<tr>
+<td>total</td>
+<td>about 100 buffers</td>
+<td>64 to 288 level shifters, 0.005 to 0.025 mm2</td>
+</tr>
+</tbody>
+</table></div>
+<p>A 32-bit bus needs four macros side by side, so the RAM is better built from four 512 x 8 macros than
+from two 1024 x 8: 36 macros, 5.36 mm2, instead of the 34 and 5.28 mm2 of the first pass (measured areas).</p>
+<h3>5. The supply</h3>
+<ul>
+<li><strong>Nothing usable exists.</strong> The installed PDK has no regulator (measured: library list). The open
+  designs I found are unfinished: a capless 5 V to 3.3 V regulator for 10 mA from a student design
+  challenge, at the stage of target specifications, and a 3.3 V to 1.8 V regulator that needs an
+  external capacitor and has no layout (both cited). Neither has silicon. The 3.3 V test chips of run 1
+  and run 2 take their 3.3 V from pins (cited: pin list), so no silicon here proves an on-chip supply.</li>
+<li><strong>What a regulator for this island needs</strong> (estimates from small simulations):<ul>
+<li>Load 15 to 20 mA at most, a few microamperes in standby.</li>
+<li>Pass transistor: a thick-oxide p-transistor 1000 um wide and 0.55 um long passes 16 mA with
+  2.0 V of gate drive and 54 mA with 3.5 V at slow silicon, 125 C, 4.5 V in, 3.3 V out (simulated).
+  So about 1000 to 1500 um, a few thousandths of a mm2.</li>
+<li>Below about 3.6 V at the pin it can only pass the supply through. To lose no more than 0.1 V at
+  15 mA and 3.0 V it would need about 3000 um (simulated: 5.4 mA per 1000 um). The chip promises
+  20 MHz only from 4.5 V, so this matters only for low-voltage operation, where the macro's own
+  limit is also unknown.</li>
+<li><strong>Capacitance on the chip: 3.5 to 7 nF</strong> for the bursts of section 2. Gate capacitance from the
+  models is 4.0 fF per um2 for a 3.3 V transistor and 2.1 fF per um2 for a thick-oxide one
+  (simulated), so 0.9 to 1.75 mm2 of capacitor, less whatever the macros bring themselves
+  (<strong>not done</strong>). This is the largest cost of the island and takes back much of the area it frees.
+  Accepting a larger dip, or spreading the accesses, reduces it.</li>
+<li>No external capacitor is possible on the 32-pin package, so the loop has to be stable with the
+  on-chip capacitance alone over a load range of more than 1000 to 1. That is a known but not
+  trivial design. The project's bandgap can serve as its reference.</li>
+<li>Power-down: either the island stays on, with the regulator's own current and the leakage above
+  (not near an ATmega's power-down current when hot), or it is switched off and the program is
+  copied again on wake-up, about 30 ms. A separate low-current keeper is a third way. Not designed.</li>
+</ul>
+</li>
+</ul>
+<h3>6. Floorplan arithmetic</h3>
+<p>No placement or routing; the rules of <code>scripts/gen_floorplan_1x1.py</code> applied to the new macro (60 um of
+cell rows at three edges, 120 um channel between two rows whose pins face each other, 10 um between
+neighbours).</p>
+<ul>
+<li>The macro (measured from its LEF): 301.30 x 515.81 um, all 37 signal pins on Metal2 on the south
+  edge, each 0.78 um wide and 3.0 um long, spread from x = 6.9 to 291.2 um, closest pair 1.37 um apart.
+  Obstruction on Metal1 to Metal3 over the whole macro inside a 3 um rim, and on Nwell. Power on Metal3
+  stripes and Metal2 and Metal1 rings. Metal4 and Metal5 are free above it, as with the foundry macro.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Today: 31 foundry macros</th>
+<th>32 x 1024 x 8 in rows, RAM in the band</th>
+<th>36 places in rows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>per row, rows</td>
+<td>6, five rows</td>
+<td>8, four rows</td>
+<td>9, four rows</td>
+</tr>
+<tr>
+<td>left at the east side for logic</td>
+<td>336 um</td>
+<td>496 um</td>
+<td>185 um</td>
+</tr>
+<tr>
+<td>core height used by memory rows</td>
+<td>2814 um</td>
+<td>2423 um</td>
+<td>2423 um</td>
+</tr>
+<tr>
+<td>band left for logic and the analog block</td>
+<td>1424 um high</td>
+<td>1815 um high</td>
+<td>1815 um high</td>
+</tr>
+<tr>
+<td>core outside memory</td>
+<td>5.08 mm2</td>
+<td>6.35 mm2</td>
+<td>5.98 mm2</td>
+</tr>
+<tr>
+<td>difference</td>
+<td></td>
+<td>+1.27 mm2</td>
+<td>+0.90 mm2</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Two pairs of rows replace today's two pairs and a single row, so there are two pin channels instead
+  of two and a half, and each channel serves 16 macros instead of 12.</li>
+<li>The gain of about 1.3 mm2 has to hold the capacitors of section 5 (0.9 to 1.75 mm2 as estimated), the
+  island's rows and the regulator. On these numbers the 32 KB chip fits about as tightly as today's,
+  not more loosely. The cache controller's logic disappears; I did not estimate how much that is.</li>
+<li>The island needs its own 3.3 V power grid over the memory rows and a keep-apart between the two
+  n-well potentials. Not looked at.</li>
+</ul>
+<h3>Verdict: go, if three things hold</h3>
+<p>Nothing in simulation, in the documented silicon or in the arithmetic rules the 3.3 V memory out. It is
+faster than the foundry macro, the boundary circuits exist as drawn silicon to copy, and it fits. It is
+not ready to adopt, and not for the first tape-out.</p>
+<p><strong>Go if:</strong></p>
+<ol>
+<li>the 1024 x 8 macro still works and stays under about 8 ns with wiring at the slow corner, and the
+   author's measurements confirm function across voltage and temperature;</li>
+<li>a regulator without external capacitor and its on-chip capacitance can be designed and fitted
+   (the largest unknown, and the only part without any silicon example);</li>
+<li>the project accepts what power-down then costs.</li>
+</ol>
+<p><strong>Next steps, in order.</strong></p>
+<ol>
+<li>Run the extracted 1024 x 8 netlist at the three corners with the existing bench (about an hour
+   each), with the shortest cycle, set-up and hold, the standby runs with the simulator's floor lowered,
+   and the macro's own supply capacitance. Ask the author for the characterisation shown at ORConf.</li>
+<li>Design study of the regulator and its capacitance in the project's analog flow: decide the
+   allowed dip, then size.</li>
+<li>Draw and characterise the level-shifter cell, and try the second supply in LibreLane on a small
+   block with two macros before touching the chip.</li>
+</ol>
+<p><strong>Confidence in the numbers.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Number</th>
+<th>Value</th>
+<th>How obtained</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Works: writes and reads both values, near and far</td>
+<td>yes, 3 corners, 2 sizes</td>
+<td>simulated, schematic netlist</td>
+<td>high for the circuit as drawn; says nothing about mismatch</td>
+</tr>
+<tr>
+<td>Clock to output, 1024 x 8, slow corner, no wiring</td>
+<td>3.17 ns</td>
+<td>simulated</td>
+<td>high for what it is</td>
+</tr>
+<tr>
+<td>The same with wiring</td>
+<td>5 to 6 ns</td>
+<td>estimate from the 64 x 8 extracted run (x 1.49)</td>
+<td>medium; could be 7 to 8 ns</td>
+</tr>
+<tr>
+<td>Shortest cycle shown</td>
+<td>8 ns</td>
+<td>simulated, schematic</td>
+<td>a lower bound on speed only; with wiring not done</td>
+</tr>
+<tr>
+<td>Set-up of address and data</td>
+<td>0 to 0.25 ns</td>
+<td>simulated, 64 x 8 schematic</td>
+<td>medium; with wiring probably under 1 ns</td>
+</tr>
+<tr>
+<td>Read charge, 1024 x 8</td>
+<td>36 to 45 pC, about 1.75 x with wiring</td>
+<td>simulated; factor from 64 x 8</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Regulator load, 34 macros, 20 MHz</td>
+<td>1 to 2 mA light, 8 to 14 mA worst, design for 15 to 20 mA</td>
+<td>arithmetic on the above</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Leakage, 34 macros, 125 C</td>
+<td>59 uA typical, 0.67 mA fast at 3.6 V</td>
+<td>simulated, model leakage</td>
+<td>low to medium: depends on the models' leakage accuracy</td>
+</tr>
+<tr>
+<td>Leakage at 25 C</td>
+<td>below 6.5 uA</td>
+<td>simulator floor</td>
+<td>low: real value not obtained</td>
+</tr>
+<tr>
+<td>Level shifter delay</td>
+<td>1.0 to 1.9 ns slow cases</td>
+<td>simulated, pad library's circuit, no wiring</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Static current of a plain 5 V gate at 3.0 V input</td>
+<td>68 to 180 uA</td>
+<td>simulated</td>
+<td>high</td>
+</tr>
+<tr>
+<td>On-chip capacitance needed</td>
+<td>3.5 to 7 nF</td>
+<td>charge per clock over allowed dip</td>
+<td>low to medium: macro's own capacitance not included</td>
+</tr>
+<tr>
+<td>Free core gained</td>
+<td>+1.27 mm2 before capacitors</td>
+<td>arithmetic from LEF sizes</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Silicon: works on run 1</td>
+<td>reported</td>
+<td>author's notes and abstract</td>
+<td>medium; speed and margins not verified</td>
+</tr>
+</tbody>
+</table></div>
+<p>Files: <code>/home/claude/memres_scripts/spice</code> (<code>bench.py</code>, <code>fixnet.py</code>, decks, logs, <code>results_batch1..3.txt</code>,
+extracted netlists in <code>ext64/</code> and <code>ext1024/</code>, small circuits in <code>small/</code>), <code>floor33.py</code>, <code>libcell.py</code>.</p>
+<h2>Third pass</h2>
+<p>Added 21 November 2026 for the 3.3 V memory (<code>gf180mcu_ocd_ip_sram__sram1024x8m8wm1</code>): the three
+conditions of the second pass's verdict, worked through one by one. Written as each item was finished;
+the order below is the order asked for, the verdict is at the end. Marks as before: <strong>measured</strong>
+(includes "simulated by me"), <strong>cited</strong>, <strong>estimate</strong>, and <strong>not done</strong>.</p>
+<h3>1. The 1024 x 8 block with its wiring</h3>
+<p><strong>In short.</strong> With the capacitance of its layout the block works at all three corners and at 1.8 V, and
+answers in <strong>5.57 ns at the slow corner</strong> (slow silicon, 3.0 V, 125 C), under the 8 ns of the
+condition. The first extracted run, which failed, was the fault of my extraction, not of the block.</p>
+<p><strong>Why the first extracted run failed (measured).</strong> That run (geometry flattened in Magic, then
+extracted) read 0xBF at every address and drew 26.4 mA with the clock stopped.</p>
+<ul>
+<li>Not the bench. The extracted sub-circuit's 38 pins are in the same order as the <code>Xdut</code> line
+  (VSS, VDD, A9..A0, CLK, GWEN, Q7..Q0, WEN7..WEN0, D7..D0, CEN). All 21,790 p-transistors have
+  their body on VDD and all 38,083 n-transistors on VSS. Both supplies are connected.</li>
+<li>The netlist itself. I compared it with the PDK's schematic netlist (netgen 1.5.323 with the PDK's
+  setup file). It has 9 nets fewer than the schematic (19,757 against 19,766), and its VSS net carries
+  138 p-transistor source or drain terminals that the schematic's VSS does not have. The largest of them
+  is the output stage of <code>men</code>, the block's internal enable. The clock generator drives <code>men</code> to every
+  decoder and column through 20 p-transistors of 8.57 um (171.4 um in all). In this netlist <code>men</code> is
+  VSS. So the enable never rises (every read fails), and once it should, the 171 um p-transistor
+  connects VDD to VSS (the 26 mA).</li>
+<li>The same layout extracted hierarchically (Magic 8.3.677, <code>extract all</code>, netlist flattened by
+  <code>ext2spice hierarchy off</code>) <strong>matches the schematic</strong> in netgen: 56,808 devices and 19,766 nets on
+  both sides, "Circuits match uniquely". So the short comes from the geometric flattening step. It is
+  not drawn in the layout. Which feature of the flattening causes it I did not find out. Extracted
+  alone, the clock generator and the control block are correct both ways.</li>
+<li>A second fault in my new netlist: <code>ext2spice</code> left the substrate as a net of its own, holding 19,484
+  capacitors (9.6 pF of them from VDD) and no transistor. I tied it to VSS. With it floating, the slow
+  corner gave 5.54 ns instead of 5.57 ns. The second pass's 64 x 8 netlist does not have this fault.</li>
+</ul>
+<p><strong>What was simulated.</strong> The hierarchical extraction with capacitance: 59,873 transistors and 137,377
+capacitors of 0.02 fF or more, 53.9 pF in all, no negative values, no wire resistance. The bench and
+the multi-finger rewrite are as in the second pass. The short sequence is used: write A5 at address 0
+and 5A at address 1023, then read 0, 1023, 0, with a 12 ns clock period (50 ns at 1.8 V), 50 fF on each
+output, and inputs changing 5 ns before the clock. One run takes 15 to 23 minutes.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Corner</th>
+<th>Clock to output</th>
+<th>Read, per access</th>
+<th>Write, per access</th>
+<th>Clocked, not selected</th>
+<th>Schematic, clock to output (second pass)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slow, 3.0 V, 125 C</td>
+<td><strong>5.57 ns</strong></td>
+<td>58.7 pC</td>
+<td>70.9 pC</td>
+<td>1.09 pC</td>
+<td>3.17 ns</td>
+</tr>
+<tr>
+<td>typical, 3.3 V, 25 C</td>
+<td>3.48 ns</td>
+<td>64.9 pC</td>
+<td>78.1 pC</td>
+<td>1.21 pC</td>
+<td>1.98 ns</td>
+</tr>
+<tr>
+<td>fast, 3.6 V, -40 C</td>
+<td>2.40 ns</td>
+<td>72.6 pC</td>
+<td>87.0 pC</td>
+<td>1.41 pC</td>
+<td>1.36 ns</td>
+</tr>
+<tr>
+<td>slow, 1.8 V, 125 C, 50 ns clock</td>
+<td>11.2 ns</td>
+<td>33.9 pC</td>
+<td>40.0 pC</td>
+<td>0.63 pC</td>
+<td>not run</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>All reads were correct in all four runs, at the near and the far address (<strong>measured</strong>). Clock to
+  output is defined as in the second pass: the slowest of the eight bits, near and far within 0.1 ns.</li>
+<li>Wiring makes the block 1.75 to 1.76 times slower than its schematic, about the 1.49 of the 64 x 8
+  block plus the longer lines. The second pass's working figure of 5 to 6 ns holds. Wiring takes 1.62
+  to 1.70 times the schematic's charge, a little below the 1.75 assumed in the second pass.</li>
+<li><strong>Supply capacitance of one block</strong> (typical, 25 C, clock stopped): during a 0.1 V supply ramp over
+  20 ns the block takes a steady 0.427 mA, which makes <strong>85 pF</strong> (measured). The bench's own printout
+  (37.7 pF) is wrong: it subtracts a current read during the ramp. This includes the n-wells, the
+  block's own MOS capacitors and the bit lines that are held at the supply.</li>
+<li><strong>Wire resistance (estimate).</strong> Metal1 to Metal3 have 90 milliohms per square and poly 7.3 ohms per
+  square (Magic's technology file). The extracted capacitance of the longest nets: a bit line 150 to
+  167 fF, a word-line half 55 to 58 fF (strapped), <code>men</code> 809 fF, the clock pin 117 fF. A 390 um bit
+  line 0.3 um wide is about 120 ohms, so its distributed delay is about 0.38 x 120 ohm x 160 fF = 7 ps.
+  <code>men</code> across the block at about 1 um width gives about 8 ps. Resistance should add <strong>under 0.1 ns</strong>.
+  That has not been simulated: an extraction with resistance was <strong>not done</strong>.</li>
+<li>Not done: the shortest cycle and pulse with wiring (only 12 ns was run), set-up and hold with wiring,
+  mismatch.</li>
+</ul>
+<p><strong>Lowest supply.</strong></p>
+<ul>
+<li>The storage cell alone (static margins, all four corners typical, slow, fast and slow-n-fast-p,
+  -40 and 125 C, 3.6 V down to 1.5 V; the fast-n-slow-p corner was not run) can always be written and
+  is never flipped by a read. Writing flips it when the bit line falls to 0.325 V or less, so the driver
+  pulling to 0 V has at least 0.325 V of margin. The worst case is slow n with fast p, -40 C, 1.5 V. When
+  read, the node holding 0 rises to at most 0.40 V below the other inverter's switching point. The worst
+  case for that is fast, 125 C, 1.5 V. Both margins shrink smoothly with the supply, without a cliff
+  (<strong>measured</strong>, <code>pass3/cellmargin.txt</code>). Mismatch between the cell's transistors is not included, and
+  it is what limits a real array at low voltage.</li>
+<li>The whole block with wiring works at 1.8 V, slow silicon, 125 C, at 11.2 ns (table above).</li>
+<li><strong>Statement:</strong> the block works over the chip's full supply range of 1.8 to 5.5 V (<code>docs/datasheet.md</code>, section
+  2) if its rail stays at 1.8 V or more. Below the regulator's dropout the rail follows VCC, so the rail
+  falls to the chip's own 1.8 V minimum and no lower, provided the regulator passes VCC through with
+  little loss (item 2). At 1.8 V the block is fast enough for the 4 MHz that an ATmega328PB allows
+  there. The cold slow corner at 1.8 V, the fast-n-slow-p cell corner, and anything below 1.8 V for the
+  whole block were <strong>not done</strong>.</li>
+</ul>
+<p><strong>Condition 1: held, as far as simulation goes.</strong> 5.57 ns at the slow corner with wiring capacitance,
+plus under 0.1 ns for resistance (estimate), against the 8 ns asked. With the level shifter (1.1 to
+1.3 ns at the slow corner, section 3 below) that is about 6.9 ns from clock to a 5 V signal, where the
+foundry 5 V block takes 10.3 ns. The condition's second half, the author's measurements across
+voltage and temperature, is still not available to me.</p>
+<p>Files: <code>memres_work/topext/</code> (extraction scripts <code>t.tcl</code> and <code>fc.tcl</code>, netlist <code>sram1024_hc.spice</code>),
+<code>memres_work/lvs/</code> (the failed netlist's comparison, <code>lvs.out</code>), <code>memres_work/h1024_*.out</code>.</p>
+<h3>2. The regulator and its capacitance</h3>
+<p><strong>In short.</strong> One clock edge can take up to 0.68 nC from the memory rail (measured charges, worst
+corner). The 36 blocks bring 2.7 nF of their own to the rail. With that alone, a simple regulator keeps
+the rail at 2.99 V or more at every corner tried. <strong>About 2 nF more</strong> keeps it at 3.04 V or more, a
+first-order design and simulation result. That is roughly 1 mm2 of MIM capacitor, or 0.5 to 0.65 mm2 of
+MOS capacitor, against the 3.5 to 7 nF and 0.9 to 1.75 mm2 estimated in the second pass. The regulator
+here has a real output transistor but an idealised amplifier. It is not a design.</p>
+<p><strong>The load step (from the RTL and the measured charges).</strong></p>
+<ul>
+<li>The core is <code>hazard3_cpu_1port</code> (<code>rtl/rv328_core.v</code>): one bus. On one clock edge there is at most one
+  access in its address phase (an instruction fetch, or a load) plus the data phase of an earlier store
+  to RAM (<code>ram_wr_now</code>). A RAM read cannot meet a RAM write on the same edge; the core delays it
+  (<code>ram_late</code>). The RAM's four byte blocks share one enable, so a byte store enables all four.</li>
+<li><strong>The island of the second pass</strong> (program store of 32 x 1024 x 8 as 8 banks of 4 bytes, RAM of 4 x
+  512 x 8): at most <strong>8 blocks enabled on one edge</strong>, 4 read and 4 written. The other 28 blocks see the
+  clock without being selected, unless their clocks are gated.</li>
+<li><strong>The present cache, if built from these blocks</strong> (<code>rtl/rv328_xip.v</code>, full layout: 3 ways of 4 KB):
+  within a way only one bank fires per access. But all three ways are read at once, each with its tag
+  block, so a fetch enables 15 blocks, and 19 with a store in the same edge. That is 1.29 nC at the
+  typical corner, twice the island's. So the island, not the cache, is the case sized here.</li>
+<li>Charge on the worst edge (8 enabled, 28 clocked; measured per-block charges of item 1; the RAM's
+  512 x 8 blocks counted as 1024 x 8, which overstates them):</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Corner</th>
+<th>4 reads + 4 writes + 28 clocked</th>
+<th>as current, every edge at 20 MHz</th>
+<th>usual edge: one fetch, 32 clocked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slow, 3.0 V, 125 C</td>
+<td>0.549 nC</td>
+<td>11.0 mA</td>
+<td>0.27 nC, 5.4 mA</td>
+</tr>
+<tr>
+<td>typical, 3.3 V, 25 C</td>
+<td>0.606 nC</td>
+<td>12.1 mA</td>
+<td>0.30 nC, 6.0 mA</td>
+</tr>
+<tr>
+<td>fast, 3.6 V, -40 C</td>
+<td>0.678 nC</td>
+<td>13.6 mA</td>
+<td>0.33 nC, 6.6 mA</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The charge comes in a burst of about 2 ns after the edge (second pass). In the simulations below it
+  is a triangle with that base, repeated every 50 ns. Every edge is taken as a worst one, which no
+  program sustains.</li>
+<li><strong>The rail's working range</strong> taken here is 3.0 to 3.6 V: the range in which item 1's timing holds,
+  and below the 3.63 V that the 3.3 V oxide allows. The block works down to 1.8 V more slowly. A dip
+  below 3.0 V makes the access that causes it slower, not wrong: 5.6 ns at 3.0 V and 11.2 ns at 1.8 V at
+  the slow corner.</li>
+</ul>
+<p><strong>Capacitance the blocks bring.</strong> 85 pF per 1024 x 8 block (item 1), so 32 x 85 = <strong>2.7 nF</strong> on the
+rail from the program store alone (measured per block, arithmetic for 32). The RAM blocks' share was
+not measured and is left out.</p>
+<p><strong>The regulator simulated</strong> (<code>pass3/reg2.py</code>, ngspice, PDK models for the transistor):</p>
+<ul>
+<li>Output stage: a native thick-oxide n-transistor (<code>nfet_06v0_nvt</code>, 10,000 um / 1.8 um, body on the
+  substrate) as a source follower from VCC. A follower answers a fast load by itself: when the rail
+  dips, its gate-source voltage grows and it conducts more, without waiting for the loop. A p-type
+  pass transistor (the second pass's idea, and variant P of the first attempt) depends on the loop for
+  that, and in the first attempt it lost 0.3 to 0.8 V under load.</li>
+<li>Error amplifier: <strong>behavioural</strong>, a transconductor of 80 uS limited to 40 uA, 100 pF from the gate
+  to ground, its output clamped between 0 V and VCC - 0.2 V. Reference 1.1 V (the project's bandgap),
+  divider 2 Mohm / 1 Mohm.</li>
+<li>A bleed current of 0.5 mA from the rail while awake, and 5 uA in a sleep setting (with the amplifier
+  at 8 uS / 4 uA). The bleed keeps the follower's transconductance up, so that the step from idle to
+  full load costs less. With 50 uA of bleed the first dip at the typical corner was 0.06 V deeper
+  (3.053 against 3.110 V, 5 nF, earlier load estimate of 0.55 nC).</li>
+</ul>
+<p><strong>Load step, 20 us of worst edges after rest</strong> (rail at rest 3.300 V at every corner; capacitance =
+the blocks' 2.7 nF plus what is added; measured in simulation):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Corner, VCC</th>
+<th>Added</th>
+<th>Lowest, at the start of the load</th>
+<th>Steady ripple, low to high</th>
+<th>Highest after the load stops</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>typical, 25 C, 5.0 V</td>
+<td>none</td>
+<td>3.030 V</td>
+<td>3.156 to 3.361 V</td>
+<td>3.420 V</td>
+</tr>
+<tr>
+<td>slow, 125 C, 4.5 V</td>
+<td>none</td>
+<td><strong>2.988 V</strong></td>
+<td>3.182 to 3.372 V</td>
+<td>3.482 V</td>
+</tr>
+<tr>
+<td>slow, -40 C, 4.5 V (fast charge)</td>
+<td>none</td>
+<td>2.999 V</td>
+<td>3.145 to 3.376 V</td>
+<td>3.441 V</td>
+</tr>
+<tr>
+<td>fast, -40 C, 5.5 V</td>
+<td>none</td>
+<td>3.056 V</td>
+<td>3.133 to 3.343 V</td>
+<td>3.374 V</td>
+</tr>
+<tr>
+<td>typical, 25 C, 5.0 V</td>
+<td>2 nF</td>
+<td>3.093 V</td>
+<td>3.223 to 3.345 V</td>
+<td>3.421 V</td>
+</tr>
+<tr>
+<td>slow, 125 C, 4.5 V</td>
+<td>2 nF</td>
+<td><strong>3.043 V</strong></td>
+<td>3.234 to 3.346 V</td>
+<td>3.476 V</td>
+</tr>
+<tr>
+<td>slow, -40 C, 4.5 V (fast charge)</td>
+<td>2 nF</td>
+<td>3.069 V</td>
+<td>3.216 to 3.353 V</td>
+<td>3.439 V</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The lowest point comes in the first microsecond. It is the follower moving from 0.5 mA to 12 mA
+  (a larger gate-source voltage) before the loop has raised its gate. The per-edge ripple after that
+  is the charge over the capacitance, about 0.2 V with the blocks alone and 0.12 V with 2 nF added.
+  More capacitance helps the first dip less than it helps the ripple. A wider follower helps a little
+  (typical, 5 nF, 50 uA bleed: 3.026, 3.048 and 3.059 V for 5,000, 10,000 and 20,000 um).</li>
+<li>After the load stops the rail rises by up to 0.18 V and returns in about 10 us; 3.48 V at most,
+  inside the 3.63 V limit.</li>
+<li><strong>Stability</strong>: at a light load (0.4 mA of bursts) the rail stays within 3.27 to 3.32 V at the slow and
+  the fast corner, with and without added capacitance. In the sleep setting, with almost no load, it
+  rests at 3.27 to 3.31 V. No oscillation in any run. This is a time-domain check with an ideal
+  amplifier, not a phase margin.</li>
+<li><strong>Needed capacitance (estimate from these runs).</strong> To stay at 3.0 V or above at every corner tried:
+  the blocks' own 2.7 nF is just short at the slow corner (2.988 V). Adding <strong>2 nF</strong> gives a margin of
+  40 mV or more. Allowing dips to 2.9 V (a slower first access) needs no added capacitor in these runs.
+  Charge per edge 20 % lower than assumed (stores do not come every edge) gives the same margin with
+  less.</li>
+</ul>
+<p><strong>Capacitor type and area</strong> (densities <strong>measured</strong> from the PDK's ngspice models, area <strong>estimate</strong>):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Density</th>
+<th>Spread in the models</th>
+<th>2 nF takes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MIM, <code>cap_mim_2f0_m4m5_noshield</code> (between Metal4 and Metal5; Magic's generator for this PDK makes the 2 fF/um2 one)</td>
+<td>1.99 fF/um2</td>
+<td>+/- 10 %</td>
+<td>1.0 to 1.1 mm2</td>
+</tr>
+<tr>
+<td>MOS, 3.3 V gate oxide (<code>cap_nmos_03v3</code>, in inversion)</td>
+<td>3.98 fF/um2</td>
+<td>+/- 10 %</td>
+<td>0.5 to 0.56 mm2 of gate, about 0.65 mm2 drawn</td>
+</tr>
+<tr>
+<td>MOS, 6 V gate oxide (<code>cap_nmos_06v0</code>)</td>
+<td>2.18 fF/um2</td>
+<td>+/- 10 %</td>
+<td>0.9 to 1.0 mm2</td>
+</tr>
+<tr>
+<td>MIM over MOS, stacked</td>
+<td>about 6 fF/um2</td>
+<td></td>
+<td>about 0.35 to 0.4 mm2</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>A MOS capacitor on the 3.3 V oxide is right for this rail, which never exceeds 3.48 V in the runs.</li>
+<li>The macros leave Metal4 and Metal5 free above them (second pass, section 6), and MIM lies between
+  those two layers. 2 nF is about a fifth of the 5.36 mm2 of the 36 blocks, so the capacitor could sit
+  over the memory and cost no core area, if the power grid can give up that much of Metal4 and Metal5
+  there. Not checked against the grid or the density rules.</li>
+<li>The core area left for capacitors in section 6 (+1.27 mm2) now holds the 2 nF with room to spare.</li>
+</ul>
+<p><strong>Quiescent current (estimate; the amplifier is behavioural, its own current is assumed).</strong></p>
+<ul>
+<li>Awake: bleed 0.5 mA, amplifier about 80 uA, divider 1.1 uA, about <strong>0.6 mA</strong> from VCC, plus the
+  bandgap's share. The simulator shows 0.52 mA at rest (bleed, divider and the 20 uA load), the
+  amplifier excluded.</li>
+<li>Asleep (sleep setting): bleed 5 uA, amplifier about 8 uA, divider 1.1 uA, about <strong>15 uA</strong>, plus
+  memory leakage (second pass: 59 uA for 34 blocks at 125 C typical, 0.67 mA at the fast corner,
+  25 C unknown below the simulator's 6.5 uA floor). The simulator shows 7.1 uA at -40 C and 26 uA at
+  125 C at rest, including the load.</li>
+<li>Going from sleep to full load must not happen in the sleep setting. Simulated at the slow corner,
+  -40 C, with the blocks' capacitance only: the rail falls to 2.892 V, and it still averages only
+  3.16 V after 20 us. After the load stops it is at 3.40 V 13 us later. So on waking, the regulator
+  goes to its awake setting first, and a few microseconds later the memory clock starts. The wait is
+  an estimate, not simulated. It is short against the oscillators' start-up.</li>
+</ul>
+<p><strong>From 5.5 V down through dropout (DC, measured in simulation, gate limit VCC - 0.2 V).</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>VCC</th>
+<th>typical 25 C, 0.02 / 15 mA</th>
+<th>slow 125 C, 0.02 / 15 mA</th>
+<th>slow -40 C, 0.02 / 15 mA</th>
+<th>fast -40 C, 0.02 / 15 mA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.5 to 4.0 V</td>
+<td>3.30 / 3.30</td>
+<td>3.30 / 3.30</td>
+<td>3.30 / 3.30</td>
+<td>3.30 / 3.30</td>
+</tr>
+<tr>
+<td>3.8 V</td>
+<td>3.30 / 3.30</td>
+<td>3.30 / 3.20</td>
+<td>3.30 / 3.16</td>
+<td>3.30 / 3.30</td>
+</tr>
+<tr>
+<td>3.6 V</td>
+<td>3.30 / 3.22</td>
+<td>3.22 / 3.01</td>
+<td>3.12 / 2.97</td>
+<td>3.30 / 3.30</td>
+</tr>
+<tr>
+<td>3.0 V</td>
+<td>2.80 / 2.65</td>
+<td>2.67 / 2.45</td>
+<td>2.55 / 2.40</td>
+<td>2.95 / 2.85</td>
+</tr>
+<tr>
+<td>2.7 V</td>
+<td>2.52 / 2.37</td>
+<td>2.39 / 2.18</td>
+<td>2.26 / 2.11</td>
+<td>2.67 / 2.56</td>
+</tr>
+<tr>
+<td>1.8 V</td>
+<td>1.67 / 1.51</td>
+<td>1.55 / 1.34</td>
+<td>1.40 / 1.25</td>
+<td>1.79 / 1.69</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>It regulates over the whole 20 MHz range (4.5 to 5.5 V) at every corner and load. Below about 3.8 V
+  the rail follows VCC, but 0.1 to 0.55 V lower. A follower cannot pass VCC through, and at 1.8 V
+  the rail would be down to 1.25 V at the cold slow corner, below anything the block was simulated at.</li>
+<li>So "the memory supply follows VCC" needs a <strong>bypass switch</strong>: a thick-oxide p-transistor from VCC
+  to the rail, turned on below about 3.5 V by a comparator with hysteresis (the brown-out detector's
+  kind of circuit). From the second pass (5.4 mA per 1000 um at 0.1 V drop, 3.0 V) and the load at
+  the clock allowed there (about 1 to 3 mA at 4 to 10 MHz), it would be 1000 to 3000 um. That is an
+  estimate. The switch, its comparator and the hand-over without a step were <strong>not designed</strong>.</li>
+</ul>
+<p><strong>What remains unproven.</strong> A real error amplifier: its output must swing to VCC - 0.2 V, and its gain,
+poles, current and offset are assumed here. Stability as a phase margin over load and corners. Supply
+rejection from the noisy 5 V rail through the follower's drain. Start-up: the reset must hold until the
+rail is up, because the level shifter does not switch with a low rail (section 3). The bypass switch.
+The resistance of the rail's grid between the capacitors and the blocks. The 512 x 8 RAM blocks'
+charge and capacitance. The capacitors' leakage and layout. None of it has silicon.</p>
+<p><strong>Condition 2: held at first order, still open as a design.</strong> On the measured load a follower regulator
+and 2 nF added to the blocks' own 2.7 nF keep the rail at 3.04 V or more at the corners tried. The
+capacitor fits, in about 1 mm2 of MIM, perhaps over the memory, or in 0.5 to 0.65 mm2 of MOS
+capacitor. The circuit, the bypass switch and the layout still have to be designed.</p>
+<p>Files: <code>pass3/reg2.py</code>, results in <code>memres_work/reg/</code> (<code>sweep1..4.txt</code>, <code>dc2.txt</code>, <code>wake.txt</code>).</p>
+<h3>3. The level shifter</h3>
+<p><strong>Up, 3.3 V to 5 V.</strong> The circuit is the one inside the pads of <code>gf180mcu_ocd_io</code> (sub-circuit
+<code>io_lvlshft</code>), with devices from the installed PDK:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Type</th>
+<th>W / L</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>inverter making the complement, on the 3.3 V rail</td>
+<td><code>nfet_03v3</code>, <code>pfet_03v3</code></td>
+<td>0.6 / 0.28 um, 1.2 / 0.28 um</td>
+</tr>
+<tr>
+<td>two pull-down transistors, gates on the input and its complement</td>
+<td><code>nfet_06v0</code></td>
+<td>1.5 / 0.7 um</td>
+</tr>
+<tr>
+<td>two cross-coupled pull-up transistors on the 5 V rail</td>
+<td><code>pfet_06v0</code></td>
+<td>1.5 / 0.7 um</td>
+</tr>
+</tbody>
+</table></div>
+<p>Simulated alone (ngspice, schematic, no wiring), 30 fF load, 0.5 ns input edge, input to output at
+half levels:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Corner</th>
+<th>Rise</th>
+<th>Fall</th>
+<th>Charge per cycle from 5 V</th>
+<th>Standing current</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slow, 125 C, 3.0 V in, 4.5 V out</td>
+<td>1.10 ns</td>
+<td>0.95 ns</td>
+<td>0.37 pC</td>
+<td>at the simulator's floor, about 10 pA</td>
+</tr>
+<tr>
+<td>typical, 25 C, 3.3 V in, 5.0 V out</td>
+<td>0.70 ns</td>
+<td>0.59 ns</td>
+<td>0.41 pC</td>
+<td>the same</td>
+</tr>
+<tr>
+<td>fast, -40 C, 3.6 V in, 5.5 V out</td>
+<td>0.50 ns</td>
+<td>0.41 ns</td>
+<td>0.47 pC</td>
+<td>the same</td>
+</tr>
+<tr>
+<td>slow, 125 C, 3.0 V in, 5.5 V out</td>
+<td>1.27 ns</td>
+<td>1.34 ns</td>
+<td>0.54 pC</td>
+<td>the same</td>
+</tr>
+<tr>
+<td>slow n with fast p, -40 C, 3.0 V in, 5.5 V out (worst tried)</td>
+<td>2.01 ns</td>
+<td>1.42 ns</td>
+<td>0.98 pC</td>
+<td>the same</td>
+</tr>
+<tr>
+<td>slow, 125 C, both rails at 1.8 V</td>
+<td>3.28 ns</td>
+<td>1.00 ns</td>
+<td>0.12 pC</td>
+<td>the same</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>No standing current</strong> in either state: one side of the cross-coupled pair is always fully off.
+  The values are the simulator's own leakage floor, not a result.</li>
+<li>A variant without the 3.3 V inverter, taking the complement from an ordinary library inverter on the
+  3.3 V rail, gives the same delays within 0.1 ns. Then the cell holds only the four thick-oxide
+  transistors and sits entirely in a 5 V well.</li>
+<li><strong>One limit found.</strong> With the 5 V rail at 5.5 V and the memory rail at 2.3 V or 1.8 V (slow silicon,
+  -40 C) the cell does <strong>not</strong> switch: the pull-down cannot overcome the pull-up. In operation this
+  combination does not occur, because the memory rail is 3.3 V whenever the supply is high, and when
+  the supply is low both rails are low together (the 1.8 V row above works). It does occur while the
+  regulator starts. The reset has to hold until the memory rail is up.</li>
+<li><strong>Area (estimate).</strong> In the pad library the four thick-oxide transistors are drawn in 5.53 x 12.91 um
+  (71 um2) and the inverter in 12 um2 (measured in the second pass). As a cell in a 9-track row
+  (5.04 um high) the four-transistor variant should be about 8 to 10 um wide, 40 to 50 um2. It needs
+  LEF, a liberty file made by simulation, and layout checks; none of that exists.</li>
+<li><strong>How many.</strong> One per memory output that crosses: 288 if all 36 macros' outputs are shifted
+  (36 x 8), 64 if the read selection is done inside the island (32 for the program store, 32 for the
+  RAM). At 50 um2 that is 0.014 or 0.003 mm2. Switching all 64 every clock at 20 MHz takes about 0.6 mA
+  from the 5 V rail and under 0.1 mA from the memory rail (from the charges above).</li>
+</ul>
+<p><strong>Down, 5 V to 3.3 V.</strong> The memory's inputs do <strong>not</strong> tolerate 5 V.</p>
+<ul>
+<li>Evidence from the macro's netlist: an address pin leads straight to the source of a transmission
+  gate built from <code>nfet_03v3</code> and <code>pfet_03v3</code> whose n-well is on the memory rail (sub-circuit
+  <code>alatch</code>); data, enables and clock lead to gates of the same 3.3 V transistors. All 383 transistor
+  lines of the netlist are these two types. The layout adds 18 small n-diffusion diodes to ground on
+  the inputs (cell <code>antenna_tiedown</code>). A 5 V level would put 5 V across a 3.3 V gate oxide (rated
+  3.3 V plus 10 %, as you established) and would forward-bias the p-transistor's source into its well.</li>
+<li>Nothing new has to be designed for this direction. A cell of <code>gf180mcu_fd_sc_mcu9t5v0</code> standing on
+  the 3.3 V rail takes the 5 V signal on its thick-oxide gates and delivers a 3.3 V swing: 0.4 to 0.6 ns
+  at slow silicon and 3.0 V (simulated in the second pass). It needs rows of its own whose n-well is on
+  the memory rail. About 100 such buffers for shared buses (second pass, section 4).</li>
+</ul>
+<h3>Verdict of the third pass</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Condition (second pass)</th>
+<th>Status</th>
+<th>The number</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. The 1024 x 8 block stays under about 8 ns with wiring at the slow corner; the author's measurements confirm it across voltage and temperature</td>
+<td><strong>held</strong> for the simulation; the silicon half <strong>still open</strong></td>
+<td>5.57 ns at slow silicon, 3.0 V, 125 C, extracted capacitance (measured); under 0.1 ns more for resistance (estimate); works at all three corners and at 1.8 V (11.2 ns). No silicon characterisation seen.</td>
+</tr>
+<tr>
+<td>2. A regulator without external capacitor and its on-chip capacitance can be designed and fitted</td>
+<td><strong>held at first order, still open as a design</strong></td>
+<td>rail at 3.04 V or more at the corners tried on the worst load of 0.68 nC per edge, with a native follower and 2 nF added to the blocks' own 2.7 nF (simulated, behavioural amplifier); 2 nF is about 1 mm2 of MIM or 0.5 to 0.65 mm2 of MOS capacitor (estimate); a bypass switch for VCC below about 3.5 V is still needed and not designed</td>
+</tr>
+<tr>
+<td>3. The project accepts what power-down then costs</td>
+<td><strong>still open</strong>: a decision for the project, not a measurement</td>
+<td>island kept on: regulator about 15 uA asleep (estimate) plus memory leakage, below 6.5 uA at 25 C (simulator floor) up to 59 uA typical and 0.67 mA fast at 125 C (second pass); or island off and the program copied again on wake-up, about 30 ms (second pass)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Overall: still go, and the case is stronger than after the second pass.</strong> The block is fast enough
+with its wiring, and the capacitor is less than half of what was feared, because the blocks bring 2.7 nF
+of their own. Nothing found rules it out. It remains work for a second silicon, not the first. The
+next steps, in order:</p>
+<ol>
+<li>A real error amplifier, the bypass switch and the start-up in the analog flow, with stability over
+   load and corner.</li>
+<li>The resistance of the rail grid between capacitors and blocks.</li>
+<li>The shortest cycle, set-up and hold of the extracted block.</li>
+<li>The cold slow corner at 1.8 V.</li>
+<li>The decision on power-down.</li>
+</ol>
+<h3>Power-down: recommendation (added 21 November, after the third pass)</h3>
+<p>The ATmega328PB keeps its program in flash and its 2 KB RAM powered: 0.2 uA in power-down (typical,
+1.8 V, 25 C, watchdog off, Microchip's product page) and it resumes within microseconds to about a
+millisecond. Neither option above matches that: keeping the 3.3 V memory powered costs about 75 times
+that current at room temperature and far more hot; copying the whole program back costs about 30 ms of
+full power on every wake.</p>
+<p><strong>Recommended: switch the memory off in power-down and refill it on demand.</strong> The on-chip memory holds
+the whole program, with a "loaded" flag per 32-byte line. Power-up and wake from power-down clear the
+flags; a line is fetched from the serial memory the first time it is used (about 29 us), and since the
+whole program fits, a line is never thrown out. The first 2 KB (interrupt handlers and the wake-up path,
+already pinned in today's cache) sit in a small block that stays powered, with the regulator in a
+low-current sleep mode.</p>
+<ul>
+<li>A pin or timer interrupt is answered at once; other code is slower the first time it runs after a wake
+  and at full speed after that. A device that wakes, reads a sensor and sleeps refills only the few
+  hundred bytes it uses.</li>
+<li>Sleep current: a few uA, from the small block's leakage and the sleep regulator (<strong>estimate</strong> from the
+  leakage simulated in the second pass; not simulated as such). Not 0.2 uA, and it should be in the
+  datasheet as a difference from the ATmega.</li>
+<li>The logic is today's cache controller with one way of the full program size: fill on miss, never
+  evict. <strong>Not designed or simulated.</strong></li>
+<li>True "nothing to load" would need non-volatile memory on the chip, which the open kit does not offer
+  for user programs (section 5: mask ROM and logic ROM are fixed at manufacture, eFuse is one-time).</li>
+</ul>
 <h2>Comparison</h2>
 <p>Density is area per stored bit, whole macro or block, not just the storage cell. "x" is the density
 relative to the 512 x 8 foundry macro (51.1 um2 per bit); below 1 means worse.</p>
@@ -102,11 +1243,11 @@ relative to the 512 x 8 foundry macro (51.1 um2 per bit); below 1 means worse.</
 <td>1b. 3.3 V macro <code>gf180mcu_ocd_ip_sram</code> 1024 x 8</td>
 <td>19.0 (measured)</td>
 <td>2.7</td>
-<td>unknown: liberty is a copy of the 5 V macro's</td>
+<td>3.2 ns clock to output without wiring (simulated), 5 to 6 ns with it (estimate); liberty is a copy of the 5 V macro's</td>
 <td>in the PDK</td>
-<td>made on run 1, reported working; partial bench test documented</td>
-<td>LEF, GDS, netlist ready; needs regulator, level shifters, second supply, timing</td>
-<td>supply island; no real timing; little silicon data</td>
+<td>made on run 1, reported working; partial bench test documented; speed not verified</td>
+<td>LEF, GDS, netlist ready; needs regulator, on-chip capacitance, level shifters, second supply, timing files</td>
+<td>supply island without a silicon example; little silicon data</td>
 </tr>
 <tr>
 <td>2. OpenRAM for GF180MCU</td>
@@ -357,8 +1498,9 @@ uses 6 V transistors at 0.60 um (measured).</p>
   an external capacitor, added to the analog macro. Nothing of the kind is in the PDK libraries.
   It must carry the read current of the active macros, which the placeholder files do not tell.</li>
 <li><em>Level shifters.</em> A 5 V signal must not reach a 3.3 V gate, and a 3.3 V output is not a valid
-  high for 5 V logic. The cell libraries in the PDK contain no level-shifter cell (measured: no
-  such macro name in the LEF files); the dual-voltage pad library <code>gf180mcu_ocd_io</code> has no separate one either. A macro
+  high for 5 V logic. Corrected in the second pass: the PDK has no level-shifter cell usable at
+  5 V. The two in <code>gf180mcu_osu_sc_gp12t3v3</code> are built from 3.3 V transistors, and the right
+  circuit exists only inside the pads of <code>gf180mcu_ocd_io</code>. A macro
   has 29 inputs and 8 outputs (measured from the LEF). The inputs can share shifters across a
   bank; every output needs one, unless the read multiplexing is also built at 3.3 V.</li>
 <li><em>A second supply net in LibreLane</em>: power grid for the island, power pins of the macros on the
@@ -769,14 +1911,14 @@ executed.</p>
 <ol>
 <li><strong>Does the 5 V foundry macro have published silicon results?</strong> I found none, only its use on run 1
    chips. Not a reason to doubt it, but it is not shown here.</li>
-<li><strong>Real speed of the 3.3 V macro</strong> at 3.0 V and 125 C. The September 2026 characterisation was
+<li><strong>Real speed of the 3.3 V macro</strong> at 3.0 V and 125 C (simulated in the second pass; silicon still open). The September 2026 characterisation was
    presented in a talk whose content I could not read. Ask the author, or simulate the extracted
    netlist.</li>
 <li><strong>How completely was the 3.3 V macro tested?</strong> The written notes cover one macro size, four data
    bits and six address bits. The 1024-word macro, all addresses, write margins, temperature and
    supply range are not documented where I could read them.</li>
 <li><strong>Read and standby current</strong> of the 3.3 V macro, to size a regulator and to know the power-down
-   current.</li>
+   current (simulated in the second pass; leakage at 25 C still open).</li>
 <li><strong>Regulator without an external capacitor and level-shifter cells</strong>: neither exists in the PDK. How
    much area and design time they take was not estimated.</li>
 <li><strong>May designs use the SRAM rules for cells that are not the foundry's?</strong> Not stated in the open
@@ -827,6 +1969,18 @@ executed.</p>
 <li>Earlier shuttles (eFuse use, no OTP): https://wafer.space/google-gf180mcu-mpw0/</li>
 <li>RISCBoy-180 design notes (5 V macro density as the limit):
   https://github.com/Wren6991/RISCBoy-180/blob/main/notes.md</li>
+</ul>
+<p>Second pass</p>
+<ul>
+<li>Test chip history and notes (commit messages of 1 and 4 July 2026, <code>doc/README</code>):
+  https://github.com/RTimothyEdwards/gf180mcu_ocd_sram_test</li>
+<li>Library history (first commit of 18 November 2025; rule fix of 2 January 2026):
+  https://github.com/RTimothyEdwards/gf180mcu_ocd_ip_sram</li>
+<li>Change to the Verilog timing block, May 2026: https://github.com/RTimothyEdwards/gf180mcu_ocd_ip_sram/issues/1</li>
+<li>Tiny Tapeout project with the 256-word macro: https://tinytapeout.com/chips/ttgf0p3/tt_um_essen/</li>
+<li>Bonding results page of the run 1 test chip: https://wafer.space/ws-run1-cob/OCD2/</li>
+<li>Capless 5 V to 3.3 V regulator, design challenge entry: https://github.com/Vaticori/chipalooza3-ldo-gf180</li>
+<li>3.3 V to 1.8 V regulator without layout: https://github.com/2AMLogic/gf180-ldo</li>
 </ul>
 <p>Compilers and generators</p>
 <ul>

@@ -123,7 +123,8 @@ the new cache and multiplier. Two runs.
 **Found:** the first run routed cleanly and missed 20 MHz by 1.6 ns at the slowest corner, on the new
 multiplier. The second, with more repair margin, meets it at all nine corners (0.64 ns at the slowest)
 with the logic at 41 % of its rows. The routed netlist passes the boot test at gate level. Not good
-yet: 94 slow signal edges, most on wires to pads that sit behind rows of memory.
+yet: 94 slow signal edges (one at a pad, the rest inside the logic; stage 13 corrects the first reading
+that they were mostly pad wires).
 
 ![The first full-height layout](full_height_layout.png)
 
@@ -161,3 +162,94 @@ measurement, every alternative in the design kit and in open repositories looked
 
 **Decided:** nothing yet. The report recommends the foundry block for first silicon, the read-only
 library as an experiment, and the 3.3 V memory for a second silicon.
+
+## 12. The 3.3 V memory, looked at closely (20 November)
+
+**Asked:** "Do we know how it behaves for 5 V?"
+
+**Done:** the block's own transistor netlist simulated for writes and reads at three corners; its
+current measured in the same runs; the boundary to the 5 V logic and the supply it needs worked out.
+
+**Found:**
+
+* It cannot be run at 5 V at all: its transistors are the 3.3 V kind.
+* It works in simulation and is fast: 3.2 ns from clock to output at the slow corner without wiring,
+  an estimated 5 to 6 ns with it.
+* The real cost is its supply: a regulator that needs no external capacitor, and 0.9 to 1.75 mm2 of
+  capacitor on the chip, which takes back most of the area the denser memory frees.
+* Sleep gets worse or waking gets slower: keep the memory powered and leak, or reload the program in
+  about 30 ms.
+
+**Decided:** nothing yet. The verdict is "go, if" three things hold, and not for the first tape-out.
+The floorplan run for the full-height chip is on hold until the memory question is settled, because
+either answer changes the floorplan.
+
+## 13. A buffer at every pad: a run that did not pay (20 November)
+
+**Done:** the floorplan run recommended after the memory research: every pad signal with its own buffer
+set down in front of the pad, edge strips widened from 60 to 120 um to hold them, everything else as in
+the full-height layout. (Stage 12 had put this run on hold. It went ahead because the 3.3 V memory is
+not for the first tape-out, so a floorplan around the foundry memory is needed whichever way that goes.)
+
+**Found:** three things, none of them the hoped-for one.
+
+1. The run first stalled in hold repair. A stack trace of the tool showed it recomputing the timing of
+   the whole design for every buffer it tried; a hold report showed why: the new buffer on the clock pin
+   (PB6) delayed the external clock against the copy the oscillator stand-in takes from the same pad.
+   The clock pin lost its buffer and the run went through.
+2. The layout routes clean and all pad wires are fast, but it misses 20 MHz by 1.73 ns at the slowest
+   corner (the reference layout has +0.64 ns) and has 142 slow edges instead of 94.
+3. Looking at why: only one of the 94 slow edges had been a pad wire. The others are logic in the
+   channels between memory rows, where repeaters cannot be placed where they are needed. And the wider
+   strips drew logic out along the edges, which lengthened the tightest paths.
+
+**Decided:** the earlier layout stays the reference; the pad buffers stay in the RTL as an option
+(`RV328_PADBUF`, off by default; `gen_floorplan_1x1.py --padbuf`). The next floorplan gives the logic
+regions instead of room (decision 11). An environment restart during routing cost half an hour; the run
+was resumed from the saved state before routing.
+
+![Pad buffers and wider strips: logic spreads along the west edge](full_height_padbuf.png)
+
+## 14. Both tracks at once (20 and 21 November)
+
+**Asked:** "Let's do them both in parallel": the next floorplan and the 3.3 V memory.
+
+**Done, memory:** a research agent took the 3.3 V block through its three open conditions
+([memory research](memory_research.md), "Third pass"). The first agent stopped at its plan's monthly
+limit; a second one took over from its files.
+
+**Found, memory:** the block with its own wiring answers in 5.57 ns at the slow corner (8 ns was the
+condition) and works down to 1.8 V. A first extracted simulation that failed every read was traced to a
+short made by the extraction step, not by the block. The regulator needs 2 nF on chip besides the
+blocks' own 2.7 nF, less than half of what was feared. The level shifter adds 1.1 to 1.3 ns. Verdict:
+still go, for a second silicon; power-down remains a decision.
+
+**Done, floorplan:** two more runs on the same idea of guiding the placer: lanes kept free for buffers
+(`full8`), and the pad buffers alone in the reference floorplan (`full9`).
+
+**Found, floorplan:** neither helped. With lanes kept free the logic packed tighter and part of the
+processor moved under the analog block: -3.09 ns at the slowest corner. The pad buffers alone left the
+design 8.9 ns short after global routing; its repair was recovering (+2.3 ns) but so slowly that the run
+was stopped. The pad buffers also only move PB0's slow edge from the pad to the wire into its buffer.
+
+**Decided:** the reference layout stays. Taking room away from the placer does not guide it; the next
+attempt leaves the floorplan alone and asks the repair steps to break long wires instead (stage 15).
+
+![Lanes kept free: the logic packs tighter and reaches under the analog block](full_height_lanes.png)
+
+## 15. Repeaters on long wires: the first change that helps (21 November)
+
+**Done:** the reference floorplan left as it is; the flow's design-repair steps told to break every
+wire longer than 600 um with a repeater (`full10`), then the same with more timing margin after global
+routing (`full11`).
+
+**Found:** capacitance overloads fell from 646 to 265 and slow edges from 94 to 79, for 1.4 % more
+wire. The first run missed by 34 ps on one path; with more margin setup is met at all nine corners
+(+0.17 ns at the slowest). One 9 ps hold miss remains, on the serial-memory data input, where the
+constraint assumes the data changes at the clock edge itself.
+
+**Decided:** `full11`'s settings become the reference once that input constraint comes from the memory
+die's data sheet and timing is rerun. Until then `full4` stays. PB0's slow wire needs a hand fix.
+
+![Repeaters on long wires](full_height_wire600.png)
+
