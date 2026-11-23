@@ -556,6 +556,25 @@ module chip_top (
 	wire [3:0]  adc_mux;
 	wire [9:0]  adc_dac;
 
+`ifdef RV328_ANALOG_MACRO
+	// the analog macro itself (flow/librelane/ip/rv328_analog, from scripts/gen_analog_abstract.py): its pins
+	// carry the layout's own names, buses split into bits; its ground pin vss is joined by the power grid
+	(* keep *) rv328_analog u_analog (
+		.xtal1 (A_XTAL1), .xtal2 (A_XTAL2), .aref (A_AREF), .avdd (A_AVCC), .adc0 (A_ADC0), .adc1 (A_ADC1),
+		.adc2 (A_ADC2), .adc3 (A_ADC3), .adc4 (A_ADC4), .adc5 (A_ADC5), .adc6 (A_ADC6), .adc7 (A_ADC7),
+		.ain0 (A_AIN0), .ain1 (A_AIN1), .clk_rc (clk_rc), .clk_xa (clk_xa), .clk_lf (clk_lf), .por_n (por_n),
+		.rc_en (rc_en), .xo_en (xo_en), .bod_en (bod_en), .adc_en (adc_en), .adc_sample (adc_sample),
+		.adc_cmp (adc_cmp), .ac_en (ac_en), .ac_bg (ac_bg), .ac_mux_en (ac_mux_en), .ac_out (ac_out), .bod_o (bod),
+		.rc_trim0 (rc_trim[0]), .rc_trim1 (rc_trim[1]), .rc_trim2 (rc_trim[2]), .rc_trim3 (rc_trim[3]),
+		.rc_trim4 (rc_trim[4]), .rc_trim5 (rc_trim[5]), .rc_trim6 (rc_trim[6]), .rc_trim7 (rc_trim[7]),
+		.xo_mode0 (xo_mode[0]), .xo_mode1 (xo_mode[1]), .bod_level0 (bod_level[0]), .bod_level1 (bod_level[1]),
+		.bod_level2 (bod_level[2]), .adc_mux0 (adc_mux[0]), .adc_mux1 (adc_mux[1]), .adc_mux2 (adc_mux[2]),
+		.adc_mux3 (adc_mux[3]), .adc_refs0 (adc_refs[0]), .adc_refs1 (adc_refs[1]), .adc_dac0 (adc_dac[0]),
+		.adc_dac1 (adc_dac[1]), .adc_dac2 (adc_dac[2]), .adc_dac3 (adc_dac[3]), .adc_dac4 (adc_dac[4]),
+		.adc_dac5 (adc_dac[5]), .adc_dac6 (adc_dac[6]), .adc_dac7 (adc_dac[7]), .adc_dac8 (adc_dac[8]),
+		.adc_dac9 (adc_dac[9])
+	);
+`else
 	(* keep *) rv328_analog u_analog (
 		.XTAL1 (A_XTAL1), .XTAL2 (A_XTAL2), .AREF (A_AREF), .AVCC (A_AVCC),
 		.ADC ({A_ADC7, A_ADC6, A_ADC5, A_ADC4, A_ADC3, A_ADC2, A_ADC1, A_ADC0}),
@@ -568,6 +587,7 @@ module chip_top (
 		.adc_dac (adc_dac), .adc_cmp (adc_cmp),
 		.ac_en (ac_en), .ac_bg (ac_bg), .ac_mux_en (ac_mux_en), .ac_out (ac_out)
 	);
+`endif
 
 	// ---------------- digital core ----------------
 	rv328_core u_core (

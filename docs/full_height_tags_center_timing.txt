@@ -1,0 +1,12 @@
+Sign-off timing of run tgc2 (analog macro and lines, no Booth mapping, tag memories side by side: --tags-center), from runs/tgc2sta. ns.
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       17.257       0.00        0      0.654       0.00
+nom_ss_125C_4v50        1.468       0.00        0      1.594       0.00
+nom_ff_n40C_5v50       19.781       0.00        0      0.229       0.00
+min_tt_025C_5v00       17.532       0.00        0      0.729       0.00
+min_ss_125C_4v50        3.239       0.00        0      1.618       0.00
+min_ff_n40C_5v50       19.972       0.00        0      0.299       0.00
+max_tt_025C_5v00       16.926       0.00        0      0.548       0.00
+max_ss_125C_4v50       -0.629      -4.38       10      1.515       0.00
+max_ff_n40C_5v50       19.550       0.00        0      0.151       0.00

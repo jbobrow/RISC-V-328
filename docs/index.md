@@ -16,9 +16,9 @@ The source, the test programs and these pages are on [GitHub](https://github.com
 
 | | Half-height layout | Full-height layout |
 |---|---|---|
-| What it is | digital part only, 2 KB cache | 12 KB cache, fast multiplier, room for the analog macro |
-| Layout | signed off: rule checks, layout-versus-schematic, antenna, density | routed without violations; sign-off checks not run yet |
-| 20 MHz | met at all nine corners, 5.9 ns to spare | met at all nine corners, 0.64 ns to spare |
+| What it is | digital part only, 2 KB cache | 12 KB cache, fast multiplier, the analog macro in place with its 13 analog lines wired |
+| Layout | signed off: rule checks, layout-versus-schematic, antenna, density | routed without violations (run `tgc2`); rule checks, layout-versus-schematic and gate-level simulation with the macro not run yet |
+| 20 MHz | met at all nine corners, 5.9 ns to spare | met at eight of nine corners; 0.63 ns short at the slowest one (19.75 MHz there), all on the multiplier |
 | Against an ATmega328P | too slow on ordinary firmware | level on float code, 2 to 4 times faster on the rest |
 | Role | kept ready as a possible test chip | the product |
 

@@ -92,10 +92,13 @@ Status key: [x] done in this repository, [ ] open.
       (`full8`, -3.09 ns) and pad buffers alone (`full9`, stopped) were worse. Repeaters every 600 um
       (`full10`) came out at -0.03 ns on one path; with more repair margin (`full11`) setup is met at
       all corners (+0.17 ns), 79 slow edges and 265 overloads, one 9 ps hold miss on FL_MISO.
-- [ ] FL_MISO input constraint from the memory die's data sheet (today `-min 0`, pessimistic), then
-      rerun timing on `full11` and adopt it as the reference PB0's 2.2 mm wire over
+- [x] FL_MISO minimum input delay set from the measured memory-clock output time (3 ns; 7.07 ns
+      measured at the fastest corner); `full11` meets setup and hold at all nine corners (+0.17 /
+      +0.30 ns) and is the full-height reference
+- [x] Gate-level simulation of `full11`'s routed netlist with cell delays at 20 MHz: basic, timers, spi pass
+- [ ] Re-check the FL_MISO figure against the chosen memory die's data sheet (output hold, bond wire) PB0's 2.2 mm wire over
       the memories needs its driver moved or a repeater placed by hand (docs/layout_results.md)
-- [ ] Full-height layout to sign-off: 94 slow edges (one at the PB0 pad, 8.2 ns; 93 inside the logic), only
+- [ ] Full-height layout to sign-off (figures below are `full4`'s; `full11` has 79 slow edges and 265 overloads, 0.17 ns of setup margin): 94 slow edges (one at the PB0 pad, 8.2 ns; 93 inside the logic), only
       0.64 ns of margin on the multiplier at the slowest corner, DRC/LVS/density/antenna decks and the
       equivalence check not run, more supply pads for the taller die and an IR-drop check, the build
       still has the analog stub
@@ -112,6 +115,21 @@ Status key: [x] done in this repository, [ ] open.
       8,000 USD against 4,000 to 5,000 USD)
 - [x] Standard-cell area corrected: 1.48 mm2, 46 % of the cell rows, not 1.99 mm2 and 62 % (the
       flow's metric counts the pad ring's four corner cells; scripts/core_area.py)
+- [x] Analog macro in the layout, first trial (`ana8`): hand-off files from its layout
+      (scripts/gen_analog_abstract.py), AVCC and ground straps (scripts/analog_straps.py), clocks on its
+      oscillator outputs; routed with 0 violations, antenna clean
+- [x] Analog lines wired: the thirteen lines drawn by scripts/analog_straps.py on Metal4/Metal5 (the
+      routers will not route them); 0.5 to 4.9 mm, up to 363 ohm; crystal oscillator margin with the
+      lines still 5.7 or more in the high-drive setting (analog/results/xosc_lines.md)
+- [x] Constraints corrected: reset synchronisers' reset pins, FL_MISO minimum delay per corner (6 ns,
+      14 ns at the slow corners); hold met at all nine corners (`and`)
+- [x] Multiplier: Booth mapping off (SYNTH_MUL_BOOTH); `and` meets setup at eight of nine corners
+- [x] Cache tag memories side by side (`--tags-center`, run `tgc2`): the cache path is closed; setup met
+      at eight of nine corners, hold at all nine
+- [ ] Slowest corner (ss, 125 C, 4.5 V, worst-case wires): -0.63 ns in `tgc2`, 10 endpoints, all the
+      multiplier into the register file (a pre-synthesised Kogge-Stone multiplier, `mks`, did worse).
+      Then LVS and DRC with the macro and gate-level simulation of this netlist
+- [ ] Analog lines: shorter routes (the macro sits far from the ADC0..ADC5 and AIN pads)
 - [ ] Analog macro, still to do: supply and guard rings and pin protection; separate supply lines
       for the ADC (the two fast oscillators have theirs); pins where the chip floorplan wants them; wide
       tracks for the other paths that carry more than a few tenths of a milliampere (8 MHz

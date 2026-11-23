@@ -20,7 +20,8 @@ The plan, bottom to top (core 3048 x 4238 um):
 A strip of cell rows runs along the west, south and north edges so that the pads there have cells next
 to them, and a column of rows on the east side joins everything.
 
-Options (none: the layout of run full4, the reference full-height layout, 60 um strips):
+Options (none: the reference full-height layout, run full11: 60 um strips, repeaters every 600 um,
+4.5 ns repair margin after global routing; the earlier reference full4 is --wire 0 --grt-margin 3.5):
   --padbuf     one buffer per pad signal (RV328_PADBUF) set down in front of its pad
   --edge N     width of the edge strips in um (default 60)
   --lanes      soft placement obstructions: the first placement keeps logic out of the edge strips, out
@@ -29,8 +30,19 @@ Options (none: the layout of run full4, the reference full-height layout, 60 um 
                steps add. In the reference layout 93 of 94 slow edges are on nets whose repeaters had no
                room in those places.
   --wire N     the design-repair steps after placement and after global routing break every wire longer
-               than N um with a repeater (the flow's default, 0, turns this off)
-  --grt-margin N  setup margin the timing repair after global routing aims for (default 3.5 ns)
+               than N um with a repeater (default 600; 0 turns this off, as the flow's own default does)
+  --grt-margin N  setup margin the timing repair after global routing aims for (default 4.5 ns)
+  --analog     the analog macro itself (flow/librelane/ip/rv328_analog, scripts/gen_analog_abstract.py) in
+               place of the blank block, at the same place; the build drops the analog stub
+               (RV328_ANALOG_MACRO). Its ground pin is joined to the grid's VSS stripes and its AVCC pin
+               to the AVCC pad by scripts/analog_straps.py, which runs between the power grid and
+               placement (flow/README.md); it also draws the thirteen analog lines
+  --tags-center  the cache's three tag memories side by side in the middle of the cache row (the
+               slowest path of run `and` ran from the cache's hit logic at the west edge to the processor)
+  --mulks      the fast multiplier from rtl/tech/hazard3_mul_fast_gf180.v (scripts/gen_mul_fast.py): synthesised
+               on its own with a Kogge-Stone final adder, 35 ns against 45 ns without Booth (slow corner)
+  --booth      keep Yosys's Booth multiplier mapping (the flow's default, used up to runs full11, ana8 and
+               anc5); without it the build sets SYNTH_MUL_BOOTH false, which shortens the multiplier
 Runs: full7 = --padbuf --edge 120 (pad wires fast, but logic spread into the wider strips and the
 slowest corner missed timing by 1.7 ns); full8 = --padbuf --lanes. See docs/layout_results.md.
 """
@@ -51,12 +63,17 @@ SRAM_W, SRAM_H, PITCH = 431.86, 484.88, 442.0
 PADBUF = "--padbuf" in sys.argv
 LANES = "--lanes" in sys.argv
 EDGE = float(sys.argv[sys.argv.index("--edge") + 1]) if "--edge" in sys.argv else 60.0   # cell rows between the core edge and the memories (west, south, north)
-WIRE = float(sys.argv[sys.argv.index("--wire") + 1]) if "--wire" in sys.argv else 0.0
-GRT_MARGIN = float(sys.argv[sys.argv.index("--grt-margin") + 1]) if "--grt-margin" in sys.argv else 3.5
+WIRE = float(sys.argv[sys.argv.index("--wire") + 1]) if "--wire" in sys.argv else 600.0
+GRT_MARGIN = float(sys.argv[sys.argv.index("--grt-margin") + 1]) if "--grt-margin" in sys.argv else 4.5
+ANALOG = "--analog" in sys.argv
+BOOTH = "--booth" in sys.argv     # the flow's default Booth multiplier mapping (runs up to full11, ana8, anc5)
+TAGS = "--tags-center" in sys.argv   # the three tag memories side by side in the middle of the cache row
+MULKS = "--mulks" in sys.argv     # the multiplier as a pre-synthesised netlist with a Kogge-Stone adder
 LANE_SIDE = 30.0  # left open for cells on each side of a channel, next to the memory pins
 CHANNEL = 120.0   # between two rows of memories whose pins face each other
 GAP = 30.0        # between two rows back to back
 STRIP = 24.0      # wires only, between the analog block and the core's east edge
+ANALOG_STRIP = 64.0  # the same for the real macro: the east-side analog pads' nets reach it through here
 CACHE = dict(RV328_CACHE_KB=4, RV328_CACHE_WAYS=3, RV328_CACHE_PIN=2, RV328_MUL_FAST=1)
 PORT_BASE = dict(b=0, c=8, d=16, e=24)
 CLOCK_INPUTS = {6}          # PB6: no input buffer (see gen_padring.py)
@@ -105,10 +122,16 @@ def memories():
     ram = ["u_core.u_ram.u_ram%d" % k for k in range(4)]
     bank = lambda w, b: ["u_core.u_xip.g_w%d.u_way.g_b%d.u_ram.u_ram%d" % (w, b, k) for k in range(4)]
     tag = lambda w: "u_core.u_xip.g_w%d.u_way.g_tagram.u_tag.u_ram0" % w
+    # The tag memories feed the cache's hit logic, which decides every instruction fetch. By default two
+    # sit at the two ends of the middle row and the third in the middle band's west slot (up to 2.6 mm
+    # apart); --tags-center puts all three side by side in the middle of the row, and the last block of
+    # the data memory takes the west slot instead.
+    mid = [ram[0], tag(0), tag(1), tag(2), ram[1], ram[2]] if TAGS else [tag(0)] + ram + [tag(1)]
+    west = ram[3] if TAGS else tag(2)
     rows = [
         (ya, "FS", bank(0, 0) + bank(1, 0)[:2]),
         (yb, "N",  bank(0, 1) + bank(1, 0)[2:]),
-        (yc, "FS", [tag(0)] + ram + [tag(1)]),
+        (yc, "FS", mid),
         (yd, "FS", bank(1, 1) + bank(2, 0)[:2]),
         (ye, "N",  bank(2, 1) + bank(2, 0)[2:]),
     ]
@@ -117,7 +140,7 @@ def memories():
         for k, n in enumerate(names):
             out[n] = (round(x0 + k * PITCH, 2), round(y, 2), o)
     band = (round(yc + SRAM_H, 2), round(yd, 2))
-    out[tag(2)] = (round(x0, 2), round(band[0] + CHANNEL, 2), "N")
+    out[west] = (round(x0, 2), round(band[0] + CHANNEL, 2), "N")
     x1 = x0 + 6 * PITCH
     r = lambda *v: [round(a, 2) for a in v]
     lanes = [
@@ -165,6 +188,13 @@ def main():
     mac["MACROS"][NAME] = dict(
         gds=["dir::ip/%s/gds/%s.gds" % (NAME, NAME)], lef=["dir::ip/%s/lef/%s.lef" % (NAME, NAME)], vh=["dir::ip/%s/vh/%s.v" % (NAME, NAME)],
         lib={"*": ["dir::ip/%s/lib/%s.lib" % (NAME, NAME)]}, instances={"u_analog_blank": dict(location=[x, y], orientation="N")})
+    if ANALOG:
+        A = "rv328_analog"
+        x = round(CORE[2] - m["width"] - ANALOG_STRIP, 2)
+        del mac["MACROS"][NAME]
+        mac["MACROS"][A] = dict(
+            gds=["dir::ip/%s/gds/%s.gds" % (A, A)], lef=["dir::ip/%s/lef/%s.lef" % (A, A)], vh=["dir::ip/%s/vh/%s.v" % (A, A)],
+            lib={"*": ["dir::ip/%s/lib/%s.lib" % (A, A)]}, instances={"u_analog": dict(location=[x, y], orientation="N")})
     mac["PDN_MACRO_CONNECTIONS"] = ["%s VDD VSS VDD VSS" % n for n in sorted(mem)]
     open(os.path.join(FLOW, "macros_1x1.yaml"), "w").write(
         "# Macros of the full-height layout: identification cells, 31 memories, blank analog block\n"
@@ -173,10 +203,26 @@ def main():
     slot = yaml.safe_load(open(os.path.join(FLOW, "slot_1x1.yaml")))
     cfg = yaml.safe_load(open(os.path.join(FLOW, "config.yaml")))
     over = {
-        "VERILOG_DEFINES": slot["VERILOG_DEFINES"] + ["RV328_ANALOG_BLANK"] + (["RV328_PADBUF"] if PADBUF else []) + ["%s=%d" % kv for kv in CACHE.items()],
-        "IGNORE_DISCONNECTED_MODULES": cfg["IGNORE_DISCONNECTED_MODULES"] + [NAME],
+        "VERILOG_DEFINES": ([d for d in slot["VERILOG_DEFINES"] if d != "RV328_ANALOG_STUB"] + ["RV328_ANALOG_MACRO"] if ANALOG
+                            else slot["VERILOG_DEFINES"] + ["RV328_ANALOG_BLANK"]) + (["RV328_PADBUF"] if PADBUF else []) + ["%s=%d" % kv for kv in CACHE.items()],
+        # the analog macro has no power pins by design: its supply comes through scripts/analog_straps.py
+        "IGNORE_DISCONNECTED_MODULES": cfg["IGNORE_DISCONNECTED_MODULES"] + (["rv328_analog"] if ANALOG else [NAME]),
         "PDN_CFG": "dir::pdn/pdn_cfg_1x1.tcl",
+        # Yosys's Booth mapping of the fast multiplier ends in a slow final adder: alone, at the slow corner
+        # and without wires, the multiplier takes 53.3 ns with it and 45.1 ns without (0.12 against
+        # 0.17 mm2). It was the slowest path of every full-height layout (docs/layout_results.md).
+        "SYNTH_MUL_BOOTH": BOOTH,
     }
+    if MULKS:
+        # rtl/tech/hazard3_mul_fast_gf180.v (scripts/gen_mul_fast.py) in place of the multiplier's RTL
+        over["VERILOG_FILES"] = [("dir::../../rtl/tech/hazard3_mul_fast_gf180.v" if f.endswith("arith/hazard3_mul_fast.v") else f)
+                                 for f in cfg["VERILOG_FILES"]]
+    if ANALOG:
+        # placement and routing with one system clock (chip_top_pnr.sdc); sign-off with all of them
+        over["PNR_SDC_FILE"] = "dir::chip_top_pnr.sdc"
+        # the analog lines: never buffered or resized (they are special nets drawn by scripts/analog_straps.py,
+        # which the resizer skips anyway; this keeps it so if a later step makes them ordinary)
+        over["RSZ_DONT_TOUCH_LIST"] = ["A_ADC%d" % k for k in range(8)] + ["A_AIN0", "A_AIN1", "A_XTAL1", "A_XTAL2", "A_AREF"]
     if LANES:
         over["PL_SOFT_OBSTRUCTIONS"] = lanes
     if WIRE:
@@ -203,8 +249,8 @@ def main():
 
     pdn = open(os.path.join(FLOW, "pdn", "pdn_cfg.tcl")).read()
     assert '"pdn_sram.tcl"' in pdn
-    open(os.path.join(FLOW, "pdn", "pdn_cfg_1x1.tcl"), "w").write(
-        pdn.replace('"pdn_sram.tcl"', '"pdn_sram_1x1.tcl"').replace("# RV328: eight 5 V SRAM macros, all in N orientation", "# RV328, full-height layout: 31 SRAM macros (N and FS)"))
+    pdn = pdn.replace('"pdn_sram.tcl"', '"pdn_sram_1x1.tcl"').replace("# RV328: eight 5 V SRAM macros, all in N orientation", "# RV328, full-height layout: 31 SRAM macros (N and FS)")
+    open(os.path.join(FLOW, "pdn", "pdn_cfg_1x1.tcl"), "w").write(pdn)
     sram = open(os.path.join(FLOW, "pdn", "pdn_sram.tcl")).read().split("\n")
     k = [i for i, ln in enumerate(sram) if ln.strip().startswith("-instances")]
     assert len(k) == 1

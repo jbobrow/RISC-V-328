@@ -17,7 +17,11 @@ wafer.space precheck have not been run.
 **The chip is moving to the full-height slot.** Measurements show the 2 KB cache of this layout is too
 small (`docs/cache_study.md`). A first full-height layout with a 12 KB three-way cache, a faster
 multiplier and room for the analog macro routes cleanly and meets 20 MHz at all nine corners; see
-"Full-height layout with the 12 KB cache". It has not been through sign-off checks yet.
+"Full-height layout with the 12 KB cache". Since 21 November the reference full-height layout is `full11`
+(same floorplan, repeaters on long wires). Since then the analog macro itself has replaced the blank
+block and its analog lines are wired; the best of those layouts, `tgc2` (last section), meets 20 MHz at
+eight of nine corners and is 0.63 ns short at the slowest one, on the multiplier. None of the
+full-height layouts has been through sign-off checks yet.
 
 Open `docs/layout_viewer.html` in a browser to look at the result. The outputs of the run are in
 `layout/` (final GDS, routed DEF, renders, the metrics and timing reports). `make render` reproduces the
@@ -450,7 +454,7 @@ break every wire longer than 600 um with a repeater (`DESIGN_REPAIR_MAX_WIRE_LEN
 No picture: the run's layout was deleted for disk space before it was drawn; its floorplan is the
 reference's. Timing table: `docs/full_height_wire600_timing.txt`.
 
-### The same with more repair margin (`full11`): the new candidate
+### The same with more repair margin (`full11`): the new reference
 
 `full10` again, with the timing repair after global routing asked for 4.5 ns of margin instead of 3.5
 (`gen_floorplan_1x1.py --wire 600 --grt-margin 4.5`). Everything up to global routing is identical
@@ -466,24 +470,31 @@ reference's. Timing table: `docs/full_height_wire600_timing.txt`.
 | Setup, slowest corner, worst-case wires | +0.64 ns | **+0.17 ns** |
 | Setup, slow corner, nominal wires | +2.50 ns | +2.25 ns |
 | Setup, typical | +10.96 ns | +11.23 ns |
-| Hold, worst corner | +0.14 ns | **-0.009 ns**, 1 endpoint (below) |
+| Hold, worst corner | +0.14 ns | **+0.30 ns** (-0.009 ns before the constraint fix, below) |
 | Slew / capacitance limits exceeded | 94 / 646 | **79 / 265** |
 
 * **Setup is met at all nine corners.** The margin at the slowest corner is smaller than the
   reference's (0.17 against 0.64 ns), in exchange for 59 % fewer capacitance overloads and 16 % fewer
   slow edges.
-* **One hold miss of 9 ps**, at the fast corner, from the serial memory's data input `FL_MISO` to its
-  first register. Its constraint is the pessimistic one: the data is taken to change at the very edge of
-  the external clock (`set_input_delay -min 0`), whereas it really changes only after the chip's own
-  memory clock has gone out through a pad, through the bond wire and through the memory's clock-to-output
-  time, several nanoseconds later. A realistic minimum delay in `chip_top.sdc`, or one delay cell on that
-  input, closes it. Not done yet: the constraint should come from the chosen memory die's data sheet.
+* **Hold: a 9 ps miss that came from the constraint, now corrected.** The first timing run found one
+  miss at the fast corner, from the serial memory's data input `FL_MISO` to its first register. The
+  constraint took the data to change at the very edge of the system clock (`set_input_delay -min 0`).
+  In SPI mode 0 the memory changes its data only after the falling memory clock reaches it, and the chip
+  captures the data on the same system-clock edge that drives that clock low, so the data cannot change
+  before the memory clock has left the chip. Measured on this layout at the fastest corner: 7.07 ns from
+  the clock edge to the falling edge at the `FL_SCK` pin. Memory data sheets give 0 ns minimum output
+  hold. `chip_top.sdc` now says 3 ns (under half the measured figure, with the reasoning in the file).
+  With it, hold is met everywhere: **+0.30 ns** at the worst corner.
 * PB0 is unchanged (7.7 ns at the pad), for the reason given under `full10`.
+* **Gate level:** the routed netlist with typical cell delays from this layout passes `basic`, `timers`
+  and `spi` at 20 MHz (`GLDIR=build/gl_full11 scripts/gl_sim.sh ...`; 0 SDF errors). `basic` finishes in
+  the same clock cycle as on `full4`'s netlist.
 
-**Recommendation:** make `full11`'s settings the full-height reference once the `FL_MISO` constraint is
-set from the memory's data sheet and timing is rerun; until then `full4` remains the reference, since it
-is the only full-height layout with nothing failing. Timing table:
-`docs/full_height_wire600_margin_timing.txt`.
+**Adopted as the full-height reference** (21 November): setup and hold met at all nine corners
+(+0.17 ns and +0.30 ns), routing and antenna clean, fewest overloads of any full-height run. The
+floorplan generator's defaults now reproduce it; `--wire 0 --grt-margin 3.5` gives `full4` back.
+Timing tables: `docs/full_height_wire600_margin_timing.txt` (first run, old constraint) and
+`docs/full_height_reference_timing.txt` (corrected constraint).
 
 What this layout does not tell:
 
@@ -500,6 +511,187 @@ What this layout does not tell:
 Files: `flow/librelane/slot_1x1.yaml`, `macros_1x1.yaml`, `full_1x1.yaml`, `pdn/pdn_cfg_1x1.tcl`. The
 run directory is not kept in the archive; the timing summary is in `docs/full_height_timing.txt`.
 
+## First layout with the analog macro (trial, runs `ana1` to `ana8`)
+
+The analog macro itself took the blank block's place (`gen_floorplan_1x1.py --analog`; procedure in
+`flow/README.md`). It is a trial: it found what the integration needs, and one of those findings means its
+analog lines are not yet wired (below).
+
+![Full-height layout with the analog macro](full_height_analog.png)
+
+**What it took:**
+* **Hand-off files from the macro's layout** (`scripts/gen_analog_abstract.py`): 1380 x 927 um, 59 pins on
+  Metal4 (57 on the bottom edge at a 1.2 um pitch, the crystal pins on the top), Metal1 to Metal5
+  obstructed except where the pin lines reach the edge.
+* **Supply.** The macro's supply is two 8 um pins on its bottom edge. The power-grid tool cannot join its
+  ground pin (the pin lies under the Metal5 capacitor plates, which are obstructed), and AVCC is a supply of
+  its own. `scripts/analog_straps.py` draws both between the power grid and placement: ground on Metal4 down
+  to three VSS stripes, and AVCC from the AVCC pad's fingers under the core ring, north on Metal4 in a gap
+  between grid stripes, west on Metal5 under the macro and up to the pin: 1.66 mm, 10 um wide, about 15 ohm,
+  so about 30 mV at the macro's 2 mA.
+* **The first AVCC strap ran on Metal3 and congested the corner under the macro** (global-routing overflow
+  7,332 against none in `full11`). Moved to Metal4 and Metal5, and with the strip east of the macro widened
+  from 24 to 64 um, the overflow is 0.
+* **Clocks.** The macro's three oscillators are clocks (`chip_top.sdc`, macro branch). With four clocks
+  reaching the system flip-flops, the timing repair took over half an hour on margins alone; placement and
+  routing now use `chip_top_pnr.sdc`, which fixes the multiplexers on the crystal input. Sign-off uses all.
+* **Three constraint errors this build exposed, all corrected in `chip_top.sdc`:** every GPIO and
+  serial-memory pin was timed against the external clock only (unchecked when the chip runs from the crystal
+  or the RC oscillator); the in-system-programming pass-through (PB2..PB5 wired straight to the memory) was
+  timed at system speed and cost the repair two hours; and clock-domain crossings into synchronisers looked
+  like same-clock paths once the 128 kHz and crystal clocks can also be the system clock (hold misses of up to
+  8.8 ns). The serial-memory input's minimum delay is now 6 ns (7.57 ns measured on this layout).
+
+| | `full11` (reference, blank block) | Trial with the macro (`ana8`) |
+|---|---|---|
+| Standard cells with taps | 1.94 mm2, 43 % | 1.95 mm2, 43 % |
+| Global routing | 15.7 %, no overflow | 15.6 %, no overflow |
+| Detailed routing | 0 violations, 5.76 m | 0 violations, 6.31 m, 385,356 vias |
+| Antenna | 0 nets | 0 nets |
+| Setup, slowest corner, worst-case wires | +0.17 ns | **-3.94 ns**, 398 endpoints: the multiplier into the register file |
+| Setup, slow corner, nominal wires | +2.25 ns | -1.23 ns |
+| Setup, typical | +11.23 ns | +16.45 ns |
+| Hold | +0.30 ns | met after the constraint corrections, except two reset-release checks 0.2 ns short (fast corner) |
+| Slew / capacitance limits exceeded | 79 / 265 | 153 / 334 |
+
+**Not wired in this trial: the analog lines.** The pad-ring step makes the net of every analog pad a
+special net that joins the pad and the macro pin by name only, and the routers do not route special nets.
+So ADC0 to ADC7, AIN0, AIN1, XTAL1, XTAL2 and AREF had no wire in `ana8`. Drawn by hand in `anc5` (next
+section). Timing table: `docs/full_height_analog_timing.txt`.
+
+## The analog lines drawn (run `anc5`)
+
+Made ordinary nets, the analog lines still got no wire: global routing gave them no guides without a
+message (in every variant tried: pad pin connected or not, the pin's bond shapes kept or replaced), and the
+detailed router crashed on the pads' pins (runs `anb3`, `anc2`). So `scripts/analog_straps.py` now draws
+them itself, like the AVCC strap: each pad's Metal2 fingers carried out to a Metal3 landing bar, then lines
+on Metal4 (vertical) and Metal5 (horizontal) in corridors between the power stripes, every segment checked
+against the existing wiring before it is drawn. The nets stay special, so the routers leave them alone.
+
+![Analog lines from the macro to the pads](full_height_analog_lines.png)
+
+| Line | Pad side | Length | Width | Resistance | Capacitance (estimate) |
+|---|---|---|---|---|---|
+| ADC0 | north | 2.71 mm | 1 um | 233 ohm | about 1.0 pF |
+| ADC1 | north | 2.96 mm | 1 um | 248 ohm | about 1.1 pF |
+| ADC2 | north | 4.03 mm | 1 um | 313 ohm | about 1.2 pF |
+| ADC3 | north | 4.30 mm | 1 um | 330 ohm | about 1.2 pF |
+| ADC4 | north | 4.57 mm | 1 um | 346 ohm | about 1.3 pF |
+| ADC5 | north | 4.85 mm | 1 um | 363 ohm | about 1.3 pF |
+| ADC6 | east | 0.53 mm | 1 um | 36 ohm | about 0.3 pF |
+| ADC7 | east | 1.56 mm | 1 um | 129 ohm | about 0.6 pF |
+| AIN0 | south | 4.90 mm | 1 um | 352 ohm | about 1.2 pF |
+| AIN1 | south | 4.38 mm | 1 um | 321 ohm | about 1.1 pF |
+| AREF | east | 1.50 mm | 2 um | 52 ohm | about 0.6 pF |
+| XTAL1 | west | 3.73 mm | 2 um | 131 ohm | about 1.4 pF |
+| XTAL2 | west | 4.42 mm | 2 um | 162 ohm | about 1.8 pF |
+
+Resistance from the PDK's sheet values (0.09 ohm/sq on Metal3 and Metal4, 0.06 on Metal5); capacitance from
+its area and an assumed fringe of 0.04 fF/um per edge, landing bars included, so only a guide.
+
+* **ADC inputs:** up to 363 ohm in series and about 1.3 pF. The ATmega asks for a source below 10 kohm; the
+  line adds under 4 % to that, and its capacitance is a fraction of the sampling capacitor's charge path.
+* **Crystal:** 131 and 162 ohm in series with each crystal pin, and 1.4 and 1.8 pF to add to the load
+  capacitors. The crystal lines are 2 um wide to halve their resistance. Simulated with the extracted
+  oscillator (`analog/tb/xosc_lines.py`, `analog/results/xosc_lines.md`): the lines take up to 0.6 off the
+  gain margin; the high-drive setting keeps 5.7 or more up to 20 MHz at the worst corner (target 5), the
+  watch-crystal setting 5.1.
+* **Why so long:** the macro sits at the east edge of the middle band, and the ADC0 to ADC5 and AIN pads are
+  on the north and south edges far to the west. Placing the macro nearer those pads would shorten them.
+
+The run also exposed two more constraint errors, both corrected in `chip_top.sdc`:
+
+* The reset synchronisers' own reset pins were timed (recovery and removal). Their reset is asynchronous by
+  design, and the post-clock-tree hold repair spent its effort on a 1.08 ns removal miss there.
+* The serial memory input's minimum delay was a constant 6 ns, but the time SCK takes to leave the chip
+  follows the clock tree: measured 6.97 ns at the fast corner and 17.95 ns at the slow one. With 6 ns the
+  slow corners showed a 1.15 ns hold miss that cannot happen. The minimum delay is now 14 ns at the slow
+  corners and 6 ns elsewhere.
+
+| | `ana8` (lines not wired) | `anc5` (lines drawn) |
+|---|---|---|
+| Detailed routing | 0 violations, 6.31 m | 0 violations, 6.32 m |
+| Antenna | 0 nets | 0 nets |
+| Setup, slowest corner, worst-case wires | -3.94 ns | -3.53 ns, 145 endpoints |
+| Setup, slow corner, nominal wires | -1.23 ns | -1.65 ns |
+| Setup, typical | +16.45 ns | +16.46 ns |
+| Hold | met except the cases since corrected | met, except FL_MISO at the slow corners (constraint since corrected: +6.85 ns) |
+
+Timing table: `docs/full_height_analog_lines_timing.txt`.
+
+### The multiplier: Yosys's Booth mapping
+
+The setup miss at the slowest corner is the multiplier into the register file again. Synthesised alone
+(slow corner, no wires, registers to result), the processor's fast multiplier takes:
+
+| Synthesis | Delay | Area |
+|---|---|---|
+| The flow's default: Booth encoding and an adder tree (`SYNTH_MUL_BOOTH`) | 53.3 ns | 0.118 mm2 |
+| Without Booth | 45.1 ns | 0.172 mm2 |
+| Without Booth, with a Kogge-Stone final adder | 35.2 ns | 0.177 mm2 |
+| Low half of the product only (`MULH_FAST` off, the documented fallback) | 29.2 ns | 0.074 mm2 |
+
+With Booth the multiplier alone is longer than the 50 ns clock period; the layout's resizing pulls it back
+in, but with little to spare, and every floorplan change moved the result by a few ns. The flow's Booth
+mapping ends in a slow final adder. The full-height build now turns it off (`gen_floorplan_1x1.py`, option
+`--booth` to keep it).
+
+### Without the Booth mapping (run `and`)
+
+| | `anc5` (Booth) | `and` (no Booth) |
+|---|---|---|
+| Cell area after synthesis | | 0.03 mm2 more |
+| Slack after clock-tree synthesis, before repair | -2.82 ns | +0.54 ns |
+| Slack after global routing, after repair | +0.75 ns | +3.46 ns |
+| Detailed routing | 0 violations, 6.32 m | 0 violations, 6.41 m |
+| Setup, slowest corner, worst-case wires | -3.53 ns, 145 endpoints | **-1.48 ns, 21 endpoints** (TNS -11.5 ns) |
+| Setup, slow corner, nominal wires | -1.65 ns | **+0.70 ns** |
+| Setup, slow corner, best-case wires | -0.06 ns | +2.44 ns |
+| Setup, typical | +16.46 ns | +17.34 ns |
+| Hold, all corners | FL_MISO at the slow corners only | **met** (worst +0.06 ns, fast corner) |
+
+Every corner now meets timing except the most pessimistic one (slow silicon at 125 C and 4.5 V with
+worst-case wires), and there the multiplier is no longer the worst path: it is 0.29 ns short, while a path in
+the cache's control logic (the request address through a tree of multiplexers) is 1.48 ns short. Timing
+table: `docs/full_height_nobooth_timing.txt`.
+
+### A pre-synthesised multiplier (run `mks`): stopped, not better
+
+The multiplier as a netlist synthesised on its own with a Kogge-Stone final adder (`scripts/gen_mul_fast.py`,
+`rtl/tech/hazard3_mul_fast_gf180.v`, option `--mulks`) takes 35 ns alone against 45 ns, and matches the RTL
+on 20,000 random and corner-case products (MUL, MULH, MULHSU, MULHU). In the layout it did worse: after
+global routing the repair stopped at +1.78 ns (against +3.46 ns in `and`) on a multiplier-to-register-file
+path and spent over two hours undoing and redoing the same changes, so the run was stopped there. The
+netlist and the option stay for later; the build uses the RTL multiplier without Booth mapping.
+
+### The cache's tag memories in the middle (run `tgc`)
+
+The slowest path left in `and` starts at the cache's request address at the west edge of the chip and ends
+at the processor's register-file read data, 1.8 mm away: an instruction fetch through the cache's hit
+logic. Two of the three tag memories sat at the two ends of the cache row and the third in the middle band's
+west slot, up to 2.6 mm apart. Option `--tags-center` puts the three side by side in the middle of the row
+(the last data-memory block takes the west slot). Run `tgc2` (a first run, `tgc`, lost its routed database
+when the disk filled during fill insertion; the rerun is identical up to that point, the flow being
+deterministic).
+
+![Full-height layout with the tag memories side by side](full_height_tags_center.png)
+
+| | `and` | `tgc2` (`--tags-center`) |
+|---|---|---|
+| Slack after clock-tree synthesis, before repair | +0.54 ns | +1.18 ns |
+| Slack after global routing, before / after repair | -3.27 / +3.46 ns | -1.48 / **+4.44 ns** |
+| Detailed routing | 0 violations, 6.41 m | 0 violations, **6.28 m** |
+| Setup, slowest corner, worst-case wires | -1.48 ns, 21 endpoints, TNS -11.5 ns | **-0.63 ns, 10 endpoints, TNS -4.4 ns** |
+| Setup, slow corner, nominal wires | +0.70 ns | **+1.47 ns** |
+| Setup, slow corner, best-case wires | +2.44 ns | +3.24 ns |
+| Setup, typical | +17.34 ns | +17.26 ns |
+| Hold, all corners | met (worst +0.06 ns) | met (worst +0.15 ns) |
+
+**The best layout with the analog macro so far.** The cache path is gone from the list (its worst endpoint
+is now -0.02 ns); what is left is the multiplier into the register file, 0.63 ns short at the one most
+pessimistic corner (slow silicon, 125 C, 4.5 V, worst-case wires), which is 19.75 MHz there. Every other
+corner meets 20 MHz, and hold is met everywhere. Timing table: `docs/full_height_tags_center_timing.txt`.
+
 ## Not covered
 
 * Formal equivalence of the final netlist against the RTL (`Yosys.EQY`) and the manufacturability
@@ -509,9 +701,9 @@ run directory is not kept in the archive; the timing summary is in `docs/full_he
 * Any analog content in the layout: the analog macro is still the stub here. The macro now exists as a
   layout of 1380 x 927 um (1.28 mm2, `analog/layout/README.md`). A trial with a blank block of that size
   in the core ("Trial with the analog block" above) routes, but leaves no room for the flow's timing
-  and antenna repair, and one register's fan-out misses 20 MHz at the slow corner. The full chip needs
-  that closed by hand with no margin, or a larger slot, or a smaller digital layout. The full-height
-  layout above has the room (cells at 41 % of their rows) but also only a blank block.
+  and antenna repair, and one register's fan-out misses 20 MHz at the slow corner. The full-height
+  layouts have the room, and since 21 November they carry the macro itself ("First layout with the analog
+  macro" onwards), but none of them has been through DRC, LVS or gate-level simulation with it.
 * Review of the pad ring against wafer.space's current bonding rules, and the wafer.space precheck.
 * IR-drop and electromigration analysis beyond the flow's default report.
 * Timing at the ATmega's own limits (105 C): the library has no such corner; 125 C is more pessimistic.

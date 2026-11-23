@@ -1,0 +1,81 @@
+library (rv328_analog) {
+  delay_model : table_lookup;
+  time_unit : "1ns";
+  voltage_unit : "1V";
+  current_unit : "1mA";
+  capacitive_load_unit (1, pf);
+  nom_voltage : 5.0;
+  nom_temperature : 25.0;
+  input_threshold_pct_fall : 50.0;
+  input_threshold_pct_rise : 50.0;
+  output_threshold_pct_fall : 50.0;
+  output_threshold_pct_rise : 50.0;
+  slew_lower_threshold_pct_fall : 20.0;
+  slew_lower_threshold_pct_rise : 20.0;
+  slew_upper_threshold_pct_fall : 80.0;
+  slew_upper_threshold_pct_rise : 80.0;
+  cell (rv328_analog) {
+    area : 1279219.2;
+    dont_touch : true;
+    dont_use : true;
+    pin (ac_bg) { direction : input; capacitance : 0.005; }
+    pin (ac_en) { direction : input; capacitance : 0.005; }
+    pin (ac_mux_en) { direction : input; capacitance : 0.005; }
+    pin (ac_out) { direction : output; capacitance : 0.0; }
+    pin (adc0) { direction : inout; capacitance : 0.005; }
+    pin (adc1) { direction : inout; capacitance : 0.005; }
+    pin (adc2) { direction : inout; capacitance : 0.005; }
+    pin (adc3) { direction : inout; capacitance : 0.005; }
+    pin (adc4) { direction : inout; capacitance : 0.005; }
+    pin (adc5) { direction : inout; capacitance : 0.005; }
+    pin (adc6) { direction : inout; capacitance : 0.005; }
+    pin (adc7) { direction : inout; capacitance : 0.005; }
+    pin (adc_cmp) { direction : output; capacitance : 0.0; }
+    pin (adc_dac0) { direction : input; capacitance : 0.005; }
+    pin (adc_dac1) { direction : input; capacitance : 0.005; }
+    pin (adc_dac2) { direction : input; capacitance : 0.005; }
+    pin (adc_dac3) { direction : input; capacitance : 0.005; }
+    pin (adc_dac4) { direction : input; capacitance : 0.005; }
+    pin (adc_dac5) { direction : input; capacitance : 0.005; }
+    pin (adc_dac6) { direction : input; capacitance : 0.005; }
+    pin (adc_dac7) { direction : input; capacitance : 0.005; }
+    pin (adc_dac8) { direction : input; capacitance : 0.005; }
+    pin (adc_dac9) { direction : input; capacitance : 0.005; }
+    pin (adc_en) { direction : input; capacitance : 0.005; }
+    pin (adc_mux0) { direction : input; capacitance : 0.005; }
+    pin (adc_mux1) { direction : input; capacitance : 0.005; }
+    pin (adc_mux2) { direction : input; capacitance : 0.005; }
+    pin (adc_mux3) { direction : input; capacitance : 0.005; }
+    pin (adc_refs0) { direction : input; capacitance : 0.005; }
+    pin (adc_refs1) { direction : input; capacitance : 0.005; }
+    pin (adc_sample) { direction : input; capacitance : 0.005; }
+    pin (ain0) { direction : inout; capacitance : 0.005; }
+    pin (ain1) { direction : inout; capacitance : 0.005; }
+    pin (aref) { direction : inout; capacitance : 0.005; }
+    pin (avdd) { direction : inout; capacitance : 0.005; }
+    pin (bod_en) { direction : input; capacitance : 0.005; }
+    pin (bod_level0) { direction : input; capacitance : 0.005; }
+    pin (bod_level1) { direction : input; capacitance : 0.005; }
+    pin (bod_level2) { direction : input; capacitance : 0.005; }
+    pin (bod_o) { direction : output; capacitance : 0.0; }
+    pin (clk_lf) { direction : output; capacitance : 0.0; }
+    pin (clk_rc) { direction : output; capacitance : 0.0; }
+    pin (clk_xa) { direction : output; capacitance : 0.0; }
+    pin (por_n) { direction : output; capacitance : 0.0; }
+    pin (rc_en) { direction : input; capacitance : 0.005; }
+    pin (rc_trim0) { direction : input; capacitance : 0.005; }
+    pin (rc_trim1) { direction : input; capacitance : 0.005; }
+    pin (rc_trim2) { direction : input; capacitance : 0.005; }
+    pin (rc_trim3) { direction : input; capacitance : 0.005; }
+    pin (rc_trim4) { direction : input; capacitance : 0.005; }
+    pin (rc_trim5) { direction : input; capacitance : 0.005; }
+    pin (rc_trim6) { direction : input; capacitance : 0.005; }
+    pin (rc_trim7) { direction : input; capacitance : 0.005; }
+    pin (vss) { direction : inout; capacitance : 0.005; }
+    pin (xo_en) { direction : input; capacitance : 0.005; }
+    pin (xo_mode0) { direction : input; capacitance : 0.005; }
+    pin (xo_mode1) { direction : input; capacitance : 0.005; }
+    pin (xtal1) { direction : inout; capacitance : 0.005; }
+    pin (xtal2) { direction : inout; capacitance : 0.005; }
+  }
+}

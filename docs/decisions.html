@@ -170,7 +170,8 @@ stopped during repair, at +2.3 ns).
 Guiding the placer by taking room away does not work in this flow; the regions need to say where logic
 <em>goes</em>, not where it may not.
 What did help (runs <code>full10</code>, <code>full11</code>): leaving the floorplan alone and having the repair steps put a
-repeater on every wire longer than 600 um: setup met, overloads down 59 %. Regions remain the aim for
+repeater on every wire longer than 600 um: setup and hold met, overloads down 59 %. <code>full11</code> is the
+full-height reference since 21 November. Regions remain the aim for
 the final chip; for now the flat floorplan with tuned repair is the working layout.</p>
 <h2>12. Denser memory</h2>
 <p><strong>Question:</strong> the foundry memory block stores 4 kilobits in 0.21 mm2. If memory were several times

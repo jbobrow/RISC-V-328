@@ -248,8 +248,68 @@ wire. The first run missed by 34 ps on one path; with more margin setup is met a
 (+0.17 ns at the slowest). One 9 ps hold miss remains, on the serial-memory data input, where the
 constraint assumes the data changes at the clock edge itself.
 
-**Decided:** `full11`'s settings become the reference once that input constraint comes from the memory
-die's data sheet and timing is rerun. Until then `full4` stays. PB0's slow wire needs a hand fix.
+**Then:** the input constraint was checked against how the memory interface works. The memory changes
+its data only after the chip's own memory clock reaches it, which on this layout is at least 7.07 ns
+after the clock edge; the constraint had assumed 0 ns. Set to 3 ns, hold is met everywhere (+0.30 ns).
+
+**Decided:** `full11` is the full-height reference; the floorplan generator's defaults reproduce it.
+PB0's slow wire still needs a hand fix.
 
 ![Repeaters on long wires](full_height_wire600.png)
 
+## 16. The analog macro in the layout, first trial (21 November)
+
+**Done:** the analog macro itself in place of the blank block, with AVCC kept as a supply of its own:
+hand-off files made from its layout, the top level switched from the stub to the macro, its oscillators
+declared as clocks, and a script that draws its supply straps into the layout before placement.
+
+**Found, one problem at a time:**
+1. The power-grid tool cannot reach the macro's ground pin under its capacitor plates. The strap script
+   joins it instead.
+2. The first AVCC strap, on Metal3, congested the corner under the macro (routing overflow 7,332). On
+   Metal4 and Metal5, between the power stripes, and with a wider strip beside the macro, the overflow is 0.
+3. Four clocks reaching the same flip-flops made the timing repair crawl. Placement and routing now use one
+   representative clock; sign-off checks all four.
+4. Three constraint errors that the stub build had hidden: pin timing referred only to the external clock;
+   the programming pass-through was timed at system speed; and crossings into synchronisers looked like
+   same-clock paths. All three corrected.
+5. The router never wired the twelve analog lines: the pad-ring step makes them special nets, which routers
+   skip. The strap script now hands them to the router.
+
+**Result:** routed without violations, antenna clean, but the multiplier misses 20 MHz by 3.9 ns at the
+slowest corner (it meets everywhere else), and the analog lines are not wired yet.
+
+**Next:** rerun with the analog lines routed and the corrected constraints, then work on the multiplier path.
+
+![The first layout with the analog macro](full_height_analog.png)
+
+
+## 17. Analog lines drawn by hand, and the multiplier traced (21 and 22 November)
+
+**Done:** the thirteen analog lines (ADC0 to ADC7, AIN0, AIN1, AREF, XTAL1, XTAL2) are wired. The routers
+would not do it: the lines got no global-routing guides and the detailed router crashed on the analog pads'
+pins. `scripts/analog_straps.py` now draws them, on Metal4 and Metal5 between the power stripes, from the
+macro's pins to a landing bar beside each pad. They run 0.5 to 4.9 mm, with up to 363 ohm and about 1.3 pF.
+
+**Found:**
+1. Two more constraint errors: the reset synchronisers' asynchronous reset pins were timed, and the serial
+   memory input's minimum delay did not follow the clock tree at the slow corners. Both corrected.
+2. The multiplier misses again (-3.5 ns at the slowest corner). Synthesised alone, it is the flow's Booth
+   mapping that makes it slow: 53 ns with it, 45 ns without, against a 50 ns clock. A Kogge-Stone final
+   adder would bring it to 35 ns.
+
+**Then (22 November):**
+1. Without the Booth mapping (run `and`) hold is met everywhere and setup at eight of nine corners; the
+   slowest corner misses by 1.48 ns, now mostly on an instruction-fetch path through the cache.
+2. The multiplier as a pre-synthesised netlist with the faster adder (run `mks`) did worse in the layout:
+   the timing repair stalled on it. Stopped; the option stays.
+3. The cache's three tag memories had been up to 2.6 mm apart. Side by side in the middle (run `tgc2`),
+   the cache path is gone and the slowest corner misses by 0.63 ns on 10 endpoints, all the multiplier.
+4. The flow can now run on a Mac in one command (`flow/run_full.sh`, `flow/README.md`).
+
+**Next:** the last 0.63 ns at the slowest corner, then LVS and DRC with the macro and gate-level
+simulation.
+
+![Analog lines from the macro to the pads](full_height_analog_lines.png)
+
+![Tag memories side by side (tgc2)](full_height_tags_center.png)

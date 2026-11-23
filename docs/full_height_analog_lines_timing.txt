@@ -1,0 +1,13 @@
+Sign-off timing of run anc5 (analog macro, analog lines drawn), from runs/anc5sta. ns.
+Hold at the slow corners: FL_MISO only, before the per-corner minimum input delay (now 14 ns at ss: +6.85 ns).
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       16.458       0.00        0      0.690       0.00
+nom_ss_125C_4v50       -1.649      -3.20        6     -0.609      -1.14
+nom_ff_n40C_5v50       19.255       0.00        0      0.315       0.00
+min_tt_025C_5v00       16.830       0.00        0      0.689       0.00
+min_ss_125C_4v50       -0.056      -0.06        2     -0.143      -0.22
+min_ff_n40C_5v50       19.515       0.00        0      0.320       0.00
+max_tt_025C_5v00       16.022       0.00        0      0.696       0.00
+max_ss_125C_4v50       -3.526    -137.60      290     -1.147      -2.33
+max_ff_n40C_5v50       18.947       0.00        0      0.305       0.00

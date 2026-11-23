@@ -41,17 +41,17 @@ results, the decisions and the dead ends.</p>
 <tr>
 <td>What it is</td>
 <td>digital part only, 2 KB cache</td>
-<td>12 KB cache, fast multiplier, room for the analog macro</td>
+<td>12 KB cache, fast multiplier, the analog macro in place with its 13 analog lines wired</td>
 </tr>
 <tr>
 <td>Layout</td>
 <td>signed off: rule checks, layout-versus-schematic, antenna, density</td>
-<td>routed without violations; sign-off checks not run yet</td>
+<td>routed without violations (run <code>tgc2</code>); rule checks, layout-versus-schematic and gate-level simulation with the macro not run yet</td>
 </tr>
 <tr>
 <td>20 MHz</td>
 <td>met at all nine corners, 5.9 ns to spare</td>
-<td>met at all nine corners, 0.64 ns to spare</td>
+<td>met at eight of nine corners; 0.63 ns short at the slowest one (19.75 MHz there), all on the multiplier</td>
 </tr>
 <tr>
 <td>Against an ATmega328P</td>

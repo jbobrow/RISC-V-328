@@ -115,7 +115,8 @@ stopped during repair, at +2.3 ns).
 Guiding the placer by taking room away does not work in this flow; the regions need to say where logic
 *goes*, not where it may not.
 What did help (runs `full10`, `full11`): leaving the floorplan alone and having the repair steps put a
-repeater on every wire longer than 600 um: setup met, overloads down 59 %. Regions remain the aim for
+repeater on every wire longer than 600 um: setup and hold met, overloads down 59 %. `full11` is the
+full-height reference since 21 November. Regions remain the aim for
 the final chip; for now the flat floorplan with tuned repair is the working layout.
 
 ## 12. Denser memory

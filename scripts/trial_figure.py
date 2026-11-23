@@ -40,7 +40,7 @@ def main(path, pdk, out, title):
     comp = t[t.index("COMPONENTS"):t.index("END COMPONENTS")]
     for m in re.finditer(r"- (\S+) (\S+) .*?\+ (?:PLACED|FIXED) \( (-?\d+) (-?\d+) \) (\S+)", comp):
         name, cell, x, y, o = m.group(1), m.group(2), int(m.group(3)) / dbu, int(m.group(4)) / dbu, m.group(5)
-        if "sram" in cell or cell == "rv328_analog_blank":
+        if "sram" in cell or cell in ("rv328_analog_blank", "rv328_analog"):
             macros.append((name, cell, x, y))
             continue
         if cell not in size or "__fill_" in cell or "__fillcap" in cell:
@@ -61,6 +61,11 @@ def main(path, pdk, out, title):
             w, h = (float(lef_blank.group(1)), float(lef_blank.group(2))) if lef_blank else (927.0, 1381.0)
             ax.add_patch(Rectangle((x, y), w, h, facecolor="#e9e7e1", edgecolor=INK, linewidth=1.0, hatch="///", zorder=2))
             ax.text(x + w / 2, y + h / 2, "blank block\n(room for the analog macro)\n%.0f x %.0f um" % (w, h), ha="center", va="center", fontsize=10.5, color=INK, zorder=4,
+                    bbox=dict(facecolor=SURF, edgecolor="none", pad=3))
+        elif cell == "rv328_analog":
+            w, h = (float(lef_blank.group(1)), float(lef_blank.group(2)))
+            ax.add_patch(Rectangle((x, y), w, h, facecolor="#d9e4d2", edgecolor=INK, linewidth=1.0, zorder=2))
+            ax.text(x + w / 2, y + h / 2, "analog macro\n%.0f x %.0f um" % (w, h), ha="center", va="center", fontsize=10.5, color=INK, zorder=4,
                     bbox=dict(facecolor=SURF, edgecolor="none", pad=3))
         else:
             w, h = size[cell]

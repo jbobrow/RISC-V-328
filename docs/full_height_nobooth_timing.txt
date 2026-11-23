@@ -1,0 +1,12 @@
+Sign-off timing of run and (analog macro, analog lines drawn, multiplier without Booth mapping), from runs/andsta. ns.
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       17.339       0.00        0      0.619       0.00
+nom_ss_125C_4v50        0.705       0.00        0      1.606       0.00
+nom_ff_n40C_5v50       19.790       0.00        0      0.192       0.00
+min_tt_025C_5v00       17.639       0.00        0      0.766       0.00
+min_ss_125C_4v50        2.437       0.00        0      1.622       0.00
+min_ff_n40C_5v50       20.012       0.00        0      0.305       0.00
+max_tt_025C_5v00       16.984       0.00        0      0.448       0.00
+max_ss_125C_4v50       -1.482     -11.54       21      1.349       0.00
+max_ff_n40C_5v50       19.524       0.00        0      0.059       0.00

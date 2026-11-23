@@ -31,9 +31,11 @@ half-height slot: a trial layout with its room reserved routes, but leaves no ro
 antennas, and one register's fan-out reaches only 17 MHz at the slow corner (`docs/layout_results.md`),
 so that layout contains a stub in its place. Measurements against an ATmega328P (`docs/cache_study.md`)
 showed that the 2 KB program cache is too small as well, so the chip is moving to the full-height slot:
-a first layout there with a 12 KB three-way cache, a faster multiplier and a blank block for the analog
-macro routes cleanly and meets 20 MHz at all nine corners, but has not been through sign-off checks
-(`docs/layout_results.md`). It is *not* ready to send to a foundry as the full chip; `docs/tapeout_checklist.md` lists what is done and what is left.
+there, with a 12 KB three-way cache, a faster multiplier and the analog macro in place (its 13 analog
+lines drawn by `scripts/analog_straps.py`), the best layout so far (run `tgc2`) routes without violations
+and meets 20 MHz at eight of nine corners; at the slowest one it is 0.63 ns short, all on the multiplier.
+Rule checks, LVS and gate-level simulation with the macro are still to do (`docs/layout_results.md`,
+`docs/build_log.md`). It is *not* ready to send to a foundry as the full chip; `docs/tapeout_checklist.md` lists what is done and what is left.
 
 **To look at the layout,** open `docs/layout_viewer.html` in a browser: geometry with per-layer routing,
 functional blocks, pins, clock tree and slowest path, and a 3D cut through the real process stack.

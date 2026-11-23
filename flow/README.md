@@ -15,7 +15,7 @@ has the numbers, the open problems and the fixes that were needed to get there. 
 | `librelane/pdn/` | power grid scripts (template's `pdn_cfg.tcl` plus RV328 SRAM grid) |
 | `librelane/chip_top.sdc` | timing constraints for the digital-first build |
 | `librelane/trial_macros.yaml`, `trial_blank.yaml`, `ip/rv328_analog_blank/` | trial floorplan with a blank block of the analog macro's size (written by `scripts/gen_analog_blank.py`; results in `docs/layout_results.md`). Run it as below with `slot_1x0p5.yaml trial_macros.yaml config.yaml trial_blank.yaml`; `scripts/trial_figure.py` draws the result |
-| `librelane/slot_1x1.yaml`, `macros_1x1.yaml`, `full_1x1.yaml`, `pdn/pdn_cfg_1x1.tcl`, `pdn/pdn_sram_1x1.tcl` | full-height slot with the 12 KB three-way cache, the fast multiplier and a blank block for the analog macro (pad order from `scripts/gen_padring.py`, the rest from `scripts/gen_floorplan_1x1.py`, whose default is the reference layout `full4` and whose `--padbuf` option writes the variant with a buffer at every pad, run `full7`, which missed timing; results in `docs/layout_results.md`). Run: `librelane slot_1x1.yaml macros_1x1.yaml config.yaml full_1x1.yaml ...` |
+| `librelane/slot_1x1.yaml`, `macros_1x1.yaml`, `full_1x1.yaml`, `pdn/pdn_cfg_1x1.tcl`, `pdn/pdn_sram_1x1.tcl` | full-height slot with the 12 KB three-way cache, the fast multiplier and a blank block for the analog macro (pad order from `scripts/gen_padring.py`, the rest from `scripts/gen_floorplan_1x1.py`, whose default is the reference layout `full11`; `--analog` puts the real analog macro in place of the blank block, see below; results in `docs/layout_results.md`). Run: `librelane slot_1x1.yaml macros_1x1.yaml config.yaml full_1x1.yaml ...` |
 
 ## Running it
 
@@ -36,6 +36,86 @@ has the numbers, the open problems and the fixes that were needed to get there. 
    To continue an interrupted run, add `--run-tag <tag> --from <step> -i runs/<tag>/<last finished step>/state_out.json`.
 5. `make report` and `make viewer` (from the project root) summarise and visualise the run.
 6. Before any submission: the wafer.space precheck (github.com/wafer-space/gf180mcu-precheck).
+
+## On a Mac (Apple silicon)
+
+LibreLane runs natively on macOS 15 or later through Nix. With an M-series Mac's cores a full-height run
+should take a fraction of the four to five hours it takes on two cores. Allow about 15 GB of disk for Nix, the
+PDK and a few runs (each full-height run leaves about 1 GB; delete old `runs/*` folders). Keep the working
+copy outside Dropbox: a run writes thousands of files.
+
+1. Install Nix with LibreLane's binary cache (Terminal, about 5 minutes; close all terminal windows after).
+   Downloaded first and then run, so the script can be looked at (and so shell guards that block
+   `curl | sh` let it through):
+
+   ```
+   curl --proto '=https' --tlsv1.2 -fsSL -o ~/nix-installer.sh https://artifacts.nixos.org/nix-installer
+   sh ~/nix-installer.sh install --no-confirm --extra-conf "
+       extra-substituters = https://nix-cache.fossi-foundation.org
+       extra-trusted-public-keys = nix-cache.fossi-foundation.org:3+K59iFwXqKsL7BNu6Guy0v+uTlwsxYQxjspXzqLYQs=
+       extra-experimental-features = nix-command flakes
+   "
+   ```
+
+2. Get the environment this repository was run with, the wafer.space template's (LibreLane 3.1.0.dev3),
+   and check it (the first `nix-shell` downloads for about 10 minutes):
+
+   ```
+   mkdir -p ~/Developer && cd ~/Developer
+   git clone https://github.com/wafer-space/gf180mcu-project-template
+   cd gf180mcu-project-template && nix-shell
+   librelane --version
+   ```
+
+3. Inside that shell, fetch the PDK at the template's pinned revision (a few GB):
+
+   ```
+   export PDK_ROOT=~/Developer/pdk
+   ciel enable 792ef67037d74c8c51811eab3ce23cf793491296 --pdk-root $PDK_ROOT --pdk gf180mcuD --include-libraries all
+   ```
+
+4. Copy the project out of Dropbox and run (still inside the shell):
+
+   ```
+   cp -R ~/"Dropbox (Personal)/Projects/RISC-V 328/rv328" ~/Developer/rv328
+   cd ~/Developer/rv328
+   flow/run_full.sh mac1 --tags-center
+   ```
+
+   Options after the tag go to `scripts/gen_floorplan_1x1.py` (for example `--tags-center`); runs with
+   different tags can go side by side if the Mac has the cores and memory (each uses two threads and up
+   to about 4 GB). `flow/run_full.sh` does the whole full-height run of the next section (floorplan, power grid, analog
+   straps and lines, layout, extraction, sign-off timing) and prints the worst slack per corner.
+   Results: `flow/librelane/runs/mac1sta/*-openroad-stapostpnr/<corner>/` (`max.rpt`, `min.rpt`,
+   `violator_list.rpt`).
+
+Each new terminal: `cd ~/Developer/gf180mcu-project-template && nix-shell`, then `export PDK_ROOT=~/Developer/pdk`.
+
+## The full-height layout with the analog macro
+
+The analog macro (`analog/layout`) goes into the layout as a hard block. Its supply pins need wiring the
+flow does not make by itself, so the run is in two parts with a script between them:
+
+```
+source scripts/env (or the Nix shell);  cd flow/librelane
+python3 ../../scripts/gen_analog_abstract.py           # LEF, liberty, GDS, black box -> ip/rv328_analog
+python3 ../../scripts/gen_floorplan_1x1.py --analog     # macros_1x1.yaml, full_1x1.yaml with RV328_ANALOG_MACRO
+librelane slot_1x1.yaml macros_1x1.yaml config.yaml full_1x1.yaml ... --run-tag A --to OpenROAD.GeneratePDN
+openroad -python -exit ../../scripts/analog_straps.py runs/A/21-*/chip_top.odb runs/A/21b-analog-lines/chip_top.odb
+#   copy runs/A/21-*/state_out.json to runs/A/21b-analog-lines/, pointing "odb" at the new file
+librelane ... --run-tag B --from Odb.RemovePDNObstructions -i runs/A/21b-analog-lines/state_out.json
+```
+
+`analog_straps.py` draws the macro's connections as special nets before placement, so the routers leave
+them alone: AVCC, a 10 um strap from the AVCC pad's fingers, under the core ring and along the strip east
+of the macro to the macro's `avdd` pin (Metal3, Metal4, Metal5; about 1.66 mm, 15 ohm); the macro's `vss`
+pin carried down on Metal4 to the core grid's VSS stripes; and the thirteen analog lines (ADC0..ADC7, AIN0,
+AIN1, AREF, XTAL1, XTAL2) on Metal4 and Metal5 from the macro's pins to their pads, each pad's fingers
+carried out to a Metal3 landing bar. The routers will not do these lines: the pad-ring step makes them
+special nets, and made ordinary they get no global-routing guides (runs `anb3`, `anc2`). The macro's LEF
+declares `avdd` and `vss` as signal pins: the power-grid tool cannot reach `vss` under the macro's Metal5
+capacitor plates, and AVCC is not the core's VDD. The clocks the macro makes (`clk_rc`, `clk_xa`, `clk_lf`) are
+declared in `chip_top.sdc` when the stub is absent.
 
 ## Things this flow is sensitive to
 

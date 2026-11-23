@@ -3,6 +3,7 @@
 // reset pulse on PC6/RESET after power-up; there is no ADC, comparator,
 // brown-out detector, crystal oscillator or independent watchdog clock.
 `default_nettype none
+`ifndef RV328_ANALOG_MACRO   // the layout build with the real macro reads its black box instead
 module rv328_analog (
 	inout  wire        XTAL1, XTAL2, AREF, AVCC,
 	inout  wire [7:0]  ADC,
@@ -45,4 +46,5 @@ module rv328_analog (
 		else             div <= div + 6'h1;
 	rv328_clkbuf u_lfbuf (.i(div[5]), .o(clk_lf));
 endmodule
+`endif
 `default_nettype wire

@@ -1,0 +1,510 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO rv328_analog
+  CLASS BLOCK ;
+  FOREIGN rv328_analog ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 1380.090 BY 926.910 ;
+  PIN ac_bg
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 452.400 0.000 452.800 2.000 ;
+    END
+  END ac_bg
+  PIN ac_en
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 453.600 0.000 454.000 2.000 ;
+    END
+  END ac_en
+  PIN ac_mux_en
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 454.800 0.000 455.200 2.000 ;
+    END
+  END ac_mux_en
+  PIN ac_out
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 496.400 0.000 496.800 2.000 ;
+    END
+  END ac_out
+  PIN adc0
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1135.120 0.000 1135.520 2.000 ;
+    END
+  END adc0
+  PIN adc1
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1133.920 0.000 1134.320 2.000 ;
+    END
+  END adc1
+  PIN adc2
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1132.720 0.000 1133.120 2.000 ;
+    END
+  END adc2
+  PIN adc3
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1131.520 0.000 1131.920 2.000 ;
+    END
+  END adc3
+  PIN adc4
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1130.320 0.000 1130.720 2.000 ;
+    END
+  END adc4
+  PIN adc5
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1129.120 0.000 1129.520 2.000 ;
+    END
+  END adc5
+  PIN adc6
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1127.920 0.000 1128.320 2.000 ;
+    END
+  END adc6
+  PIN adc7
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1126.720 0.000 1127.120 2.000 ;
+    END
+  END adc7
+  PIN adc_cmp
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 498.800 0.000 499.200 2.000 ;
+    END
+  END adc_cmp
+  PIN adc_dac0
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 500.000 0.000 500.400 2.000 ;
+    END
+  END adc_dac0
+  PIN adc_dac1
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 501.200 0.000 501.600 2.000 ;
+    END
+  END adc_dac1
+  PIN adc_dac2
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 502.400 0.000 502.800 2.000 ;
+    END
+  END adc_dac2
+  PIN adc_dac3
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 503.600 0.000 504.000 2.000 ;
+    END
+  END adc_dac3
+  PIN adc_dac4
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 504.800 0.000 505.200 2.000 ;
+    END
+  END adc_dac4
+  PIN adc_dac5
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 506.000 0.000 506.400 2.000 ;
+    END
+  END adc_dac5
+  PIN adc_dac6
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 507.200 0.000 507.600 2.000 ;
+    END
+  END adc_dac6
+  PIN adc_dac7
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 508.400 0.000 508.800 2.000 ;
+    END
+  END adc_dac7
+  PIN adc_dac8
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 509.600 0.000 510.000 2.000 ;
+    END
+  END adc_dac8
+  PIN adc_dac9
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 510.800 0.000 511.200 2.000 ;
+    END
+  END adc_dac9
+  PIN adc_en
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 456.000 0.000 456.400 2.000 ;
+    END
+  END adc_en
+  PIN adc_mux0
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 457.200 0.000 457.600 2.000 ;
+    END
+  END adc_mux0
+  PIN adc_mux1
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 458.400 0.000 458.800 2.000 ;
+    END
+  END adc_mux1
+  PIN adc_mux2
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 459.600 0.000 460.000 2.000 ;
+    END
+  END adc_mux2
+  PIN adc_mux3
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 460.800 0.000 461.200 2.000 ;
+    END
+  END adc_mux3
+  PIN adc_refs0
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 462.000 0.000 462.400 2.000 ;
+    END
+  END adc_refs0
+  PIN adc_refs1
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 463.200 0.000 463.600 2.000 ;
+    END
+  END adc_refs1
+  PIN adc_sample
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 512.000 0.000 512.400 2.000 ;
+    END
+  END adc_sample
+  PIN ain0
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1153.120 0.000 1153.520 2.000 ;
+    END
+  END ain0
+  PIN ain1
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 1154.320 0.000 1154.720 2.000 ;
+    END
+  END ain1
+  PIN aref
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 437.600 0.000 439.200 2.000 ;
+    END
+  END aref
+  PIN avdd
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 487.400 0.000 495.400 2.000 ;
+    END
+  END avdd
+  PIN bod_en
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 464.400 0.000 464.800 2.000 ;
+    END
+  END bod_en
+  PIN bod_level0
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 465.600 0.000 466.000 2.000 ;
+    END
+  END bod_level0
+  PIN bod_level1
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 466.800 0.000 467.200 2.000 ;
+    END
+  END bod_level1
+  PIN bod_level2
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 468.000 0.000 468.400 2.000 ;
+    END
+  END bod_level2
+  PIN bod_o
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 513.200 0.000 513.600 2.000 ;
+    END
+  END bod_o
+  PIN clk_lf
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 514.400 0.000 514.800 2.000 ;
+    END
+  END clk_lf
+  PIN clk_rc
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 515.600 0.000 516.000 2.000 ;
+    END
+  END clk_rc
+  PIN clk_xa
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 516.800 0.000 517.200 2.000 ;
+    END
+  END clk_xa
+  PIN por_n
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 519.200 0.000 519.600 2.000 ;
+    END
+  END por_n
+  PIN rc_en
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 472.800 0.000 473.200 2.000 ;
+    END
+  END rc_en
+  PIN rc_trim0
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 474.000 0.000 474.400 2.000 ;
+    END
+  END rc_trim0
+  PIN rc_trim1
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 475.200 0.000 475.600 2.000 ;
+    END
+  END rc_trim1
+  PIN rc_trim2
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 476.400 0.000 476.800 2.000 ;
+    END
+  END rc_trim2
+  PIN rc_trim3
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 477.600 0.000 478.000 2.000 ;
+    END
+  END rc_trim3
+  PIN rc_trim4
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 478.800 0.000 479.200 2.000 ;
+    END
+  END rc_trim4
+  PIN rc_trim5
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 480.000 0.000 480.400 2.000 ;
+    END
+  END rc_trim5
+  PIN rc_trim6
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 481.200 0.000 481.600 2.000 ;
+    END
+  END rc_trim6
+  PIN rc_trim7
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 482.400 0.000 482.800 2.000 ;
+    END
+  END rc_trim7
+  PIN vss
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 443.400 0.000 451.400 2.000 ;
+    END
+  END vss
+  PIN xo_en
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 483.600 0.000 484.000 2.000 ;
+    END
+  END xo_en
+  PIN xo_mode0
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 484.800 0.000 485.200 2.000 ;
+    END
+  END xo_mode0
+  PIN xo_mode1
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal4 ;
+        RECT 486.000 0.000 486.400 2.000 ;
+    END
+  END xo_mode1
+  PIN xtal1
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 773.090 924.910 773.490 926.910 ;
+    END
+  END xtal1
+  PIN xtal2
+    DIRECTION INOUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.0 ;
+    PORT
+      LAYER Metal4 ;
+        RECT 774.290 924.910 775.890 926.910 ;
+    END
+  END xtal2
+  OBS
+    LAYER Metal1 ;
+      RECT 0.000 0.000 1380.090 926.910 ;
+    LAYER Metal2 ;
+      RECT 0.000 0.000 1380.090 926.910 ;
+    LAYER Metal3 ;
+      RECT 0.000 0.000 1380.090 926.910 ;
+    LAYER Metal5 ;
+      RECT 0.000 0.000 1380.090 926.910 ;
+    LAYER Metal4 ;
+      RECT 0.000 2.000 1380.090 924.910 ;
+  END
+END rv328_analog
+END LIBRARY
