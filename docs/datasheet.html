@@ -79,18 +79,18 @@ layout (docs/layout_results.md); speed against an ATmega328P is measured in simu
 </tr>
 <tr>
 <td>Size</td>
-<td>third layout: 60,200 standard cells (1.5 mm2 with buffers and taps, without fill; 9-track library) plus eight 512x8 SRAM macros (1.7 mm2) in a 5.0 mm2 core. Full-height layout: 1.9 mm2 of cells, 31 SRAM macros (6.5 mm2) and room for the analog macro in a 12.9 mm2 core</td>
+<td>third layout: 60,200 standard cells (1.5 mm2 with buffers and taps, without fill; 9-track library) plus eight 512x8 SRAM macros (1.7 mm2) in a 5.0 mm2 core. Full-height layout: 1.9 mm2 of cells (first full-height layout), 31 SRAM macros (6.5 mm2) and the analog macro in a 12.9 mm2 core</td>
 </tr>
 <tr>
 <td>Clock</td>
-<td>third layout meets 20 MHz at all corners in static timing (5.9 ns margin at 125 C, 4.5 V; about 28 MHz on typical silicon). Digital-first build, external clock; three tests pass at 20 MHz in gate-level simulation with typical cell delays. Full-height layout: 20 MHz met at all corners with 0.6 ns margin at 125 C, 4.5 V (about 25 MHz typical); one test passes at gate level; sign-off checks not run</td>
+<td>third layout meets 20 MHz at all corners in static timing (5.9 ns margin at 125 C, 4.5 V; about 28 MHz on typical silicon). Digital-first build, external clock; three tests pass at 20 MHz in gate-level simulation with typical cell delays. Full-height layout with a blank block for the analog macro (<code>full11</code>): 20 MHz met at all nine corners (+0.17 ns at 125 C, 4.5 V); three tests pass at gate level. With the analog macro in place (<code>tgc2</code>): 20 MHz met at eight of nine corners, 0.63 ns short at the slowest one (19.75 MHz there). Sign-off checks not run</td>
 </tr>
 </tbody>
 </table></div>
 <h2>2. Feature parity with the ATmega328PB</h2>
 <p>"Digital" = implemented in RTL and exercised in simulation. "Analog macro" = the digital side exists and is
 tested against a behavioural model; the transistor-level block is designed and simulated (analog/README.md) and
-laid out as one macro (analog/layout/), but that macro is not in the chip layout: it has no supply rings or hand-off files yet, and a trial layout shows there is barely room for it beside the digital layout in the half-height slot (it routes, but cannot be repaired). The full-height layout reserves a blank block for it.</p>
+laid out as one macro (analog/layout/). There is barely room for it beside the digital layout in the half-height slot (a trial routes, but cannot be repaired). In the full-height layout the macro itself is placed, with hand-off files made from its layout and its analog lines wired (docs/build_log.md, stages 16 and 17); it still has no supply or guard rings, and the chip has not been through DRC, LVS or gate-level simulation with it.</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -448,8 +448,8 @@ wired to four internal pads. The package therefore keeps 32 pins.</p>
   firmware runs 5.9 times slower than with everything cached, a float-heavy logger 25 times slower than
   on an ATmega328P, and a serial receiver at 115200 baud loses bytes because an interrupt whose handler
   has left the cache takes several misses (up to 3271 clocks measured) to answer.</li>
-<li><strong>Full-height layout (routed, timing met in static analysis, sign-off checks not yet run; see
-  docs/layout_results.md): 12 KB, three-way, least recently used line replaced, the first 2 KB of the
+<li><strong>Full-height layout (routed; with the analog macro in place 20 MHz is met at eight of nine corners
+  and 0.63 ns short at the slowest; sign-off checks not yet run; see docs/layout_results.md): 12 KB, three-way, least recently used line replaced, the first 2 KB of the
   program pinned, single-cycle multiplier.</strong> Measured on the same programs: within 15 % of
   everything cached; level with an ATmega328P on the float-heavy logger and two to four times faster on
   the others; no serial bytes lost; an interrupt whose handler is linked into the first 2 KB is answered
@@ -494,7 +494,7 @@ wired to four internal pads. The package therefore keeps 32 pins.</p>
 <td>Full</td>
 <td>analog hard macro meeting docs/analog_macros.md</td>
 <td>complete feature set of section 2</td>
-<td>circuits designed and simulated in four rounds (analog/README.md; deviations: no 1.8 V brown-out level, analog from 2.7 V); all eleven blocks laid out, checked and re-simulated from their layouts, and assembled into one macro layout (1380 x 927 um, 1.28 mm2, its plain logic as foundry standard cells; DRC and LVS clean; whole-block test passes from its extraction). Not done: supply and guard rings, hand-off files, and a place on the chip: a trial layout with the macro's room reserved in the half-height slot routes, but leaves no room for timing and antenna repair, and one register's fan-out reaches only 17 MHz at the slow corner. The full-height layout has room for it (a blank block so far), together with the 12 KB cache and the fast multiplier (docs/layout_results.md)</td>
+<td>circuits designed and simulated in four rounds (analog/README.md; deviations: no 1.8 V brown-out level, analog from 2.7 V); all eleven blocks laid out, checked and re-simulated from their layouts, and assembled into one macro layout (1380 x 927 um, 1.28 mm2, its plain logic as foundry standard cells; DRC and LVS clean; whole-block test passes from its extraction). In the half-height slot there is no room for it (a trial with its room reserved routes, but leaves no room for timing and antenna repair). In the full-height layout, with the 12 KB cache and the fast multiplier, the macro is placed with hand-off files made from its layout and its 13 analog lines wired; the best run so far (<code>tgc2</code>) is 0.63 ns short of 20 MHz at the slowest corner. Not done: supply and guard rings and pin protection, and DRC, LVS and gate-level simulation of the chip with the macro (docs/layout_results.md, docs/tapeout_checklist.md)</td>
 </tr>
 </tbody>
 </table></div>
