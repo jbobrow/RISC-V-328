@@ -18,9 +18,19 @@ NAV = [
     ("Reference", [("datasheet", "Datasheet"), ("verification", "Verification"), ("tapeout_checklist", "Tape-out checklist"),
                    ("analog_macros", "Analog macro spec"), ("bondout", "Bond-out")]),
 ]
+# Link previews (X, Slack, iMessage...) need absolute URLs: this is where GitHub Pages serves docs/.
+SITE = "https://jbobrow.github.io/RISC-V-328/"
+DESC = "An open RISC-V microcontroller in the ATmega328PB's 32-pin footprint, on the open GF180MCU process: how it is being built, layer by layer."
 PAGE = """<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} - RV328</title><link rel="stylesheet" href="assets/site.css"></head>
+<title>{title} - RV328</title><link rel="stylesheet" href="assets/site.css">
+<meta name="description" content="{desc}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="RV328">
+<meta property="og:title" content="{ogtitle}"><meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}"><meta property="og:image" content="{site}images/og_preview.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The RV328 chip layout: a pad ring around the core, memory blocks on the left and logic on the right">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{site}images/og_preview.png"></head>
 <body><div class="wrap">
 <nav><a class="name" href="index.html">RV328</a><p class="tag">A RISC-V chip in the ATmega328PB footprint</p>
 {nav}
@@ -31,6 +41,13 @@ PAGE = """<!DOCTYPE html>
 <footer>Generated from <code>docs/{src}.md</code> by <code>scripts/build_site.py</code>. Nothing here has been measured on silicon.</footer>
 </main></div></body></html>
 """
+
+
+def meta(name, title):
+    """Preview title and address: the home page is shared as the site's own address."""
+    if name == "index":
+        return dict(ogtitle="RV328 · A RISC-V chip in the ATmega328PB footprint", url=SITE)
+    return dict(ogtitle="%s - RV328" % title, url="%s%s.html" % (SITE, name))
 
 
 def nav_html(current, have):
@@ -61,12 +78,14 @@ def main():
         m = re.search(r"^# (.+)$", text, re.M)
         title = html.escape(m.group(1)) if m else name
         open(os.path.join(DOCS, name + ".html"), "w", encoding="utf-8").write(
-            PAGE.format(title=title, nav=nav_html(name, have), body=convert(text), src=name))
+            PAGE.format(title=title, nav=nav_html(name, have), body=convert(text), src=name,
+                        desc=html.escape(DESC), site=SITE, **meta(name, title)))
     # a page that is linked but not written yet gets a placeholder, so no link is dead
     for name, label in ((n, l) for _, pages in NAV for n, l in pages):
         if name not in have:
             open(os.path.join(DOCS, name + ".html"), "w", encoding="utf-8").write(
-                PAGE.format(title=label, nav=nav_html(name, have), body="<h1>%s</h1>\n<p>In progress: this page has not been written yet.</p>" % label, src=name))
+                PAGE.format(title=label, nav=nav_html(name, have), body="<h1>%s</h1>\n<p>In progress: this page has not been written yet.</p>" % label, src=name,
+                        desc=html.escape(DESC), site=SITE, **meta(name, label)))
     open(os.path.join(DOCS, ".nojekyll"), "w").close()
     print("site: %d pages in docs/ (open docs/index.html)" % len(have))
 
