@@ -1,0 +1,12 @@
+Sign-off timing of run rmb (dio with the synthesis buffers removed before the repair after placement: --tags-center --grt-margin 6 --remove-buffers), from runs/rmbsta. ns.
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       17.018       0.00        0      0.782       0.00
+nom_ss_125C_4v50        1.840       0.00        0      1.693       0.00
+nom_ff_n40C_5v50       19.587       0.00        0      0.347       0.00
+min_tt_025C_5v00       17.316       0.00        0      0.809       0.00
+min_ss_125C_4v50        3.628       0.00        0      1.667       0.00
+min_ff_n40C_5v50       19.797       0.00        0      0.375       0.00
+max_tt_025C_5v00       16.664       0.00        0      0.731       0.00
+max_ss_125C_4v50       -0.261      -0.59        3      1.695       0.00
+max_ff_n40C_5v50       19.336       0.00        0      0.260       0.00

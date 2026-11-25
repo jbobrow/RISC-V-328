@@ -53,12 +53,12 @@ results, the decisions and the dead ends.</p>
 <tr>
 <td>Layout</td>
 <td>signed off: rule checks, layout-versus-schematic, antenna, density</td>
-<td>routed without violations (run <code>tgc2</code>); rule checks, layout-versus-schematic and gate-level simulation with the macro not run yet</td>
+<td>with antenna diodes and supply-strap fixes built in (run <code>rmb</code>): layout-versus-schematic, antenna, density and foundry rule checks pass; three tests pass in gate-level simulation with the macro's model</td>
 </tr>
 <tr>
 <td>20 MHz</td>
 <td>met at all nine corners, 5.9 ns to spare</td>
-<td>met at eight of nine corners; 0.63 ns short at the slowest one (19.75 MHz there), all on the multiplier</td>
+<td>run <code>sgn</code>: met at all nine corners, setup and hold (0.87 ns to spare). Run <code>rmb</code>: met at eight, 0.26 ns short at the slowest</td>
 </tr>
 <tr>
 <td>Against an ATmega328P</td>

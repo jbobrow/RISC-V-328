@@ -557,7 +557,11 @@ Three things, none of them visible in simulation alone:
   switches in two blocks.
 * **A column.** A net that leaves its block gets a vertical Metal4 line at the left, 70 in all, and each
   block's track of that net is extended to it on Metal3. The array's twelve Metal2 buses reach the
-  same lines. Top plate and reference side do not go there: they come down from the array on two
+  same lines. An extension longer than 150 um ends in a 2.4 um Metal4 bridge just short of its block
+  (56 of them): the foundry's antenna deck, run on the whole chip, found that the bottom-plate switches
+  of the low bits see up to 1.37 times the allowed Metal3 ratio while Metal3 is etched, because their
+  driver only joins the line on Metal4 at the column. With the bridge the gate meets the long run only
+  when the driver does. Top plate and reference side do not go there: they come down from the array on two
   Metal5 lines at the right, to the comparator and the top-plate switches only.
 * **Switches.** A bit's five switches are multi-finger devices, 8 um fingers from bit 3 up: bit 9 is
   128, 64, 64, 32 and 32 fingers. Their drivers and the interlock gates were ordinary small devices
@@ -735,8 +739,11 @@ The comparator by itself, `RV328_PEX=adccmp python3 analog/tb/adccmp.py` (`adccm
 * The hand-off to the digital flow: LEF, liberty and GDS of the macro, and a place for it on the chip.
   At 1.28 mm2 there is no room for it beside the digital layout as placed
   (`analog/README.md`, "Size").
-* Dummy metal fill. The chip-level fill step must be kept out of the capacitor array (fill-block layers
-  on Metal4 and Metal5 at integration), or fill shapes between units would undo the matching.
+* Dummy fill inside the macro: none. The chip's fill step did fill it (between the array's units too) until
+  the hand-off GDS got the PDK's metal and poly no-fill marker, PMNDMY, over the whole outline
+  (`scripts/gen_analog_abstract.py`). Diffusion fill may still go in, at the fill script's distances
+  from the devices (its marker, NDMY, is limited to 15,000 um2 by rule DE.3). Whether the foundry's density rules accept the macro without fill is
+  checked on the chip (`docs/layout_results.md`).
 * Density. The front end is 0.32 mm2 where the device areas suggested 0.20. Its two blocks beside the
   comparator (top-plate switches, delay stages) are 176 and 135 um long in a stack 344 um wide and
   could stand side by side, and the switches could go under the array, where Metal1 and Metal2 are free.

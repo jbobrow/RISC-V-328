@@ -56,11 +56,24 @@ def pin_boxes(inst, pin, layer=None):
 
 
 def special_boxes(layer):
+    """Shapes of special wiring on a layer, vias included: a via counts on its bottom and top layer, as its
+    outline grown by 0.3 um. (The power grid's via stacks from the Metal1 rails up to the Metal4 stripes
+    have Metal2 and Metal3 pieces that odb does not list as shapes; a first version of this script missed
+    them, and the AVCC strap's Metal3 run shorted VDD to VSS through two stacks: found by LVS, run tgm6lvs.)"""
     out = []
+    g = U(0.3)
     for net in block.getNets():
         for sw in net.getSWires():
             for b in sw.getWires():
-                if not b.isVia() and b.getTechLayer() and b.getTechLayer().getName() == layer:
+                if b.isVia():
+                    v = b.getTechVia() or b.getBlockVia()
+                    if v is None:
+                        continue
+                    names = {v.getBottomLayer().getName(), v.getTopLayer().getName()}
+                    if layer in names:
+                        e = 0 if v.getName().startswith("rv328_") else g   # this script's own vias are exact
+                        out.append((net.getName(), odb.Rect(b.xMin() - e, b.yMin() - e, b.xMax() + e, b.yMax() + e)))
+                elif b.getTechLayer() and b.getTechLayer().getName() == layer:
                     out.append((net.getName(), odb.Rect(b.xMin(), b.yMin(), b.xMax(), b.yMax())))
     return out
 
@@ -95,6 +108,10 @@ def via(name, lower, cut, upper, w, h, cut_size, cut_space, enc):
     for f in (p.setYBottomEnclosure, p.setYTopEnclosure):
         f(U(ey))
     v.setViaParams(p)
+    # Name the generate rule too, so the DEF carries the via as "+ VIARULE ... + ROWCOL" like the power grid's
+    # own vias. Written out as a list of "+ RECT"s instead, Magic's DEF reader adds a stray Metal4-Via4-Metal5
+    # stack at the via's centre, and one such stack under a Metal5 stripe shorted XTAL2 to VSS (run sgn).
+    v.setViaGenerateRule(db_tech.findViaGenerateRule(cut + "_GEN_HH"))
     return v
 
 
@@ -160,18 +177,39 @@ def free_y(y_hi, y_lo, x0, x1, w):
         y -= 1.0
     raise SystemExit("no free Metal5 row for AVCC")
 yh = free_y(my0 - 120.0, my0 - 200.0, px - pw / 2 - 1, mx1, WIDE + 2)
-xv = free_x(mx1 - 10.0, mx1 - 120.0, yc - WIDE / 2, yh + WIDE / 2, WIDE + 2)
+xv = free_x(mx1 - 10.0, mx1 - 120.0, fy0 - 2.0, yh + WIDE / 2, WIDE + 2)
 v34 = via("rv328_avcc_via3w", "Metal3", "Via3", "Metal4", WIDE - 0.4, WIDE - 0.4, 0.26, 0.36, 0.2)
 v45 = via("rv328_avcc_via4w", "Metal4", "Via4", "Metal5", WIDE - 0.4, WIDE - 0.4, 0.26, 0.36, 0.2)
 v45p = via("rv328_avcc_via4p", "Metal4", "Via4", "Metal5", pw - 0.4, WIDE - 0.4, 0.26, 0.36, 0.2)
-wire(sw, "Metal3", xv - WIDE / 2, yc - WIDE / 2, lx1, yc + WIDE / 2, net.getName())
-put_via(sw, v34, xv, yc)
-wire(sw, "Metal4", xv - WIDE / 2, yc - WIDE / 2, xv + WIDE / 2, yh + WIDE / 2, net.getName())
+# The Metal3 run crosses the core's Metal4 stripes near the east edge, where via stacks come up from every
+# Metal1 rail (5.04 um apart): a 10 um line cannot pass them. It goes as up to three 3 um lines in the gaps.
+RUN_W = 3.0
+m3 = special_boxes("Metal3")
+def run_free(y):
+    q = odb.Rect(U(xv - WIDE / 2 - 0.3), U(y - RUN_W / 2 - 0.3), U(lx1 + 0.3), U(y + RUN_W / 2 + 0.3))
+    return not any(n != net.getName() and overlaps(q, b) for n, b in m3)
+runs = []
+y = fy0 + RUN_W / 2
+while y <= fy1 - RUN_W / 2 and len(runs) < 3:
+    if run_free(y) and all(abs(y - r) >= RUN_W + 0.6 for r in runs):
+        runs.append(y)
+        y += RUN_W + 0.6
+    else:
+        y += 0.1
+if not runs:
+    raise SystemExit("no free Metal3 track for the AVCC run")
+v34r = via("rv328_avcc_via3r", "Metal3", "Via3", "Metal4", min(RUN_W, WIDE) - 0.2, RUN_W - 0.2, 0.26, 0.36, 0.2)
+for y in runs:
+    wire(sw, "Metal3", xv - WIDE / 2, y - RUN_W / 2, lx1, y + RUN_W / 2, net.getName())
+    put_via(sw, v34r, xv, y)
+yc = min(runs)
+wire(sw, "Metal4", xv - WIDE / 2, yc - RUN_W / 2, xv + WIDE / 2, yh + WIDE / 2, net.getName())
 put_via(sw, v45, xv, yh)
 wire(sw, "Metal5", px - pw / 2, yh - WIDE / 2, xv + WIDE / 2, yh + WIDE / 2, net.getName())
 put_via(sw, v45p, px, yh)
 wire(sw, "Metal4", px - pw / 2, yh - WIDE / 2, px + pw / 2, my0 + T(pr.yMax() - pr.yMin()), net.getName())
 length = (lx1 - xv) + (yh - yc) + (xv - px) + (my0 - yh)
+print("AVCC Metal3 run: %d lines of %.1f um at y %s" % (len(runs), RUN_W, ", ".join("%.2f" % r for r in runs)))
 print("AVCC strap: %.0f um (Metal3 %.0f, Metal4 %.0f, Metal5 %.0f), about %.1f ohm at 90 mohm/sq" % (
     length, lx1 - xv, (yh - yc) + (my0 - yh), xv - px, 0.09 * ((lx1 - xv + yh - yc + xv - px) / WIDE + (my0 - yh) / pw)))
 
@@ -187,10 +225,21 @@ assert stripes, "no VSS stripe on Metal5 within %g um under the macro's vss pin"
 vsw = odb.dbSWire.create(vnet, "ROUTED")
 low = min(T(r.yMin()) for r in stripes)
 wire(vsw, "Metal4", gx0, low, gx1, my0 + T(gr.yMax() - gr.yMin()), "VSS")
+# Where the strap lies over a VSS stripe of the power grid's own Metal4, the grid already has a Via4 array at
+# the crossing; a second array there puts cuts 0.05 um apart (foundry rule V4.2a, 784 errors on run sgnv).
+grid_v4 = []
+for sw in vnet.getSWires():
+    for b in sw.getWires():
+        v = b.getTechVia() or b.getBlockVia() if b.isVia() else None
+        if v and {v.getBottomLayer().getName(), v.getTopLayer().getName()} == {"Metal4", "Metal5"}:
+            grid_v4.append(odb.Rect(b.xMin(), b.yMin(), b.xMax(), b.yMax()))
 for r in stripes:
     h = T(r.yMax() - r.yMin())
+    cx, cy = (gx0 + gx1) / 2, T(r.yMin() + r.yMax()) / 2
+    if any(g.xMin() < U(gx1) and U(gx0) < g.xMax() and g.yMin() < r.yMax() and r.yMin() < g.yMax() for g in grid_v4):
+        continue
     v4 = via("rv328_vss_via4_%d" % U(h), "Metal4", "Via4", "Metal5", gx1 - gx0 - 0.4, h - 0.4, 0.26, 0.36, 0.2)
-    put_via(vsw, v4, (gx0 + gx1) / 2, T(r.yMin() + r.yMax()) / 2)
+    put_via(vsw, v4, cx, cy)
 print("VSS strap: %.0f um of Metal4 from the macro's vss pin, joined to %d VSS stripes" % (my0 - low, len(stripes)))
 
 # ---------------- analog signal nets ----------------
@@ -244,6 +293,17 @@ def find_drop_row(px, wd, y_edge, xa, xb, w, own, down=True):
             return y
         y += step
     raise SystemExit("no free row for the drop of %s" % own)
+
+def find_tail_y(bar, xa, xb, w, own):
+    """A y along the landing bar where a Metal3 line from xa to xb passes the power grid's via stacks
+    (rails every 5.04 um under the core's Metal4 stripes): nearest the bar's middle."""
+    lo, hi = bar[1] + w / 2 + 0.3, bar[3] - w / 2 - 0.3
+    mid = (bar[1] + bar[3]) / 2
+    cands = sorted((lo + k * 0.1 for k in range(int((hi - lo) / 0.1) + 1)), key=lambda y: abs(y - mid))
+    for y in cands:
+        if is_free("Metal3", min(xa, xb), y - w / 2, max(xa, xb), y + w / 2, own, clear=0.3):
+            return y
+    raise SystemExit("no free Metal3 track to the landing of %s" % own)
 
 def find_col(layer, ya, yb, x_from, x_to, w, own):
     step = 0.5 if x_to > x_from else -0.5
@@ -340,9 +400,20 @@ for name, pin, padname in ANALOG:
     wd = max(min(pwid, w), 0.8)          # the drop from the pin keeps to the pin's own pitch
     bx, by = (bar[0] + bar[2]) / 2, (bar[1] + bar[3]) / 2
     pts = []
+    if side == "east":
+        by = find_tail_y(bar, strip_x, bx, w, name)
     if side == "west":                   # XTAL: up from the top edge
         ya = find_drop_row(px, wd, my1, min(px, west_x) - 2, px + 2, w, name, down=False)
-        xc = find_col("Metal4", min(by, ya) - 2, max(by, ya) + 2, west_x, west_x + 60, w, name); west_x = xc + TRACK
+        reach = west_x + 2
+        for _ in range(4):               # the tail's height and the column depend on each other
+            by = find_tail_y(bar, bx, reach, w, name)
+            xc = find_col("Metal4", min(by, ya) - 2, max(by, ya) + 2, west_x, west_x + 60, w, name)
+            if xc <= reach:
+                break
+            reach = xc + 0.5
+        else:
+            raise SystemExit("no tail and column that fit for %s" % name)
+        west_x = xc + TRACK
         path = [("Metal4", px, my1, px, ya, wd), ("Metal5", px, ya, xc, ya, w), ("Metal4", xc, ya, xc, by, w)]
         tail = ("Metal3", xc, by, bx, by, w)
     else:
@@ -380,4 +451,68 @@ for name, pin, padname in ANALOG:
     report.append((name, side, round(length)))
 print("analog lines drawn: " + ", ".join("%s %s %d um" % r for r in report))
 json.dump({r[0]: dict(side=r[1], length_um=r[2]) for r in report}, open(dst + ".analog.json", "w"), indent=1)
+
+# ---------------- antenna diodes for the macro's inputs ----------------
+# Every digital input of the macro drives gates inside it over a Metal4 line of up to 0.6 mm (the trunk). The
+# LEF says nothing about those gates, so the flow's antenna check and repair cannot see them, and the foundry's
+# antenna deck on run sgnv found nine inputs (rc_trim1..7, bod_level1..2, adc_sample) where the Metal4 of the
+# trunk and of the route to it is up to 1.45 times the allowed ratio to those gates while Metal4 is etched (the
+# driver joins the net on Metal5). One diode cell per input, fixed in the rows under the macro next to its pin,
+# puts a diffusion on every such net from Metal1 up; the router connects it like any other sink.
+DIODE = "gf180mcu_fd_sc_mcu9t5v0__antenna"
+dm = design.getDb().findMaster(DIODE)
+assert dm, DIODE
+taken = []                                      # (x0, y0, x1, y1) of everything fixed in those rows
+mb = ana.getBBox()
+rows = sorted([r for r in block.getRows() if r.getBBox().yMax() <= mb.yMin() and r.getBBox().yMax() > mb.yMin() - U(40)
+               and r.getBBox().xMin() < mb.xMin() and r.getBBox().xMax() > mb.xMax() - U(800)],
+              key=lambda r: -r.getBBox().yMax())[:6]
+for inst in block.getInsts():
+    b = inst.getBBox()
+    if inst.isFixed() or inst.getPlacementStatus() in ("LOCKED", "FIRM", "COVER"):
+        taken.append((b.xMin(), b.yMin(), b.xMax(), b.yMax()))
+for blk in block.getBlockages():
+    b = blk.getBBox()
+    taken.append((b.xMin(), b.yMin(), b.xMax(), b.yMax()))
+
+
+def fits(x0, y0, x1, y1):
+    return not any(x0 < t[2] and t[0] < x1 and y0 < t[3] and t[1] < y1 for t in taken)
+
+
+vdd, vss = block.findNet("VDD"), block.findNet("VSS")
+diodes = 0
+inputs = sorted((it for it in ana.getITerms() if it.getMTerm().getIoType() == "INPUT" and it.getNet()),
+                key=lambda it: it.getBBox().xMin())
+for it in inputs:
+    px = (it.getBBox().xMin() + it.getBBox().xMax()) // 2
+    best = None
+    for r in rows:
+        rb, sw_ = r.getBBox(), r.getSite().getWidth()
+        for k in range(0, 400):
+            for sgn in (1, -1):
+                x0 = rb.xMin() + ((px - rb.xMin()) // sw_ + sgn * k) * sw_
+                if x0 < rb.xMin() or x0 + dm.getWidth() > rb.xMax():
+                    continue
+                if fits(x0, rb.yMin(), x0 + dm.getWidth(), rb.yMax()):
+                    cost = abs(x0 - px) + (mb.yMin() - rb.yMax())
+                    if best is None or cost < best[0]:
+                        best = (cost, x0, r)
+                    break
+            if best and k * sw_ > best[0]:
+                break
+    assert best, "no room for a diode on " + it.getNet().getName()
+    _, x0, r = best
+    d = odb.dbInst.create(block, dm, "rv328_ana_diode_" + it.getMTerm().getName())
+    d.setOrient(r.getOrient())
+    d.setLocation(x0, r.getBBox().yMin())
+    d.setPlacementStatus("FIRM")
+    d.findITerm("I").connect(it.getNet())
+    for p, n in (("VDD", vdd), ("VNW", vdd), ("VSS", vss), ("VPW", vss)):
+        d.findITerm(p).connect(n)
+    b = d.getBBox()
+    taken.append((b.xMin(), b.yMin(), b.xMax(), b.yMax()))
+    diodes += 1
+print("antenna diodes on the macro's inputs: %d, in the %d rows under it" % (diodes, len(rows)))
+
 design.writeDb(dst)

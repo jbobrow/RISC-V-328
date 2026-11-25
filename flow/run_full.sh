@@ -23,24 +23,37 @@ shift
 cd "$(dirname "$0")/librelane"
 RUNS=$PWD/runs
 
+# RESUME=1 flow/run_full.sh <tag> picks up a run whose first part (runs/<tag>p) finished: it keeps that
+# run's floorplan files and power grid and, if the analog lines are already drawn, those too.
+if [ -z "${RESUME:-}" ]; then
 python3 ../../scripts/gen_floorplan_1x1.py --analog "$@"
+fi
 
 ARGS=(slot_1x1.yaml macros_1x1.yaml config.yaml full_1x1.yaml --pdk gf180mcuD --pdk-root "$PDK_ROOT" --manual-pdk
       --scl gf180mcu_fd_sc_mcu9t5v0 --pad gf180mcu_fd_io
       -S OpenROAD.STAPrePNR -S OpenROAD.STAMidPNR -S OpenROAD.STAMidPNR-1 -S OpenROAD.STAMidPNR-2 -S OpenROAD.STAMidPNR-3)
 # On a machine with little disk, add: -c STA_THREADS=1 to the sign-off line below (one corner at a time).
 
+if [ -z "${RESUME:-}" ]; then
 echo "== $(date +%H:%M) synthesis to power grid: runs/${TAG}p"
 librelane "${ARGS[@]}" --run-tag "${TAG}p" --to OpenROAD.GeneratePDN
+fi
 
-PDN=$(ls -d "$RUNS/${TAG}p"/*-openroad-generatepdn | tail -1)
-N=$(basename "$PDN"); LINES="$RUNS/${TAG}p/${N%%-*}b-analog-lines"
-mkdir -p "$LINES"
+PDNS=("$RUNS/${TAG}p"/*-openroad-generatepdn); PDN=${PDNS[${#PDNS[@]}-1]}
+[ -d "$PDN" ] || { echo "no power-grid step in runs/${TAG}p"; exit 1; }
+N=${PDN##*/}; ALINES="$RUNS/${TAG}p/${N%%-*}b-analog-lines"
+mkdir -p "$ALINES"
+echo "   power grid: ${PDN#$PWD/}"
+echo "   lines:      ${ALINES#$PWD/}"
+if [ -n "${RESUME:-}" ] && [ -f "$ALINES/chip_top.odb" ]; then
+echo "== $(date +%H:%M) analog straps and lines already drawn in $ALINES"
+else
 echo "== $(date +%H:%M) analog straps and lines"
-openroad -python -exit ../../scripts/analog_straps.py "$PDN/chip_top.odb" "$LINES/chip_top.odb" 2>&1 \
-    | grep -E "strap|analog lines|no free|no room|would touch" || true
-[ -f "$LINES/chip_top.odb" ] || { echo "analog_straps.py failed"; exit 1; }
-python3 - "$PDN" "$LINES" <<'PY'
+openroad -python -exit ../../scripts/analog_straps.py "${PDN#$PWD/}/chip_top.odb" "${ALINES#$PWD/}/chip_top.odb" 2>&1 \
+    | grep -E "strap|analog lines|no free|no room|would touch|Traceback|Error|error" || true
+fi
+[ -f "$ALINES/chip_top.odb" ] || { echo "analog_straps.py failed"; exit 1; }
+python3 - "$PDN" "$ALINES" <<'PY'
 import json, sys
 pdn, lines = sys.argv[1], sys.argv[2]
 s = json.load(open(pdn + "/state_out.json"))
@@ -49,7 +62,7 @@ json.dump(s, open(lines + "/state_out.json", "w"), indent=1)
 PY
 
 echo "== $(date +%H:%M) placement to extraction: runs/${TAG}"
-librelane "${ARGS[@]}" --run-tag "$TAG" --from Odb.RemovePDNObstructions --to OpenROAD.RCX -i "$LINES/state_out.json"
+librelane "${ARGS[@]}" --run-tag "$TAG" --from Odb.RemovePDNObstructions --to OpenROAD.RCX -i "$ALINES/state_out.json"
 
 RCX=$(ls -d "$RUNS/$TAG"/*-openroad-rcx | tail -1)
 echo "== $(date +%H:%M) sign-off timing: runs/${TAG}sta"

@@ -109,8 +109,8 @@ CoreMark/MHz: 1.17 with the 2 KB cache, 1.74 with the 12 KB cache, 2.37 with the
 - **In layout:** in the full-height slot, with a blank block for the analog macro, this design is
   placed and routed without violations and meets 20 MHz at all nine corners, with cells at 41 % of their
   rows; the multiplier is the tightest path (+0.17 ns at the slowest corner in the reference `full11`).
-  With the analog macro itself in place, the best run so far (`tgc2`) is 0.63 ns short at the slowest
-  corner only, all on the multiplier (`docs/layout_results.md`).
+  With the analog macro itself in place, run `tgm6` meets 20 MHz at all nine corners, +0.84 ns at the
+  slowest (`docs/layout_results.md`).
   Without the fast multiplier for the upper half of the product the float-heavy logger would run at
   0.81 of the ATmega's speed instead of 0.97; that is the fallback if the margin does not hold.
 - 16 KB two-way would be 6 % from the reference instead of 15 %, but needs 38 macros. With the analog

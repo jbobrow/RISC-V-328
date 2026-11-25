@@ -79,7 +79,7 @@ copy outside Dropbox: a run writes thousands of files.
    ```
    cp -R ~/"Dropbox (Personal)/Projects/RISC-V 328/rv328" ~/Developer/rv328
    cd ~/Developer/rv328
-   flow/run_full.sh mac1 --tags-center
+   flow/run_full.sh mac1 --tags-center --grt-margin 6
    ```
 
    Options after the tag go to `scripts/gen_floorplan_1x1.py` (for example `--tags-center`); runs with
@@ -171,6 +171,13 @@ make gl-basic RUN=flow/librelane/runs/<tag> PDK_DIR=$PDK_ROOT/gf180mcuD  # also 
 runs a test program on the routed netlist with cell delays from the layout, at 20 MHz by default
 (`PERIOD=<ns>`). About 15 minutes per test. `scripts/gl_prep.py` explains the adjustments Icarus
 Verilog needs and what the simulation does not cover (wire delay, setup and hold checks).
+
+With the analog macro itself in the layout (`--analog`), `scripts/gl_sim.sh` simulates it with the behavioural
+model behind a wrapper with the layout's pin names, and the chip runs on the model's 8 MHz RC oscillator. `sw/crt0.S`
+clears the registers at start-up for this simulation: a register that has never been written is unknown in
+simulation, and the synthesised gates let it through where RTL simulation does not (run `rmb`,
+`docs/layout_results.md`). The test firmware needs clang with the RISC-V target, `ld.lld` and `llvm-objcopy`;
+Apple's clang has no RISC-V target.
 
 ## Estimating area without the full flow
 
