@@ -307,9 +307,41 @@ macro's pins to a landing bar beside each pad. They run 0.5 to 4.9 mm, with up t
    the cache path is gone and the slowest corner misses by 0.63 ns on 10 endpoints, all the multiplier.
 4. The flow can now run on a Mac in one command (`flow/run_full.sh`, `flow/README.md`).
 
-**Next:** the last 0.63 ns at the slowest corner, then LVS and DRC with the macro and gate-level
-simulation.
+5. The same layout with the timing repair after global routing asked for 6 ns of margin instead of 4.5
+   (run `tgm6`): **20 MHz met at all nine corners, setup and hold** (+0.84 ns at the slowest corner,
+   +0.05 ns hold at the fastest). The first layout with the analog macro and its lines that does.
+
+**Decided:** `tgm6` is the full-height reference (`flow/run_full.sh <tag> --tags-center --grt-margin 6`).
+
+**Next:** sign-off checks on it: DRC, LVS with the analog macro, gate-level simulation.
 
 ![Analog lines from the macro to the pads](full_height_analog_lines.png)
 
-![Tag memories side by side (tgc2)](full_height_tags_center.png)
+![20 MHz at all nine corners (tgm6)](full_height_analog_signoff.png)
+
+## 18. LVS with the analog macro (22 and 23 November)
+
+**Done:** the first LVS of the full-height chip with the analog macro, on `tgm6`.
+
+**Found:**
+1. VDD, VSS, AVCC, AREF and XTAL2 were one net. Taking the analog lines out one group at a time found the
+   cause: the AVCC strap's Metal3 run crossed the power grid's via stacks, which the strap script could not
+   see in OpenROAD's database. The script now counts those vias and threads the run between them; the
+   layout was rebuilt with the fix (run `sgn`, same settings, timing met again at all nine corners).
+2. On `sgn` only XTAL2 was still joined to VSS. Nothing in the drawing touched; Magic's stream-out had put
+   a stray Metal4-Via4-Metal5 stack at the centre of every via the script draws, because the script wrote
+   them as rectangle lists. One sat under a VSS stripe. The script now writes them as generated vias, like
+   the power grid's.
+
+**Result:** `sgnv` (`sgn` with the vias written the new way, geometry unchanged): **LVS passes, circuits
+match uniquely** (57,257 devices, 56,258 nets).
+
+**Then:** the foundry's antenna and density decks on `sgnv`. Density passes. Antenna found 12 nets, all at
+the analog macro, which the flow's own antenna check cannot see into: nine of its inputs whose trunk lines
+inside it are too long for the gates behind them while Metal4 is etched, and three long Metal3 runs inside
+the ADC front end. And the fill step had filled the macro, its capacitor array included. Fixed with a diode
+on each macro input, Metal4 bridges in the front end, and no-fill markers over the macro; the layout is
+being built again with them (run `dio`).
+
+**Next:** on `dio`: timing, LVS, antenna, density, foundry and Magic DRC, equivalence, gate-level simulation.
+

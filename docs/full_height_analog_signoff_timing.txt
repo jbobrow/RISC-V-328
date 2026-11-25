@@ -1,0 +1,12 @@
+Sign-off timing of run tgm6 (analog macro and lines, no Booth mapping, tag memories side by side, repair after global routing aiming for 6 ns: --tags-center --grt-margin 6), from runs/tgm6sta. ns.
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       17.075       0.00        0      0.517       0.00
+nom_ss_125C_4v50        2.758       0.00        0      1.290       0.00
+nom_ff_n40C_5v50       19.650       0.00        0      0.146       0.00
+min_tt_025C_5v00       17.378       0.00        0      0.579       0.00
+min_ss_125C_4v50        4.362       0.00        0      1.384       0.00
+min_ff_n40C_5v50       19.862       0.00        0      0.227       0.00
+max_tt_025C_5v00       16.715       0.00        0      0.413       0.00
+max_ss_125C_4v50        0.840       0.00        0      1.194       0.00
+max_ff_n40C_5v50       19.396       0.00        0      0.054       0.00

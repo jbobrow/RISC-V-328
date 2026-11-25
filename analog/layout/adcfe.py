@@ -32,6 +32,7 @@ CELL = "rv328_adcfe"
 WMAX = 344.0                   # widest block; the array's columns end at 350
 GAP = 3.0                      # between stacked cells
 SP_W, SP_PITCH, SP_X0 = 0.40, 0.90, -3.0     # Metal4 lines of the column
+JUMP_AT, JUMP_LEN = 150.0, 2.4               # Metal3 runs from the column longer than this end in a Metal4 bridge
 # Tracks next to ground inside a block. The first two are the small-signal nets; they lie between ground and
 # the level they are sampled at, and those two tracks run the whole length of the block as screens.
 QUIET = ["top", "dum", "vcm", "vbp", "en"]
@@ -162,7 +163,20 @@ def build(outdir, pex=False):
         xs = SP_X0 - i * SP_PITCH
         ys = []
         for (xa, xb, ty), hw in zip(tracks[n], half[n]):
-            lib.box(top, "metal3", xs - SP_W / 2, ty - hw, xa + 0.2, ty + hw)
+            if xa - xs > JUMP_AT:
+                # A long run to a block whose only connection on this net may be a gate: while Metal3 is etched,
+                # that gate would see the whole run (the driver joins it on Metal4 at the column), above the
+                # foundry's antenna ratio for the bottom-plate switches of the low bits. The run stops short of
+                # the block and a short Metal4 bridge makes the last step, so the gate meets the run only once
+                # Metal4 joins it to its driver.
+                b0, b1 = xa - JUMP_LEN - 0.8, xa - 0.8
+                lib.box(top, "metal3", xs - SP_W / 2, ty - hw, b0 + 0.45, ty + hw)
+                lib.box(top, "metal3", b1 - 0.45, ty - hw, xa + 0.2, ty + hw)
+                lib.box(top, "metal4", b0 - 0.2, ty - 0.2, b1 + 0.2, ty + 0.2)
+                for bx in (b0 + 0.2, b1 - 0.2):
+                    lib.box(top, "via3", bx - VIA / 2, ty - VIA / 2, bx + VIA / 2, ty + VIA / 2)
+            else:
+                lib.box(top, "metal3", xs - SP_W / 2, ty - hw, xa + 0.2, ty + hw)
             lib.box(top, "via3", xs - VIA / 2, ty - VIA / 2, xs + VIA / 2, ty + VIA / 2)
             ys.append(ty)
         if n in bus:

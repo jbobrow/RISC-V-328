@@ -41,6 +41,10 @@ Options (none: the reference full-height layout, run full11: 60 um strips, repea
                slowest path of run `and` ran from the cache's hit logic at the west edge to the processor)
   --mulks      the fast multiplier from rtl/tech/hazard3_mul_fast_gf180.v (scripts/gen_mul_fast.py): synthesised
                on its own with a Kogge-Stone final adder, 35 ns against 45 ns without Booth (slow corner)
+  --remove-buffers  remove the buffers synthesis put in (DESIGN_REPAIR_REMOVE_BUFFERS) before the repair
+               after global placement rebuilds the trees from where the cells are. In run dio a cache address
+               bit's buffer chain, built by synthesis, crossed the die four times between the top and bottom
+               memory rows (24.9 mm) and the later repair could not reorder it
   --booth      keep Yosys's Booth multiplier mapping (the flow's default, used up to runs full11, ana8 and
                anc5); without it the build sets SYNTH_MUL_BOOTH false, which shortens the multiplier
 Runs: full7 = --padbuf --edge 120 (pad wires fast, but logic spread into the wider strips and the
@@ -68,6 +72,7 @@ GRT_MARGIN = float(sys.argv[sys.argv.index("--grt-margin") + 1]) if "--grt-margi
 ANALOG = "--analog" in sys.argv
 BOOTH = "--booth" in sys.argv     # the flow's default Booth multiplier mapping (runs up to full11, ana8, anc5)
 TAGS = "--tags-center" in sys.argv   # the three tag memories side by side in the middle of the cache row
+REMOVE_BUFFERS = "--remove-buffers" in sys.argv   # synthesis buffers out before the post-placement repair
 MULKS = "--mulks" in sys.argv     # the multiplier as a pre-synthesised netlist with a Kogge-Stone adder
 LANE_SIDE = 30.0  # left open for cells on each side of a channel, next to the memory pins
 CHANNEL = 120.0   # between two rows of memories whose pins face each other
@@ -223,6 +228,8 @@ def main():
         # the analog lines: never buffered or resized (they are special nets drawn by scripts/analog_straps.py,
         # which the resizer skips anyway; this keeps it so if a later step makes them ordinary)
         over["RSZ_DONT_TOUCH_LIST"] = ["A_ADC%d" % k for k in range(8)] + ["A_AIN0", "A_AIN1", "A_XTAL1", "A_XTAL2", "A_AREF"]
+    if REMOVE_BUFFERS:
+        over["DESIGN_REPAIR_REMOVE_BUFFERS"] = True
     if LANES:
         over["PL_SOFT_OBSTRUCTIONS"] = lanes
     if WIRE:

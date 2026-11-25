@@ -6,6 +6,13 @@
 	.section .vectors, "ax"
 	.global _start
 _start:
+	/* Clear the registers. On silicon they power up holding some value and the code below
+	   never reads one before writing it, but gate-level simulation starts them unknown, and the
+	   synthesized decoder lets an unknown in a field an instruction ignores (rs1 of lui) reach
+	   its result. sp and gp are loaded next. */
+	.irp r, 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+	li   x\r, 0
+	.endr
 	.option push
 	.option norelax
 	la   gp, __global_pointer$

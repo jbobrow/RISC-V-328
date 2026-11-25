@@ -1,0 +1,12 @@
+Sign-off timing of run sgn (same settings as tgm6, rebuilt after the strap-script short fix: --tags-center --grt-margin 6), from runs/sgnsta. ns.
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       17.077       0.00        0      0.518       0.00
+nom_ss_125C_4v50        2.772       0.00        0      1.291       0.00
+nom_ff_n40C_5v50       19.651       0.00        0      0.143       0.00
+min_tt_025C_5v00       17.379       0.00        0      0.579       0.00
+min_ss_125C_4v50        4.372       0.00        0      1.385       0.00
+min_ff_n40C_5v50       19.862       0.00        0      0.227       0.00
+max_tt_025C_5v00       16.717       0.00        0      0.409       0.00
+max_ss_125C_4v50        0.871       0.00        0      1.195       0.00
+max_ff_n40C_5v50       19.397       0.00        0      0.050       0.00

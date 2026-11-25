@@ -45,9 +45,8 @@ small (<code>docs/cache_study.md</code>). A first full-height layout with a 12 K
 multiplier and room for the analog macro routes cleanly and meets 20 MHz at all nine corners; see
 "Full-height layout with the 12 KB cache". Since 21 November the reference full-height layout is <code>full11</code>
 (same floorplan, repeaters on long wires). Since then the analog macro itself has replaced the blank
-block and its analog lines are wired; the best of those layouts, <code>tgc2</code> (last section), meets 20 MHz at
-eight of nine corners and is 0.63 ns short at the slowest one, on the multiplier. None of the
-full-height layouts has been through sign-off checks yet.</p>
+block and its analog lines are wired; the best of those layouts, <code>tgm6</code> (last section), meets 20 MHz,
+setup and hold, at all nine corners. None of the full-height layouts has been through sign-off checks yet.</p>
 <p>Open <code>docs/layout_viewer.html</code> in a browser to look at the result. The outputs of the run are in
 <code>layout/</code> (final GDS, routed DEF, renders, the metrics and timing reports). <code>make render</code> reproduces the
 pictures: the four build stages and the finished layout at 8000 pixels with zoom-ins.</p>
@@ -1515,10 +1514,406 @@ deterministic).</p>
 is now -0.02 ns); what is left is the multiplier into the register file, 0.63 ns short at the one most
 pessimistic corner (slow silicon, 125 C, 4.5 V, worst-case wires), which is 19.75 MHz there. Every other
 corner meets 20 MHz, and hold is met everywhere. Timing table: <code>docs/full_height_tags_center_timing.txt</code>.</p>
+<h3>Timing met at all nine corners (run <code>tgm6</code>)</h3>
+<p><code>tgc2</code> again, with the timing repair after global routing aiming for 6 ns of margin instead of 4.5
+(<code>gen_floorplan_1x1.py --analog --tags-center --grt-margin 6</code>; <code>flow/run_full.sh &lt;tag&gt; --tags-center
+--grt-margin 6</code>). Up to global routing the run is identical to <code>tgc2</code>; the repair then went on to +5.32 ns
+on its estimate of the wires (<code>tgc2</code> stopped at +4.44 ns).</p>
+<p><img alt="Full-height layout with the analog macro, 20 MHz at all nine corners" src="full_height_analog_signoff.png" /></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th><code>tgc2</code></th>
+<th><code>tgm6</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Slack after global routing, after repair</td>
+<td>+4.44 ns</td>
+<td>+5.32 ns</td>
+</tr>
+<tr>
+<td>Detailed routing</td>
+<td>0 violations, 6.28 m</td>
+<td>0 violations, 6.28 m</td>
+</tr>
+<tr>
+<td>Setup, slowest corner (ss, 125 C, 4.5 V, worst-case wires)</td>
+<td>-0.63 ns, 10 endpoints</td>
+<td><strong>+0.84 ns</strong></td>
+</tr>
+<tr>
+<td>Setup, slow corner, nominal wires</td>
+<td>+1.47 ns</td>
+<td><strong>+2.76 ns</strong></td>
+</tr>
+<tr>
+<td>Setup, slow corner, best-case wires</td>
+<td>+3.24 ns</td>
+<td>+4.36 ns</td>
+</tr>
+<tr>
+<td>Setup, typical</td>
+<td>+17.26 ns</td>
+<td>+17.08 ns</td>
+</tr>
+<tr>
+<td>Hold, worst corner</td>
+<td>+0.15 ns</td>
+<td>+0.05 ns (fast silicon, worst-case wires)</td>
+</tr>
+<tr>
+<td>Slew / capacitance limits exceeded, slowest corner</td>
+<td></td>
+<td>91 / 352</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The first layout with the analog macro and its lines that meets 20 MHz, setup and hold, at all nine
+corners</strong>, with the corrected constraints (all clocks, all pins, synchronisers, per-corner serial-memory
+input). It is now the full-height reference. Timing table: <code>docs/full_height_analog_signoff_timing.txt</code>.</p>
+<p>Not yet run on it: DRC with the foundry decks and Magic, LVS with the analog macro, density and antenna
+sign-off checks, gate-level simulation of its netlist, and the equivalence check. The hold margin at the fast
+corner (+0.05 ns) is thin but met. The 91 slow edges and 352 capacitance overloads are of the kinds
+described under <code>full10</code>/<code>full11</code> (no timing failure follows from them).</p>
+<h3>LVS on <code>tgm6</code>: a short from the strap script, fixed (run <code>sgn</code>)</h3>
+<p>The first LVS of a full-height layout with the macro (stream-out, Magic extraction, Netgen; DRC not yet run)
+failed: in the layout VDD, VSS, AVCC, AREF and XTAL2 were one net. Taking the analog lines out of the layout
+one group at a time and re-extracting found the cause: the AVCC strap's 10 um Metal3 run crosses the core's
+Metal4 stripes near the east edge, where via stacks come up from every standard-cell rail (5.04 um apart),
+and it lay across one VDD and one VSS stack. The XTAL2 tail touched a VSS stack the same way, and the AREF
+tail passed within 0.3 um of one. The strap script's own overlap check had not seen the stacks: OpenROAD's
+database does not give the metal of those generated vias as shapes.</p>
+<p><code>scripts/analog_straps.py</code> now counts every via on both its layers (grown by 0.3 um), threads the AVCC run
+through the gaps as three 3 um lines (15.4 ohm in all instead of 15.2), and picks each Metal3 tail's height
+along its pad landing so that it passes between the stacks. Checked on the database: the old drawing shows
+these 8 contacts, the new one none. Run <code>sgn</code> is <code>tgm6</code> rebuilt with the fix (same options), with LVS after
+sign-off timing.</p>
+<h3>LVS passes (run <code>sgn</code>, written out as <code>sgnv</code>)</h3>
+<p><code>sgn</code> routed with 0 violations and meets 20 MHz at all nine corners, setup and hold, as <code>tgm6</code> did (+0.87 ns
+at the slowest corner, +0.05 ns hold at the fastest; table: <code>docs/full_height_lvs_fix_timing.txt</code>).</p>
+<p>Its first LVS was one net off: VDD, AVCC and AREF were now separate, but XTAL2 was still joined to VSS.
+Nothing in the drawing touched: a check of the streamed-out GDS around every XTAL2 shape found only the
+pad's fingers and the macro's pin. The join was in a via cut. At the centre of every via the strap script
+draws, Magic's stream-out had added a small Metal4-Via4-Metal5 stack that is not in the design. The script
+wrote its vias into the DEF as lists of rectangles (<code>+ RECT</code>); the power grid's vias, written as generated
+vias (<code>+ VIARULE ... + ROWCOL</code>), come out right. One of those stray stacks sat under a VSS Metal5 stripe at
+the foot of the XTAL2 column (452.4, 1367.5 um) and joined the two.</p>
+<p>The fix is one line in <code>scripts/analog_straps.py</code>: each via it makes now names its generate rule
+(<code>Via2_GEN_HH</code> and so on), so the DEF carries it in the same form as the power grid's. The geometry is
+unchanged. <code>sgnv</code> is the final database of <code>sgn</code> with only that change (<code>scripts/via_rules.py</code> set the rule on the 14 via
+definitions, nothing moved), streamed out again:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Check on <code>sgnv</code></th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LVS (Magic extraction, Netgen)</td>
+<td><strong>Circuits match uniquely</strong>: 57,257 devices and 56,258 nets on both sides, 0 errors</td>
+</tr>
+<tr>
+<td>Illegal overlaps (Magic)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Stray Via4 cuts at the strap vias' centres, both GDS files</td>
+<td>0 (were at all 175)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The full-height chip with the analog macro and its thirteen lines now passes LVS and meets 20 MHz at all
+nine corners.</strong> The macro is still the abstract (pins and blockages) in this check; its own LVS is
+separate (<code>analog/layout/README.md</code>). Still to run on <code>sgnv</code>: DRC with the foundry decks and Magic,
+density, antenna, equivalence and gate-level simulation.</p>
+<h3>Antenna, density and fill on <code>sgnv</code></h3>
+<p>Next in the sign-off order: the foundry antenna deck, the seal ring, the fill step and the density deck
+(LibreLane's <code>KLayout.Antenna</code>, <code>SealRing</code>, <code>Filler</code>, <code>Density</code>), then the foundry DRC.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Check on <code>sgnv</code></th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Density (foundry deck, after fill)</td>
+<td>0 errors</td>
+</tr>
+<tr>
+<td>Antenna (foundry deck)</td>
+<td><strong>49 errors on 12 nets</strong>, none in the flow's own antenna check</td>
+</tr>
+<tr>
+<td>Fill</td>
+<td><strong>put inside the analog macro</strong>: about 500,000 fill shapes in its outline, Metal1 to Metal5, diffusion and poly</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Antenna.</strong> Two kinds, both from the analog macro, which the flow's own check cannot see into (its LEF
+says nothing about the gates behind its pins):</p>
+<ul>
+<li>Nine of the macro's digital inputs (<code>rc_trim1..4</code>, <code>rc_trim6</code>, <code>rc_trim7</code>, <code>bod_level1</code>, <code>bod_level2</code>,
+  <code>adc_sample</code>) reach gates inside it over a Metal4 trunk line of up to 0.6 mm. The route to the pin
+  arrives on Metal5, so while Metal4 is etched the trunk line, the last stretch of route and the gates
+  are one piece with no diffusion on it: up to 1.45 times the allowed ratio. The macro alone shows two of
+  them. Fix: <code>scripts/analog_straps.py</code> now puts an antenna diode cell (<code>gf180mcu_fd_sc_mcu9t5v0__antenna</code>)
+  on each of the macro's 37 inputs, fixed in the row under the macro beside its pin, before placement;
+  the router joins it like any other sink.</li>
+<li>Three lines inside the ADC front end (<code>hsg</code>, <code>sg0</code>, <code>sr0</code>, gates of the low bits' bottom-plate
+  switches) run 340 um on Metal3 from the front end's column of Metal4 lines to a single gate: 1.37 times
+  the ratio while Metal3 is etched. Fix in <code>analog/layout/adcfe.py</code>: a Metal3 run longer than 150 um now
+  ends in a 2.4 um Metal4 bridge just short of its block (56 bridges). Front end and macro rechecked:
+  foundry DRC 0, Magic DRC 0 (outside the foundry bipolar cells, as before), LVS match, the front end's
+  antenna check 0; the extraction of the macro's wiring is unchanged.</li>
+</ul>
+<p><strong>Fill.</strong> The fill step fills every empty place in the chip, the macro included: between the capacitor
+array's units (where it would undo the matching the array is drawn for) and over the blocks. The PDK's fill
+scripts leave out areas marked PMNDMY (152/5, metal and poly fill) and NDMY (111/5, diffusion and poly fill);
+<code>scripts/gen_analog_abstract.py</code> now puts PMNDMY over the macro's outline. (Not NDMY as well: the foundry
+caps an NDMY area at 15,000 um2 unless it is under 80 um wide, rule DE.3, so diffusion fill may still go
+into the macro, keeping the fill script's distances from its devices.) Whether the chip still meets the
+density rules without metal fill there is to be seen on the next run.</p>
+<p><strong>Foundry DRC, back-end decks</strong> (metal, via, MIM, geometry; 20 minutes, run outside the flow on <code>sgnv</code>
+streamed out without fill): 792 errors of two kinds, none in the routing or the analog lines.</p>
+<ul>
+<li>V4.2a, Via4 spacing (784): the VSS strap from the macro's ground pin lies over a VSS stripe of the power
+  grid's Metal4, and at each of the three Metal5 stripes the strap's own Via4 array sat on the grid's,
+  cuts 0.05 um apart. The strap script now leaves its via out where the grid already has one (the strap
+  joins the grid through the Metal4 it overlaps).</li>
+<li>DE.3 (8): the NDMY marker above, before it was taken out.</li>
+</ul>
+<p>The macro's LEF is unchanged by these; its GDS and the chip's netlist (37 diodes) are not, so the layout is
+being built again (run <code>dio</code>), followed by sign-off timing, LVS, antenna, density and foundry DRC.</p>
+<h3>Diodes and strap fixes built in (run <code>dio</code>): clean, but slow</h3>
+<p><code>flow/run_full.sh dio --tags-center --grt-margin 6</code>, with the antenna diodes, the ADC front end's bridges,
+the strap script's via changes and the fill marker above; then LibreLane's sign-off steps from
+<code>Magic.StreamOut</code> to <code>Checker.LVS</code> (Magic DRC left out). Synthesis, floorplan and options are those of <code>sgn</code>;
+the netlist differs only by the 37 diodes, fixed in the row under the macro before placement.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Check on <code>dio</code></th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Detailed routing</td>
+<td>0 violations, 6.40 m; antenna 0 nets</td>
+</tr>
+<tr>
+<td>LVS (Magic extraction, Netgen)</td>
+<td><strong>Circuits match uniquely</strong>, 0 differences</td>
+</tr>
+<tr>
+<td>Magic / KLayout stream-out XOR, illegal overlaps</td>
+<td>0, 0</td>
+</tr>
+<tr>
+<td>Antenna (foundry deck)</td>
+<td><strong>0</strong> (<code>sgnv</code>: 49 on 12 nets)</td>
+</tr>
+<tr>
+<td>Density (foundry deck, after fill)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Foundry DRC, <code>decks=all,-antenna,-density,-cup</code> (162 decks)</td>
+<td><strong>0</strong> (<code>sgnv</code>, back-end decks: 792)</td>
+</tr>
+<tr>
+<td>Setup, slowest corner (ss, 125 C, 4.5 V, worst-case wires)</td>
+<td><strong>-4.94 ns, 311 endpoints</strong>, TNS -351 ns</td>
+</tr>
+<tr>
+<td>Setup, slow corner, nominal / best-case wires</td>
+<td>-2.33 ns (28 endpoints) / -0.08 ns (1)</td>
+</tr>
+<tr>
+<td>Setup, typical</td>
+<td>+16.17 ns</td>
+</tr>
+<tr>
+<td>Hold, worst corner</td>
+<td>+0.14 ns (fast silicon, worst-case wires)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Every sign-off check is clean, but timing fell back from <code>sgn</code> (+0.87 ns at the slowest corner) by 5.8 ns.
+Timing table: <code>docs/full_height_diodes_timing.txt</code>.</p>
+<p><strong>Where the time went.</strong> The diodes are on none of the failing paths (they sit about 1 mm from the nearest
+cell of the worst one). The failures at the slowest corner have three sources: the multiplier (240
+endpoints, -2.03 ns), the decoder into the register file (30, -3.80 ns) and, worst, the cache's request
+address into the register file (40, -4.94 ns), which is also most of the 28 at nominal wires. That address
+bit (<code>u_xip.addr_q[11]</code>) drives about 40 loads in two groups 3 mm apart: multiplexer selects beside the lower
+row of cache memories (y about 1080 um) and gates beside the upper row (y about 4030 um). Synthesis
+buffered the net as a chain (<code>SYNTH_ABC_BUFFERING</code>), and placement put each buffer of the chain beside its own
+loads, so the chain runs up, down, up and down again: the worst path covers 24.9 mm on a die 5.1 mm tall.
+The repair after global routing spent its last thousand iterations on that endpoint at +0.72 ns on its wire
+estimate (against +5.32 ns in <code>tgm6</code>) and gave up; resizing and buffering cannot reorder a chain. The path was
+already close in earlier runs (<code>tgc2</code>: its worst endpoint -0.02 ns); the 37 extra cells changed where global
+placement put things, and that was enough to tip it.</p>
+<p><strong>Fill.</strong> Metal and poly fill now stay out of the macro (none inside its outline). Diffusion fill does not:
+16,117 dummy diffusion shapes lie inside the outline, as expected without the NDMY marker; DRC passes with them.</p>
+<h3>Synthesis buffers removed before repair (run <code>rmb</code>): clean, 0.26 ns short at one corner</h3>
+<p><code>dio</code> with <code>DESIGN_REPAIR_REMOVE_BUFFERS</code> (new option <code>--remove-buffers</code> of <code>gen_floorplan_1x1.py</code>;
+<code>flow/run_full.sh rmb --tags-center --grt-margin 6 --remove-buffers</code>): the repair after global placement
+first removes the buffers synthesis put in (2,463 here), then builds the trees again from where the cells are.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th><code>dio</code></th>
+<th><code>rmb</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Slack after global routing, before / after repair</td>
+<td>-3.85 / +0.72 ns</td>
+<td>-1.93 / <strong>+4.73 ns</strong></td>
+</tr>
+<tr>
+<td>Detailed routing</td>
+<td>0 violations, 6.40 m</td>
+<td>0 violations, <strong>5.65 m</strong></td>
+</tr>
+<tr>
+<td>Setup, slowest corner, worst-case wires</td>
+<td>-4.94 ns, 311 endpoints</td>
+<td><strong>-0.26 ns, 3 endpoints</strong>, TNS -0.59 ns</td>
+</tr>
+<tr>
+<td>Setup, slow corner, nominal wires</td>
+<td>-2.33 ns</td>
+<td><strong>+1.84 ns</strong></td>
+</tr>
+<tr>
+<td>Setup, slow corner, best-case wires</td>
+<td>-0.08 ns</td>
+<td>+3.63 ns</td>
+</tr>
+<tr>
+<td>Setup, typical</td>
+<td>+16.17 ns</td>
+<td>+17.02 ns</td>
+</tr>
+<tr>
+<td>Hold, worst corner</td>
+<td>+0.14 ns</td>
+<td>+0.26 ns (fast silicon, worst-case wires)</td>
+</tr>
+<tr>
+<td>LVS</td>
+<td>match</td>
+<td><strong>match</strong> (56,047 devices, 55,013 nets)</td>
+</tr>
+<tr>
+<td>Antenna, density, foundry DRC (162 decks), XOR, illegal overlaps</td>
+<td>0 each</td>
+<td><strong>0 each</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>The cache path and the multiplier are gone from the failures, and routing is 12 % shorter. What is left is
+one path at the one most pessimistic corner: from the decoder's <code>d_instr[6]</code> to the register file's read data
+(<code>rdata1[18]</code>, <code>rdata2[28]</code>, <code>rdata2[31]</code>), 9.4 mm, much of it in the band just above the analog macro, 0.26 ns
+short (19.9 MHz there). Every other corner meets 20 MHz, and hold is met everywhere. Fill in the macro as
+in <code>dio</code>. Timing table: <code>docs/full_height_remove_buffers_timing.txt</code>.</p>
+<p><strong>The full-height chip with the analog macro, its lines and its antenna diodes is clean in LVS, antenna,
+density and foundry DRC</strong> (<code>rmb</code>). Not yet run on it: Magic DRC, equivalence, gate-level simulation and the
+wafer.space precheck.</p>
+<h3>More repair margin (run <code>rm7</code>): no gain, the repair hits its iteration cap</h3>
+<p><code>rmb</code> from the repair after global routing onwards with <code>GRT_RESIZER_SETUP_SLACK_MARGIN</code> 7 instead of 6 (up to
+that step the flow is deterministic, so the run starts from <code>rmb</code>'s database). The repair made exactly the same
+changes (1,018 cells resized, 69 buffers): in <code>dio</code>, <code>rmb</code> and <code>rm7</code> alike it stops at OpenROAD's limit of 1,200
+iterations, in <code>rmb</code> and <code>rm7</code> stuck on the output path to pad PE[2] at +4.73 ns on its estimate (PE[2] meets
+timing at every corner at sign-off, +19.7 ns typical). A higher margin therefore buys nothing. Sign-off: -0.19 ns
+on 13 endpoints at the slowest corner (<code>rmb</code>: -0.26 ns on 3), the same decoder path; every other corner as in
+<code>rmb</code>. <code>rmb</code> stays the reference. LibreLane does not pass <code>repair_timing</code>'s <code>-max_passes</code> or
+<code>-max_iterations</code>; more repair would mean running that step by hand, as <code>analog_straps.py</code> is run.</p>
+<h3>Magic DRC, equivalence and gate-level simulation on <code>rmb</code></h3>
+<p><strong>Magic DRC</strong>: 138 entries, which are 94 errors (Magic lists each box twice), all inside foundry cells:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Errors</th>
+<th>Rule</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>36</td>
+<td>CO.3, poly overlap of contact</td>
+<td><code>gf180mcu_fd_sc_mcu9t5v0__dffrnq_4</code>: one in each of its 36 instances</td>
+</tr>
+<tr>
+<td>8</td>
+<td>CO.3</td>
+<td><code>gf180mcu_fd_sc_mcu9t5v0__mux4_4</code>: one in each of its 8 instances</td>
+</tr>
+<tr>
+<td>50</td>
+<td>P-diffusion and N-ohmic over N-well</td>
+<td>the bandgap's foundry bipolar cell (<code>rv328_bgr &gt; pnp_array &gt; pnp_10p00x10p00</code>), x 3202..3255, y 3020..3059 um</td>
+</tr>
+</tbody>
+</table></div>
+<p>The CO.3 errors are part of the two cells as the PDK supplies them (one per instance), and the foundry's own
+deck finds none in the same GDS; the bipolar ones are the exception the macro already records. None is in the
+routing or the analog lines.</p>
+<p><strong>Equivalence</strong>: not run. LibreLane's <code>Yosys.EQY</code> step skips gf180mcuD ("PDK gf180mcuD is not supported by the
+EQY step"); it needs a hand-written EQY script for this PDK.</p>
+<p><strong>Gate-level simulation</strong> (<code>make gl-sdf</code>, <code>gl-basic</code>, <code>gl-timers</code>, <code>gl-spi</code>; typical corner, cell delays from
+the layout). <code>scripts/gl_sim.sh</code> now recognises a netlist with the analog macro itself and puts the
+behavioural model (<code>rtl/analog/rv328_analog_model.v</code>) behind a wrapper with the layout's pin names. With the
+test programs as they are, all three ran to their 200 ms timeout with the verdict unknown. Traced: the run
+matches RTL access for access until 1.538 ms, where <code>lui a2, 0x52333</code> in <code>CHECK(1)</code> writes an unknown result.
+Its encoding puts register x6 in the source field, x6 has not been written yet, and in the synthesised gates
+that unknown is not masked as RTL simulation masks it (X-pessimism; in silicon the register holds 0s and 1s
+and <code>lui</code> is unaffected). The branch on that value makes the fetch address unknown, and the next writes spread
+it everywhere. <code>sw/crt0.S</code> now clears the registers at start-up (all but sp and gp, which it loads next),
+and with it all three pass, within 2.1 us of RTL (the ten RTL tests pass with the new start-up code too):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Gate level (<code>rmb</code>)</th>
+<th>RTL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>basic</td>
+<td>PASS, 5.532 ms</td>
+<td>5.534 ms</td>
+</tr>
+<tr>
+<td>timers</td>
+<td>PASS, 5.321 ms</td>
+<td>5.323 ms</td>
+</tr>
+<tr>
+<td>spi</td>
+<td>PASS, 4.250 ms</td>
+<td>4.250 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>The chip with the analog macro runs its first three test programs from the routed netlist, on the internal
+8 MHz RC oscillator.</p>
 <h2>Not covered</h2>
 <ul>
-<li>Formal equivalence of the final netlist against the RTL (<code>Yosys.EQY</code>) and the manufacturability
-  report: the flow was run in pieces because of the session's time limit, and these were not reached.</li>
+<li>Formal equivalence of the final netlist against the RTL (<code>Yosys.EQY</code>): LibreLane skips it for gf180mcuD
+  and needs a hand-written EQY script. The manufacturability report has not been run either.</li>
 <li>Gate-level simulation beyond the three tests above: wire delays, the slow and fast corners, clock
   switching and sleep modes. That needs a simulator with full SDF support.</li>
 <li>Any analog content in the layout: the analog macro is still the stub here. The macro now exists as a
@@ -1526,7 +1921,8 @@ corner meets 20 MHz, and hold is met everywhere. Timing table: <code>docs/full_h
   in the core ("Trial with the analog block" above) routes, but leaves no room for the flow's timing
   and antenna repair, and one register's fan-out misses 20 MHz at the slow corner. The full-height
   layouts have the room, and since 21 November they carry the macro itself ("First layout with the analog
-  macro" onwards), but none of them has been through DRC, LVS or gate-level simulation with it.</li>
+  macro" onwards). Run <code>rmb</code> with the macro passes LVS, antenna, density and foundry DRC; Magic DRC finds
+  only errors inside foundry cells, and its netlist passes three gate-level tests (see above).</li>
 <li>Review of the pad ring against wafer.space's current bonding rules, and the wafer.space precheck.</li>
 <li>IR-drop and electromigration analysis beyond the flow's default report.</li>
 <li>Timing at the ATmega's own limits (105 C): the library has no such corner; 125 C is more pessimistic.</li>

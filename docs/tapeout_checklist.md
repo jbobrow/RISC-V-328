@@ -126,9 +126,38 @@ Status key: [x] done in this repository, [ ] open.
 - [x] Multiplier: Booth mapping off (SYNTH_MUL_BOOTH); `and` meets setup at eight of nine corners
 - [x] Cache tag memories side by side (`--tags-center`, run `tgc2`): the cache path is closed; setup met
       at eight of nine corners, hold at all nine
-- [ ] Slowest corner (ss, 125 C, 4.5 V, worst-case wires): -0.63 ns in `tgc2`, 10 endpoints, all the
-      multiplier into the register file (a pre-synthesised Kogge-Stone multiplier, `mks`, did worse).
-      Then LVS and DRC with the macro and gate-level simulation of this netlist
+- [x] Full-height layout with the analog macro meets 20 MHz at all nine corners, setup and hold (`tgm6`:
+      --tags-center --grt-margin 6; +0.84 ns at the slowest corner, +0.05 ns hold at the fastest)
+- [x] First LVS with the analog macro (`tgm6`) found VDD, VSS and AVCC shorted by the AVCC strap across
+      the power grid's via stacks; strap script fixed (vias counted, run threaded between the stacks)
+- [x] Rebuilt layout (`sgn`) meets 20 MHz at all nine corners (+0.87 ns slowest, +0.05 ns hold)
+- [x] LVS passes on the full-height chip with the analog macro (`sgnv`: circuits match uniquely, 57,257
+      devices, 56,258 nets) after the strap vias were written as generated vias (Magic had added a stray
+      Metal4-Via4-Metal5 stack at each rectangle-list via, one of which joined XTAL2 to VSS)
+- [x] Density on `sgnv` (foundry deck, after fill): 0
+- [x] Antenna on `sgnv` (foundry deck): 49 errors on 12 nets, all from the analog macro; fixed by an
+      antenna diode on each of the macro's 37 inputs (scripts/analog_straps.py) and Metal4 bridges on the
+      ADC front end's long Metal3 runs (analog/layout/adcfe.py; front end and macro rechecked clean)
+- [x] Metal and poly fill kept out of the analog macro (PMNDMY marker over its outline,
+      scripts/gen_analog_abstract.py); the fill step had put about 500,000 shapes inside it
+- [x] Foundry DRC, back-end decks, on `sgnv`: only a Via4 spacing clash where the VSS strap's vias sat
+      on the power grid's (fixed in scripts/analog_straps.py) and the NDMY size rule (marker dropped)
+- [x] Rebuilt layout with these (`dio`): LVS match; antenna, density and foundry DRC (162 decks) 0;
+      metal and poly fill kept out of the macro (diffusion fill still goes in). Setup fell to -4.94 ns at
+      the slowest corner: a cache address bit's synthesis buffer chain crossed the die four times
+- [x] Synthesis buffers removed before the repair after placement (`rmb`, `--remove-buffers`): LVS match,
+      antenna, density and foundry DRC 0; setup met at eight of nine corners, -0.26 ns on one decoder to
+      register-file path at the slowest (ss, 125 C, 4.5 V, worst-case wires); hold met at all nine
+- [ ] Close the last 0.26 ns on `rmb` (decoder `d_instr[6]` to the register file's read data). A 7 ns repair
+      margin (`rm7`) changed nothing: the repair after global routing stops at OpenROAD's 1,200-iteration cap,
+      which LibreLane does not expose; running that step by hand with a higher cap is the next thing to try
+- [x] Magic DRC on `rmb`: 94 errors, all inside foundry cells (CO.3 in every dffrnq_4 and mux4_4, which the
+      foundry deck passes; the bandgap's bipolar cell as before), none in the routing
+- [x] Gate-level simulation of `rmb` with the analog macro's model (scripts/gl_sim.sh wraps it): basic, timers
+      and spi pass, within 2.1 us of RTL. sw/crt0.S now clears the registers at start-up; without that they
+      stall on an unknown from never-written x6 (X-pessimism in `lui`, not a hardware fault)
+- [ ] Equivalence (`Yosys.EQY`): LibreLane skips it for gf180mcuD; needs a hand-written EQY script
+- [ ] Decide whether diffusion fill may go inside the analog macro (NDMY is capped at 15,000 um2 by DE.3)
 - [ ] Analog lines: shorter routes (the macro sits far from the ADC0..ADC5 and AIN pads)
 - [ ] Analog macro, still to do: supply and guard rings and pin protection; separate supply lines
       for the ADC (the two fast oscillators have theirs); pins where the chip floorplan wants them; wide

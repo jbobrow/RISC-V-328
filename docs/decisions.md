@@ -75,7 +75,10 @@ analog macro).
 
 **Chosen:** the processor's fast multiplier for both halves of the product.
 **Why:** float-heavy code was 1.6 times slower than on the ATmega without it, level with it.
-**Cost:** it is the tightest path in the layout, 0.64 ns of margin at the slowest corner.
+**Cost:** it is the tightest path in the layout. With the analog macro it first missed by 3.5 ns at the
+slowest corner; turning off Yosys's Booth mapping (53 ns alone, against 45 ns without), placing the cache's
+tag memories side by side and asking more of the repair after global routing closed it: +0.84 ns in
+`tgm6` (docs/layout_results.md).
 **Fallback:** fast multiplier for the low half only; the float benchmark drops to 0.81 of the ATmega.
 
 ## 9. Full-height slot for the product

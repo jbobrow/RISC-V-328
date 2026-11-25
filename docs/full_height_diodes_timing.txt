@@ -1,0 +1,12 @@
+Sign-off timing of run dio (sgn with antenna diodes on the analog macro's 37 inputs and the strap-via fixes: --tags-center --grt-margin 6), from runs/diosta. ns.
+
+Corner               Setup WS  Setup TNS  Setup n    Hold WS   Hold TNS
+nom_tt_025C_5v00       16.171       0.00        0      0.764       0.00
+nom_ss_125C_4v50       -2.326     -35.50       28      1.679       0.00
+nom_ff_n40C_5v50       19.057       0.00        0      0.280       0.00
+min_tt_025C_5v00       16.511       0.00        0      0.800       0.00
+min_ss_125C_4v50       -0.076      -0.08        1      1.665       0.00
+min_ff_n40C_5v50       19.295       0.00        0      0.346       0.00
+max_tt_025C_5v00       15.771       0.00        0      0.640       0.00
+max_ss_125C_4v50       -4.938    -351.19      311      1.696       0.00
+max_ff_n40C_5v50       18.778       0.00        0      0.138       0.00

@@ -81,6 +81,15 @@ def main():
     body.name = NAME + "_body"
     top = ly.create_cell(NAME)
     top.insert(kdb.DCellInstArray(body.cell_index(), kdb.DTrans(dx, dy)))
+    # place-and-route boundary (PR_bndry, 0/0): Magic takes the macro's outline from it when it streams
+    # out the chip (LibreLane's Magic.StreamOut stops without it)
+    top.shapes(ly.layer(0, 0)).insert(kdb.DBox(0, 0, W, H))
+    # No metal or poly fill over the macro: the chip's fill step (the PDK's fill_*.rb) leaves out areas marked
+    # PMNDMY (152/5). Without it the step put some 500,000 fill shapes inside the outline, between the
+    # capacitor array's units and over the blocks. Diffusion fill stays allowed: its own marker, NDMY (111/5),
+    # may cover at most 15,000 um2 unless it is under 80 um wide (foundry rule DE.3), and diffusion fill keeps
+    # its distance from the macro's devices by the fill script's own rules.
+    top.shapes(ly.layer(152, 5)).insert(kdb.DBox(0, 0, W, H))
     for d in ("gds", "lef", "lib", "vh"):
         os.makedirs(os.path.join(OUT, d), exist_ok=True)
     opt = kdb.SaveLayoutOptions()
